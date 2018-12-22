@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>%2F2018%2F12%2F22%2Ftest%2F</url>
-    <content type="text"></content>
-  </entry>
-  <entry>
     <title><![CDATA[getchar()存储类型]]></title>
     <url>%2F2018%2F12%2F20%2Fgetchar-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B%2F</url>
     <content type="text"><![CDATA[getchar()返回类型声明为int类型getchar()函数从文本流读入下一个输入字符，并且作为结果返回。 一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。123456789101112#include &lt;stdio.h&gt;int main (void)&#123; int c; c = getchar(); while (c != EOF) &#123; putchar(c); c = getchar(); &#125; return 0;&#125; 起先没搞明白为什么对c的声明是int类型，而不是char类型。 后来查阅资料得知，char类型的声明，会根据不同的编译器，或者不同的架构平台，可能成为unsigned char或者是signed char类型。 如果是unsigned char类型，占8位，一个字节，其范围为0000 0000 ~ 1111 1111，即0 ~ 255，那么无法存储EOF这个结束符，EOF可以理解为数值-1(C89, C99, C11并没有给EOF定义一个具体的值，只是说EOF是一个负值常量)。 而当被作为signed char类型，虽然其取值范围为-128 ~ +127，虽然能够存储EOF这个结束符，看似正常，但在linux的环境，会混淆char 255和EOF，导致输入数据的截断。 在linux平台运行以下程序 1234567891011#include &lt;stdio.h&gt;int main(void)&#123; char c; printf(&quot;Enter characters : &quot;); while((c= getchar()) != EOF)&#123; putchar(c); &#125; return 0;&#125; 输出结果可以发现\0377后面部分没有被打印。 12[root@VM_31_91_centos ~]# gcc test.c &amp;&amp; echo -e &apos;Hello world\0377And some more&apos; | ./a.outEnter characters : Hello world[root@VM_31_91_centos ~]# getchar()和putchar()初始返回的值都为int类型。对于getchar()函数返回值的声明使用int类型 打印出EOF的值123456789101112131415#include &lt;stdio.h&gt;int main (void)&#123; int c; c = getchar(); while (c == EOF) &#123; printf(&quot;this is the value of EOF:%d&quot;,c); c = getchar(); break; &#125; return 0;&#125; 执行程序，按CTRL+D发送EOF，查看得到的数值为-1。 refer https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-inthttps://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputchttps://stackoverflow.com/questions/7119470/int-c-getcharThe C Programming Language - By Kernighan and Ritchie]]></content>
@@ -20,5 +15,10 @@
       <tags>
         <tag>python</tag>
       </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[test_page]]></title>
+    <url>%2F2018%2F12%2F16%2Ftest-page%2F</url>
+    <content type="text"></content>
   </entry>
 </search>
