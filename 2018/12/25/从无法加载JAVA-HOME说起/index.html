@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在/etc/profile里面是添加了JAVA_HOME。123456789[root@ccc bin]# sudo ./catalina.sh startNeither the JAVA_HOME nor the JRE_HOME environment varia">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-25T14:23:01.441Z">
+<meta property="og:updated_time" content="2018-12-25T14:56:07.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从无法加载JAVA_HOME说起">
 <meta name="twitter:description" content="这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在/etc/profile里面是添加了JAVA_HOME。123456789[root@ccc bin]# sudo ./catalina.sh startNeither the JAVA_HOME nor the JRE_HOME environment varia">
@@ -373,7 +373,7 @@
 <li>Interactive Shell</li>
 <li>Non-Interactive Shell</li>
 </ol>
-<p>Interactive Shell 顾名思义，就是登陆用户可以和shell进行交互的，比如你用xshell上一台服务器，出现的terminal就是属于Interactive Shell方式。<br>Non-Interactive Shell 非交互的模式，比如你执行一个shell脚本。</p>
+<p>Interactive Shell 顾名思义，就是登陆用户可以和shell进行交互的，比如你用xshell上一台服务器，出现的terminal就是属于Interactive Shell方式。<br>Non-Interactive Shell 非交互的模式，比如用crontab的方式执行一个shell脚本。</p>
 <p>那么问题就来了，这两种模式的环境变量从哪里去获取呢？</p>
 <ol>
 <li>Interactive Shell登录情况</li>
@@ -392,10 +392,10 @@
 <li>/etc/bashrc</li>
 <li>~/.bash_login</li>
 <li>~/.profile</li>
-<li><p>~/.bash_logout (当且仅当退出Interactive Shell的时候执行)</p>
-</li>
-<li><p>Non-Interactive Shell的情况</p>
-</li>
+<li>~/.bash_logout (当且仅当退出Interactive Shell的时候执行)</li>
+</ol>
+<ol start="2">
+<li>Non-Interactive Shell的情况</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IF ~/.bashrc exists THEN</span><br><span class="line">    execute ~/.bashrc</span><br><span class="line">END IF</span><br></pre></td></tr></table></figure>
 <p>直接去执行的~/.bashrc，该文件也会判断是否存在/etc/bashrc，存在则执行/etc/bashrc。</p>
@@ -411,7 +411,18 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-E          The -E (preserve environment) option indicates to the security policy that the user wishes to preserve their existing</span><br><span class="line">            environment variables.  The security policy may return an error if the -E option is specified and the user does not have</span><br><span class="line">            permission to preserve the environment.</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@ccc bin]# sudo -E ./catalina.sh start</span><br><span class="line">Using CATALINA_BASE:   /opt/mixcdn-tomcat</span><br><span class="line">Using CATALINA_HOME:   /opt/mixcdn-tomcat</span><br><span class="line">Using CATALINA_TMPDIR: /opt/mixcdn-tomcat/temp</span><br><span class="line">Using JRE_HOME:        /tool/jdk1.8.0_144</span><br><span class="line">Using CLASSPATH:       /opt/mixcdn-tomcat/bin/bootstrap.jar:/opt/mixcdn-tomcat/bin/tomcat-juli.jar</span><br><span class="line">Tomcat started.</span><br></pre></td></tr></table></figure>
 <p>好的解决方法在下面：</p>
-<h2 id="在-etc-profile里面写入jdk环境变量是否合适？"><a href="#在-etc-profile里面写入jdk环境变量是否合适？" class="headerlink" title="在/etc/profile里面写入jdk环境变量是否合适？"></a>在/etc/profile里面写入jdk环境变量是否合适？</h2>
+<h2 id="在-etc-profile里面写入jdk环境变量是否合适？"><a href="#在-etc-profile里面写入jdk环境变量是否合适？" class="headerlink" title="在/etc/profile里面写入jdk环境变量是否合适？"></a>在/etc/profile里面写入jdk环境变量是否合适？</h2><p>针对部署tomcat的jdk环境，很多文档，包括我自己，之前也是从别人那边拿来的部署jdk文档，将jdk环境变量写入/etc/profile，等文件中，这个观念基本上贯穿了我整个运维生涯。</p>
+<p>其实官方给出了写法，在catalina.sh里面:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># Control Script for the CATALINA Server</span><br><span class="line">#</span><br><span class="line"># Environment Variable Prerequisites</span><br><span class="line">#</span><br><span class="line">#   Do not set the variables in this script. Instead put them into a script</span><br><span class="line">#   setenv.sh in CATALINA_BASE/bin to keep your customizations separate.</span><br><span class="line">#</span><br><span class="line">#   CATALINA_HOME   May point at your Catalina &quot;build&quot; directory.</span><br><span class="line">#</span><br><span class="line">#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions</span><br><span class="line">#                   of a Catalina installation.  If not present, resolves to</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">...</span><br><span class="line">.</span><br><span class="line"># Ensure that any user defined CLASSPATH variables are not used on startup,</span><br><span class="line"># but allow them to be specified in setenv.sh, in rare case when it is needed.</span><br><span class="line">CLASSPATH=</span><br><span class="line"></span><br><span class="line">if [ -r &quot;$CATALINA_BASE/bin/setenv.sh&quot; ]; then</span><br><span class="line">  . &quot;$CATALINA_BASE/bin/setenv.sh&quot;</span><br><span class="line">elif [ -r &quot;$CATALINA_HOME/bin/setenv.sh&quot; ]; then</span><br><span class="line">  . &quot;$CATALINA_HOME/bin/setenv.sh&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">...</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<p>就是在tomcat/bin目录下面，写入一个setenv.sh文件里面写入需要的环境变量，当运行catalina.sh启动脚本的时候，其会进行执行该setenv.sh文件，当前我的版本是1.8，非特殊情况其已经不需要写入CLASSPATH。(据说jdk1.5之后就不需要写入CLASSPATH了。)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@ccc bin]# cat setenv.sh</span><br><span class="line">export JAVA_HOME=/tool/jdk1.8.0_144</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure>
+<p>多看官方文档，多看服务自带脚本还是非常有必要的。</p>
+<p>Refer:</p>
+<blockquote>
+<p><a href="https://www.thegeekstuff.com/2008/10/execution-sequence-for-bash_profile-bashrc-bash_login-profile-and-bash_logout/" target="_blank" rel="noopener">https://www.thegeekstuff.com/2008/10/execution-sequence-for-bash_profile-bashrc-bash_login-profile-and-bash_logout/</a><br><a href="https://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/" target="_blank" rel="noopener">https://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/</a><br><a href="https://stackoverflow.com/questions/8633461/how-to-keep-environment-variables-when-using-sudo" target="_blank" rel="noopener">https://stackoverflow.com/questions/8633461/how-to-keep-environment-variables-when-using-sudo</a><br><a href="https://segmentfault.com/q/1010000011528636/a-1020000011538128" target="_blank" rel="noopener">https://segmentfault.com/q/1010000011528636/a-1020000011538128</a></p>
+</blockquote>
+<p>下次写sudo su两个命令。</p>
+
       
     </div>
     
