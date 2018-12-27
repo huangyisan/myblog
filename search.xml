@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[centos7网卡改名]]></title>
     <url>%2F2018%2F12%2F27%2Fcentos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，导致网卡起不来。我进行这边接手擦屁股。 先说几个概念，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot 470 1 0 01:17 ? 00:00:00 /sbin/udevd -d 在centos7中为system-udevd进程12[root@VM_31_91_centos7 ~]# ps -ef | grep udevroot 460 1 0 10月09 ? 00:00:00 /usr/lib/systemd/systemd-udevd udev的作用是：man udevreceives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。 udev rules文件存在位置： system rules directory: /usr/lib/udev/rules.d volatile runtime directory: /run/udev/rules.d local administration directory: /etc/udev/rules.d udev读取文件规则： 读取这些目录下以.rules为后缀的文件。 文件先后顺序和其所在目录无关，和文件的名称顺序有关。 若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr udev进行网卡重命名 https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg]]></content>
       <tags>
         <tag>linux</tag>
       </tags>

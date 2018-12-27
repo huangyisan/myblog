@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="PSN: hys15783167">
+<meta name="description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，导致网卡起不来。我进行这边接手擦屁股。 先说几个概念，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:17 ?        0">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos7网卡改名">
 <meta property="og:url" content="https://kirakirazone.com/2018/12/27/centos7网卡改名/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="PSN: hys15783167">
+<meta property="og:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，导致网卡起不来。我进行这边接手擦屁股。 先说几个概念，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:17 ?        0">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-27T09:23:24.534Z">
+<meta property="og:updated_time" content="2018-12-27T10:06:08.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos7网卡改名">
-<meta name="twitter:description" content="PSN: hys15783167">
+<meta name="twitter:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，导致网卡起不来。我进行这边接手擦屁股。 先说几个概念，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:17 ?        0">
 
 
 
@@ -362,7 +362,36 @@
       
 
       
-        
+        <p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，导致网卡起不来。<br>我进行这边接手擦屁股。</p>
+<p>先说几个概念，然后再看问题产生的原因。</p>
+<h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure></p>
+<p>在centos7中为system-udevd进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>udev的作用是：<br><code>man udev</code><br>receives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.<br>当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。</p>
+</li>
+<li><p>udev rules文件存在位置：</p>
+</li>
+</ul>
+<ol>
+<li>system rules directory: /usr/lib/udev/rules.d</li>
+<li>volatile runtime directory: /run/udev/rules.d</li>
+<li>local administration directory: /etc/udev/rules.d</li>
+</ol>
+<ul>
+<li>udev读取文件规则：</li>
+</ul>
+<ol>
+<li>读取这些目录下以.rules为后缀的文件。</li>
+<li>文件先后顺序和其所在目录无关，和文件的名称顺序有关。</li>
+<li>若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr</li>
+</ol>
+<ul>
+<li>udev进行网卡重命名<blockquote>
+<p><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a></p>
+</blockquote>
+</li>
+</ul>
+
       
     </div>
     
@@ -509,8 +538,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -591,6 +629,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#system-udevd进程"><span class="nav-number">1.</span> <span class="nav-text">system-udevd进程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
