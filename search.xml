@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
+    <title><![CDATA[centos7网卡改名]]></title>
     <url>%2F2018%2F12%2F27%2Fcentos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D%2F</url>
     <content type="text"></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[从无法加载JAVA_HOME说起]]></title>
