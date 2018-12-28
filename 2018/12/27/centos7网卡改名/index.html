@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我进行这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01">
+<meta name="description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:1">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos7网卡改名">
 <meta property="og:url" content="https://kirakirazone.com/2018/12/27/centos7网卡改名/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我进行这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01">
+<meta property="og:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:1">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-28T11:00:03.009Z">
+<meta property="og:updated_time" content="2018-12-28T11:03:31.266Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos7网卡改名">
-<meta name="twitter:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我进行这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01">
+<meta name="twitter:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:1">
 
 
 
@@ -362,7 +362,7 @@
       
 
       
-        <p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我进行这边接手擦屁股。</p>
+        <p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
 <p>先说udev服务，然后再看问题产生的原因。</p>
 <h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure></p>
 <p>在centos7中为system-udevd进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd</span><br></pre></td></tr></table></figure></p>
