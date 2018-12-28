@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我进行这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-28T10:50:53.910Z">
+<meta property="og:updated_time" content="2018-12-28T11:00:03.009Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos7网卡改名">
 <meta name="twitter:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我进行这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01">
@@ -391,12 +391,12 @@
 </blockquote>
 </li>
 </ul>
-<p><strong>优先查询的是/usr/lib/udev/rules.d/60-net.rules配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
-<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现/usr/lib/udev/rules.d/60-net.rules文件内已经存在了bond1的配置，而bond0的配置写到了/etc/udev/rules.d/70-persistent-net.rules里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
-<p><strong>其实centos7已经不用70-persistent-net.rules这个文件了，在centos6中，删除了70-persistent-net.rules文件，他会通过/lib/udev/write_net_rules文件来生成，但centos7已经不存在该文件了，centos7是使用/lib/udev/rename_device文件来生成。</strong></p>
+<p><strong>优先查询的是<code>/usr/lib/udev/rules.d/60-net.rules</code>配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
+<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现<code>/usr/lib/udev/rules.d/60-net.rules</code>文件内已经存在了bond1的配置，而bond0的配置写到了<code>/etc/udev/rules.d/70-persistent-net.rules</code>里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
+<p>其实centos7已经不用<code>70-persistent-net.rules</code>这个文件了，在centos6中，删除了<code>70-persistent-net.rules</code>文件，他会通过<code>/lib/udev/write_net_rules</code>文件来生成，但centos7已经不存在该文件了，centos7是使用<code>/lib/udev/rename_device</code>文件来生成<code>/usr/lib/udev/rules.d/60-net.rules</code>。</p>
 <h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ip link set eth1 down</span><br><span class="line">/sbin/ip link set eth1 name eth123</span><br><span class="line">/sbin/ip link set eth123 up</span><br></pre></td></tr></table></figure>
-<p>然后在/usr/lib/udev/rules.d/60-net.rules中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
+<p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
 <p>refer:</p>
 <blockquote>
 <p><a href="https://www.freedesktop.org/software/systemd/man/udev.html#" target="_blank" rel="noopener">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
