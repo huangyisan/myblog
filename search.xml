@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[sort函数中key的理解]]></title>
+    <url>%2F2018%2F12%2F29%2Fsort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[sort()函数12345Help on method_descriptor:sort(...) L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*(END) python3中已经取消了sort()函数中cmp参数 python中sort()函数用来排序，其中有个key的参数，十分神奇。 我对key参数的理解是：这个key是构造了一个全新的对象，对这些全新的对象进行比较排序，然后再根据结果，对原先的对象进行排序 字典value排序:比如很常用的，对一个字典进行value排序：123456d = &#123;1: &apos;c&apos;, 2:&apos;d&apos;, 3: &apos;b&apos;, 4: &apos;a&apos;&#125;def sort_value(x): return x[1]print(sorted(d.items(), key=sort_value)) d.items得到dict_items([(1, ‘c’), (2, ‘d’), (3, ‘b’), (4, ‘a’)])，其挨个传入到key对应的sort_value函数中，返回索引为1的值，也就是value的值，然后对这个新对象进行排序，最终以新对象排序的结果来输出d.items()的排序。 将sort_value函数写成lambda则：1print(sorted(d.items(), key=lambda x :x[1])) 字符串内容重新排序:对字符串”hUangYisan6749”重新排序，要求: 数字在最前面，偶数在奇数前面。 字符串在数字后面，大写字母在小写字母后面。 思路： 字符串挨个拆出来。 构造一个元组，能够符合上述需求，然后排序的。元组的排序是从首个元素逐一排序的，碰到首元素一样，则比第二个元素 先确定一个通用的元组，总共是四种类型，奇数偶数，大写小写。例：偶数，奇数，大写，小写(1,0,0,0)，比如这样就表示该字符为偶数。 由于默认sorted排序是从小到大，所以根据需求，得写成小写，大写，奇数，偶数的方式(或者加上reverse=True) 123456789def custom_order(x): if x.islower(): return 1,0,0,0,x if x.isupper(): return 0,1,0,0,x if x.isdigit() and int(x) % 2 == 0: return 0,0,1,0,x else: return 0,0,0,1,x 当对比相同的时候，会索引+1比较，所以return不能漏掉x，因为当前面四位全部相等的时候，要比较x。 那么代码可以写成：1234567891011121314mystring = &quot;hUangYisan6749&quot;def custom_order(x): if x.islower(): return 1,0,0,0,x if x.isupper(): return 0,1,0,0,x if x.isdigit() and int(x) % 2 == 0: return 0,0,1,0,x else: return 0,0,0,1,xprint(&quot;&quot;.join(sorted(mystring,key=custom_order)))7946UYaaghinns refer: http://python.jobbole.com/85025/]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[split函数]]></title>
     <url>%2F2018%2F12%2F29%2Fsplit%E5%87%BD%E6%95%B0%2F</url>
     <content type="text"><![CDATA[一道领扣的题给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。如果不存在最后一个单词，请返回 0 。说明：一个单词是指由字母组成，但不包含任何空格的字符串。 示例:12输入: &quot;Hello World&quot;输出: 5 写出的其中一种答案是：123456789101112class Solution(object): def lengthOfLastWord(self, s): &quot;&quot;&quot; :type s: str :rtype: int &quot;&quot;&quot; slist = s.split() print(slist) if slist == []: return 0 return len(slist[-1]) split(“ “) 和 split()起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。以至于一开始做上面领扣的题一直都有问题。 然后手工验证了下两者的情况： split(“ “)的情况 12&gt;&gt;&gt; &quot; a &quot;.split(&quot; &quot;)[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;] split()的情况 12&gt;&gt;&gt; &quot; a &quot;.split()[&apos;a&apos;] 查了下split()的用法 123S.split([sep [,maxsplit]]) -&gt; list of stringsReturn a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result. 也就是说，如果sep不填写，那么split()执行两个行为： 以任何whitespace字符串作为分隔符。 除所有的empty string。 empty string就是not xxx返回结果为False的字符串,包括””。 refer: https://leetcode-cn.com/problems/length-of-last-word/help(str.split)]]></content>
       <tags>
-        <tag>python</tag>
+        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
@@ -45,7 +53,7 @@
     <url>%2F2018%2F12%2F18%2FTrue-or-False%2F</url>
     <content type="text"><![CDATA[链式比较先来看一段代码: 12&gt;&gt;&gt; 2 in [1,0] == FalseFalse 起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。 后来发现，这个其实是链式比较(chained comparisons)，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。所以2 in [1,0] == False的本质其实为(2 in [1,0]) and ([1,0] == False)，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。 如下比较符号进行组合，都为链式比较“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in” https://docs.python.org/2/reference/expressions.html#comparisons 空字符串代码如下： 12&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;True 空字符串始终被视为任何其他字符串的子字符串，所以其返回为True。字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下: 12&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1True https://docs.python.org/3/reference/expressions.html#membership-test-operations]]></content>
       <tags>
-        <tag>python</tag>
+        <tag>python3</tag>
       </tags>
   </entry>
 </search>
