@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="sort()函数12345Help on method_descriptor:sort(...)    L.sort(key=None, reverse=False) -&amp;gt; None -- stable sort *IN PLACE*(END) python3中已经取消了sort()函数中cmp参数 python中sort()函数用来排序，其中有个key的参数，十分神奇。 我对key参数的理">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-29T08:18:36.186Z">
+<meta property="og:updated_time" content="2018-12-29T08:21:49.415Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sort函数中key的理解">
 <meta name="twitter:description" content="sort()函数12345Help on method_descriptor:sort(...)    L.sort(key=None, reverse=False) -&amp;gt; None -- stable sort *IN PLACE*(END) python3中已经取消了sort()函数中cmp参数 python中sort()函数用来排序，其中有个key的参数，十分神奇。 我对key参数的理">
@@ -365,7 +365,7 @@
         <h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
 <p><em>python3中已经取消了sort()函数中cmp参数</em></p>
 <p>python中sort()函数用来排序，其中有个key的参数，十分神奇。</p>
-<p>我对key参数的理解是：<br><strong>这个key是构造了一个全新的对象，对这些全新的对象进行比较排序，然后再根据结果，对原先的对象进行排序</strong></p>
+<p>我对key参数的理解是：<br><strong>这个key是构造了一个全新的对象，对这些全新的对象进行比较排序，然后再根据结果，对原先的对象进行排序。</strong></p>
 <h2 id="字典value排序"><a href="#字典value排序" class="headerlink" title="字典value排序:"></a>字典value排序:</h2><p>比如很常用的，对一个字典进行value排序：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;1: &apos;c&apos;, 2:&apos;d&apos;, 3: &apos;b&apos;, 4: &apos;a&apos;&#125;</span><br><span class="line"></span><br><span class="line">def sort_value(x):</span><br><span class="line">    return x[1]</span><br><span class="line"></span><br><span class="line">print(sorted(d.items(), key=sort_value))</span><br></pre></td></tr></table></figure></p>
 <p><code>d.items</code>得到dict_items([(1, ‘c’), (2, ‘d’), (3, ‘b’), (4, ‘a’)])，其挨个传入到key对应的sort_value函数中，返回索引为1的值，也就是value的值，然后对这个新对象进行排序，最终以新对象排序的结果来输出d.items()的排序。</p>
 <p>将sort_value函数写成lambda则：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sorted(d.items(), key=lambda x :x[1]))</span><br></pre></td></tr></table></figure></p>
