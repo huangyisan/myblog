@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[split函数]]></title>
     <url>%2F2018%2F12%2F29%2Fsplit%E5%87%BD%E6%95%B0%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[一道领扣的题给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。如果不存在最后一个单词，请返回 0 。说明：一个单词是指由字母组成，但不包含任何空格的字符串。 示例:12输入: &quot;Hello World&quot;输出: 5 写出的其中一种答案是：123456789101112class Solution(object): def lengthOfLastWord(self, s): &quot;&quot;&quot; :type s: str :rtype: int &quot;&quot;&quot; slist = s.split() print(slist) if slist == []: return 0 return len(slist[-1]) split(“ “) 和 split()起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。以至于一开始做上面领扣的题一直都有问题。 然后手工验证了下两者的情况： split(“ “)的情况 12&gt;&gt;&gt; &quot; a &quot;.split(&quot; &quot;)[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;] split()的情况 12&gt;&gt;&gt; &quot; a &quot;.split()[&apos;a&apos;] 查了下split()的用法 123S.split([sep [,maxsplit]]) -&gt; list of stringsReturn a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result. 也就是说，如果sep不填写，那么split()执行两个行为任何whitespace的字符串作为分割，而且还会移除所有的empty 以任何whitespace字符串作为分隔符。 除所有的empty string。 empty string就是not xxx返回结果为False的字符串,包括””。 refer: https://leetcode-cn.com/problems/length-of-last-word/help(str.split)]]></content>
       <tags>
         <tag>python</tag>
       </tags>

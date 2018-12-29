@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="PSN: hys15783167">
+<meta name="description" content="一道领扣的题给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。如果不存在最后一个单词，请返回 0 。说明：一个单词是指由字母组成，但不包含任何空格的字符串。 示例:12输入: &amp;quot;Hello World&amp;quot;输出: 5 写出的其中一种答案是：123456789101112class Solution(object):    def lengthOfLastW">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="split函数">
 <meta property="og:url" content="https://kirakirazone.com/2018/12/29/split函数/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="PSN: hys15783167">
+<meta property="og:description" content="一道领扣的题给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。如果不存在最后一个单词，请返回 0 。说明：一个单词是指由字母组成，但不包含任何空格的字符串。 示例:12输入: &amp;quot;Hello World&amp;quot;输出: 5 写出的其中一种答案是：123456789101112class Solution(object):    def lengthOfLastW">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-12-29T04:45:49.460Z">
+<meta property="og:updated_time" content="2018-12-29T05:51:07.321Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="split函数">
-<meta name="twitter:description" content="PSN: hys15783167">
+<meta name="twitter:description" content="一道领扣的题给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。如果不存在最后一个单词，请返回 0 。说明：一个单词是指由字母组成，但不包含任何空格的字符串。 示例:12输入: &amp;quot;Hello World&amp;quot;输出: 5 写出的其中一种答案是：123456789101112class Solution(object):    def lengthOfLastW">
 
 
 
@@ -362,7 +362,33 @@
       
 
       
-        
+        <h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
+<p>示例:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
+<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
+<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
+<p>然后手工验证了下两者的情况：</p>
+<ul>
+<li><p>split(“ “)的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>split()的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查了下split()的用法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>也就是说，如果sep不填写，那么split()执行两个行为任何whitespace的字符串作为分割，而且还会移除所有的empty</p>
+<ol>
+<li>以任何whitespace字符串作为分隔符。</li>
+<li>除所有的empty string。</li>
+</ol>
+<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
+</blockquote>
+
       
     </div>
     
@@ -509,8 +535,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -591,6 +626,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一道领扣的题"><span class="nav-number">1.</span> <span class="nav-text">一道领扣的题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#split-“-“-和-split"><span class="nav-number">2.</span> <span class="nav-text">split(“ “) 和 split()</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
