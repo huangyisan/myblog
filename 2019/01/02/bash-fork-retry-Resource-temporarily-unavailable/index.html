@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-03T16:16:18.861Z">
+<meta property="og:updated_time" content="2019-01-03T16:19:26.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bash fork: retry: Resource temporarily unavailable">
 <meta name="twitter:description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
@@ -381,7 +381,7 @@
 <li>这个文件的数量改动后立马生效，不需要重启</li>
 <li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
 </ul>
-<h2 id="留下的问题"><a href="#留下的问题" class="headerlink" title="留下的问题"></a>留下的问题</h2><p>centos上是否有这个配置？<br>不太清楚，这个还得考究下</p>
+<h2 id="留下的问题"><a href="#留下的问题" class="headerlink" title="留下的问题"></a>留下的问题</h2><p>centos上是否有这个配置？<br>不太清楚，这个还得考究下<br>cgroup还有slice服务挺在意的，还不清楚到底咋回事<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos nginx]# cat /proc/4789/cgroup</span><br><span class="line">11:net_prio,net_cls:/</span><br><span class="line">10:pids:/</span><br><span class="line">9:cpuset:/</span><br><span class="line">8:devices:/system.slice/nginx.service</span><br><span class="line">7:freezer:/</span><br><span class="line">6:memory:/</span><br><span class="line">5:perf_event:/</span><br><span class="line">4:cpuacct,cpu:/</span><br><span class="line">3:blkio:/</span><br><span class="line">2:hugetlb:/</span><br><span class="line">1:name=systemd:/system.slice/nginx.service</span><br></pre></td></tr></table></figure></p>
 <p>知乎上看到有个小伙伴也遇到这个问题了，抽时间打算仔细看下，strace这个命令太好了，但我还不太会用。</p>
 <blockquote>
 <p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
