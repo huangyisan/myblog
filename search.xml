@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[bash fork: retry: Resource temporarily unavailable]]></title>
     <url>%2F2019%2F01%2F02%2Fbash-fork-retry-Resource-temporarily-unavailable%2F</url>
-    <content type="text"><![CDATA[挖个坑。明天写。]]></content>
+    <content type="text"><![CDATA[修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过： 起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。 感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。 那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。 这下懵圈了 bash fork: retry: Resource temporarily unavailable 这个报错绝逼是某个参数的配置配小了。 由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。 最后是找到了这篇文章： https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable 里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max 这个数值只有10813，所以ps -eLf | wc -l到一万七八就上不去了。 这个文件的数量改动后立马生效，不需要重启 重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。 留下的问题centos上是否有这个配置？不太清楚，这个还得考究下 知乎上看到有个小伙伴也遇到这个问题了，抽时间打算仔细看下，strace这个命令太好了，但我还不太会用。 https://zhuanlan.zhihu.com/p/29192624 还有fork的文档 http://man7.org/linux/man-pages/man2/fork.2.html]]></content>
       <tags>
         <tag>linux</tag>
       </tags>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="挖个坑。明天写。">
+<meta name="description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="bash fork: retry: Resource temporarily unavailable">
 <meta property="og:url" content="https://kirakirazone.com/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="挖个坑。明天写。">
+<meta property="og:description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-02T15:35:57.737Z">
+<meta property="og:updated_time" content="2019-01-03T16:16:18.861Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bash fork: retry: Resource temporarily unavailable">
-<meta name="twitter:description" content="挖个坑。明天写。">
+<meta name="twitter:description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
 
 
 
@@ -362,7 +362,34 @@
       
 
       
-        <p>挖个坑。明天写。</p>
+        <h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
+<p>排查经过：</p>
+<ol>
+<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
+<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
+<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
+</ol>
+<p>这下懵圈了</p>
+<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
+<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
+<p>最后是找到了这篇文章：</p>
+<blockquote>
+<p><a href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable" target="_blank" rel="noopener">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
+</blockquote>
+<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
+<ul>
+<li>这个文件的数量改动后立马生效，不需要重启</li>
+<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
+</ul>
+<h2 id="留下的问题"><a href="#留下的问题" class="headerlink" title="留下的问题"></a>留下的问题</h2><p>centos上是否有这个配置？<br>不太清楚，这个还得考究下</p>
+<p>知乎上看到有个小伙伴也遇到这个问题了，抽时间打算仔细看下，strace这个命令太好了，但我还不太会用。</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
+</blockquote>
+<p>还有fork的文档</p>
+<blockquote>
+<p><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
+</blockquote>
 
       
     </div>
@@ -510,8 +537,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -592,6 +628,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改ulimit无法解决fork不出子进程的问题"><span class="nav-number">1.</span> <span class="nav-text">修改ulimit无法解决fork不出子进程的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#留下的问题"><span class="nav-number">2.</span> <span class="nav-text">留下的问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
