@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="c,">
+  <meta name="keywords" content="python,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="PSN: hys15783167">
-<meta name="keywords" content="c">
+<meta name="description" content="新式类python2.3以及之后的版本遵循的原则：C3 MRO 其遵循的原则为：一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。 自省方法__mro__ 存在共同父类的情况123456789class D(object): passclass E(object): passclass F(object): passclass B(D, E): pa">
+<meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="新式类的C3 MRO理解">
 <meta property="og:url" content="https://kirakirazone.com/2018/12/20/新式类的C3-MRO理解/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="PSN: hys15783167">
+<meta property="og:description" content="新式类python2.3以及之后的版本遵循的原则：C3 MRO 其遵循的原则为：一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。 自省方法__mro__ 存在共同父类的情况123456789class D(object): passclass E(object): passclass F(object): passclass B(D, E): pa">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-04T06:08:40.348Z">
+<meta property="og:updated_time" content="2019-01-06T05:14:53.422Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="新式类的C3 MRO理解">
-<meta name="twitter:description" content="PSN: hys15783167">
+<meta name="twitter:description" content="新式类python2.3以及之后的版本遵循的原则：C3 MRO 其遵循的原则为：一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。 自省方法__mro__ 存在共同父类的情况123456789class D(object): passclass E(object): passclass F(object): passclass B(D, E): pa">
 
 
 
@@ -362,7 +362,15 @@
       
 
       
-        
+        <h2 id="新式类"><a href="#新式类" class="headerlink" title="新式类"></a>新式类</h2><p><strong>python2.3以及之后的版本遵循的原则：C3 MRO</strong></p>
+<p>其遵循的原则为：<br><code>一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。</code></p>
+<p>自省方法<code>__mro__</code></p>
+<h2 id="存在共同父类的情况"><a href="#存在共同父类的情况" class="headerlink" title="存在共同父类的情况"></a>存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class D(object): pass</span><br><span class="line">class E(object): pass</span><br><span class="line">class F(object): pass</span><br><span class="line">class B(D, E): pass</span><br><span class="line">class C(D, F): pass</span><br><span class="line">class A(B, C): pass</span><br><span class="line">print(A.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.A&apos;&gt;, &lt;class &apos;__main__.B&apos;&gt;, &lt;class &apos;__main__.C&apos;&gt;, &lt;class &apos;__main__.D&apos;&gt;, &lt;class &apos;__main__.E&apos;&gt;, &lt;class &apos;__main__.F&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
+<p>顺序解释:<br><strong>这边需要注意的是B和C有相同的父类，所以B查询后直接查询的C。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">查询关系</span><br><span class="line">D --&gt; D,object</span><br><span class="line">E --&gt; E,object</span><br><span class="line">F --&gt; F,object</span><br><span class="line"></span><br><span class="line">B --&gt; B, D, E, ...., object</span><br><span class="line">C --&gt; C, D, F, ...., object</span><br><span class="line">A --&gt; A. B, C, ...., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; A, (B, D, E, ..., object), (C,D,F, ..., object)</span><br><span class="line">  B和C存在共同的父类，D，所以B和C是同一级别，查询顺序是A, B, C, 然后D,</span><br><span class="line">  --&gt; A, B, C, D (E, ..., object), (F, ..., object) </span><br><span class="line">  --&gt; A, B, C, D, E, F, object</span><br></pre></td></tr></table></figure>
+<h2 id="不存在共同父类的情况"><a href="#不存在共同父类的情况" class="headerlink" title="不存在共同父类的情况"></a>不存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class g(object): pass</span><br><span class="line">class f(object): pass</span><br><span class="line">class h(object): pass</span><br><span class="line">class i(object): pass</span><br><span class="line">class e(object): pass</span><br><span class="line">class d(h,i): pass</span><br><span class="line">class b(d,e): pass</span><br><span class="line">class c(f,g): pass</span><br><span class="line">class a(b,c): pass</span><br><span class="line">print(a.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.a&apos;&gt;, &lt;class &apos;__main__.b&apos;&gt;, &lt;class &apos;__main__.d&apos;&gt;, &lt;class &apos;__main__.h&apos;&gt;, &lt;class &apos;__main__.i&apos;&gt;, &lt;class &apos;__main__.e&apos;&gt;, &lt;class &apos;__main__.c&apos;&gt;, &lt;class &apos;__main__.f&apos;&gt;, &lt;class &apos;__main__.g&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
+<p>顺序解释：<br><strong>因为b和c不存在相同的父类，所以查询b查不到后直接查询b的父类。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">查询关系：</span><br><span class="line">g --&gt; g, object</span><br><span class="line">f --&gt; f, object</span><br><span class="line">h --&gt; h, object</span><br><span class="line">i --&gt; i, object</span><br><span class="line">e --&gt; e, object</span><br><span class="line"></span><br><span class="line">b --&gt; b, d, e, ..., object</span><br><span class="line">c --&gt; c, f, g, ..., object</span><br><span class="line">d --&gt; d, h, i, ..., object</span><br><span class="line"></span><br><span class="line">a --&gt; a, b, c, ..., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; a, (b, d, e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  将b带入后得到</span><br><span class="line">  --&gt; a, (b, (d, h, i, ..., object), e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  b和c没有共同的父类，所以直接查询了d，d后，查询他的继承，h，因为h最顶了，所以开始依次返回，查询其平级的i，然后折回到b中右边的e,然后再次返回到a中右边的c，然后查询c中的f,发现到顶了，则查询其平级的g，然后依次退出，发现直接查询完了全部，则查询object。</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -426,7 +434,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag"># c</a>
+            <a href="/tags/python/" rel="tag"># python</a>
           
         </div>
       
@@ -513,8 +521,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -542,7 +559,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -595,6 +612,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#新式类"><span class="nav-number">1.</span> <span class="nav-text">新式类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存在共同父类的情况"><span class="nav-number">2.</span> <span class="nav-text">存在共同父类的情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不存在共同父类的情况"><span class="nav-number">3.</span> <span class="nav-text">不存在共同父类的情况</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
