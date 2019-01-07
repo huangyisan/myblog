@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="python3,">
+  <meta name="keywords" content="c,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="sort()函数12345Help on method_descriptor:sort(...)    L.sort(key=None, reverse=False) -&amp;gt; None -- stable sort *IN PLACE*(END) python3中已经取消了sort()函数中cmp参数 python中sort()函数用来排序，其中有个key的参数，十分神奇。 我对key参数的理">
-<meta name="keywords" content="python3">
+<meta name="description" content="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。12345678910111213#include &amp;lt;stdio.h&amp;gt;void main(void) &amp;#123;    double num;    printf(&amp;quot;input a double type number: &amp;quot;);    scanf(&amp;quot;%f&amp;">
+<meta name="keywords" content="c">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sort函数中key的理解">
-<meta property="og:url" content="https://kirakirazone.com/2018/12/29/sort函数中key的理解/index.html">
+<meta property="og:title" content="Promotions in Program C">
+<meta property="og:url" content="https://kirakirazone.com/2019/01/08/Promotions-in-Program-C/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="sort()函数12345Help on method_descriptor:sort(...)    L.sort(key=None, reverse=False) -&amp;gt; None -- stable sort *IN PLACE*(END) python3中已经取消了sort()函数中cmp参数 python中sort()函数用来排序，其中有个key的参数，十分神奇。 我对key参数的理">
+<meta property="og:description" content="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。12345678910111213#include &amp;lt;stdio.h&amp;gt;void main(void) &amp;#123;    double num;    printf(&amp;quot;input a double type number: &amp;quot;);    scanf(&amp;quot;%f&amp;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-07T16:27:22.422Z">
+<meta property="og:updated_time" content="2019-01-07T16:27:22.418Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sort函数中key的理解">
-<meta name="twitter:description" content="sort()函数12345Help on method_descriptor:sort(...)    L.sort(key=None, reverse=False) -&amp;gt; None -- stable sort *IN PLACE*(END) python3中已经取消了sort()函数中cmp参数 python中sort()函数用来排序，其中有个key的参数，十分神奇。 我对key参数的理">
+<meta name="twitter:title" content="Promotions in Program C">
+<meta name="twitter:description" content="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。12345678910111213#include &amp;lt;stdio.h&amp;gt;void main(void) &amp;#123;    double num;    printf(&amp;quot;input a double type number: &amp;quot;);    scanf(&amp;quot;%f&amp;">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2018/12/29/sort函数中key的理解/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/01/08/Promotions-in-Program-C/">
 
 
 
 
 
-  <title>sort函数中key的理解 | Kirakirazone</title>
+  <title>Promotions in Program C | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2018/12/29/sort函数中key的理解/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/08/Promotions-in-Program-C/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sort函数中key的理解</h1>
+          <h1 class="post-title" itemprop="name headline">Promotions in Program C</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-29T14:41:38+08:00">
-                2018-12-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-08T00:00:12+08:00">
+                2019-01-08
               </time>
             
 
@@ -333,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/12/29/sort函数中key的理解/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/29/sort函数中key的理解/" itemprop="commentCount"></span>
+                <a href="/2019/01/08/Promotions-in-Program-C/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/08/Promotions-in-Program-C/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,31 +362,13 @@
       
 
       
-        <h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
-<p><em>python3中已经取消了sort()函数中cmp参数</em></p>
-<p>python中sort()函数用来排序，其中有个key的参数，十分神奇。</p>
-<p>我对key参数的理解是：<br><strong>这个key是构造了一个全新的对象，对这些全新的对象进行比较排序，然后再根据结果，对原先的对象进行排序。</strong></p>
-<h2 id="字典value排序"><a href="#字典value排序" class="headerlink" title="字典value排序:"></a>字典value排序:</h2><p>比如很常用的，对一个字典进行value排序：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;1: &apos;c&apos;, 2:&apos;d&apos;, 3: &apos;b&apos;, 4: &apos;a&apos;&#125;</span><br><span class="line"></span><br><span class="line">def sort_value(x):</span><br><span class="line">    return x[1]</span><br><span class="line"></span><br><span class="line">print(sorted(d.items(), key=sort_value))</span><br></pre></td></tr></table></figure></p>
-<p><code>d.items</code>得到dict_items([(1, ‘c’), (2, ‘d’), (3, ‘b’), (4, ‘a’)])，其挨个传入到key对应的sort_value函数中，返回索引为1的值，也就是value的值，然后对这个新对象进行排序，最终以新对象排序的结果来输出d.items()的排序。</p>
-<p>将sort_value函数写成lambda则：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sorted(d.items(), key=lambda x :x[1]))</span><br></pre></td></tr></table></figure></p>
-<h2 id="字符串内容重新排序"><a href="#字符串内容重新排序" class="headerlink" title="字符串内容重新排序:"></a>字符串内容重新排序:</h2><p>对字符串”hUangYisan6749”重新排序，要求:</p>
-<ol>
-<li>数字在最前面，偶数在奇数前面。</li>
-<li>字符串在数字后面，大写字母在小写字母后面。</li>
-</ol>
-<p>思路：</p>
-<ol>
-<li>字符串挨个拆出来。</li>
-<li>构造一个元组，能够符合上述需求，然后排序的。<strong>元组的排序是从首个元素逐一排序的，碰到首元素一样，则比第二个元素</strong></li>
-</ol>
-<p>先确定一个通用的元组，总共是四种类型，奇数偶数，大写小写。<br>例：偶数，奇数，大写，小写(1,0,0,0)，比如这样就表示该字符为偶数。</p>
-<p><strong>由于默认sorted排序是从小到大，所以根据需求，得写成小写，大写，奇数，偶数的方式(或者加上reverse=True)</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def custom_order(x):</span><br><span class="line">    if x.islower():</span><br><span class="line">        return 1,0,0,0,x</span><br><span class="line">    if x.isupper():</span><br><span class="line">        return 0,1,0,0,x</span><br><span class="line">    if x.isdigit() and int(x) % 2 == 0:</span><br><span class="line">        return 0,0,1,0,x</span><br><span class="line">    else:</span><br><span class="line">        return 0,0,0,1,x</span><br></pre></td></tr></table></figure>
-<p>当对比相同的时候，会索引+1比较，所以return不能漏掉x，因为当前面四位全部相等的时候，要比较x。</p>
-<p>那么代码可以写成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mystring = &quot;hUangYisan6749&quot;</span><br><span class="line">def custom_order(x):</span><br><span class="line">    if x.islower():</span><br><span class="line">        return 1,0,0,0,x</span><br><span class="line">    if x.isupper():</span><br><span class="line">        return 0,1,0,0,x</span><br><span class="line">    if x.isdigit() and int(x) % 2 == 0:</span><br><span class="line">        return 0,0,1,0,x</span><br><span class="line">    else:</span><br><span class="line">        return 0,0,0,1,x</span><br><span class="line"></span><br><span class="line">print(&quot;&quot;.join(sorted(mystring,key=custom_order)))</span><br><span class="line"></span><br><span class="line">7946UYaaghinns</span><br></pre></td></tr></table></figure></p>
-<p>refer:</p>
+        <h2 id="scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。"><a href="#scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。" class="headerlink" title="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。"></a>scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%f&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 0.000000</span><br><span class="line">the number is 0.000000</span><br></pre></td></tr></table></figure>
+<p><strong>scanf()函数因为指向的是num的指针,所以不适用float promotions to double</strong></p>
+<p><strong>scanf()若使用double类型，必须写成”%lf”, 而printf()即便指定的是”%f”,也会自行提升成double类型。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%lf&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 1.000000</span><br><span class="line">the number is 1.000000</span><br></pre></td></tr></table></figure>
+<h2 id="integer-promotions"><a href="#integer-promotions" class="headerlink" title="integer-promotions"></a>integer-promotions</h2><p>refer:</p>
 <blockquote>
-<p><a href="http://python.jobbole.com/85025/" target="_blank" rel="noopener">http://python.jobbole.com/85025/</a></p>
+<p><a href="https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c" target="_blank" rel="noopener">https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c</a><br><a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf" target="_blank" rel="noopener">http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf</a> [6.5.2.2 page-71]<br><a href="https://www.geeksforgeeks.org/integer-promotions-in-c/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/integer-promotions-in-c/</a></p>
 </blockquote>
 
       
@@ -437,7 +419,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2018/12/29/sort函数中key的理解/" title="sort函数中key的理解">https://kirakirazone.com/2018/12/29/sort函数中key的理解/</a>
+    <a href="https://kirakirazone.com/2019/01/08/Promotions-in-Program-C/" title="Promotions in Program C">https://kirakirazone.com/2019/01/08/Promotions-in-Program-C/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -452,7 +434,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python3/" rel="tag"># python3</a>
+            <a href="/tags/c/" rel="tag"># c</a>
           
         </div>
       
@@ -465,8 +447,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/29/split函数/" rel="next" title="split函数">
-                <i class="fa fa-chevron-left"></i> split函数
+              <a href="/2019/01/06/c语言基本数字类型/" rel="next" title="c语言基本数字类型">
+                <i class="fa fa-chevron-left"></i> c语言基本数字类型
               </a>
             
           </div>
@@ -474,10 +456,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/" rel="prev" title="bash fork: retry: Resource temporarily unavailable">
-                bash fork: retry: Resource temporarily unavailable <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -640,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sort-函数"><span class="nav-number">1.</span> <span class="nav-text">sort()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字典value排序"><span class="nav-number">2.</span> <span class="nav-text">字典value排序:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串内容重新排序"><span class="nav-number">3.</span> <span class="nav-text">字符串内容重新排序:</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。"><span class="nav-number">1.</span> <span class="nav-text">scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#integer-promotions"><span class="nav-number">2.</span> <span class="nav-text">integer-promotions</span></a></li></ol></div>
             
 
           </div>
@@ -806,9 +784,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2018/12/29/sort函数中key的理解/';
-          this.page.identifier = '2018/12/29/sort函数中key的理解/';
-          this.page.title = 'sort函数中key的理解';
+          this.page.url = 'https://kirakirazone.com/2019/01/08/Promotions-in-Program-C/';
+          this.page.identifier = '2019/01/08/Promotions-in-Program-C/';
+          this.page.title = 'Promotions in Program C';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';

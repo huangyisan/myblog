@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Promotions in Program C]]></title>
+    <url>%2F2019%2F01%2F08%2FPromotions-in-Program-C%2F</url>
+    <content type="text"><![CDATA[scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。12345678910111213#include &lt;stdio.h&gt;void main(void) &#123; double num; printf(&quot;input a double type number: &quot;); scanf(&quot;%f&quot;, &amp;num); printf(&quot;the number is %f\n&quot;, num); printf(&quot;the number is %lf\n&quot;, num);&#125;input a double type number: 1the number is 0.000000the number is 0.000000 scanf()函数因为指向的是num的指针,所以不适用float promotions to double scanf()若使用double类型，必须写成”%lf”, 而printf()即便指定的是”%f”,也会自行提升成double类型。 1234567891011121314#include &lt;stdio.h&gt;void main(void) &#123; double num; printf(&quot;input a double type number: &quot;); scanf(&quot;%lf&quot;, &amp;num); printf(&quot;the number is %f\n&quot;, num); printf(&quot;the number is %lf\n&quot;, num);&#125;input a double type number: 1the number is 1.000000the number is 1.000000 integer-promotionsrefer: https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-chttp://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf [6.5.2.2 page-71]https://www.geeksforgeeks.org/integer-promotions-in-c/]]></content>
+      <tags>
+        <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[c语言基本数字类型]]></title>
     <url>%2F2019%2F01%2F06%2Fc%E8%AF%AD%E8%A8%80%E5%9F%BA%E6%9C%AC%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B%2F</url>
     <content type="text"><![CDATA[基本数字类型关键字 int long short unsigned char float double signed _Bool (c99加入的bool类型) _Complex (c99加入的复数类型) _Imaginary (c99加入的虚数类型) 有符号整形有符号类型可用于表示正整数和负整数。 int 系统给定的基本整数类型，c语言规定int类型不小于16位。 short或short int 最大的shrot类型整数小于或等于最大的int类型整数。c语言规定short类型至少占16位。 long或long int 该类型可表示的整数大于或等于最大的int类型整数。c语言规定long类型至少占位32位。 long long或long long int 该类型可以表示的整数大于或等于最大的long类型整数。long long 类型至少占64位。 一般而言，long类型的占用内存比short类型大，int类型的宽度要和和long类型相同，要么和short类型相同。 无符号整形无符号整形只能用于表示零和正整数，因此无符号整形可以表示的正整数比有符号整形的大。在整形类型前面加上关键字unsigned表明该类型是无符号整形。单独的unsigned相当于unsigned int。 字符类型char类型实际上存储的是整数，而非字符。ASCII编码范围是0~127，所以只需要7位二进制数表示即可(这里不包含中文日文等特殊字符集)。char类型表示一个字符要占用1个字节内存，出于历史原因，一个字节通常是8位，但是如果要表示基本字符集，也可以是16位或更大。 char 字符类型的关键字，有些编译器使用有符号的char，而有些则使用无符号的char。在需要时，可以在char前面加上关键字signed或unsigned来指明，具体使用哪一种类型。 布尔类型布尔值表示true和false。c语言用1表示true，0表示false _Bool 布尔类型的关键字，c99加入。其类型为无符号int类型，所占用的个空间只要能存储0或者1即可。 实浮点类型(实数浮点类型)实浮点类型可以表示正浮点数和负浮点数。 float 系统基本浮点类型，可精确表示至少6位有效数字。 double 存储浮点数的范围更大，能表示比float类型更多的有效数字(至少15位)和更大的指数。 long long 存储浮点束的范围比double更大，能表示比double更多的有效数字和更大的指数。 复数和虚数浮点数虚数类型是可选的类型。复数的实部和虚部类型都基于实浮点类型来构成。 float _Complex double _Complex long double _Complex float _Imaginary double _Imaginary long double _Imaginary]]></content>
