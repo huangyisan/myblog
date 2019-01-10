@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[mysql字符集字符序]]></title>
+    <url>%2F2019%2F01%2F10%2Fmysql%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AD%97%E7%AC%A6%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 数据库分字符集(character)和字符序(collation)两者皆分为四个维度 服务器端 数据库 表 char varchar text类型的字段 refer: https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.htmlhttps://mariadb.com/kb/zh-cn/setting-character-sets-and-collations]]></content>
+      <tags>
+        <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Promotions in Program C]]></title>
     <url>%2F2019%2F01%2F08%2FPromotions-in-Program-C%2F</url>
     <content type="text"><![CDATA[scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。12345678910111213#include &lt;stdio.h&gt;void main(void) &#123; double num; printf(&quot;input a double type number: &quot;); scanf(&quot;%f&quot;, &amp;num); printf(&quot;the number is %f\n&quot;, num); printf(&quot;the number is %lf\n&quot;, num);&#125;input a double type number: 1the number is 0.000000the number is 0.000000 scanf()函数因为指向的是num的指针,所以不适用float promotions to double scanf()若使用double类型，必须写成”%lf”, 而printf()即便指定的是”%f”,也会自行提升成double类型。 1234567891011121314#include &lt;stdio.h&gt;void main(void) &#123; double num; printf(&quot;input a double type number: &quot;); scanf(&quot;%lf&quot;, &amp;num); printf(&quot;the number is %f\n&quot;, num); printf(&quot;the number is %lf\n&quot;, num);&#125;input a double type number: 1the number is 1.000000the number is 1.000000 integer-promotionsrefer: https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-chttp://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf [6.5.2.2 page-71]https://www.geeksforgeeks.org/integer-promotions-in-c/]]></content>

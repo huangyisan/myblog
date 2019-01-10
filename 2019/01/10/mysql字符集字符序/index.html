@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="getchar()返回类型声明为int类型getchar()函数从文本流读入下一个输入字符，并且作为结果返回。 一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。123456789101112#include &amp;lt;stdio.h&amp;gt;int main (void)&amp;#123;    int c;    c = getchar();    while (c !=">
+<meta name="description" content="Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 数据库分字符集(character)和字符序(collation)两者皆分为四个维度  服务器端 数据库 表 char varchar text类型的字段  refer:  https://www.cnblogs.com/chyingp/p/mysql-character-set-collat">
 <meta name="keywords" content="c">
 <meta property="og:type" content="article">
-<meta property="og:title" content="getchar()存储类型">
-<meta property="og:url" content="https://kirakirazone.com/2018/12/20/getchar-存储类型/index.html">
+<meta property="og:title" content="mysql字符集字符序">
+<meta property="og:url" content="https://kirakirazone.com/2019/01/10/mysql字符集字符序/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="getchar()返回类型声明为int类型getchar()函数从文本流读入下一个输入字符，并且作为结果返回。 一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。123456789101112#include &amp;lt;stdio.h&amp;gt;int main (void)&amp;#123;    int c;    c = getchar();    while (c !=">
+<meta property="og:description" content="Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 数据库分字符集(character)和字符序(collation)两者皆分为四个维度  服务器端 数据库 表 char varchar text类型的字段  refer:  https://www.cnblogs.com/chyingp/p/mysql-character-set-collat">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2019-01-10T07:28:56.234Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="getchar()存储类型">
-<meta name="twitter:description" content="getchar()返回类型声明为int类型getchar()函数从文本流读入下一个输入字符，并且作为结果返回。 一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。123456789101112#include &amp;lt;stdio.h&amp;gt;int main (void)&amp;#123;    int c;    c = getchar();    while (c !=">
+<meta name="twitter:title" content="mysql字符集字符序">
+<meta name="twitter:description" content="Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 数据库分字符集(character)和字符序(collation)两者皆分为四个维度  服务器端 数据库 表 char varchar text类型的字段  refer:  https://www.cnblogs.com/chyingp/p/mysql-character-set-collat">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2018/12/20/getchar-存储类型/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/01/10/mysql字符集字符序/">
 
 
 
 
 
-  <title>getchar()存储类型 | Kirakirazone</title>
+  <title>mysql字符集字符序 | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2018/12/20/getchar-存储类型/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/10/mysql字符集字符序/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">getchar()存储类型</h1>
+          <h1 class="post-title" itemprop="name headline">mysql字符集字符序</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-20T23:07:44+08:00">
-                2018-12-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-10T13:10:12+08:00">
+                2019-01-10
               </time>
             
 
@@ -333,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/12/20/getchar-存储类型/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/20/getchar-存储类型/" itemprop="commentCount"></span>
+                <a href="/2019/01/10/mysql字符集字符序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/10/mysql字符集字符序/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,25 +362,18 @@
       
 
       
-        <h2 id="getchar-返回类型声明为int类型"><a href="#getchar-返回类型声明为int类型" class="headerlink" title="getchar()返回类型声明为int类型"></a>getchar()返回类型声明为int类型</h2><p>getchar()函数从文本流读入下一个输入字符，并且作为结果返回。</p>
-<p>一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c != EOF) &#123;</span><br><span class="line">        putchar(c);</span><br><span class="line">        c = getchar();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>起先没搞明白为什么对c的声明是int类型，而不是char类型。</p>
-<p>后来查阅资料得知，char类型的声明，会根据不同的编译器，或者不同的架构平台，可能成为unsigned char或者是signed char类型。</p>
-<p>如果是unsigned char类型，<strong>占8位，一个字节，其范围为0000 0000 ~ 1111 1111，即0 ~ 255</strong>，那么无法存储EOF这个结束符，<strong>EOF可以理解为数值-1(C89, C99, C11并没有给EOF定义一个具体的值，只是说EOF是一个负值常量)</strong>。</p>
-<p>而当被作为signed char类型，虽然其取值范围为-128 ~ +127，虽然能够存储EOF这个结束符，看似正常，但在linux的环境，会混淆char 255和EOF，导致输入数据的截断。</p>
-<p>在linux平台运行以下程序</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    char c;</span><br><span class="line">    printf(&quot;Enter characters : &quot;);</span><br><span class="line">    while((c= getchar()) != EOF)&#123;</span><br><span class="line">      putchar(c);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果可以发现\0377后面部分没有被打印。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos ~]# gcc test.c &amp;&amp; echo -e &apos;Hello world\0377And some more&apos; | ./a.out</span><br><span class="line">Enter characters : Hello world[root@VM_31_91_centos ~]#</span><br></pre></td></tr></table></figure>
-<p><strong>getchar()和putchar()初始返回的值都为int类型。</strong><br><strong>对于getchar()函数返回值的声明使用int类型</strong></p>
-<h2 id="打印出EOF的值"><a href="#打印出EOF的值" class="headerlink" title="打印出EOF的值"></a>打印出EOF的值</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    </span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c == EOF) &#123;</span><br><span class="line">        </span><br><span class="line">        printf(&quot;this is the value of EOF:%d&quot;,c);</span><br><span class="line">        c = getchar();</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行程序，按<strong>CTRL+D发送EOF</strong>，查看得到的数值为-1。</p>
+        <p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
+<p><strong>数据库分字符集(character)和字符序(collation)</strong><br><strong>两者皆分为四个维度</strong></p>
 <ul>
-<li>refer<blockquote>
-<p><a href="https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int" target="_blank" rel="noopener">https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int</a><br><a href="https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc" target="_blank" rel="noopener">https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc</a><br><a href="https://stackoverflow.com/questions/7119470/int-c-getchar" target="_blank" rel="noopener">https://stackoverflow.com/questions/7119470/int-c-getchar</a><br>The C Programming Language - By Kernighan and Ritchie</p>
-</blockquote>
-</li>
+<li>服务器端</li>
+<li>数据库</li>
+<li>表</li>
+<li>char varchar text类型的字段</li>
 </ul>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html" target="_blank" rel="noopener">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations" target="_blank" rel="noopener">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a></p>
+</blockquote>
 
       
     </div>
@@ -430,7 +423,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2018/12/20/getchar-存储类型/" title="getchar()存储类型">https://kirakirazone.com/2018/12/20/getchar-存储类型/</a>
+    <a href="https://kirakirazone.com/2019/01/10/mysql字符集字符序/" title="mysql字符集字符序">https://kirakirazone.com/2019/01/10/mysql字符集字符序/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -458,8 +451,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/20/新式类的C3-MRO理解/" rel="next" title="新式类的C3 MRO理解">
-                <i class="fa fa-chevron-left"></i> 新式类的C3 MRO理解
+              <a href="/2019/01/08/Promotions-in-Program-C/" rel="next" title="Promotions in Program C">
+                <i class="fa fa-chevron-left"></i> Promotions in Program C
               </a>
             
           </div>
@@ -467,10 +460,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/22/git-clean-rm-reset-revert-checkout用法和区别/" rel="prev" title="git clean/rm/reset/revert/checkout用法和区别">
-                git clean/rm/reset/revert/checkout用法和区别 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -532,17 +521,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -623,22 +603,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#getchar-返回类型声明为int类型"><span class="nav-number">1.</span> <span class="nav-text">getchar()返回类型声明为int类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打印出EOF的值"><span class="nav-number">2.</span> <span class="nav-text">打印出EOF的值</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -799,9 +763,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2018/12/20/getchar-存储类型/';
-          this.page.identifier = '2018/12/20/getchar-存储类型/';
-          this.page.title = 'getchar()存储类型';
+          this.page.url = 'https://kirakirazone.com/2019/01/10/mysql字符集字符序/';
+          this.page.identifier = '2019/01/10/mysql字符集字符序/';
+          this.page.title = 'mysql字符集字符序';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
