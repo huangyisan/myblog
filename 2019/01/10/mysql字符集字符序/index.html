@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 MariaDB version 10.1.36 数据库分字符集(character)和字符序(collation)  character定义了字符以及字符的编码。 collation定义了字符的比较规则。  有四个地方涉及到字符集和字符序  服务器端(server level) 数据库(dat">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-11T01:40:59.799Z">
+<meta property="og:updated_time" content="2019-01-15T09:47:25.571Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql字符集字符序">
 <meta name="twitter:description" content="Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 MariaDB version 10.1.36 数据库分字符集(character)和字符序(collation)  character定义了字符以及字符的编码。 collation定义了字符的比较规则。  有四个地方涉及到字符集和字符序  服务器端(server level) 数据库(dat">
@@ -415,10 +415,8 @@
 </li>
 </ol>
 <ul>
-<li><p>Accent是否为sensitive表现为，如果为sensitive，则比较a和á是不同的，如果为insensitive则a和á比较为相同。</p>
-</li>
-<li><p>Case insensitive为大小写不敏感，case-sensitive为大小写敏感。</p>
-</li>
+<li>Accent是否为sensitive表现为，如果为sensitive，则比较a和á是不同的，如果为insensitive则a和á比较为相同。</li>
+<li>Case insensitive为大小写不敏感，case-sensitive为大小写敏感。</li>
 </ul>
 <h2 id="字符集和字符序的继承顺序"><a href="#字符集和字符序的继承顺序" class="headerlink" title="字符集和字符序的继承顺序"></a>字符集和字符序的继承顺序</h2><ol>
 <li>数据库服务，建库，建表，建字段，倘若其中有指定character和collation，则<code>字段</code>继承<code>表</code>，<code>表</code>继承<code>库</code>，<code>库</code>继承<code>数据库服务</code>。比如建库指定了字符集为utf8，那么该库下面的表如果不指定字符集，则表的字符集也为utf8，char、varchar、text的字段字符集也是utf8。</li>
@@ -426,7 +424,7 @@
 </ol>
 <p>refer:</p>
 <blockquote>
-<p><a href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html" target="_blank" rel="noopener">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations" target="_blank" rel="noopener">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a><br><a href="https://dev.mysql.com/doc/refman/8.0/en/charset-database.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/charset-database.html</a></p>
+<p><a href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html" target="_blank" rel="noopener">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations" target="_blank" rel="noopener">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a><br><a href="https://dev.mysql.com/doc/refman/8.0/en/charset-database.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/charset-database.html</a><br><a href="http://zarez.net/?p=719" target="_blank" rel="noopener">http://zarez.net/?p=719</a></p>
 </blockquote>
 
       
@@ -515,6 +513,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/01/15/带宽测试/" rel="prev" title="带宽测试">
+                带宽测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -600,7 +602,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
