@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[is和==比较区别]]></title>
+    <url>%2F2019%2F01%2F17%2Fis%E5%92%8C%3D%3D%E6%AF%94%E8%BE%83%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[is** is比较的对象为内存地址 12345678&gt;&gt;&gt; a = [1,2,3]&gt;&gt;&gt; b = a[:]&gt;&gt;&gt; id(a)140379285741320&gt;&gt;&gt; id(b)140379285738696&gt;&gt;&gt; a is bFalse ==** ==比较的对象是值 12345678&gt;&gt;&gt; a = [1,2,3]&gt;&gt;&gt; b = a[:]&gt;&gt;&gt; id(a)140379285741320&gt;&gt;&gt; id(b)140379285738696&gt;&gt;&gt; a == bTrue 关于int类型的缓存123456789101112131415161718&gt;&gt;&gt; a = 1&gt;&gt;&gt; b = 1&gt;&gt;&gt; id(a)9322464&gt;&gt;&gt; id(b)9322464&gt;&gt;&gt; a is bTrue&gt;&gt;&gt; a = 999&gt;&gt;&gt; b = 999&gt;&gt;&gt; id(a)140379285517520&gt;&gt;&gt; id(b)140379285517584&gt;&gt;&gt; a is bFalse 上述当ab都等于1的时候，两者指向的内存地址一致，但当ab赋值了999后，两者指向的内存地址不一致。 产生的原因python对于int类型进行缓存，当int属于[-5, 256]范围的时候，会被缓存，倘若在这个区间进行赋值，则指向的内存地址都是一致的。 这个产生的原因比较复杂，倘若a和b都赋值在同一行，则两者is比较也是True，具体可以看refer。 https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[是地址引用还是赋值操作]]></title>
     <url>%2F2019%2F01%2F17%2F%E6%98%AF%E5%9C%B0%E5%9D%80%E5%BC%95%E7%94%A8%E8%BF%98%E6%98%AF%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C%2F</url>
     <content type="text"><![CDATA[基本类型凡是基本类型，都是赋值。 12345a = 1b = Nonec = True 复合类型若是复合类型，都是地址指向。 函数和类的赋值也是地址指向 12345a = [1,2,3]b = &#123;&apos;a&apos;:1, &apos;b&apos;:1&#125;c = 函数，类 验证方法直接用id()看地址引用，如果原始对象改变后，其id()和赋值对象的id()不再一致，则为赋值，反之则是引用。 验证基本类型：1234567891011&gt;&gt;&gt; a = 3&gt;&gt;&gt; b = a&gt;&gt;&gt; id(a)9413248&gt;&gt;&gt; id(b)9413248&gt;&gt;&gt; a = 4&gt;&gt;&gt; id(a)9413280&gt;&gt;&gt; id(b)9413248 给a第二次更变赋值为4后，b的id()和a的id()不同，所以是赋值 验证复合类型：12345678910111213&gt;&gt;&gt; a = [1,2,3]&gt;&gt;&gt; b = a&gt;&gt;&gt; b[1, 2, 3]&gt;&gt;&gt; id(a)140435242878376&gt;&gt;&gt; id(b)140435242878376&gt;&gt;&gt; a.append(1)&gt;&gt;&gt; id(a)140435242878376&gt;&gt;&gt; id(b)140435242878376 给a第二次更变赋值为4后，b的id()和a的id()相同，所以是地址引用。下面的类的例子也能看出是地址引用。 1234567891011121314151617class A(object): def test(self): passa = A()b = aprint(id(a))print(id(b))a.value = 1print(id(a))print(b.value)1402331338442401402331338442401402331338442401]]></content>
       <tags>
-        <tag>python</tag>
+        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
