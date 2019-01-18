@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[磁盘无法挂载]]></title>
+    <url>%2F2019%2F01%2F18%2F%E7%A3%81%E7%9B%98%E6%97%A0%E6%B3%95%E6%8C%82%E8%BD%BD%2F</url>
+    <content type="text"><![CDATA[案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好 然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。 查看了下message日志：12345Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 FilesystemJan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mountJan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too. 最后一行谷歌查了下文档，第一篇文档说是用了重启大法。因为服务器比较重要，没考虑重启。 然后找到第二篇文档，说执行systemctl-reload，然后进行挂载。 尝试了下，的确成功了。 诡异的systemctl-reload但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。 Bug ID: 1566088 https://bugzilla.redhat.com/show_bug.cgi?id=1566088 refer: http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/https://bugzilla.redhat.com/show_bug.cgi?id=1566088]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[is和==比较区别]]></title>
     <url>%2F2019%2F01%2F17%2Fis%E5%92%8C%3D%3D%E6%AF%94%E8%BE%83%E5%8C%BA%E5%88%AB%2F</url>
     <content type="text"><![CDATA[is** is比较的对象为内存地址 12345678&gt;&gt;&gt; a = [1,2,3]&gt;&gt;&gt; b = a[:]&gt;&gt;&gt; id(a)140379285741320&gt;&gt;&gt; id(b)140379285738696&gt;&gt;&gt; a is bFalse ==** ==比较的对象是值 12345678&gt;&gt;&gt; a = [1,2,3]&gt;&gt;&gt; b = a[:]&gt;&gt;&gt; id(a)140379285741320&gt;&gt;&gt; id(b)140379285738696&gt;&gt;&gt; a == bTrue 关于int类型的缓存123456789101112131415161718&gt;&gt;&gt; a = 1&gt;&gt;&gt; b = 1&gt;&gt;&gt; id(a)9322464&gt;&gt;&gt; id(b)9322464&gt;&gt;&gt; a is bTrue&gt;&gt;&gt; a = 999&gt;&gt;&gt; b = 999&gt;&gt;&gt; id(a)140379285517520&gt;&gt;&gt; id(b)140379285517584&gt;&gt;&gt; a is bFalse 上述当ab都等于1的时候，两者指向的内存地址一致，但当ab赋值了999后，两者指向的内存地址不一致。 产生的原因python对于int类型进行缓存，当int属于[-5, 256]范围的时候，会被缓存，倘若在这个区间进行赋值，则指向的内存地址都是一致的。 这个产生的原因比较复杂，倘若a和b都赋值在同一行，则两者is比较也是True，具体可以看refer。 https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python]]></content>

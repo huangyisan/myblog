@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="linux,">
 
 
 
@@ -79,16 +79,18 @@
 
 
 
-<meta name="description" content="PSN: hys15783167">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Kirakirazone">
-<meta property="og:url" content="https://kirakirazone.com/tags/c/index.html">
+<meta name="description" content="案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好 然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。 查看了下message日志：12345Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.J">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磁盘无法挂载">
+<meta property="og:url" content="https://kirakirazone.com/2019/01/18/磁盘无法挂载/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="PSN: hys15783167">
+<meta property="og:description" content="案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好 然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。 查看了下message日志：12345Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.J">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-01-18T08:18:52.815Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kirakirazone">
-<meta name="twitter:description" content="PSN: hys15783167">
+<meta name="twitter:title" content="磁盘无法挂载">
+<meta name="twitter:description" content="案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好 然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。 查看了下message日志：12345Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.J">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/tags/c/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/01/18/磁盘无法挂载/">
 
 
 
 
 
-  <title>Tag: c | Kirakirazone</title>
+  <title>磁盘无法挂载 | Kirakirazone</title>
   
 
 
@@ -143,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -269,104 +271,216 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>c<small>Tag</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/18/磁盘无法挂载/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kirakirazone">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/01/08/Promotions-in-Program-C/" itemprop="url">
-              
-                <span itemprop="name">Promotions in Program C</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">磁盘无法挂载</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-08T00:00:12+08:00" content="2019-01-08">
-          01-08
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-18T15:40:12+08:00">
+                2019-01-18
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/01/18/磁盘无法挂载/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/18/磁盘无法挂载/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/06/c语言基本数字类型/" itemprop="url">
-              
-                <span itemprop="name">c语言基本数字类型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-06T15:36:06+08:00" content="2019-01-06">
-          01-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/12/20/getchar-存储类型/" itemprop="url">
-              
-                <span itemprop="name">getchar()存储类型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-20T23:07:44+08:00" content="2018-12-20">
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
+<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
+<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
+<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
+<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
+<p>尝试了下，的确成功了。</p>
+<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
+<p>Bug ID: 1566088</p>
+<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://kirakirazone.com/2019/01/18/磁盘无法挂载/" title="磁盘无法挂载">https://kirakirazone.com/2019/01/18/磁盘无法挂载/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/17/is和==比较区别/" rel="next" title="is和==比较区别">
+                <i class="fa fa-chevron-left"></i> is和==比较区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -374,6 +488,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -394,8 +522,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -476,6 +613,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">1.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#诡异的systemctl-reload"><span class="nav-number">2.</span> <span class="nav-text">诡异的systemctl-reload</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -612,6 +765,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -629,6 +786,18 @@
       <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://kirakirazone.com/2019/01/18/磁盘无法挂载/';
+          this.page.identifier = '2019/01/18/磁盘无法挂载/';
+          this.page.title = '磁盘无法挂载';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://kirakirazone.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
