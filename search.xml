@@ -4,6 +4,9 @@
     <title><![CDATA[实现strStr()]]></title>
     <url>%2F2019%2F01%2F23%2F%E5%AE%9E%E7%8E%B0strStr%2F</url>
     <content type="text"><![CDATA[1234567891011&apos;&apos;&apos;https://leetcode-cn.com/problems/implement-strstr/&apos;&apos;&apos;class Solution(object): def strStr(self, haystack, needle): &quot;&quot;&quot; :type haystack: str :type needle: str :rtype: int &quot;&quot;&quot; return haystack.find(needle)]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
       <tags>
         <tag>leetcode</tag>
       </tags>
