@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1234567891011&amp;apos;&amp;apos;&amp;apos;https://leetcode-cn.com/problems/implement-strstr/&amp;apos;&amp;apos;&amp;apos;class Solution(object):    def strStr(self, haystack, needle):        &amp;quot;&amp;quot;&amp;quot;        :type">
+<meta name="description" content="需求实现 strStr() 函数。 给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。 示例12输入: haystack = &amp;quot;hello&amp;quot;, needle = &amp;quot;ll&amp;quot;输出: 2 12输入: haystack = &amp;quot;a">
 <meta name="keywords" content="leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="实现strStr()">
-<meta property="og:url" content="https://kirakirazone.com/2019/01/23/实现strStr/index.html">
+<meta property="og:title" content="LeetCode 实现strStr()">
+<meta property="og:url" content="https://kirakirazone.com/2019/01/23/LeetCode-实现strStr/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="1234567891011&amp;apos;&amp;apos;&amp;apos;https://leetcode-cn.com/problems/implement-strstr/&amp;apos;&amp;apos;&amp;apos;class Solution(object):    def strStr(self, haystack, needle):        &amp;quot;&amp;quot;&amp;quot;        :type">
+<meta property="og:description" content="需求实现 strStr() 函数。 给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。 示例12输入: haystack = &amp;quot;hello&amp;quot;, needle = &amp;quot;ll&amp;quot;输出: 2 12输入: haystack = &amp;quot;a">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-24T04:19:29.376Z">
+<meta property="og:updated_time" content="2019-01-24T04:25:45.571Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="实现strStr()">
-<meta name="twitter:description" content="1234567891011&amp;apos;&amp;apos;&amp;apos;https://leetcode-cn.com/problems/implement-strstr/&amp;apos;&amp;apos;&amp;apos;class Solution(object):    def strStr(self, haystack, needle):        &amp;quot;&amp;quot;&amp;quot;        :type">
+<meta name="twitter:title" content="LeetCode 实现strStr()">
+<meta name="twitter:description" content="需求实现 strStr() 函数。 给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。 示例12输入: haystack = &amp;quot;hello&amp;quot;, needle = &amp;quot;ll&amp;quot;输出: 2 12输入: haystack = &amp;quot;a">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/01/23/实现strStr/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/01/23/LeetCode-实现strStr/">
 
 
 
 
 
-  <title>实现strStr() | Kirakirazone</title>
+  <title>LeetCode 实现strStr() | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/23/实现strStr/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/23/LeetCode-实现strStr/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">实现strStr()</h1>
+          <h1 class="post-title" itemprop="name headline">LeetCode 实现strStr()</h1>
         
 
         <div class="post-meta">
@@ -355,8 +355,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/23/实现strStr/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/23/实现strStr/" itemprop="commentCount"></span>
+                <a href="/2019/01/23/LeetCode-实现strStr/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/23/LeetCode-实现strStr/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +384,18 @@
       
 
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&apos;&apos;&apos;</span><br><span class="line">https://leetcode-cn.com/problems/implement-strstr/</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
+<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
+<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
+</blockquote>
 
       
     </div>
@@ -434,7 +445,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/01/23/实现strStr/" title="实现strStr()">https://kirakirazone.com/2019/01/23/实现strStr/</a>
+    <a href="https://kirakirazone.com/2019/01/23/LeetCode-实现strStr/" title="LeetCode 实现strStr()">https://kirakirazone.com/2019/01/23/LeetCode-实现strStr/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -532,8 +543,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -623,6 +643,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">3.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题思路"><span class="nav-number">4.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题代码"><span class="nav-number">5.</span> <span class="nav-text">解题代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -783,9 +819,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/01/23/实现strStr/';
-          this.page.identifier = '2019/01/23/实现strStr/';
-          this.page.title = '实现strStr()';
+          this.page.url = 'https://kirakirazone.com/2019/01/23/LeetCode-实现strStr/';
+          this.page.identifier = '2019/01/23/LeetCode-实现strStr/';
+          this.page.title = 'LeetCode 实现strStr()';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';

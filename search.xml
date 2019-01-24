@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[实现strStr()]]></title>
-    <url>%2F2019%2F01%2F23%2F%E5%AE%9E%E7%8E%B0strStr%2F</url>
-    <content type="text"><![CDATA[1234567891011&apos;&apos;&apos;https://leetcode-cn.com/problems/implement-strstr/&apos;&apos;&apos;class Solution(object): def strStr(self, haystack, needle): &quot;&quot;&quot; :type haystack: str :type needle: str :rtype: int &quot;&quot;&quot; return haystack.find(needle)]]></content>
+    <title><![CDATA[LeetCode 实现strStr()]]></title>
+    <url>%2F2019%2F01%2F23%2FLeetCode-%E5%AE%9E%E7%8E%B0strStr%2F</url>
+    <content type="text"><![CDATA[需求实现 strStr() 函数。 给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回 -1。 示例12输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;输出: 2 12输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;输出: -1 说明当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。 对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。 解题思路python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。 解题代码12345678class Solution(object): def strStr(self, haystack, needle): &quot;&quot;&quot; :type haystack: str :type needle: str :rtype: int &quot;&quot;&quot; return haystack.find(needle) refer https://leetcode-cn.com/problems/implement-strstr/]]></content>
       <categories>
         <category>leetcode</category>
       </categories>
