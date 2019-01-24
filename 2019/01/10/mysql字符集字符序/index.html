@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 MariaDB version 10.1.36 数据库分字符集(character)和字符序(collation)  character定义了字符以及字符的编码。 collation定义了字符的比较规则。  有四个地方涉及到字符集和字符序  服务器端(server level) 数据库(dat">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-23T16:29:42.903Z">
+<meta property="og:updated_time" content="2019-01-24T04:19:29.376Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql字符集字符序">
 <meta name="twitter:description" content="Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。 MariaDB version 10.1.36 数据库分字符集(character)和字符序(collation)  character定义了字符以及字符的编码。 collation定义了字符的比较规则。  有四个地方涉及到字符集和字符序  服务器端(server level) 数据库(dat">
@@ -422,6 +422,18 @@
 <li>数据库服务，建库，建表，建字段，倘若其中有指定character和collation，则<code>字段</code>继承<code>表</code>，<code>表</code>继承<code>库</code>，<code>库</code>继承<code>数据库服务</code>。比如建库指定了字符集为utf8，那么该库下面的表如果不指定字符集，则表的字符集也为utf8，char、varchar、text的字段字符集也是utf8。</li>
 <li><strong>有个例外，如果修改了表， 那么该表下面的字段的字符集和字符序也会变成表的字符集和字符序。</strong></li>
 </ol>
+<h2 id="修改查看字符集命令："><a href="#修改查看字符集命令：" class="headerlink" title="修改查看字符集命令："></a>修改查看字符集命令：</h2><ul>
+<li><p>修改运行环境：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET character_set_server = utf8mb4</span><br><span class="line">set character_set_connection = utf8mb4</span><br><span class="line">set character_set_database = utf8mb4</span><br><span class="line">set character_set_results = utf8mb4</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改库:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ALTER DATABASE dbname CHARACTER SET utf8mb4 COLLATE  utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句 </span><br><span class="line">show create database dbname;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>修改表:  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. dir varchar(255) -&gt; varchar(191)  mysql5.6的版本需要修改。不保证所有版本都需要修改。</span><br><span class="line">ALTER TABLE dir_stats MODIFY dir VARCHAR(191);</span><br><span class="line">2. 修改字段类型utf8mb4</span><br><span class="line">alter table tablename convert to character set utf8mb4 collate utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句</span><br><span class="line">SHOW FULL COLUMNS FROM dbname.tablename;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <p>refer:</p>
 <blockquote>
 <p><a href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html" target="_blank" rel="noopener">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations" target="_blank" rel="noopener">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a><br><a href="https://dev.mysql.com/doc/refman/8.0/en/charset-database.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/charset-database.html</a><br><a href="http://zarez.net/?p=719" target="_blank" rel="noopener">http://zarez.net/?p=719</a></p>
@@ -687,7 +699,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集"><span class="nav-number">1.</span> <span class="nav-text">字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符序"><span class="nav-number">2.</span> <span class="nav-text">字符序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集和字符序的继承顺序"><span class="nav-number">3.</span> <span class="nav-text">字符集和字符序的继承顺序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集"><span class="nav-number">1.</span> <span class="nav-text">字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符序"><span class="nav-number">2.</span> <span class="nav-text">字符序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集和字符序的继承顺序"><span class="nav-number">3.</span> <span class="nav-text">字符集和字符序的继承顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改查看字符集命令："><span class="nav-number">4.</span> <span class="nav-text">修改查看字符集命令：</span></a></li></ol></div>
             
 
           </div>
