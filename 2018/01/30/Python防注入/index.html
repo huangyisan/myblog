@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="链式比较先来看一段代码: 12&amp;gt;&amp;gt;&amp;gt; 2 in [1,0] == FalseFalse 起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。 后来发现，这个其实是链式比较(chained comparisons)，这种比较法，常见的为类似1&amp;lt;2&amp;lt;3这种，能立马反应过来，其实质为 1&amp;lt;2 a">
+<meta name="description" content="注入案例：12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&amp;quot;localhost&amp;quot;,user=&amp;quot;&amp;quot;,passwd=&amp;quot;&amp;quot;,db=&amp;quot;&amp;quot;)cur = db.cursor()platform = input(&amp;apos;Enter language:">
 <meta name="keywords" content="python3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="True or False">
-<meta property="og:url" content="https://kirakirazone.com/2018/12/18/True-or-False/index.html">
+<meta property="og:title" content="Python防注入">
+<meta property="og:url" content="https://kirakirazone.com/2018/01/30/Python防注入/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="链式比较先来看一段代码: 12&amp;gt;&amp;gt;&amp;gt; 2 in [1,0] == FalseFalse 起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。 后来发现，这个其实是链式比较(chained comparisons)，这种比较法，常见的为类似1&amp;lt;2&amp;lt;3这种，能立马反应过来，其实质为 1&amp;lt;2 a">
+<meta property="og:description" content="注入案例：12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&amp;quot;localhost&amp;quot;,user=&amp;quot;&amp;quot;,passwd=&amp;quot;&amp;quot;,db=&amp;quot;&amp;quot;)cur = db.cursor()platform = input(&amp;apos;Enter language:">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2019-01-30T11:02:40.632Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="True or False">
-<meta name="twitter:description" content="链式比较先来看一段代码: 12&amp;gt;&amp;gt;&amp;gt; 2 in [1,0] == FalseFalse 起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。 后来发现，这个其实是链式比较(chained comparisons)，这种比较法，常见的为类似1&amp;lt;2&amp;lt;3这种，能立马反应过来，其实质为 1&amp;lt;2 a">
+<meta name="twitter:title" content="Python防注入">
+<meta name="twitter:description" content="注入案例：12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&amp;quot;localhost&amp;quot;,user=&amp;quot;&amp;quot;,passwd=&amp;quot;&amp;quot;,db=&amp;quot;&amp;quot;)cur = db.cursor()platform = input(&amp;apos;Enter language:">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2018/12/18/True-or-False/">
+  <link rel="canonical" href="https://kirakirazone.com/2018/01/30/Python防注入/">
 
 
 
 
 
-  <title>True or False | Kirakirazone</title>
+  <title>Python防注入 | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2018/12/18/True-or-False/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2018/01/30/Python防注入/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">True or False</h1>
+          <h1 class="post-title" itemprop="name headline">Python防注入</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-18T00:12:33+08:00">
-                2018-12-18
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-30T18:41:38+08:00">
+                2018-01-30
               </time>
             
 
@@ -333,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/12/18/True-or-False/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/18/True-or-False/" itemprop="commentCount"></span>
+                <a href="/2018/01/30/Python防注入/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/30/Python防注入/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,20 +362,18 @@
       
 
       
-        <h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
-<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
-<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
+        <h2 id="注入案例："><a href="#注入案例：" class="headerlink" title="注入案例："></a>注入案例：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import MySQLdb</span><br><span class="line"></span><br><span class="line">db = MySQLdb.connect(host=&quot;localhost&quot;,</span><br><span class="line">user=&quot;&quot;,</span><br><span class="line">passwd=&quot;&quot;,</span><br><span class="line">db=&quot;&quot;)</span><br><span class="line"></span><br><span class="line">cur = db.cursor()</span><br><span class="line"></span><br><span class="line">platform = input(&apos;Enter language: &apos;)</span><br><span class="line"></span><br><span class="line">cur.execute(&quot;SELECT * FROM platforms WHERE language = &apos;%s&apos;;&quot; % platform)</span><br><span class="line">for row in cur.fetchall():</span><br><span class="line">print(row)</span><br><span class="line"></span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
+<p>上述代码，让用户输入想查询的language，如果用户按套路，比如输入Ruby，则可以正常查询。</p>
+<p>执行代码为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM platforms WHERE language = &apos;Ruby&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>但如果搞事情输入Ruby’; DROP TABLE platforms;那么platforms表被删除。<br>执行代码为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; DROP TABLE platforms;&apos;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="防止sql注入"><a href="#防止sql注入" class="headerlink" title="防止sql注入"></a>防止sql注入</h2><p>代码改写为如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import MySQLdb</span><br><span class="line"></span><br><span class="line">db = MySQLdb.connect(host=&quot;localhost&quot;,</span><br><span class="line">user=&quot;&quot;,</span><br><span class="line">passwd=&quot;&quot;,</span><br><span class="line">db=&quot;&quot;)</span><br><span class="line"></span><br><span class="line">cur = db.cursor()</span><br><span class="line"></span><br><span class="line">platform = raw_input(&apos;Enter language: &apos;)</span><br><span class="line"></span><br><span class="line">cur.execute(&quot;SELECT * FROM platforms WHERE language = %s;&quot;, (platform,))</span><br><span class="line">for row in cur.fetchall():</span><br><span class="line">print (row)</span><br><span class="line"></span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure></p>
+<p>这边%s是占位符，和<strong>字符串format的方式不同，而且后面的元组前面也不需要%符号，即便是数字，也是用%s来占位。</strong></p>
+<h2 id="防sql原因"><a href="#防sql原因" class="headerlink" title="防sql原因"></a>防sql原因</h2><p>之所以能防sql是因为execute函数会对传入的args内容预处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def mogrify(self, query, args=None):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Returns the exact string that is sent to the database by calling the</span><br><span class="line">    execute() method.</span><br><span class="line"></span><br><span class="line">    This method follows the extension to the DB API 2.0 followed by Psycopg.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    conn = self._get_db()</span><br><span class="line">    if PY2:  # Use bytes on Python 2 always</span><br><span class="line">        query = self._ensure_bytes(query, encoding=conn.encoding)</span><br><span class="line"></span><br><span class="line">    if args is not None:</span><br><span class="line">        query = query % self._escape_args(args, conn)</span><br></pre></td></tr></table></figure></p>
+<p>execute后续调用一些函数，比如下面<code>escape_string</code>函数。(能力有限，前面几级调用不是非常看得懂。)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def escape_string(self, s):</span><br><span class="line">    if (self.server_status &amp;</span><br><span class="line">            SERVER_STATUS.SERVER_STATUS_NO_BACKSLASH_ESCAPES):</span><br><span class="line">        return s.replace(&quot;&apos;&quot;, &quot;&apos;&apos;&quot;)</span><br><span class="line">    return converters.escape_string(s)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
 <blockquote>
-<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
-</blockquote>
-<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
+<p><a href="https://blog.sqreen.io/preventing-sql-injections-in-python/" target="_blank" rel="noopener">https://blog.sqreen.io/preventing-sql-injections-in-python/</a></p>
 </blockquote>
 
       
@@ -426,7 +424,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2018/12/18/True-or-False/" title="True or False">https://kirakirazone.com/2018/12/18/True-or-False/</a>
+    <a href="https://kirakirazone.com/2018/01/30/Python防注入/" title="Python防注入">https://kirakirazone.com/2018/01/30/Python防注入/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -454,18 +452,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/30/Python防注入/" rel="next" title="Python防注入">
-                <i class="fa fa-chevron-left"></i> Python防注入
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/20/新式类的C3-MRO理解/" rel="prev" title="新式类的C3 MRO理解">
-                新式类的C3 MRO理解 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/18/True-or-False/" rel="prev" title="True or False">
+                True or False <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -638,7 +632,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链式比较"><span class="nav-number">1.</span> <span class="nav-text">链式比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空字符串"><span class="nav-number">2.</span> <span class="nav-text">空字符串</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#注入案例："><span class="nav-number">1.</span> <span class="nav-text">注入案例：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防止sql注入"><span class="nav-number">2.</span> <span class="nav-text">防止sql注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防sql原因"><span class="nav-number">3.</span> <span class="nav-text">防sql原因</span></a></li></ol></div>
             
 
           </div>
@@ -804,9 +798,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2018/12/18/True-or-False/';
-          this.page.identifier = '2018/12/18/True-or-False/';
-          this.page.title = 'True or False';
+          this.page.url = 'https://kirakirazone.com/2018/01/30/Python防注入/';
+          this.page.identifier = '2018/01/30/Python防注入/';
+          this.page.title = 'Python防注入';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
