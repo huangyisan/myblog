@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Python防注入]]></title>
+    <url>%2F2019%2F01%2F30%2FPython%E9%98%B2%E6%B3%A8%E5%85%A5%2F</url>
+    <content type="text"><![CDATA[注入案例：12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&quot;localhost&quot;,user=&quot;&quot;,passwd=&quot;&quot;,db=&quot;&quot;)cur = db.cursor()platform = input(&apos;Enter language: &apos;)cur.execute(&quot;SELECT * FROM platforms WHERE language = &apos;%s&apos;;&quot; % platform)for row in cur.fetchall():print(row)db.close() 上述代码，让用户输入想查询的language，如果用户按套路，比如输入Ruby，则可以正常查询。 执行代码为：1SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; 但如果搞事情输入Ruby’; DROP TABLE platforms;那么platforms表被删除。执行代码为：1SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; DROP TABLE platforms;&apos;; 防止sql注入代码改写为如下:12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&quot;localhost&quot;,user=&quot;&quot;,passwd=&quot;&quot;,db=&quot;&quot;)cur = db.cursor()platform = raw_input(&apos;Enter language: &apos;)cur.execute(&quot;SELECT * FROM platforms WHERE language = %s;&quot;, (platform,))for row in cur.fetchall():print (row)db.close() 这边%s是占位符，和字符串format的方式不同，而且后面的元组前面也不需要%符号，即便是数字，也是用%s来占位。 防sql原因之所以能防sql是因为execute函数会对传入的args内容预处理。12345678910111213def mogrify(self, query, args=None): &quot;&quot;&quot; Returns the exact string that is sent to the database by calling the execute() method. This method follows the extension to the DB API 2.0 followed by Psycopg. &quot;&quot;&quot; conn = self._get_db() if PY2: # Use bytes on Python 2 always query = self._ensure_bytes(query, encoding=conn.encoding) if args is not None: query = query % self._escape_args(args, conn) execute后续调用一些函数，比如下面escape_string函数。(能力有限，前面几级调用不是非常看得懂。) 12345def escape_string(self, s): if (self.server_status &amp; SERVER_STATUS.SERVER_STATUS_NO_BACKSLASH_ESCAPES): return s.replace(&quot;&apos;&quot;, &quot;&apos;&apos;&quot;) return converters.escape_string(s) refer https://blog.sqreen.io/preventing-sql-injections-in-python/]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[LeetCode 只出现一次的数字]]></title>
     <url>%2F2019%2F01%2F28%2FLeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97%2F</url>
     <content type="text"><![CDATA[需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例112输入: [2,2,1]输出: 1 示例212输入: [4,1,2,1,2]输出: 4 解题思路 使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。 数字A异或数字B两次，则结果为A。 利用这个方法，可以找到非空数组里面只出现一次的那个元素。 0和数字B进行异或，得到的结果为数字B，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。 解题代码1234567891011class Solution: def singleNumber(self, nums): &quot;&quot;&quot; :type nums: List[int] :rtype: int &quot;&quot;&quot; a = 0 for num in nums: a = a ^ num print(a) return a]]></content>
@@ -165,14 +173,6 @@
     <title><![CDATA[True or False]]></title>
     <url>%2F2018%2F12%2F18%2FTrue-or-False%2F</url>
     <content type="text"><![CDATA[链式比较先来看一段代码: 12&gt;&gt;&gt; 2 in [1,0] == FalseFalse 起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。 后来发现，这个其实是链式比较(chained comparisons)，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。所以2 in [1,0] == False的本质其实为(2 in [1,0]) and ([1,0] == False)，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。 如下比较符号进行组合，都为链式比较“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in” https://docs.python.org/2/reference/expressions.html#comparisons 空字符串代码如下： 12&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;True 空字符串始终被视为任何其他字符串的子字符串，所以其返回为True。字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下: 12&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1True https://docs.python.org/3/reference/expressions.html#membership-test-operations]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Python防注入]]></title>
-    <url>%2F2018%2F01%2F30%2FPython%E9%98%B2%E6%B3%A8%E5%85%A5%2F</url>
-    <content type="text"><![CDATA[注入案例：12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&quot;localhost&quot;,user=&quot;&quot;,passwd=&quot;&quot;,db=&quot;&quot;)cur = db.cursor()platform = input(&apos;Enter language: &apos;)cur.execute(&quot;SELECT * FROM platforms WHERE language = &apos;%s&apos;;&quot; % platform)for row in cur.fetchall():print(row)db.close() 上述代码，让用户输入想查询的language，如果用户按套路，比如输入Ruby，则可以正常查询。 执行代码为：1SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; 但如果搞事情输入Ruby’; DROP TABLE platforms;那么platforms表被删除。执行代码为：1SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; DROP TABLE platforms;&apos;; 防止sql注入代码改写为如下:12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&quot;localhost&quot;,user=&quot;&quot;,passwd=&quot;&quot;,db=&quot;&quot;)cur = db.cursor()platform = raw_input(&apos;Enter language: &apos;)cur.execute(&quot;SELECT * FROM platforms WHERE language = %s;&quot;, (platform,))for row in cur.fetchall():print (row)db.close() 这边%s是占位符，和字符串format的方式不同，而且后面的元组前面也不需要%符号，即便是数字，也是用%s来占位。 防sql原因之所以能防sql是因为execute函数会对传入的args内容预处理。12345678910111213def mogrify(self, query, args=None): &quot;&quot;&quot; Returns the exact string that is sent to the database by calling the execute() method. This method follows the extension to the DB API 2.0 followed by Psycopg. &quot;&quot;&quot; conn = self._get_db() if PY2: # Use bytes on Python 2 always query = self._ensure_bytes(query, encoding=conn.encoding) if args is not None: query = query % self._escape_args(args, conn) execute后续调用一些函数，比如下面escape_string函数。(能力有限，前面几级调用不是非常看得懂。) 12345def escape_string(self, s): if (self.server_status &amp; SERVER_STATUS.SERVER_STATUS_NO_BACKSLASH_ESCAPES): return s.replace(&quot;&apos;&quot;, &quot;&apos;&apos;&quot;) return converters.escape_string(s) refer https://blog.sqreen.io/preventing-sql-injections-in-python/]]></content>
       <tags>
         <tag>python3</tag>
       </tags>
