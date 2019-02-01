@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[setdefault方法]]></title>
+    <url>%2F2019%2F02%2F01%2Fsetdefault%E6%96%B9%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &#123;&#125;for i in xxxx: myvalue = dict_a.setdefault(a,func_api()) xxxxx xxx 因为func_api()函数会请求线上，调用接口。 但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口 123456789&gt;&gt;&gt; def b():... print(2)... return 1... &gt;&gt;&gt; a_dict = &#123;&#125;&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())21]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Python防注入]]></title>
     <url>%2F2019%2F01%2F30%2FPython%E9%98%B2%E6%B3%A8%E5%85%A5%2F</url>
     <content type="text"><![CDATA[注入案例：12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&quot;localhost&quot;,user=&quot;&quot;,passwd=&quot;&quot;,db=&quot;&quot;)cur = db.cursor()platform = input(&apos;Enter language: &apos;)cur.execute(&quot;SELECT * FROM platforms WHERE language = &apos;%s&apos;;&quot; % platform)for row in cur.fetchall():print(row)db.close() 上述代码，让用户输入想查询的language，如果用户按套路，比如输入Ruby，则可以正常查询。 执行代码为：1SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; 但如果搞事情输入Ruby’; DROP TABLE platforms;那么platforms表被删除。执行代码为：1SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; DROP TABLE platforms;&apos;; 防止sql注入代码改写为如下:12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&quot;localhost&quot;,user=&quot;&quot;,passwd=&quot;&quot;,db=&quot;&quot;)cur = db.cursor()platform = raw_input(&apos;Enter language: &apos;)cur.execute(&quot;SELECT * FROM platforms WHERE language = %s;&quot;, (platform,))for row in cur.fetchall():print (row)db.close() 这边%s是占位符，和字符串format的方式不同，而且后面的元组前面也不需要%符号，即便是数字，也是用%s来占位。 防sql原因之所以能防sql是因为execute函数会对传入的args内容预处理。12345678910111213def mogrify(self, query, args=None): &quot;&quot;&quot; Returns the exact string that is sent to the database by calling the execute() method. This method follows the extension to the DB API 2.0 followed by Psycopg. &quot;&quot;&quot; conn = self._get_db() if PY2: # Use bytes on Python 2 always query = self._ensure_bytes(query, encoding=conn.encoding) if args is not None: query = query % self._escape_args(args, conn) execute后续调用一些函数，比如下面escape_string函数。(能力有限，前面几级调用不是非常看得懂。) 12345def escape_string(self, s): if (self.server_status &amp; SERVER_STATUS.SERVER_STATUS_NO_BACKSLASH_ESCAPES): return s.replace(&quot;&apos;&quot;, &quot;&apos;&apos;&quot;) return converters.escape_string(s) refer https://blog.sqreen.io/preventing-sql-injections-in-python/]]></content>
