@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="案例经过在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-02-02T02:53:31.202Z">
+<meta property="og:updated_time" content="2019-02-02T02:53:55.080Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kill -9 不起作用">
 <meta name="twitter:description" content="案例经过在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个">
@@ -371,11 +371,11 @@
 <h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
 <h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
 <h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行</strong></li>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
 <li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
 <li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
 <li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。**D状态进程会导致平均负载升高，I状态的进程却不会。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
 <li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
 <li>t 表示跟踪状态。比如用gdb调试进程。</li>
 <li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
