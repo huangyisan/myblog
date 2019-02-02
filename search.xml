@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[kill -9 不起作用]]></title>
+    <url>%2F2019%2F02%2F02%2Fkill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8%2F</url>
+    <content type="text"><![CDATA[案例经过在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个准确的回答。原文见refer。 kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。 通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。 在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。 一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。 解决方法暂停server端和clinet端的nfs进程，重新挂载解决。 top ps查看不可中断进程1ps -eo pid,ppid,stat,pri,uid 进程状态常见标记符 R 表示进程正在Cpu的就绪队列中，正在运行或者正在等待运行 D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。 Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。 S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。 I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。**D状态进程会导致平均负载升高，I状态的进程却不会。 T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。 t 表示跟踪状态。比如用gdb调试进程。 X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。 refer: https://cis.temple.edu/~ingargio/cis307/readings/signals.htmlhttps://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-workhttps://www.cnblogs.com/my_life/articles/5630903.html]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[setdefault方法传入函数]]></title>
     <url>%2F2019%2F02%2F01%2Fsetdefault%E6%96%B9%E6%B3%95%2F</url>
     <content type="text"><![CDATA[setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &#123;&#125;for i in xxxx: myvalue = dict_a.setdefault(a,func_api()) xxxxx xxx 因为func_api()函数会请求线上，调用接口。 但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。 猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。 验证猜测同时也验证了字典get方法 123456789101112&gt;&gt;&gt; def b():... print(2)... return 1... &gt;&gt;&gt; a_dict = &#123;&#125;&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())21&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())21 虽然a_dict字典已经存在”a”:1,但，依旧执行了b() 处理方法先进行get，若返回为None，则进行setdefault 12345groupid = groupid_templateid_dict.get(tmp_groupname)if groupid: passelse: groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data)) 这样就避免了重复调用func的问题。 结论其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。]]></content>
