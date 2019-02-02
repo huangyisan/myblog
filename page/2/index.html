@@ -365,84 +365,20 @@
       
         
           
-            <p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
-<p>MariaDB version 10.1.36</p>
-<p><strong>数据库分字符集(character)和字符序(collation)</strong></p>
-<ul>
-<li>character定义了字符以及字符的编码。</li>
-<li>collation定义了字符的比较规则。</li>
-</ul>
-<p><strong>有四个地方涉及到字符集和字符序</strong></p>
-<ul>
-<li>服务器端(server level)</li>
-<li>数据库(database level)</li>
-<li>表(table level)</li>
-<li>char varchar text类型的字段(column level)</li>
-</ul>
-<p><strong>如果都未进行指定，采用何种character和collation，则默认情况为character=latin1, collation=latin1_swedish_ci</strong></p>
-<h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2><ol>
-<li><p>查看当前支持的字符集<code>SHOW charsets</code>，Default collation字段告知了，该字符集所用的默认字符序。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW charset;</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| Charset  | Description                 | Default collation   | Maxlen |</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| big5     | Big5 Traditional Chinese    | big5_chinese_ci     |      2 |</span><br><span class="line">| dec8     | DEC West European           | dec8_swedish_ci     |      1 |</span><br><span class="line">| cp850    | DOS West European           | cp850_general_ci    |      1 |</span><br><span class="line">| hp8      | HP West European            | hp8_english_ci      |      1 |</span><br><span class="line">| koi8r    | KOI8-R Relcom Russian       | koi8r_general_ci    |      1 |</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看server level当前的字符集<code>SHOW VARIABLES LIKE &quot;character_set_server&quot;</code>，查看server level当前的字符序<code>SHOW VARIABLES LIKE &quot;collation_server&quot;</code></p>
-</li>
-<li><p>修改server level字符集的方法:</p>
-</li>
-</ol>
-<ul>
-<li>修改配置文件</li>
-<li>编译的时候</li>
-<li>set 全局变量命令。但这种情况重启会失效。</li>
-</ul>
-<ol start="2">
-<li>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符集，则默认的字符序为该字符集所对应的默认字符序。</li>
-</ol>
-<h2 id="字符序"><a href="#字符序" class="headerlink" title="字符序"></a>字符序</h2><ol>
-<li>查看当前支持的字符序<code>SHOW collation</code>, Default字段存在Yes的，表示该字符集默认的default值。比如latin1默认的字符序为latin1_swedish_ci</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW collation;</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| Collation                | Charset  | Id  | Default | Compiled | Sortlen |</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| big5_chinese_ci          | big5     |   1 | Yes     | Yes      |       1 |</span><br><span class="line">| big5_bin                 | big5     |  84 |         | Yes      |       1 |</span><br><span class="line">| dec8_swedish_ci          | dec8     |   3 | Yes     | Yes      |       1 |</span><br><span class="line">| dec8_bin                 | dec8     |  69 |         | Yes      |       1 |</span><br><span class="line">| cp850_general_ci         | cp850    |   4 | Yes     | Yes      |       1 |</span><br><span class="line">| cp850_bin                | cp850    |  80 |         | Yes      |       1 |</span><br><span class="line">| hp8_english_ci           | hp8      |   6 | Yes     | Yes      |       1 |</span><br><span class="line">| hp8_bin                  | hp8      |  72 |         | Yes      |       1 |</span><br><span class="line">| koi8r_general_ci         | koi8r    |   7 | Yes     | Yes      |       1 |</span><br><span class="line">| koi8r_bin                | koi8r    |  74 |         | Yes      |       1 |</span><br><span class="line">| latin1_german1_ci        | latin1   |   5 |         | Yes      |       1 |</span><br><span class="line">| latin1_swedish_ci        | latin1   |   8 | Yes     | Yes      |       1 |</span><br><span class="line">| latin1_danish_ci         | latin1   |  15 |         | Yes      |       1 |</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li><p>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符序，则默认的字符集为该字符序所对应的字符集。</p>
-</li>
-<li><p>字符序表示的含义</p>
-</li>
-</ol>
-<ul>
-<li>一般来说分为三段，也存在一段或者两段的情况，常见的三段如<code>utf8mb4_general_ci</code>,两段的如<code>utf8mb4_bin</code>(<strong>这类情况，其实只存在第一段和第三段，第二段不存在</strong>)</li>
-<li>第一段代表字符集。</li>
-<li>第二段代表语言(chinese,swedish),也有general这种通用的，或者unicode类型。</li>
-<li>第三段代表是否敏感，是否为bin。</li>
-</ul>
-<ol start="4">
-<li>对于第三段的解释<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_ai	Accent insensitive</span><br><span class="line">_as	Accent sensitive</span><br><span class="line">_ci	Case insensitive</span><br><span class="line">_cs	case-sensitive</span><br><span class="line">_bin	Binary</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ul>
-<li>Accent是否为sensitive表现为，如果为sensitive，则比较a和á是不同的，如果为insensitive则a和á比较为相同。</li>
-<li>Case insensitive为大小写不敏感，case-sensitive为大小写敏感。</li>
-</ul>
-<h2 id="字符集和字符序的继承顺序"><a href="#字符集和字符序的继承顺序" class="headerlink" title="字符集和字符序的继承顺序"></a>字符集和字符序的继承顺序</h2><ol>
-<li>数据库服务，建库，建表，建字段，倘若其中有指定character和collation，则<code>字段</code>继承<code>表</code>，<code>表</code>继承<code>库</code>，<code>库</code>继承<code>数据库服务</code>。比如建库指定了字符集为utf8，那么该库下面的表如果不指定字符集，则表的字符集也为utf8，char、varchar、text的字段字符集也是utf8。</li>
-<li><strong>有个例外，如果修改了表， 那么该表下面的字段的字符集和字符序也会变成表的字符集和字符序。</strong></li>
-</ol>
-<h2 id="修改查看字符集命令："><a href="#修改查看字符集命令：" class="headerlink" title="修改查看字符集命令："></a>修改查看字符集命令：</h2><ul>
-<li><p>修改运行环境：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET character_set_server = utf8mb4</span><br><span class="line">set character_set_connection = utf8mb4</span><br><span class="line">set character_set_database = utf8mb4</span><br><span class="line">set character_set_results = utf8mb4</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改库:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ALTER DATABASE dbname CHARACTER SET utf8mb4 COLLATE  utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句 </span><br><span class="line">show create database dbname;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li>修改表:  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. dir varchar(255) -&gt; varchar(191)  mysql5.6的版本需要修改。不保证所有版本都需要修改。</span><br><span class="line">ALTER TABLE dir_stats MODIFY dir VARCHAR(191);</span><br><span class="line">2. 修改字段类型utf8mb4</span><br><span class="line">alter table tablename convert to character set utf8mb4 collate utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句</span><br><span class="line">SHOW FULL COLUMNS FROM dbname.tablename;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html" target="_blank" rel="noopener">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations" target="_blank" rel="noopener">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a><br><a href="https://dev.mysql.com/doc/refman/8.0/en/charset-database.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/charset-database.html</a><br><a href="http://zarez.net/?p=719" target="_blank" rel="noopener">http://zarez.net/?p=719</a></p>
-</blockquote>
+          Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。
+MariaDB version 10.1.36
+数据库分字符集(character)和字符序(collation)
 
-          
+character定义了字符以及字符的编码。
+collation定义了字符的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/10/mysql字符集字符序/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -570,16 +506,15 @@
       
         
           
-            <h2 id="scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。"><a href="#scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。" class="headerlink" title="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。"></a>scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%f&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 0.000000</span><br><span class="line">the number is 0.000000</span><br></pre></td></tr></table></figure>
-<p><strong>scanf()函数因为指向的是num的指针,所以不适用float promotions to double</strong></p>
-<p><strong>scanf()若使用double类型，必须写成”%lf”, 而printf()即便指定的是”%f”,也会自行提升成double类型。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%lf&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 1.000000</span><br><span class="line">the number is 1.000000</span><br></pre></td></tr></table></figure>
-<h2 id="integer-promotions"><a href="#integer-promotions" class="headerlink" title="integer-promotions"></a>integer-promotions</h2><p>refer:</p>
-<blockquote>
-<p><a href="https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c" target="_blank" rel="noopener">https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c</a><br><a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf" target="_blank" rel="noopener">http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf</a> [6.5.2.2 page-71]<br><a href="https://www.geeksforgeeks.org/integer-promotions-in-c/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/integer-promotions-in-c/</a></p>
-</blockquote>
-
-          
+          scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。12345678910111213#include &lt;stdio.h&gt;void main(void) &#123;    double num;    printf(&quot;input
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/08/Promotions-in-Program-C/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -707,60 +642,28 @@
       
         
           
-            <h2 id="基本数字类型"><a href="#基本数字类型" class="headerlink" title="基本数字类型"></a>基本数字类型</h2><h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><ul>
-<li>int</li>
-<li>long</li>
-<li>short</li>
-<li>unsigned</li>
-<li>char</li>
-<li>float</li>
-<li>double</li>
-<li>signed</li>
-<li>_Bool (c99加入的bool类型)</li>
-<li>_Complex (c99加入的复数类型)</li>
-<li>_Imaginary  (c99加入的虚数类型)</li>
-</ul>
-<h3 id="有符号整形"><a href="#有符号整形" class="headerlink" title="有符号整形"></a>有符号整形</h3><p><strong>有符号类型可用于表示正整数和负整数。</strong></p>
-<ul>
-<li><p>int 系统给定的基本整数类型，c语言规定int类型不小于<code>16位</code>。</p>
-</li>
-<li><p>short或short int 最大的shrot类型整数小于或等于最大的int类型整数。c语言规定short类型至少占<code>16位</code>。</p>
-</li>
-<li><p>long或long int 该类型可表示的整数大于或等于最大的int类型整数。c语言规定long类型至少占位<code>32位</code>。</p>
-</li>
-<li><p>long long或long long int 该类型可以表示的整数大于或等于最大的long类型整数。long long 类型至少占<code>64位</code>。</p>
-</li>
-</ul>
-<p><strong>一般而言，long类型的占用内存比short类型大，int类型的宽度要和和long类型相同，要么和short类型相同。</strong></p>
-<h3 id="无符号整形"><a href="#无符号整形" class="headerlink" title="无符号整形"></a>无符号整形</h3><p><strong>无符号整形只能用于表示零和正整数，因此<code>无符号整形可以表示的正整数比有符号整形的大</code>。在整形类型前面加上关键字<code>unsigned</code>表明该类型是无符号整形。单独的unsigned相当于unsigned int。</strong></p>
-<h3 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h3><p><strong>char类型实际上存储的是整数，而非字符。ASCII编码范围是<code>0~127</code>，所以只需要<code>7位</code>二进制数表示即可(这里不包含中文日文等特殊字符集)。char类型表示一个字符要占用<code>1个字节</code>内存，出于历史原因，一个字节通常是<code>8位</code>，但是如果要表示基本字符集，也可以是16位或更大。</strong></p>
-<ul>
-<li>char 字符类型的关键字，有些编译器使用有符号的char，而有些则使用无符号的char。在需要时，可以在char前面加上关键字signed或unsigned来指明，具体使用哪一种类型。</li>
-</ul>
-<h3 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h3><p><strong>布尔值表示<code>true</code>和<code>false</code>。c语言用1表示<code>true</code>，0表示<code>false</code></strong></p>
-<ul>
-<li>_Bool 布尔类型的关键字，c99加入。其类型为无符号int类型，所占用的个空间只要能存储0或者1即可。</li>
-</ul>
-<h3 id="实浮点类型-实数浮点类型"><a href="#实浮点类型-实数浮点类型" class="headerlink" title="实浮点类型(实数浮点类型)"></a>实浮点类型(实数浮点类型)</h3><p><strong>实浮点类型可以表示正浮点数和负浮点数。</strong></p>
-<ul>
-<li><p>float 系统基本浮点类型，可精确表示至少6位有效数字。</p>
-</li>
-<li><p>double 存储浮点数的范围更大，能表示比float类型更多的有效数字(至少15位)和更大的指数。</p>
-</li>
-<li><p>long long 存储浮点束的范围比double更大，能表示比double更多的有效数字和更大的指数。</p>
-</li>
-</ul>
-<h3 id="复数和虚数浮点数"><a href="#复数和虚数浮点数" class="headerlink" title="复数和虚数浮点数"></a>复数和虚数浮点数</h3><p><strong>虚数类型是可选的类型。复数的实部和虚部类型都基于<code>实浮点类型</code>来构成。</strong></p>
-<ul>
-<li>float _Complex</li>
-<li>double _Complex</li>
-<li>long double _Complex</li>
-<li>float _Imaginary</li>
-<li>double _Imaginary</li>
-<li>long double _Imaginary</li>
-</ul>
+          基本数字类型关键字
+int
+long
+short
+unsigned
+char
+float
+double
+signed
+_Bool (c99加入的bool类型)
+_Complex (c99加入的复数类型)
+_Imaginary  (c99加入的虚数类型)
 
-          
+有符号整形有符号类型可用于表示正整数和负整数
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/06/c语言基本数字类型/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -888,53 +791,16 @@
       
         
           
-            <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>安卓同事称代码调试访问test-material.aaa.tv/xxx/xxxx.png等图片资源的时候报错，报错信息类似如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.</span><br></pre></td></tr></table></figure>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>查看了安卓的开放文档，出现该报错主要由一下三种情况发生：</p>
-<ol>
-<li><a href="https://developer.android.google.cn/training/articles/security-ssl#UnknownCa" target="_blank" rel="noopener">颁发服务器证书的 CA 未知</a>。</li>
-<li><a href="https://developer.android.google.cn/training/articles/security-ssl#SelfSigned" target="_blank" rel="noopener">服务器证书不是由 CA 签署的，而是自签署</a>。</li>
-<li><a href="https://developer.android.google.cn/training/articles/security-ssl#MissingCa" target="_blank" rel="noopener">服务器配置缺少中间 CA</a>。</li>
-</ol>
-<p>首先排除第一点和第二点，证书是购买的赛门铁克。</p>
-<p>然后去<a href="https://www.ssllabs.com/ssltest/" target="_blank" rel="noopener">ssllabs</a>网站测试<code>test-material.aaa.tv</code>域名支持的https建联加密方式<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywswiz7etj21ia0iiabj.jpg" alt=""></p>
-<p>起先怀疑是安卓可能使用了SSL3的加密方式进行https简练握手，后来确认安卓使用版本之后排除了该情况。</p>
-<p>接着使用浏览器访问资源查看发现存在中间CA证书，但用域名检测网站的时候提示不含中间CA证书。于是乎又抓了一个安卓端可以显示的图片的域名来测试，在测试网站上也是属于不包含中间CA证书的情况。</p>
-<p>两者的区别是，无法建联的域名是阿里云上的，能建联显示图片的域名是腾讯云上的。</p>
-<p>当时很纳闷，后来查阅资料得知不同软件或者设备会有不同的行为，有些即便不存在中间CA也会帮忙代理查找。</p>
-<p>安卓(其他苹果设备应该也是如此)自身会信任一些根证书，可能安卓去“解析”test-material.aaa.tv这个域名的时候得到的根证书，并不在信任证书里面，从而导致https建联失败。</p>
-<p>于是发现安卓的确是存在信任一些列证书的情况：<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt2cigk2j20f00qoam5.jpg" alt=""></p>
-<p>然后来获取下test-material.aaa.tv的根证书情况，自然，在浏览器端获取到的可能是浏览器帮助代理请求获得的。得在服务器端用命令去查看，命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl s_client -connect test-material.aaa.tv:443 -servername test-material.aaa.tv</span><br></pre></td></tr></table></figure>
-<p><strong>-connect 检测的域名，后面跟随ssl端口号</strong><br><strong>-servername 指定SNI(Server Name Indication)，因为可能存在多个域名对应一张证书的情况，比如买的证书是一级域名和二级域名都可以使用这种情况，那么需要指定具体的域名。</strong></p>
-<p>SNI (Server Name Indication)是用来改善服务器与客户端 SSL (Secure Socket Layer)和 TLS (Transport Layer Security) 的一个扩展。主要解决一台服务器只能使用一个证书(一个域名)的缺点，随着服务器对虚拟主机的支持，一个服务器上可以为多个域名提供服务，因此SNI必须得到支持才能满足需求。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt3e8uucj21yw0dk7h4.jpg" alt=""><br><em>上图已经修复问题，修复之前只有条目0，不包含条目1。</em></p>
-<ul>
-<li>红框信息：</li>
-</ul>
-<ol>
-<li>起始证书是C=CN/L=xxxxx(后面一大串)，然后C=CN/L=xxxxx(后面一大串)这个证书又是由GeoTrust Inc./CN=GeoTrust SSL CA - G3颁发。</li>
-</ol>
-<ul>
-<li>修复问题之前只有条目0,没有条目1，然后在安卓信任证书列表里面查不到关于信任GeoTrust Inc./CN=GeoTrust SSL CA - G3这个证书的条目。所以建联无法通过了。</li>
-</ul>
-<ol start="2">
-<li>GeoTrust SSL CA - G3又是由Geo Trust Inc./CN=Geo Trust Global CA颁发。</li>
-</ol>
-<p><strong>修复问题之后可以在安卓端信任列表里面查到存在Geo Trust Global CA证书条目，所以建联成功了。</strong></p>
-<h2 id="问题解决方法："><a href="#问题解决方法：" class="headerlink" title="问题解决方法："></a>问题解决方法：</h2><p>中间证书CA没配置导致，上阿里云后台，查看该域名对应的证书，发现的确只有本机CA证书，没有配置中间证书CA，重新配置上后，问题解决，安卓端建联正常。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://developer.android.google.cn/training/articles/security-ssl.html#MissingCa" target="_blank" rel="noopener">https://developer.android.google.cn/training/articles/security-ssl.html#MissingCa</a><br><a href="http://blog.csdn.net/makenothing/article/details/53292335" target="_blank" rel="noopener">http://blog.csdn.net/makenothing/article/details/53292335</a></p>
-</blockquote>
-<p>证书检测地址:</p>
-<blockquote>
-<p><a href="https://www.ssllabs.com/ssltest/analyze.html" target="_blank" rel="noopener">https://www.ssllabs.com/ssltest/analyze.html</a></p>
-</blockquote>
-<h2 id="安卓文档对于缺失中间证书的描述"><a href="#安卓文档对于缺失中间证书的描述" class="headerlink" title="安卓文档对于缺失中间证书的描述:"></a>安卓文档对于缺失中间证书的描述:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">有趣的是，在大多数桌面浏览器中访问此服务器不会引发完全未知的 CA 或自签署服务器证书所引发的类似错误。这是因为大多数桌面浏览器都会将可信的中间 CA 缓存一段时间。当浏览器从某个网站访问和了解中间 CA 后，下次它就不需要将中间 CA 添加在证书链中。</span><br><span class="line"></span><br><span class="line">有些网站会专门为提供资源的辅助网络服务器这样做。例如，他们可能让具有完整证书链的服务器提供主 HTML 页面，让不包含 CA 的服务器提供图像、CSS 或 JavaScript 等资源，以节省带宽。遗憾的是，这些服务器有时候可能会提供您正在尝试从 Android 应用调用的网络服务，这一点让人难以接受。</span><br><span class="line"></span><br><span class="line">可以通过两种方法解决此问题：</span><br><span class="line"></span><br><span class="line">配置服务器以便在服务器链中添加中间 CA。大多数 CA 都可以提供有关如何为所有常用网络服务器执行此操作的文档。如果您需要网站至少通过 Android 4.2 使用默认 Android 浏览器，那么这是唯一的方法。</span><br><span class="line">或者，像对待其他任何未知 CA 一样对待中间 CA，并创建一个 TrustManager 以直接信任它，如前面的两部分中所述。</span><br></pre></td></tr></table></figure>
-<h2 id="查看证书到期时间："><a href="#查看证书到期时间：" class="headerlink" title="查看证书到期时间："></a>查看证书到期时间：</h2><p>openssl s_client -connect <a href="http://www.icoinbay.com:443" target="_blank" rel="noopener">www.icoinbay.com:443</a> -servername <a href="http://www.icoinbay.com" target="_blank" rel="noopener">www.icoinbay.com</a> 2&gt;/dev/null |openssl x509 -noout -dates </p>
-
-          
+          问题描述安卓同事称代码调试访问test-material.aaa.tv/xxx/xxxx.png等图片资源的时候报错，报错信息类似如下：
+1javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorExcepti
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/06/未配置中间证书CA引起的安卓端无法通过https建联加载图片案例/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1062,58 +928,15 @@
       
         
           
-            <h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
-<p>排查经过：</p>
-<ol>
-<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
-<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
-<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
-</ol>
-<p>这下懵圈了</p>
-<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
-<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
-<p>最后是找到了这篇文章：</p>
-<blockquote>
-<p><a href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable" target="_blank" rel="noopener">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
-</blockquote>
-<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
-<ul>
-<li>这个文件的数量改动后立马生效，不需要重启</li>
-<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
-</ul>
-<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>在centos7上</p>
-<ul>
-<li>获取当前进程数：<code>cat /sys/fs/cgroup/pids/pids.current</code>   类似使用<code>ps -ef | wc -l</code></li>
-<li>获取当前<strong>线程数和进程数</strong>总和：<code>wc -l /sys/fs/cgroup/pids/tasks</code>  类似使用<code>ps -eLf | wc -l</code></li>
-</ul>
-<p>centos7上也是可以实现pid.max：<br>只需要在/sys/fs/cgroup/pids/下创建以为目录，则该目录中就会自动创建pid.max：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote test]# pwd</span><br><span class="line">/sys/fs/cgroup/pids/test</span><br><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br></pre></td></tr></table></figure></p>
-<p>对当前shell交互进程限制</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br><span class="line">[root@leanote test]# cat cgroup.procs </span><br><span class="line">[root@leanote test]# echo $$</span><br><span class="line">14514</span><br><span class="line">[root@leanote test]# echo 14514 &gt; cgroup.procs </span><br><span class="line">[root@leanote test]# echo 1 &gt; pids.max </span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: Resource temporarily unavailable</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: retry: No child processes</span><br></pre></td></tr></table></figure>
-<ul>
-<li>给pid.max输入1后，直接就出<code>-bash: fork: retry: No child processes</code>报错了。</li>
-<li>pid.max只会对cgroup.procs中存在的进程进行pid.max限制。</li>
-<li>当进程消失后,cgroup.procs中的进程号也会自动消失。</li>
-</ul>
-<p>在上一级不存在pid.max是因为对整个系统没必要做限制。<br>Ubuntu系统上<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code>这个其实是对用户编号为0的用户进行了pid.max的限制。</p>
-<p>refer:</p>
-<p>知乎上看到有个小伙伴也遇到这个问题了</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
-</blockquote>
-<p>fork的文档</p>
-<blockquote>
-<p><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
-</blockquote>
-<p>cgroup介绍</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007241437" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007241437</a><br><a href="https://mccxj.github.io/blog/20171230_os-thread-limit.html" target="_blank" rel="noopener">https://mccxj.github.io/blog/20171230_os-thread-limit.html</a></p>
-</blockquote>
-<p>cgroup 进程数限制</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007468509" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007468509</a></p>
-</blockquote>
-
-          
+          修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource tempo
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1241,34 +1064,16 @@
       
         
           
-            <h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
-<p><em>python3中已经取消了sort()函数中cmp参数</em></p>
-<p>python中sort()函数用来排序，其中有个key的参数，十分神奇。</p>
-<p>我对key参数的理解是：<br><strong>这个key是构造了一个全新的对象，对这些全新的对象进行比较排序，然后再根据结果，对原先的对象进行排序。</strong></p>
-<h2 id="字典value排序"><a href="#字典value排序" class="headerlink" title="字典value排序:"></a>字典value排序:</h2><p>比如很常用的，对一个字典进行value排序：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;1: &apos;c&apos;, 2:&apos;d&apos;, 3: &apos;b&apos;, 4: &apos;a&apos;&#125;</span><br><span class="line"></span><br><span class="line">def sort_value(x):</span><br><span class="line">    return x[1]</span><br><span class="line"></span><br><span class="line">print(sorted(d.items(), key=sort_value))</span><br></pre></td></tr></table></figure></p>
-<p><code>d.items</code>得到dict_items([(1, ‘c’), (2, ‘d’), (3, ‘b’), (4, ‘a’)])，其挨个传入到key对应的sort_value函数中，返回索引为1的值，也就是value的值，然后对这个新对象进行排序，最终以新对象排序的结果来输出d.items()的排序。</p>
-<p>将sort_value函数写成lambda则：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sorted(d.items(), key=lambda x :x[1]))</span><br></pre></td></tr></table></figure></p>
-<h2 id="字符串内容重新排序"><a href="#字符串内容重新排序" class="headerlink" title="字符串内容重新排序:"></a>字符串内容重新排序:</h2><p>对字符串”hUangYisan6749”重新排序，要求:</p>
-<ol>
-<li>数字在最前面，偶数在奇数前面。</li>
-<li>字符串在数字后面，大写字母在小写字母后面。</li>
-</ol>
-<p>思路：</p>
-<ol>
-<li>字符串挨个拆出来。</li>
-<li>构造一个元组，能够符合上述需求，然后排序的。<strong>元组的排序是从首个元素逐一排序的，碰到首元素一样，则比第二个元素</strong></li>
-</ol>
-<p>先确定一个通用的元组，总共是四种类型，奇数偶数，大写小写。<br>例：偶数，奇数，大写，小写(1,0,0,0)，比如这样就表示该字符为偶数。</p>
-<p><strong>由于默认sorted排序是从小到大，所以根据需求，得写成小写，大写，奇数，偶数的方式(或者加上reverse=True)</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def custom_order(x):</span><br><span class="line">    if x.islower():</span><br><span class="line">        return 1,0,0,0,x</span><br><span class="line">    if x.isupper():</span><br><span class="line">        return 0,1,0,0,x</span><br><span class="line">    if x.isdigit() and int(x) % 2 == 0:</span><br><span class="line">        return 0,0,1,0,x</span><br><span class="line">    else:</span><br><span class="line">        return 0,0,0,1,x</span><br></pre></td></tr></table></figure>
-<p>当对比相同的时候，会索引+1比较，所以return不能漏掉x，因为当前面四位全部相等的时候，要比较x。</p>
-<p>那么代码可以写成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mystring = &quot;hUangYisan6749&quot;</span><br><span class="line">def custom_order(x):</span><br><span class="line">    if x.islower():</span><br><span class="line">        return 1,0,0,0,x</span><br><span class="line">    if x.isupper():</span><br><span class="line">        return 0,1,0,0,x</span><br><span class="line">    if x.isdigit() and int(x) % 2 == 0:</span><br><span class="line">        return 0,0,1,0,x</span><br><span class="line">    else:</span><br><span class="line">        return 0,0,0,1,x</span><br><span class="line"></span><br><span class="line">print(&quot;&quot;.join(sorted(mystring,key=custom_order)))</span><br><span class="line"></span><br><span class="line">7946UYaaghinns</span><br></pre></td></tr></table></figure></p>
-<p>refer:</p>
-<blockquote>
-<p><a href="http://python.jobbole.com/85025/" target="_blank" rel="noopener">http://python.jobbole.com/85025/</a></p>
-</blockquote>
-
-          
+          sort()函数12345Help on method_descriptor:sort(...)    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*(END)
+python3中已经取消了sort()函数中cm
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/29/sort函数中key的理解/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1396,34 +1201,17 @@
       
         
           
-            <h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
-<p>示例:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
-<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
-<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
-<p>然后手工验证了下两者的情况：</p>
-<ul>
-<li><p>split(“ “)的情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>split()的情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查了下split()的用法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
-<ol>
-<li>以任何whitespace字符串作为分隔符。</li>
-<li>除所有的empty string。</li>
-</ol>
-<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
-</blockquote>
-
-          
+          一道领扣的题给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。如果不存在最后一个单词，请返回 0 。说明：一个单词是指由字母组成，但不包含任何空格的字符串。
+示例:12输入: &quot;Hello World&quot;输出: 5
+写出的其中一种答案是：123456789
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/29/split函数/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1551,47 +1339,17 @@
       
         
           
-            <p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
-<p>先说udev服务，然后再看问题产生的原因。</p>
-<h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure></p>
-<p>在centos7中为system-udevd进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><p>udev的作用是：<br><code>man udev</code><br>receives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.<br>当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。</p>
-</li>
-<li><p>udev rules文件存在位置：</p>
-</li>
-</ul>
-<ol>
-<li>system rules directory: /usr/lib/udev/rules.d</li>
-<li>volatile runtime directory: /run/udev/rules.d</li>
-<li>local administration directory: /etc/udev/rules.d</li>
-</ol>
-<ul>
-<li>udev读取文件规则：</li>
-</ul>
-<ol>
-<li>读取这些目录下以.rules为后缀的文件。</li>
-<li>文件先后顺序和其所在目录无关，和文件的名称顺序有关。</li>
-<li>若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr</li>
-</ol>
-<ul>
-<li>udev进行网卡重命名<blockquote>
-<p><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a></p>
-</blockquote>
-</li>
-</ul>
-<p><strong>优先查询的是<code>/usr/lib/udev/rules.d/60-net.rules</code>配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
-<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现<code>/usr/lib/udev/rules.d/60-net.rules</code>文件内已经存在了bond1的配置，而bond0的配置写到了<code>/etc/udev/rules.d/70-persistent-net.rules</code>里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
-<p>其实centos7已经不用<code>70-persistent-net.rules</code>这个文件了，在centos6中，删除了<code>70-persistent-net.rules</code>文件，他会通过<code>/lib/udev/write_net_rules</code>文件来生成，但centos7已经不存在该文件了，centos7是使用<code>/lib/udev/rename_device</code>文件来生成<code>/usr/lib/udev/rules.d/60-net.rules</code>。</p>
-<h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ip link set eth1 down</span><br><span class="line">/sbin/ip link set eth1 name eth123</span><br><span class="line">/sbin/ip link set eth123 up</span><br></pre></td></tr></table></figure>
-<p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://www.freedesktop.org/software/systemd/man/udev.html#" target="_blank" rel="noopener">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
-</blockquote>
-
-          
+          客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我这边接手擦屁股。
+先说udev服务，然后再看问题产生的原因。
+system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/27/centos7网卡改名/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1719,68 +1477,15 @@
       
         
           
-            <p>这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在/etc/profile里面是添加了JAVA_HOME。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@ccc bin]# sudo ./catalina.sh start</span><br><span class="line">Neither the JAVA_HOME nor the JRE_HOME environment variable is defined</span><br><span class="line">At least one of these environment variable is needed to run this program</span><br><span class="line">[root@ccc bin]# tail -n 5 /etc/profile</span><br><span class="line"></span><br><span class="line">export JAVA_HOME=/tool/jdk1.8.0_144</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">export JAVA_HOME CLASSPATH PATH</span><br></pre></td></tr></table></figure></p>
-<p>如此如此，出现了两个疑问。</p>
-<ol>
-<li>为什么/etc/profile的内容无法被加载？</li>
-<li>在/etc/profile里面写入jdk环境变量是否合适？</li>
-</ol>
-<h2 id="为什么-etc-profile的内容无法被加载？"><a href="#为什么-etc-profile的内容无法被加载？" class="headerlink" title="为什么/etc/profile的内容无法被加载？"></a>为什么/etc/profile的内容无法被加载？</h2><p>先说下一个概念，linux的用户交互模式。在linux中用户交互模式可以分为两类：</p>
-<ol>
-<li>Interactive Shell</li>
-<li>Non-Interactive Shell</li>
-</ol>
-<p>Interactive Shell 顾名思义，就是登陆用户可以和shell进行交互的，比如你用xshell上一台服务器，出现的terminal就是属于Interactive Shell方式。<br>Non-Interactive Shell 非交互的模式，比如用crontab的方式执行一个shell脚本。</p>
-<p>那么问题就来了，这两种模式的环境变量从哪里去获取呢？</p>
-<ol>
-<li>Interactive Shell登录情况</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">execute /etc/profile</span><br><span class="line">IF ~/.bash_profile exists THEN</span><br><span class="line">    execute ~/.bash_profile</span><br><span class="line">ELSE</span><br><span class="line">    IF ~/.bash_login exist THEN</span><br><span class="line">        execute ~/.bash_login</span><br><span class="line">    ELSE</span><br><span class="line">        IF ~/.profile exist THEN</span><br><span class="line">            execute ~/.profile</span><br><span class="line">        END IF</span><br><span class="line">    END IF</span><br><span class="line">END IF</span><br></pre></td></tr></table></figure>
-<p><strong>一目了然，入口为/etc/profile文件</strong>。<br>其中在.bash_profile里面还判断是否存在~/.bashrc，如果存在则加载~/.bashrc。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if [ -f ~/.bashrc ]; then</span><br><span class="line">        . ~/.bashrc</span><br></pre></td></tr></table></figure>
-<p>还没完，在执行~/.bashrc的时候里面继续判断是否存在/etc/bashrc，如果存在则执行/etc/bashrc。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if [ -f /etc/bashrc ]; then</span><br><span class="line">        . /etc/bashrc</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p>顺带一说，当用户退出Interactive Shell的时候，执行~/.bash_logout内容。所以可以在退出的时候定义一些行为。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IF ~/.bash_logout exists THEN</span><br><span class="line">    execute ~/.bash_logout</span><br><span class="line">END IF</span><br></pre></td></tr></table></figure>
-<h3 id="总结下Interactive-Shell的顺序："><a href="#总结下Interactive-Shell的顺序：" class="headerlink" title="总结下Interactive Shell的顺序："></a>总结下Interactive Shell的顺序：</h3><ol>
-<li>/etc/profile</li>
-<li>~/.bash_profile</li>
-<li>~/.bashrc</li>
-<li>/etc/bashrc</li>
-<li>~/.bash_login</li>
-<li>~/.profile</li>
-<li>~/.bash_logout (当且仅当退出Interactive Shell的时候执行)</li>
-</ol>
-<ol start="2">
-<li>Non-Interactive Shell的情况</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IF ~/.bashrc exists THEN</span><br><span class="line">    execute ~/.bashrc</span><br><span class="line">END IF</span><br></pre></td></tr></table></figure>
-<p>直接去执行的~/.bashrc，该文件也会判断是否存在/etc/bashrc，存在则执行/etc/bashrc。</p>
-<h3 id="总结下Non-Interactive-Shell的顺序："><a href="#总结下Non-Interactive-Shell的顺序：" class="headerlink" title="总结下Non-Interactive Shell的顺序："></a>总结下Non-Interactive Shell的顺序：</h3><ol>
-<li>~/.bashrc</li>
-<li>/etc/bashrc</li>
-</ol>
-<p><strong>看似原因好像是因为<code>sudo ./catalina.sh start</code>进入了Non-Interactive Shell，从而没加载/etc/profile，其实并不是这样的。</strong><br><strong>sudo在这边搞出了幺蛾子？</strong></p>
-<h3 id="sudo做了啥？"><a href="#sudo做了啥？" class="headerlink" title="sudo做了啥？"></a>sudo做了啥？</h3><p>命令输入visudo，有那么一节内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Preserving HOME has security implications since many programs</span><br><span class="line"># use it when searching for configuration files. Note that HOME</span><br><span class="line"># is already set when the the env_reset option is enabled, so</span><br><span class="line"># this option is only effective for configurations where either</span><br><span class="line"># env_reset is disabled or HOME is present in the env_keep list.</span><br><span class="line">#</span><br><span class="line">Defaults    always_set_home</span><br><span class="line"></span><br><span class="line">Defaults    env_reset</span><br><span class="line">Defaults    env_keep =  &quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS_COLORS&quot;</span><br><span class="line">Defaults    env_keep += &quot;MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE&quot;</span><br><span class="line">Defaults    env_keep += &quot;LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES&quot;</span><br><span class="line">Defaults    env_keep += &quot;LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE&quot;</span><br><span class="line">Defaults    env_keep += &quot;LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>其行为会将env reset，但是会保留部分环境变量。这一行为导致了<code>sudo ./catalina.sh start</code>无法寻找到jdk变量。</strong></p>
-<p>比较差劲的解决方法：<br>man一下sudo，有个-E的参数，能保留之前的环境变量，但是不推荐这样做，因为有安全隐患：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-E          The -E (preserve environment) option indicates to the security policy that the user wishes to preserve their existing</span><br><span class="line">            environment variables.  The security policy may return an error if the -E option is specified and the user does not have</span><br><span class="line">            permission to preserve the environment.</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@ccc bin]# sudo -E ./catalina.sh start</span><br><span class="line">Using CATALINA_BASE:   /opt/mixcdn-tomcat</span><br><span class="line">Using CATALINA_HOME:   /opt/mixcdn-tomcat</span><br><span class="line">Using CATALINA_TMPDIR: /opt/mixcdn-tomcat/temp</span><br><span class="line">Using JRE_HOME:        /tool/jdk1.8.0_144</span><br><span class="line">Using CLASSPATH:       /opt/mixcdn-tomcat/bin/bootstrap.jar:/opt/mixcdn-tomcat/bin/tomcat-juli.jar</span><br><span class="line">Tomcat started.</span><br></pre></td></tr></table></figure>
-<p>好的解决方法在下面：</p>
-<h2 id="在-etc-profile里面写入jdk环境变量是否合适？"><a href="#在-etc-profile里面写入jdk环境变量是否合适？" class="headerlink" title="在/etc/profile里面写入jdk环境变量是否合适？"></a>在/etc/profile里面写入jdk环境变量是否合适？</h2><p>针对部署tomcat的jdk环境，很多文档，包括我自己，之前也是从别人那边拿来的部署jdk文档，将jdk环境变量写入/etc/profile，等文件中，这个观念基本上贯穿了我整个运维生涯。</p>
-<p>其实官方给出了写法，在catalina.sh里面:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># Control Script for the CATALINA Server</span><br><span class="line">#</span><br><span class="line"># Environment Variable Prerequisites</span><br><span class="line">#</span><br><span class="line">#   Do not set the variables in this script. Instead put them into a script</span><br><span class="line">#   setenv.sh in CATALINA_BASE/bin to keep your customizations separate.</span><br><span class="line">#</span><br><span class="line">#   CATALINA_HOME   May point at your Catalina &quot;build&quot; directory.</span><br><span class="line">#</span><br><span class="line">#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions</span><br><span class="line">#                   of a Catalina installation.  If not present, resolves to</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">...</span><br><span class="line">.</span><br><span class="line"># Ensure that any user defined CLASSPATH variables are not used on startup,</span><br><span class="line"># but allow them to be specified in setenv.sh, in rare case when it is needed.</span><br><span class="line">CLASSPATH=</span><br><span class="line"></span><br><span class="line">if [ -r &quot;$CATALINA_BASE/bin/setenv.sh&quot; ]; then</span><br><span class="line">  . &quot;$CATALINA_BASE/bin/setenv.sh&quot;</span><br><span class="line">elif [ -r &quot;$CATALINA_HOME/bin/setenv.sh&quot; ]; then</span><br><span class="line">  . &quot;$CATALINA_HOME/bin/setenv.sh&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">...</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<p>就是在tomcat/bin目录下面，写入一个setenv.sh文件里面写入需要的环境变量，当运行catalina.sh启动脚本的时候，其会进行执行该setenv.sh文件，当前我的版本是1.8，非特殊情况其已经不需要写入CLASSPATH。(据说jdk1.5之后就不需要写入CLASSPATH了。)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@ccc bin]# cat setenv.sh</span><br><span class="line">export JAVA_HOME=/tool/jdk1.8.0_144</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure>
-<p>多看官方文档，多看服务自带脚本还是非常有必要的。</p>
-<p>Refer:</p>
-<blockquote>
-<p><a href="https://www.thegeekstuff.com/2008/10/execution-sequence-for-bash_profile-bashrc-bash_login-profile-and-bash_logout/" target="_blank" rel="noopener">https://www.thegeekstuff.com/2008/10/execution-sequence-for-bash_profile-bashrc-bash_login-profile-and-bash_logout/</a><br><a href="https://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/" target="_blank" rel="noopener">https://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/</a><br><a href="https://stackoverflow.com/questions/8633461/how-to-keep-environment-variables-when-using-sudo" target="_blank" rel="noopener">https://stackoverflow.com/questions/8633461/how-to-keep-environment-variables-when-using-sudo</a><br><a href="https://segmentfault.com/q/1010000011528636/a-1020000011538128" target="_blank" rel="noopener">https://segmentfault.com/q/1010000011528636/a-1020000011538128</a></p>
-</blockquote>
-<p>下次写sudo su两个命令。</p>
-
-          
+          这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在/etc/profile里面是添加了JAVA_HOME。123456789[root@ccc bin]# sudo ./catalina.sh startNeithe
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/25/从无法加载JAVA-HOME说起/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1908,66 +1613,19 @@
       
         
           
-            <h2 id="git的工作区和暂存区"><a href="#git的工作区和暂存区" class="headerlink" title="git的工作区和暂存区"></a>git的工作区和暂存区</h2><p>先说下这两个概念：<br><strong>工作区</strong>，就是你git仓库的目录，你进行修改文件的区域。<br><strong>暂存区</strong>，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为<strong>暂存区</strong>。</p>
-<p>工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:</p>
-<ol>
-<li>修改代码文件   </li>
-<li><code>git add 修改后的代码文件</code>   <strong>此刻的行为将该代码文件从工作区添加到了暂存区</strong></li>
-<li><code>git commit -m &#39;commit 内容&#39;</code>  <strong>此刻的行为把暂存区的内容提交到了本地分支上</strong></li>
-</ol>
-<p>最后的<code>git push</code>操作只是一个将本地分支推送到远端的行为，所以先不考虑进去，只考前面三点。</p>
-<p>查看工作区和暂存区常用的命令为<code>git status</code></p>
-<p>一般常见的是如下三种情况：</p>
-<ol>
-<li><p>在工作区<strong>新建</strong>了文件或目录，但还未将这些文件或目录<code>git add</code>提交到暂存区。这些文件或目录被标记为<strong>untracked files</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ touch foo bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line">	foo</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对修改后的文件进行了<code>git add</code>操作，将这些文件提交到了暂存区，但未执行<code>git commit -m &#39;xxx&#39;</code>，未提交到本地分支。此时文件属于<code>Changes to be committed</code>状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对已经<code>git add</code>操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行<code>git add</code>，此时文件属于<code>Changes not staged for commit</code>状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>已经commit到本地分支的文件，且该文件在工作区没被修改之前，其不会在git status中出现。</p>
-</li>
-</ol>
-<h2 id="git-checkout-–-file"><a href="#git-checkout-–-file" class="headerlink" title="git checkout – file"></a>git checkout – file</h2><p>两种情况</p>
-<ol>
-<li>若被checkout的文件在暂存区，但工作区修改了，也就是上面的<strong>第三种</strong>情况，此时执行该命令，被checkout的文件变成和暂存区一样的状态和内容。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;first line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>将foo文件写入’first line’内容后，用<code>git add foo</code>，提交到了暂存区，未commit情况下，再写入新内容’new line’,若想还原到暂存区状态，则使用命令<code>git checkout -- foo</code></p>
-<ol start="2">
-<li>被修改文件不在暂存区，此时使用<code>git checkout -- file</code>命令，则该文件和当前版本仓库中原先的文件一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>干净的工作区，修改了foo文件，然后进行checkout操作之后，foo文件还原成了仓库中该文件原先的状态和内容。</p>
-<h2 id="git-clean"><a href="#git-clean" class="headerlink" title="git clean"></a>git clean</h2><p>git clean 的对象为<strong>untracked files</strong>，也就是在工作区<strong>新建</strong>，但还未执行<code>git add</code>命令提交到暂存区的文件或目录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ touch new1 new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ mkdir &#123;tmp1,tmp2&#125;</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new1 new2 tmp1 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -n</span><br><span class="line">Would remove new1</span><br><span class="line">Would remove new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f new1</span><br><span class="line">Removing new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df tmp1</span><br><span class="line">Removing tmp1/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new2 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f</span><br><span class="line">Removing new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df</span><br><span class="line">Removing tmp2/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br></pre></td></tr></table></figure></p>
-<p><code>git clean -n</code>，干跑模式，可以列出哪些文件会被清除，但不会列出哪些目录会被清除。<br><code>git clean -f</code>，若指定文件，则该文件被清除，若不指定文件，则所有未被提交到暂存区的文件都被清除。<br><code>git clean -df</code>，若指定目录，则该目录被清除，若不指定目录，则所有未被提交到暂存区的目录都被清除。</p>
-<h2 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h2><p><code>git rm</code>等价于<code>rm xxx &amp;&amp; git add .</code>。<br>如果一个文件是被rm删除，则可以使用<code>git checkout -- file</code>将文件还原回来，而如果是用<code>git rm</code>删除，则该文件不可以被<code>git checkout -- file</code>。当然，如果是rm文件，然后git add操作，也是不能被<code>git checkout -- file</code>还原回来的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ rm foo</span><br><span class="line">remove foo? y</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git rm foo</span><br><span class="line">rm &apos;foo&apos;</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">error: pathspec &apos;foo&apos; did not match any file(s) known to git.</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br></pre></td></tr></table></figure></p>
-<p>foo文件起先被rm删除，并未提交到暂存区，所以是可以被checkout还原，后来执行了git rm，所以当使用checkout还原的时候就报错了。</p>
-<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>三种模式</p>
-<ol>
-<li>–mixed 默认方式，将暂存区内容清空，回退到工作区，并且保留工作区的修改内容。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset HEAD</span><br><span class="line">Unstaged changes after reset:</span><br><span class="line">M	foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
-<p>暂存区被清空，工作区的更变被保留下来，foo文件存在new line这行内容。</p>
-<ol start="2">
-<li>–soft  暂存区内容，工作区内容都被保留，HEAD指向指定的commit号，该commit号原先的文件若有变动，则直接被add到暂存区。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">e5ca64a (HEAD -&gt; master) 1</span><br><span class="line">0ba0aa5 1</span><br><span class="line">ebaa828 1</span><br><span class="line">a2f32c5 1</span><br><span class="line">8f89d40 update</span><br><span class="line">be60bed 1</span><br><span class="line">bb51c34 .</span><br><span class="line">df8f824 update</span><br><span class="line">4dbd952 update</span><br><span class="line">9e683fb 1</span><br><span class="line">79dfad8 1</span><br><span class="line">3e58cef add 1</span><br><span class="line">94e5bf4 remove</span><br><span class="line">02aadbb ok</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset --soft 8f89d40</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	deleted:    bar</span><br><span class="line">	new file:   foo</span><br></pre></td></tr></table></figure>
-<p>将foo的改动add到暂存区后，使用<code>git reset --soft 8f89d40</code>，8f89d40这个commit号原先是存在bar这个文件，且foo文件不存在，因为reset之前的内容和之后的比较出现了差异，则这些差异被add到了新的暂存区中。</p>
-<ol start="3">
-<li>–hard  HEAD重置到指定commit号，且清空暂存区，工作区的内容和该commit号版本仓库的内容一致。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git reset --hard HEAD</span><br><span class="line">HEAD is now at 14d3892 1</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-<p>暂存区被清空，工作区内容成了当前commit号版本仓库的内容，也就是没修改之前的内容，foo文件不存在new line行。<br><strong>但若工作区存在Untracked files，则这些Untracked files会携带进入到指定的commit号版本仓库的工作区中，所以要恢复到和某个commit号完全一致，还需要git clean -f清空Untracked files。</strong></p>
-<p><strong>git reset会将HEAD指向的分支指向reset对应的commit，而git checkout是HEAD直接指向对应的commit。</strong><br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg" alt=""></p>
-<h2 id="git-revert"><a href="#git-revert" class="headerlink" title="git revert"></a>git revert</h2><p>仅将某个commit号提交分支的内容撤销，且将此次撤销作为一个新的提交。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">145af31 (HEAD -&gt; master) add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git revert c11842d</span><br><span class="line">[master 19e736c] Revert &quot;add bar&quot;</span><br><span class="line"> 1 file changed, 0 insertions(+), 0 deletions(-)</span><br><span class="line"> delete mode 100644 bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">19e736c (HEAD -&gt; master) Revert &quot;add bar&quot;</span><br><span class="line">145af31 add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br></pre></td></tr></table></figure>
-<p>c11842d是将bar文件提交到了分支，当执行<code>git revert c11842d</code>,则撤销了提交bar文件到分支，所以执行完后，bar文件不见了，但foo文件依旧存在，所以revert只影响了被撤销的commit的变更内容，而且看git log，多了一个新的commit提交号19e736c。</p>
+          git的工作区和暂存区先说下这两个概念：工作区，就是你git仓库的目录，你进行修改文件的区域。暂存区，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为暂存区。
+工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:
 
-          
+修改代码文件   
+git add 修改后的代码文件   
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/22/git-clean-rm-reset-revert-checkout用法和区别/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

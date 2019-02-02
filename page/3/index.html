@@ -365,27 +365,16 @@
       
         
           
-            <h2 id="getchar-返回类型声明为int类型"><a href="#getchar-返回类型声明为int类型" class="headerlink" title="getchar()返回类型声明为int类型"></a>getchar()返回类型声明为int类型</h2><p>getchar()函数从文本流读入下一个输入字符，并且作为结果返回。</p>
-<p>一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c != EOF) &#123;</span><br><span class="line">        putchar(c);</span><br><span class="line">        c = getchar();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>起先没搞明白为什么对c的声明是int类型，而不是char类型。</p>
-<p>后来查阅资料得知，char类型的声明，会根据不同的编译器，或者不同的架构平台，可能成为unsigned char或者是signed char类型。</p>
-<p>如果是unsigned char类型，<strong>占8位，一个字节，其范围为0000 0000 ~ 1111 1111，即0 ~ 255</strong>，那么无法存储EOF这个结束符，<strong>EOF可以理解为数值-1(C89, C99, C11并没有给EOF定义一个具体的值，只是说EOF是一个负值常量)</strong>。</p>
-<p>而当被作为signed char类型，虽然其取值范围为-128 ~ +127，虽然能够存储EOF这个结束符，看似正常，但在linux的环境，会混淆char 255和EOF，导致输入数据的截断。</p>
-<p>在linux平台运行以下程序</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    char c;</span><br><span class="line">    printf(&quot;Enter characters : &quot;);</span><br><span class="line">    while((c= getchar()) != EOF)&#123;</span><br><span class="line">      putchar(c);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果可以发现\0377后面部分没有被打印。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos ~]# gcc test.c &amp;&amp; echo -e &apos;Hello world\0377And some more&apos; | ./a.out</span><br><span class="line">Enter characters : Hello world[root@VM_31_91_centos ~]#</span><br></pre></td></tr></table></figure>
-<p><strong>getchar()和putchar()初始返回的值都为int类型。</strong><br><strong>对于getchar()函数返回值的声明使用int类型</strong></p>
-<h2 id="打印出EOF的值"><a href="#打印出EOF的值" class="headerlink" title="打印出EOF的值"></a>打印出EOF的值</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    </span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c == EOF) &#123;</span><br><span class="line">        </span><br><span class="line">        printf(&quot;this is the value of EOF:%d&quot;,c);</span><br><span class="line">        c = getchar();</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行程序，按<strong>CTRL+D发送EOF</strong>，查看得到的数值为-1。</p>
-<ul>
-<li>refer<blockquote>
-<p><a href="https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int" target="_blank" rel="noopener">https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int</a><br><a href="https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc" target="_blank" rel="noopener">https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc</a><br><a href="https://stackoverflow.com/questions/7119470/int-c-getchar" target="_blank" rel="noopener">https://stackoverflow.com/questions/7119470/int-c-getchar</a><br>The C Programming Language - By Kernighan and Ritchie</p>
-</blockquote>
-</li>
-</ul>
-
-          
+          getchar()返回类型声明为int类型getchar()函数从文本流读入下一个输入字符，并且作为结果返回。
+一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。123456789101112#include &lt;stdio.h&gt;int main (void)
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/20/getchar-存储类型/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -513,16 +502,18 @@
       
         
           
-            <h2 id="新式类"><a href="#新式类" class="headerlink" title="新式类"></a>新式类</h2><p><strong>python2.3以及之后的版本遵循的原则：C3 MRO</strong></p>
-<p>其遵循的原则为：<br><code>一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。</code></p>
-<p>自省方法<code>__mro__</code></p>
-<h2 id="存在共同父类的情况"><a href="#存在共同父类的情况" class="headerlink" title="存在共同父类的情况"></a>存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class D(object): pass</span><br><span class="line">class E(object): pass</span><br><span class="line">class F(object): pass</span><br><span class="line">class B(D, E): pass</span><br><span class="line">class C(D, F): pass</span><br><span class="line">class A(B, C): pass</span><br><span class="line">print(A.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.A&apos;&gt;, &lt;class &apos;__main__.B&apos;&gt;, &lt;class &apos;__main__.C&apos;&gt;, &lt;class &apos;__main__.D&apos;&gt;, &lt;class &apos;__main__.E&apos;&gt;, &lt;class &apos;__main__.F&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
-<p>顺序解释:<br><strong>这边需要注意的是B和C有相同的父类，所以B查询后直接查询的C。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">查询关系</span><br><span class="line">D --&gt; D,object</span><br><span class="line">E --&gt; E,object</span><br><span class="line">F --&gt; F,object</span><br><span class="line"></span><br><span class="line">B --&gt; B, D, E, ...., object</span><br><span class="line">C --&gt; C, D, F, ...., object</span><br><span class="line">A --&gt; A. B, C, ...., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; A, (B, D, E, ..., object), (C,D,F, ..., object)</span><br><span class="line">  B和C存在共同的父类，D，所以B和C是同一级别，查询顺序是A, B, C, 然后D,</span><br><span class="line">  --&gt; A, B, C, D (E, ..., object), (F, ..., object) </span><br><span class="line">  --&gt; A, B, C, D, E, F, object</span><br></pre></td></tr></table></figure>
-<h2 id="不存在共同父类的情况"><a href="#不存在共同父类的情况" class="headerlink" title="不存在共同父类的情况"></a>不存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class g(object): pass</span><br><span class="line">class f(object): pass</span><br><span class="line">class h(object): pass</span><br><span class="line">class i(object): pass</span><br><span class="line">class e(object): pass</span><br><span class="line">class d(h,i): pass</span><br><span class="line">class b(d,e): pass</span><br><span class="line">class c(f,g): pass</span><br><span class="line">class a(b,c): pass</span><br><span class="line">print(a.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.a&apos;&gt;, &lt;class &apos;__main__.b&apos;&gt;, &lt;class &apos;__main__.d&apos;&gt;, &lt;class &apos;__main__.h&apos;&gt;, &lt;class &apos;__main__.i&apos;&gt;, &lt;class &apos;__main__.e&apos;&gt;, &lt;class &apos;__main__.c&apos;&gt;, &lt;class &apos;__main__.f&apos;&gt;, &lt;class &apos;__main__.g&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
-<p>顺序解释：<br><strong>因为b和c不存在相同的父类，所以查询b查不到后直接查询b的父类。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">查询关系：</span><br><span class="line">g --&gt; g, object</span><br><span class="line">f --&gt; f, object</span><br><span class="line">h --&gt; h, object</span><br><span class="line">i --&gt; i, object</span><br><span class="line">e --&gt; e, object</span><br><span class="line"></span><br><span class="line">b --&gt; b, d, e, ..., object</span><br><span class="line">c --&gt; c, f, g, ..., object</span><br><span class="line">d --&gt; d, h, i, ..., object</span><br><span class="line"></span><br><span class="line">a --&gt; a, b, c, ..., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; a, (b, d, e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  将b带入后得到</span><br><span class="line">  --&gt; a, (b, (d, h, i, ..., object), e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  b和c没有共同的父类，所以直接查询了d，d后，查询他的继承，h，因为h最顶了，所以开始依次返回，查询其平级的i，然后折回到b中右边的e,然后再次返回到a中右边的c，然后查询c中的f,发现到顶了，则查询其平级的g，然后依次退出，发现直接查询完了全部，则查询object。</span><br></pre></td></tr></table></figure>
-          
+          新式类python2.3以及之后的版本遵循的原则：C3 MRO
+其遵循的原则为：一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。
+自省方法__mro__
+存在共同父类的情况123456789class D(object): passclass E(o
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/20/新式类的C3-MRO理解/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -650,23 +641,18 @@
       
         
           
-            <h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
-<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
-<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
-<blockquote>
-<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
-</blockquote>
-<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
-</blockquote>
-
-          
+          链式比较先来看一段代码:
+12&gt;&gt;&gt; 2 in [1,0] == FalseFalse
+起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。
+后来发现，这个其实是链式比较(chained comparison
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/18/True-or-False/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
