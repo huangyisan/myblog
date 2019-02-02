@@ -82,14 +82,14 @@
 <meta name="description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
 <meta name="keywords" content="python3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="setdefault方法">
+<meta property="og:title" content="setdefault方法传入函数">
 <meta property="og:url" content="https://kirakirazone.com/2019/02/01/setdefault方法/index.html">
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-02-01T10:10:05.936Z">
+<meta property="og:updated_time" content="2019-02-02T01:34:19.073Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="setdefault方法">
+<meta name="twitter:title" content="setdefault方法传入函数">
 <meta name="twitter:description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>setdefault方法 | Kirakirazone</title>
+  <title>setdefault方法传入函数 | Kirakirazone</title>
   
 
 
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">setdefault方法</h1>
+          <h1 class="post-title" itemprop="name headline">setdefault方法传入函数</h1>
         
 
         <div class="post-meta">
@@ -368,8 +368,16 @@
 <p>于是用了setdefault()方法，代码大致如下:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
 <p>因为func_api()函数会请求线上，调用接口。</p>
-<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
+<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
+<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
+<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
+<p>这样就避免了重复调用func的问题。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
+
       
     </div>
     
@@ -418,7 +426,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/02/01/setdefault方法/" title="setdefault方法">https://kirakirazone.com/2019/02/01/setdefault方法/</a>
+    <a href="https://kirakirazone.com/2019/02/01/setdefault方法/" title="setdefault方法传入函数">https://kirakirazone.com/2019/02/01/setdefault方法/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -626,7 +634,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#setdefault-方法"><span class="nav-number">1.</span> <span class="nav-text">setdefault()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">2.</span> <span class="nav-text">案例</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#setdefault-方法"><span class="nav-number">1.</span> <span class="nav-text">setdefault()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">2.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证猜测"><span class="nav-number">3.</span> <span class="nav-text">验证猜测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理方法"><span class="nav-number">4.</span> <span class="nav-text">处理方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li></ol></div>
             
 
           </div>
@@ -794,7 +802,7 @@
         var disqus_config = function () {
           this.page.url = 'https://kirakirazone.com/2019/02/01/setdefault方法/';
           this.page.identifier = '2019/02/01/setdefault方法/';
-          this.page.title = 'setdefault方法';
+          this.page.title = 'setdefault方法传入函数';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
