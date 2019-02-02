@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="案例经过在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个">
+<meta name="description" content="案例在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个准确">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kill -9 不起作用">
 <meta property="og:url" content="https://kirakirazone.com/2019/02/02/kill-9不起作用/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="案例经过在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个">
+<meta property="og:description" content="案例在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个准确">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-02-02T02:53:55.080Z">
+<meta property="og:updated_time" content="2019-02-02T09:36:38.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kill -9 不起作用">
-<meta name="twitter:description" content="案例经过在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个">
+<meta name="twitter:description" content="案例在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。 原因谷歌查询了下，得到了一个准确">
 
 
 
@@ -362,7 +362,7 @@
       
 
       
-        <h2 id="案例经过"><a href="#案例经过" class="headerlink" title="案例经过"></a>案例经过</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+        <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
 <h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
 <p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
 <p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
@@ -641,7 +641,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#案例经过"><span class="nav-number">1.</span> <span class="nav-text">案例经过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原因"><span class="nav-number">2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">3.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top-ps查看不可中断进程"><span class="nav-number">4.</span> <span class="nav-text">top ps查看不可中断进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态常见标记符"><span class="nav-number">5.</span> <span class="nav-text">进程状态常见标记符</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">1.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原因"><span class="nav-number">2.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">3.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top-ps查看不可中断进程"><span class="nav-number">4.</span> <span class="nav-text">top ps查看不可中断进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态常见标记符"><span class="nav-number">5.</span> <span class="nav-text">进程状态常见标记符</span></a></li></ol></div>
             
 
           </div>

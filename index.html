@@ -365,15 +365,30 @@
       
         
           
-          案例经过在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，umount命令下去，提示Device is busy，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/02/02/kill-9不起作用/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+</blockquote>
+
+          
         
       
     </div>
@@ -501,18 +516,23 @@
       
         
           
-          setdefault()方法myvalue = dict_a.setdefault(a,b)
-从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。
-案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。
-于是用了setdefaul
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/02/01/setdefault方法/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="setdefault-方法"><a href="#setdefault-方法" class="headerlink" title="setdefault()方法"></a>setdefault()方法</h2><p>myvalue = dict_a.setdefault(a,b)</p>
+<p>从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。</p>
+<p>于是用了setdefault()方法，代码大致如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
+<p>因为func_api()函数会请求线上，调用接口。</p>
+<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
+<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
+<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
+<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
+<p>这样就避免了重复调用func的问题。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
+
+          
         
       
     </div>
@@ -640,15 +660,21 @@
       
         
           
-          注入案例：12345678910111213141516import MySQLdbdb = MySQLdb.connect(host=&quot;localhost&quot;,user=&quot;&quot;,passwd=&quot;&quot;,db=&quot;&quot;)cur = 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/30/Python防注入/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="注入案例："><a href="#注入案例：" class="headerlink" title="注入案例："></a>注入案例：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import MySQLdb</span><br><span class="line"></span><br><span class="line">db = MySQLdb.connect(host=&quot;localhost&quot;,</span><br><span class="line">user=&quot;&quot;,</span><br><span class="line">passwd=&quot;&quot;,</span><br><span class="line">db=&quot;&quot;)</span><br><span class="line"></span><br><span class="line">cur = db.cursor()</span><br><span class="line"></span><br><span class="line">platform = input(&apos;Enter language: &apos;)</span><br><span class="line"></span><br><span class="line">cur.execute(&quot;SELECT * FROM platforms WHERE language = &apos;%s&apos;;&quot; % platform)</span><br><span class="line">for row in cur.fetchall():</span><br><span class="line">print(row)</span><br><span class="line"></span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
+<p>上述代码，让用户输入想查询的language，如果用户按套路，比如输入Ruby，则可以正常查询。</p>
+<p>执行代码为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM platforms WHERE language = &apos;Ruby&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>但如果搞事情输入Ruby’; DROP TABLE platforms;那么platforms表被删除。<br>执行代码为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM platforms WHERE language = &apos;Ruby&apos;; DROP TABLE platforms;&apos;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="防止sql注入"><a href="#防止sql注入" class="headerlink" title="防止sql注入"></a>防止sql注入</h2><p>代码改写为如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import MySQLdb</span><br><span class="line"></span><br><span class="line">db = MySQLdb.connect(host=&quot;localhost&quot;,</span><br><span class="line">user=&quot;&quot;,</span><br><span class="line">passwd=&quot;&quot;,</span><br><span class="line">db=&quot;&quot;)</span><br><span class="line"></span><br><span class="line">cur = db.cursor()</span><br><span class="line"></span><br><span class="line">platform = raw_input(&apos;Enter language: &apos;)</span><br><span class="line"></span><br><span class="line">cur.execute(&quot;SELECT * FROM platforms WHERE language = %s;&quot;, (platform,))</span><br><span class="line">for row in cur.fetchall():</span><br><span class="line">print (row)</span><br><span class="line"></span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure></p>
+<p>这边%s是占位符，和<strong>字符串format的方式不同，而且后面的元组前面也不需要%符号，即便是数字，也是用%s来占位。</strong></p>
+<h2 id="防sql原因"><a href="#防sql原因" class="headerlink" title="防sql原因"></a>防sql原因</h2><p>之所以能防sql是因为execute函数会对传入的args内容预处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def mogrify(self, query, args=None):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Returns the exact string that is sent to the database by calling the</span><br><span class="line">    execute() method.</span><br><span class="line"></span><br><span class="line">    This method follows the extension to the DB API 2.0 followed by Psycopg.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    conn = self._get_db()</span><br><span class="line">    if PY2:  # Use bytes on Python 2 always</span><br><span class="line">        query = self._ensure_bytes(query, encoding=conn.encoding)</span><br><span class="line"></span><br><span class="line">    if args is not None:</span><br><span class="line">        query = query % self._escape_args(args, conn)</span><br></pre></td></tr></table></figure></p>
+<p>execute后续调用一些函数，比如下面<code>escape_string</code>函数。(能力有限，前面几级调用不是非常看得懂。)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def escape_string(self, s):</span><br><span class="line">    if (self.server_status &amp;</span><br><span class="line">            SERVER_STATUS.SERVER_STATUS_NO_BACKSLASH_ESCAPES):</span><br><span class="line">        return s.replace(&quot;&apos;&quot;, &quot;&apos;&apos;&quot;)</span><br><span class="line">    return converters.escape_string(s)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://blog.sqreen.io/preventing-sql-injections-in-python/" target="_blank" rel="noopener">https://blog.sqreen.io/preventing-sql-injections-in-python/</a></p>
+</blockquote>
+
+          
         
       
     </div>
@@ -798,20 +824,18 @@
       
         
           
-          需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
-说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
-示例112输入: [2,2,1]输出: 1
-示例212输入: [4,1,2,1,2]输出: 4
-解题思路
-使用异或的方式，
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/28/LeetCode-只出现一次的数字/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
+<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
+<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
+<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+</ol>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>
+          
         
       
     </div>
@@ -961,20 +985,22 @@
       
         
           
-          需求给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。
-如果不存在最后一个单词，请返回 0 。
-说明一个单词是指由字母组成，但不包含任何空格的字符串。
-示例12输入: &quot;Hello World&quot;输出: 5
-解题思路
-两种情况，一种是为空，第二种是非空字符
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/24/LeetCode-最后一个单词的长度/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。</p>
+<p>如果不存在最后一个单词，请返回 0 。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>一个单词是指由字母组成，但不包含任何空格的字符串。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>两种情况，一种是为空，第二种是非空字符串。</li>
+<li>字符串为空，则直接返回0，非空字符串，则返回最后一个单词。</li>
+<li>python用split()方法，默认以空格，制表符等分割字符串，成为一个list。</li>
+</ol>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/length-of-last-word/submissions/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/submissions/</a></p>
+</blockquote>
+
+          
         
       
     </div>
@@ -1124,17 +1150,20 @@
       
         
           
-          需求实现 strStr() 函数。
-给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
-示例12输入: haystack = &quot;hello&quot;, nee
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/23/LeetCode-实现strStr/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
+<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
+<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
+</blockquote>
+
+          
         
       
     </div>
@@ -1262,17 +1291,21 @@
       
         
           
-          案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好
-然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。
-查看了下message日志：12345Jan 18 1
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/18/磁盘无法挂载/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
+<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
+<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
+<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
+<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
+<p>尝试了下，的确成功了。</p>
+<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
+<p>Bug ID: 1566088</p>
+<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+</blockquote>
+
+          
         
       
     </div>
@@ -1400,16 +1433,19 @@
       
         
           
-          is** is比较的对象为内存地址
-12345678&gt;&gt;&gt; a = [1,2,3]&gt;&gt;&gt; b = a[:]&gt;&gt;&gt; id(a)140379285741320&gt;&gt;&gt; id(b)140379285738696&gt;&gt;&gt; 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/17/is和==比较区别/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+            <h2 id="is"><a href="#is" class="headerlink" title="is"></a>is</h2><p>** is比较的对象为内存地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<h2 id=""><a href="#" class="headerlink" title="=="></a>==</h2><p>** ==比较的对象是值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a == b</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<h2 id="关于int类型的缓存"><a href="#关于int类型的缓存" class="headerlink" title="关于int类型的缓存"></a>关于int类型的缓存</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a = 1</span><br><span class="line">&gt;&gt;&gt; b = 1</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a = 999</span><br><span class="line">&gt;&gt;&gt; b = 999</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285517520</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285517584</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>上述当ab都等于1的时候，两者指向的内存地址一致，但当ab赋值了999后，两者指向的内存地址不一致。</p>
+<h2 id="产生的原因"><a href="#产生的原因" class="headerlink" title="产生的原因"></a>产生的原因</h2><p><strong>python对于int类型进行缓存，当int属于[-5, 256]范围的时候，会被缓存，倘若在这个区间进行赋值，则指向的内存地址都是一致的。</strong></p>
+<p>这个产生的原因比较复杂，<strong>倘若a和b都赋值在同一行，则两者is比较也是True</strong>，具体可以看refer。</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python" target="_blank" rel="noopener">https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python</a></p>
+</blockquote>
+
+          
         
       
     </div>
@@ -1537,20 +1573,25 @@
       
         
           
-          基本类型凡是基本类型，都是赋值。
-12345a = 1b = Nonec = True
-复合类型若是复合类型，都是地址指向。
-函数和类的赋值也是地址指向
-12345a = [1,2,3]b = &#123;&apos;a&apos;:1, &apos;b&apos;:1&#125;c = 函数，类
+            <h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><strong>凡是基本类型，都是赋值。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = 1</span><br><span class="line"></span><br><span class="line">b = None</span><br><span class="line"></span><br><span class="line">c = True</span><br></pre></td></tr></table></figure>
+<h2 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型"></a>复合类型</h2><p><strong>若是复合类型，都是地址指向。</strong></p>
+<p><strong>函数和类的赋值也是地址指向</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [1,2,3]</span><br><span class="line"></span><br><span class="line">b = &#123;&apos;a&apos;:1, &apos;b&apos;:1&#125;</span><br><span class="line"></span><br><span class="line">c = 函数，类</span><br></pre></td></tr></table></figure>
+<h2 id="验证方法"><a href="#验证方法" class="headerlink" title="验证方法"></a>验证方法</h2><p><strong>直接用id()看地址引用，如果原始对象改变后，其id()和赋值对象的id()不再一致，则为赋值，反之则是引用。</strong> </p>
+<ul>
+<li>验证基本类型：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a = 3</span><br><span class="line">&gt;&gt;&gt; b = a</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9413248</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9413248</span><br><span class="line">&gt;&gt;&gt; a = 4</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9413280</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9413248</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>给a第二次更变赋值为4后，b的id()和a的id()不同，所以是赋值</p>
+<ul>
+<li>验证复合类型：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">[1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140435242878376</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140435242878376</span><br><span class="line">&gt;&gt;&gt; a.append(1)</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140435242878376</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140435242878376</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>给a第二次更变赋值为4后，b的id()和a的id()相同，所以是地址引用。下面的类的例子也能看出是地址引用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class A(object):</span><br><span class="line">    def test(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">b = a</span><br><span class="line">print(id(a))</span><br><span class="line">print(id(b))</span><br><span class="line">a.value = 1</span><br><span class="line">print(id(a))</span><br><span class="line">print(b.value)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">140233133844240</span><br><span class="line">140233133844240</span><br><span class="line">140233133844240</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/17/是地址引用还是赋值操作/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
@@ -1678,20 +1719,31 @@
       
         
           
-          场景当时是想测试单台服务器，流量到某带宽值，cpu，内存，磁盘io的表现。现在单说iperf和nc的简单使用。
-iperf简单使用
-server端启用iperf -s
-client端连接server端，默认端口是5001,iperf -c ${server_ip} ${port}
+            <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>当时是想测试单台服务器，流量到某带宽值，cpu，内存，磁盘io的表现。<br>现在单说iperf和nc的简单使用。</p>
+<h1 id="iperf"><a href="#iperf" class="headerlink" title="iperf"></a>iperf</h1><h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><ol>
+<li>server端启用<code>iperf -s</code></li>
+<li>client端连接server端，默认端口是<code>5001</code>,<code>iperf -c ${server_ip} ${port}</code></li>
+</ol>
+<p>server端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700025 ~]# iperf -s</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Server listening on TCP port 5001</span><br><span class="line">TCP window size: 85.3 KByte (default)</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">[  4] local 10.8.199.17 port 5001 connected with 10.8.199.18 port 38008</span><br><span class="line">[ ID] Interval       Transfer     Bandwidth</span><br><span class="line">[  4]  0.0-10.0 sec  1.13 GBytes   971 Mbits/sec</span><br></pre></td></tr></table></figure></p>
+<p>client端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700026 ~]# iperf  -c 10.8.199.17 -p 5001</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Client connecting to 10.8.199.17, TCP port 5001</span><br><span class="line">TCP window size: 85.0 KByte (default)</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">[  3] local 10.8.199.18 port 38008 connected with 10.8.199.17 port 5001</span><br><span class="line">[ ID] Interval       Transfer     Bandwidth</span><br><span class="line">[  3]  0.0-10.0 sec  1.13 GBytes   973 Mbits/sec</span><br></pre></td></tr></table></figure></p>
+<p><strong>出来的结果直接是带宽，比如上面的是趋近于1000M带宽。</strong></p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><p>没有研究太多参数，更多参数可以<code>-h</code>查看。</p>
+<ul>
+<li>-b 指定带宽<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700026 ~]# iperf  -c 10.8.199.17 -p 5001 -b 500M</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Client connecting to 10.8.199.17, TCP port 5001</span><br><span class="line">TCP window size: 85.0 KByte (default)</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">[  3] local 10.8.199.18 port 38010 connected with 10.8.199.17 port 5001</span><br><span class="line">[ ID] Interval       Transfer     Bandwidth</span><br><span class="line">[  3]  0.0-10.0 sec   625 MBytes   524 Mbits/sec</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h1><h2 id="简单使用-1"><a href="#简单使用-1" class="headerlink" title="简单使用"></a>简单使用</h2><ol>
+<li>server端启用<code>nc -vvlnp ${server_port} &gt;/dev/null</code>，或者<code>-4</code>指定只使用ipv4的方式。</li>
+<li>client端连接<code>dd if=/dev/zero bs=1M count=1K | nc  ${server_ip} ${server_port}</code>，命令测试的是1G文件的下载速度。</li>
+</ol>
+<p>server端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700025 ~]# nc -vv4lnp 5001 &gt;/dev/null</span><br><span class="line">Ncat: Version 7.50 ( https://nmap.org/ncat )</span><br><span class="line">Ncat: Listening on 0.0.0.0:5001</span><br><span class="line">Ncat: Connection from 10.8.199.18.</span><br><span class="line">Ncat: Connection from 10.8.199.18:38410.</span><br><span class="line">NCAT DEBUG: Closing fd 4.</span><br></pre></td></tr></table></figure></p>
+<p>client端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700026 ~]# dd if=/dev/zero bs=1M count=1K | nc  10.8.199.17 5001</span><br><span class="line">1024+0 records in</span><br><span class="line">1024+0 records out</span><br><span class="line">1073741824 bytes (1.1 GB) copied, 8.7875 s, 122 MB/s</span><br></pre></td></tr></table></figure></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://askubuntu.com/questions/7976/how-do-you-test-the-network-speed-between-two-boxes" target="_blank" rel="noopener">https://askubuntu.com/questions/7976/how-do-you-test-the-network-speed-between-two-boxes</a></p>
+</blockquote>
 
-server端：
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/15/带宽测试/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
         
       
     </div>
