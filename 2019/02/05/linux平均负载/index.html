@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="linux平负载定义 单位时间内，处于运行或者准备运行(R)，以及不可中断睡眠进程(D)数量的平均值(指数平滑法)。 和cpu使用率没有直接关系。 负载上升，可能是cpu使用率过高，也可能是磁盘io问题。  平均负载算法其算法为指数平滑法，内核因为不可以直接做浮点运算，而选择定点运算的方式来计算指数平滑法。 指数平滑法公式：  linux 2.6.18内核 loadt = loadt-1  α +">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-02-05T05:16:04.080Z">
+<meta property="og:updated_time" content="2019-02-05T05:37:22.675Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux平均负载">
 <meta name="twitter:description" content="linux平负载定义 单位时间内，处于运行或者准备运行(R)，以及不可中断睡眠进程(D)数量的平均值(指数平滑法)。 和cpu使用率没有直接关系。 负载上升，可能是cpu使用率过高，也可能是磁盘io问题。  平均负载算法其算法为指数平滑法，内核因为不可以直接做浮点运算，而选择定点运算的方式来计算指数平滑法。 指数平滑法公式：  linux 2.6.18内核 loadt = loadt-1  α +">
@@ -375,7 +375,7 @@
 <li><p>linux 3.12内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α) + z，[0 &lt; α &lt; 1]    <em>3.12内核增加了修正值z。</em></p>
 </li>
 </ol>
-<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sub>-5/(60<em>m)</em></sub><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
+<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sup>-5/(60<em>m)</em></sup><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
 <p>参考文档:</p>
 <blockquote>
 <p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
