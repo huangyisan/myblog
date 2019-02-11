@@ -315,7 +315,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-11T17:22:38+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-11T13:22:38+08:00">
                 2019-02-11
               </time>
             
@@ -366,7 +366,15 @@
         
           
           kernel 3.10.0-693.2.2.el7.x86_64
-tcp_max_syn_backlogThe maximum number of queued connection    requests which have still not received an acknowledgeme
+两个队列tcp的建联存在两种状态
+
+incomplete connection queue  未建联的队列
+completed connection queue   已建联的队列
+
+
+未建联的队列
+
+客户端发出syn请求，并且已经达到
           ...
           <!--noindex-->
           <div class="post-button text-center">
