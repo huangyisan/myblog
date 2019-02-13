@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[二叉树种类和遍历]]></title>
     <url>%2F2019%2F02%2F12%2F%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86%2F</url>
-    <content type="text"><![CDATA[二叉树种类 full binary tree complete binary tree perfect binary tree infinite complete binary tree balanced binary tree degenerate tree 遍历方式 前序遍历(深度优先) 中序遍历(深度优先) 后序遍历(深度优先) 层级遍历(广度优先) refer https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/]]></content>
+    <content type="text"><![CDATA[二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。 full binary tree complete binary tree perfect binary tree infinite complete binary tree balanced binary tree degenerate tree 遍历方式 前序遍历(深度优先) 中序遍历(深度优先) 后序遍历(深度优先) 层级遍历(广度优先) refer https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/]]></content>
       <tags>
         <tag>python3</tag>
         <tag>algorithm</tag>
