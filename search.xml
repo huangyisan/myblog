@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[二叉树种类和遍历]]></title>
     <url>%2F2019%2F02%2F12%2F%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86%2F</url>
-    <content type="text"><![CDATA[二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。 full binary tree complete binary tree perfect binary tree infinite complete binary tree balanced binary tree degenerate tree 遍历方式 前序遍历(深度优先) 中序遍历(深度优先) 后序遍历(深度优先) 层级遍历(广度优先) refer https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/]]></content>
+    <content type="text"><![CDATA[二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。 rooted binary tree 存在根节点，并且每个节点都有2个子节点。 full binary tree 每个节点只有0个或者2个子节点。 complete binary tree 除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。 perfect binary tree 内节点都有两个子节点，且所有子叶都处于同一级别。 infinite complete binary tree every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum 我的理解就是无穷尽的rooted binray tree balanced binary tree 左右子树高度差不超过1 且左右子树各自均为平衡二叉树 degenerate tree 每个节点只包含一个子节点。 遍历方式 前序遍历(深度优先) 中序遍历(深度优先) 后序遍历(深度优先) 层级遍历(广度优先) refer https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_treeshttps://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/]]></content>
       <tags>
         <tag>python3</tag>
         <tag>algorithm</tag>

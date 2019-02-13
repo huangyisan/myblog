@@ -79,24 +79,23 @@
 
 
 
-<meta name="description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  full binary tree complete binary tree perfect binary tree infinite complete binary tree balanced binary tree degenerate tree  遍历方式 前序遍历(深度优先)    中序遍历(深度优先)   后序遍历(深">
+<meta name="description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  rooted binary tree 存在根节点，并且每个节点都有2个子节点。   full binary tree 每个节点只有0个或者2个子节点。   complete binary tree 除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。   perfect binary t">
 <meta name="keywords" content="python3,algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二叉树种类和遍历">
 <meta property="og:url" content="https://kirakirazone.com/2019/02/12/二叉树种类和遍历/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  full binary tree complete binary tree perfect binary tree infinite complete binary tree balanced binary tree degenerate tree  遍历方式 前序遍历(深度优先)    中序遍历(深度优先)   后序遍历(深">
+<meta property="og:description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  rooted binary tree 存在根节点，并且每个节点都有2个子节点。   full binary tree 每个节点只有0个或者2个子节点。   complete binary tree 除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。   perfect binary t">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg =100x100">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg">
-<meta property="og:updated_time" content="2019-02-13T02:37:40.824Z">
+<meta property="og:updated_time" content="2019-02-13T08:05:08.321Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树种类和遍历">
-<meta name="twitter:description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  full binary tree complete binary tree perfect binary tree infinite complete binary tree balanced binary tree degenerate tree  遍历方式 前序遍历(深度优先)    中序遍历(深度优先)   后序遍历(深">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg =100x100">
+<meta name="twitter:description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  rooted binary tree 存在根节点，并且每个节点都有2个子节点。   full binary tree 每个节点只有0个或者2个子节点。   complete binary tree 除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。   perfect binary t">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
 
 
 
@@ -370,29 +369,52 @@
       
         <h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
 <ol>
-<li>full binary tree</li>
-<li>complete binary tree</li>
-<li>perfect binary tree</li>
-<li>infinite complete binary tree</li>
-<li>balanced binary tree</li>
-<li>degenerate tree</li>
+<li>rooted binary tree<ul>
+<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
+</ul>
+</li>
+<li>full binary tree<ul>
+<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
+</ul>
+</li>
+<li>complete binary tree<ul>
+<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
+</ul>
+</li>
+<li>perfect binary tree<ul>
+<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
+</ul>
+</li>
+<li>infinite complete binary tree<ul>
+<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
+<li>我的理解就是无穷尽的rooted binray tree</li>
+</ul>
+</li>
+<li>balanced binary tree<ul>
+<li>左右子树高度差不超过1</li>
+<li>且左右子树各自均为平衡二叉树</li>
+</ul>
+</li>
+<li>degenerate tree<ul>
+<li>每个节点只包含一个子节点。</li>
+</ul>
+</li>
 </ol>
 <h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><ol>
-<li>前序遍历(深度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg =100x100" alt=""></li>
+<li>前序遍历(深度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></li>
 </ol>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="drawing" width="200"></p>
 <ol start="2">
-<li>中序遍历(深度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt=""></li>
+<li>中序遍历(深度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></li>
 </ol>
 <ol start="3">
-<li>后序遍历(深度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt=""></li>
+<li>后序遍历(深度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></li>
 </ol>
 <ol start="4">
-<li>层级遍历(广度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt=""></li>
+<li>层级遍历(广度优先)<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></li>
 </ol>
 <p>refer</p>
 <blockquote>
-<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a></p>
+<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a></p>
 </blockquote>
 
       
