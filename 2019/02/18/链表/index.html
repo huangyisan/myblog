@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aenkj7b8j20bc015t8h.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepbxd64j209q01o742.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepjmdd9j20gy015t8i.jpg">
-<meta property="og:updated_time" content="2019-02-18T03:47:43.070Z">
+<meta property="og:updated_time" content="2019-02-18T04:36:45.355Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表">
 <meta name="twitter:description" content="链表定义链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer) 链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。 链表常见结构 单链表   第一个节点称之为头节点，最后一个称之为尾节点。 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。 单链表只能单方向遍">
@@ -388,17 +388,21 @@
 <ul>
 <li>双向链表有两个连接，一个指向前一个节点(若是头节点，则指向NULL)，另外一个指向下一个节点(若是尾节点，则指向NULL)。</li>
 </ul>
-<h2 id="链表的查找、插入、删除"><a href="#链表的查找、插入、删除" class="headerlink" title="链表的查找、插入、删除"></a>链表的查找、插入、删除</h2><h3 id="插入删除行为"><a href="#插入删除行为" class="headerlink" title="插入删除行为"></a>插入删除行为</h3><ol>
+<h2 id="链表的查找、插入、删除"><a href="#链表的查找、插入、删除" class="headerlink" title="链表的查找、插入、删除"></a>链表的查找、插入、删除</h2><h3 id="插入删除行为复杂度"><a href="#插入删除行为复杂度" class="headerlink" title="插入删除行为复杂度"></a>插入删除行为复杂度</h3><ol>
 <li>对于数组而言，因为需要保证内存空间的连续性，当插入或者删除的时候，需要对数据进行搬迁(比如插入第二个位置，则原本第二个位置的数据”搬迁”到第三个位置，原本第三个位置的数据”搬迁”到第四个位置，以此类推)，这样才能保证连续,所以其时间复杂度为O(n)。</li>
-<li>对链表而言，因为无需考虑数据的搬迁，只需要改变前后节点指针的指向，所以其时间复杂度为O(1)。</li>
+<li>对链表而言，因为无需考虑数据的搬迁，只需要改变前后节点指针，所以其时间复杂度为O(1)。</li>
 </ol>
-<h3 id="查询行为"><a href="#查询行为" class="headerlink" title="查询行为"></a>查询行为</h3><h2 id="链表和数组"><a href="#链表和数组" class="headerlink" title="链表和数组"></a>链表和数组</h2><ul>
+<h3 id="查询行为复杂度"><a href="#查询行为复杂度" class="headerlink" title="查询行为复杂度"></a>查询行为复杂度</h3><ol>
+<li>数组查询分两种，一种是根据下标索引查询，一种是查询具体数据，如果是第一种，则可以通过首地址和下标通过寻址公式查询得到，时间复杂度为O(1)，但第二种查询具体数据，则是O(n)。</li>
+<li>链表的查询则因为需要依次遍历，所以其查询复杂度为O(n)。</li>
+</ol>
+<h2 id="链表和数组"><a href="#链表和数组" class="headerlink" title="链表和数组"></a>链表和数组</h2><ul>
 <li>数组需要一块<strong>连续的内存空间</strong>。如果连续空间不足以被申请，即便总内存足够，也会创建数组失败。</li>
 <li>链表不需要连续的内存空间，他通过指针将一组零散的内存块串联起来。</li>
 </ul>
 <p>refer</p>
 <blockquote>
-<p><a href="https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8</a><br><a href="https://www.cnblogs.com/springfor/p/3985333.html" target="_blank" rel="noopener">https://www.cnblogs.com/springfor/p/3985333.html</a></p>
 </blockquote>
 
       
@@ -657,7 +661,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表定义"><span class="nav-number">1.</span> <span class="nav-text">链表定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表常见结构"><span class="nav-number">2.</span> <span class="nav-text">链表常见结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表的查找、插入、删除"><span class="nav-number">3.</span> <span class="nav-text">链表的查找、插入、删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入删除行为"><span class="nav-number">3.1.</span> <span class="nav-text">插入删除行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询行为"><span class="nav-number">3.2.</span> <span class="nav-text">查询行为</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表和数组"><span class="nav-number">4.</span> <span class="nav-text">链表和数组</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表定义"><span class="nav-number">1.</span> <span class="nav-text">链表定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表常见结构"><span class="nav-number">2.</span> <span class="nav-text">链表常见结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表的查找、插入、删除"><span class="nav-number">3.</span> <span class="nav-text">链表的查找、插入、删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入删除行为复杂度"><span class="nav-number">3.1.</span> <span class="nav-text">插入删除行为复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询行为复杂度"><span class="nav-number">3.2.</span> <span class="nav-text">查询行为复杂度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表和数组"><span class="nav-number">4.</span> <span class="nav-text">链表和数组</span></a></li></ol></div>
             
 
           </div>
