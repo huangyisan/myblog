@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="原始文件redis.conf内容：1234567891011121314151617input &amp;#123;  redis &amp;#123;    host =&amp;gt; &amp;quot;127.0.0.1:6379&amp;quot;    key =&amp;gt; &amp;quot;logstash:demo&amp;quot;    data_type =&amp;gt; &amp;quot;list&amp;quot;    codec =&amp;gt;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-02-27T02:58:56.565Z">
+<meta property="og:updated_time" content="2019-02-27T03:05:20.635Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sed的一些操作">
 <meta name="twitter:description" content="原始文件redis.conf内容：1234567891011121314151617input &amp;#123;  redis &amp;#123;    host =&amp;gt; &amp;quot;127.0.0.1:6379&amp;quot;    key =&amp;gt; &amp;quot;logstash:demo&amp;quot;    data_type =&amp;gt; &amp;quot;list&amp;quot;    codec =&amp;gt;">
@@ -388,7 +388,11 @@
 <li><p>注意点<br><strong>如果变量存在特殊符号，比如<code>/</code>，那么此时这个符号会影响sed的分隔符，需要将sed分隔符替换成其他的。</strong></p>
 </li>
 </ul>
-
+<h2 id="sed对软连文件进行操作"><a href="#sed对软连文件进行操作" class="headerlink" title="sed对软连文件进行操作"></a>sed对软连文件进行操作</h2><p><strong>sed对<code>软连文件</code>进行操作，倘若不指定<code>--follow-symlinks</code>，则软连文件和原始文件会被拆分,原始文件不会被修改，而软连的文件会被修改，且变成一个独立文件。</strong></p>
+<p>sed操作没有指定<code>--follow-symlinks</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 16 Feb 27 10:58 redis.conf -&gt; /root/redis.conf</span><br><span class="line">[root@leanote conf]# sed -i &apos;/key/&#123;n;s/&apos;$&#123;beitihuan&#125;&apos;/&apos;$&#123;tihuan&#125;&apos;/;&#125;&apos; redis.conf </span><br><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 248 Feb 27 11:00 redis.conf</span><br></pre></td></tr></table></figure>
+<p>sed操作指定<code>--follow-symlinks</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote conf]# sed -i --follow-symlinks &apos;/key/&#123;n;s/&apos;$&#123;beitihuan&#125;&apos;/&apos;$&#123;tihuan&#125;&apos;/;&#125;&apos; redis.conf</span><br><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 16 Feb 27 11:02 redis.conf -&gt; /root/redis.conf</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -645,7 +649,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原始文件redis-conf内容："><span class="nav-number">1.</span> <span class="nav-text">原始文件redis.conf内容：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取sed匹配内容的下一行"><span class="nav-number">2.</span> <span class="nav-text">获取sed匹配内容的下一行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#替换sed匹配行内容的下一行的指定内容"><span class="nav-number">3.</span> <span class="nav-text">替换sed匹配行内容的下一行的指定内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed内容存在变量情况"><span class="nav-number">4.</span> <span class="nav-text">sed内容存在变量情况</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原始文件redis-conf内容："><span class="nav-number">1.</span> <span class="nav-text">原始文件redis.conf内容：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取sed匹配内容的下一行"><span class="nav-number">2.</span> <span class="nav-text">获取sed匹配内容的下一行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#替换sed匹配行内容的下一行的指定内容"><span class="nav-number">3.</span> <span class="nav-text">替换sed匹配行内容的下一行的指定内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed内容存在变量情况"><span class="nav-number">4.</span> <span class="nav-text">sed内容存在变量情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed对软连文件进行操作"><span class="nav-number">5.</span> <span class="nav-text">sed对软连文件进行操作</span></a></li></ol></div>
             
 
           </div>
