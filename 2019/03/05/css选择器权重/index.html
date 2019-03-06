@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="CSS选择器类型 id选择器#id  12345&amp;lt;div id=&amp;quot;mySelector&amp;quot;&amp;gt;this is id selector&amp;lt;/div&amp;gt;#mySelector&amp;#123;    color: #ff4400;&amp;#125;  class选择器.class  12345&amp;lt;div class=&amp;quot;myClass&amp;quot;&amp;gt;this i">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-03-06T08:34:21.724Z">
+<meta property="og:updated_time" content="2019-03-06T08:46:08.668Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSS选择器权重">
 <meta name="twitter:description" content="CSS选择器类型 id选择器#id  12345&amp;lt;div id=&amp;quot;mySelector&amp;quot;&amp;gt;this is id selector&amp;lt;/div&amp;gt;#mySelector&amp;#123;    color: #ff4400;&amp;#125;  class选择器.class  12345&amp;lt;div class=&amp;quot;myClass&amp;quot;&amp;gt;this i">
@@ -394,6 +394,18 @@
 <li>组选择器<br><code>element,element1,element2</code></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;this is div&lt;/div&gt;</span><br><span class="line">&lt;span&gt;this is span&lt;/span&gt;</span><br><span class="line">&lt;p&gt;this is p&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">div,</span><br><span class="line">span,</span><br><span class="line">p&#123;</span><br><span class="line">    color:yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="CSS选择器优先级"><a href="#CSS选择器优先级" class="headerlink" title="CSS选择器优先级"></a>CSS选择器优先级</h2><p>优先级高的覆盖优先级低的样式。<br>!important &gt; 行间样式(直接元素内写style=xxx的方式) &gt; id &gt; class | 属性 &gt; 标签选择器 &gt; 通配符<br>其规则其实是由选择器权重实现的。</p>
+<h2 id="CSS选择器权重"><a href="#CSS选择器权重" class="headerlink" title="CSS选择器权重"></a>CSS选择器权重</h2><p>权重大的覆盖权重小的，不同的选择器有不同的权重。</p>
+<ul>
+<li>!important  Infinity</li>
+<li>行间样式   1000</li>
+<li>id        100</li>
+<li>class | 属性 | 伪类   10</li>
+<li>标签 | 伪元素  1</li>
+<li>通配符 0</li>
+</ul>
+<p><strong>进制据说是265。</strong></p>
+
       
     </div>
     
@@ -650,7 +662,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS选择器类型"><span class="nav-number">1.</span> <span class="nav-text">CSS选择器类型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS选择器类型"><span class="nav-number">1.</span> <span class="nav-text">CSS选择器类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS选择器优先级"><span class="nav-number">2.</span> <span class="nav-text">CSS选择器优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS选择器权重"><span class="nav-number">3.</span> <span class="nav-text">CSS选择器权重</span></a></li></ol></div>
             
 
           </div>
