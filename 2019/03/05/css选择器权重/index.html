@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="CSS选择器类型*">
+<meta name="description" content="CSS选择器类型 id选择器#id  12345&amp;lt;div id=&amp;quot;mySelector&amp;quot;&amp;gt;this is id selector&amp;lt;/div&amp;gt;#mySelector&amp;#123;    color: #ff4400;&amp;#125;  class选择器.class  12345&amp;lt;div class=&amp;quot;myClass&amp;quot;&amp;gt;this i">
 <meta name="keywords" content="前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSS选择器权重">
 <meta property="og:url" content="https://kirakirazone.com/2019/03/05/css选择器权重/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="CSS选择器类型*">
+<meta property="og:description" content="CSS选择器类型 id选择器#id  12345&amp;lt;div id=&amp;quot;mySelector&amp;quot;&amp;gt;this is id selector&amp;lt;/div&amp;gt;#mySelector&amp;#123;    color: #ff4400;&amp;#125;  class选择器.class  12345&amp;lt;div class=&amp;quot;myClass&amp;quot;&amp;gt;this i">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-03-05T09:58:45.355Z">
+<meta property="og:updated_time" content="2019-03-06T08:34:21.724Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSS选择器权重">
-<meta name="twitter:description" content="CSS选择器类型*">
+<meta name="twitter:description" content="CSS选择器类型 id选择器#id  12345&amp;lt;div id=&amp;quot;mySelector&amp;quot;&amp;gt;this is id selector&amp;lt;/div&amp;gt;#mySelector&amp;#123;    color: #ff4400;&amp;#125;  class选择器.class  12345&amp;lt;div class=&amp;quot;myClass&amp;quot;&amp;gt;this i">
 
 
 
@@ -362,8 +362,38 @@
       
 
       
-        <h2 id="CSS选择器类型"><a href="#CSS选择器类型" class="headerlink" title="CSS选择器类型"></a>CSS选择器类型</h2><p>* </p>
-
+        <h2 id="CSS选择器类型"><a href="#CSS选择器类型" class="headerlink" title="CSS选择器类型"></a>CSS选择器类型</h2><ul>
+<li>id选择器<br><code>#id</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;mySelector&quot;&gt;this is id selector&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#mySelector&#123;</span><br><span class="line">    color: #ff4400;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>class选择器<br><code>.class</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;myClass&quot;&gt;this is class selector&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">.myClass&#123;</span><br><span class="line">    color:#F10882;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><em>选择器<br>`</em>`</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">    font-style: italic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>元素选择器<br><code>element</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;this is p&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">p&#123;</span><br><span class="line">    color:green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伪类<br><code>:hover</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;https://www.baidu.com&quot;&gt;www.baidu.com&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">a:hover&#123;</span><br><span class="line">    background-color: #f40;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>父子选择器<br><code>element element</code><br><code>element&gt;element</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;p&gt;this is p in div&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">div p&#123;</span><br><span class="line">    color:#ff4400;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">div&gt;p&#123;</span><br><span class="line">    color:green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>属性选择器<br><code>[attribute=value]</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;myclass&quot;&gt;this is div&lt;/div&gt;</span><br><span class="line">[class=myclass]&#123;</span><br><span class="line">    color: #ff4400;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>组选择器<br><code>element,element1,element2</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;this is div&lt;/div&gt;</span><br><span class="line">&lt;span&gt;this is span&lt;/span&gt;</span><br><span class="line">&lt;p&gt;this is p&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">div,</span><br><span class="line">span,</span><br><span class="line">p&#123;</span><br><span class="line">    color:yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     

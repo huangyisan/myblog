@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[CSS选择器权重]]></title>
     <url>%2F2019%2F03%2F05%2Fcss%E9%80%89%E6%8B%A9%E5%99%A8%E6%9D%83%E9%87%8D%2F</url>
-    <content type="text"><![CDATA[CSS选择器类型*]]></content>
+    <content type="text"><![CDATA[CSS选择器类型 id选择器#id 12345&lt;div id=&quot;mySelector&quot;&gt;this is id selector&lt;/div&gt;#mySelector&#123; color: #ff4400;&#125; class选择器.class 12345&lt;div class=&quot;myClass&quot;&gt;this is class selector&lt;/div&gt;.myClass&#123; color:#F10882;&#125; 选择器`` 123* &#123; font-style: italic;&#125; 元素选择器element 12345&lt;p&gt;this is p&lt;/p&gt;p&#123; color:green;&#125; 伪类:hover 12345&lt;a href=&quot;https://www.baidu.com&quot;&gt;www.baidu.com&lt;/a&gt;a:hover&#123; background-color: #f40;&#125; 父子选择器element elementelement&gt;element 1234567891011&lt;div&gt; &lt;p&gt;this is p in div&lt;/p&gt;&lt;/div&gt;div p&#123; color:#ff4400;&#125;div&gt;p&#123; color:green;&#125; 属性选择器[attribute=value] 1234&lt;div class=&quot;myclass&quot;&gt;this is div&lt;/div&gt;[class=myclass]&#123; color: #ff4400;&#125; 组选择器element,element1,element2 123456789&lt;div&gt;this is div&lt;/div&gt;&lt;span&gt;this is span&lt;/span&gt;&lt;p&gt;this is p&lt;/p&gt;div,span,p&#123; color:yellow;&#125;]]></content>
       <tags>
         <tag>前端</tag>
       </tags>
