@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
+<meta name="description" content="问题描述 直接迭代对象删除列表中所有的数字4。  1234567w = [1,2,3,4,4,5,6]for i in w:    if i == 4:        w.remove(i)print(w)[1, 2, 3, 4, 5, 6] 输出结果中，并没有删除所有的数字4。  使用len()方式删除列表中所有的数字4。  12345678w = [1,2,3,4,4,5,6]for i in">
 <meta name="keywords" content="python3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="setdefault方法传入函数">
-<meta property="og:url" content="https://kirakirazone.com/2019/02/01/setdefault方法/index.html">
+<meta property="og:title" content="python增删可迭代对象">
+<meta property="og:url" content="https://kirakirazone.com/2019/03/08/python增删可迭代对象/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
+<meta property="og:description" content="问题描述 直接迭代对象删除列表中所有的数字4。  1234567w = [1,2,3,4,4,5,6]for i in w:    if i == 4:        w.remove(i)print(w)[1, 2, 3, 4, 5, 6] 输出结果中，并没有删除所有的数字4。  使用len()方式删除列表中所有的数字4。  12345678w = [1,2,3,4,4,5,6]for i in">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2019-03-08T02:29:04.810Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="setdefault方法传入函数">
-<meta name="twitter:description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
+<meta name="twitter:title" content="python增删可迭代对象">
+<meta name="twitter:description" content="问题描述 直接迭代对象删除列表中所有的数字4。  1234567w = [1,2,3,4,4,5,6]for i in w:    if i == 4:        w.remove(i)print(w)[1, 2, 3, 4, 5, 6] 输出结果中，并没有删除所有的数字4。  使用len()方式删除列表中所有的数字4。  12345678w = [1,2,3,4,4,5,6]for i in">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/02/01/setdefault方法/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/03/08/python增删可迭代对象/">
 
 
 
 
 
-  <title>setdefault方法传入函数 | Kirakirazone</title>
+  <title>python增删可迭代对象 | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/02/01/setdefault方法/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/03/08/python增删可迭代对象/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">setdefault方法传入函数</h1>
+          <h1 class="post-title" itemprop="name headline">python增删可迭代对象</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-01T17:57:44+08:00">
-                2019-02-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-08T10:45:38+08:00">
+                2019-03-08
               </time>
             
 
@@ -333,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/02/01/setdefault方法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/01/setdefault方法/" itemprop="commentCount"></span>
+                <a href="/2019/03/08/python增删可迭代对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/08/python增删可迭代对象/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,21 +362,31 @@
       
 
       
-        <h2 id="setdefault-方法"><a href="#setdefault-方法" class="headerlink" title="setdefault()方法"></a>setdefault()方法</h2><p>myvalue = dict_a.setdefault(a,b)</p>
-<p>从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。</p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。</p>
-<p>于是用了setdefault()方法，代码大致如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
-<p>因为func_api()函数会请求线上，调用接口。</p>
-<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
-<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
-<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
-<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
-<p>这样就避免了重复调用func的问题。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
+<li>直接迭代对象删除列表中所有的数字4。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in w:</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 4, 5, 6]</span><br></pre></td></tr></table></figure>
+<p>输出结果中，并没有删除所有的数字4。</p>
+<ul>
+<li>使用len()方式删除列表中所有的数字4。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in range(len(w)):</span><br><span class="line">    if w[i] == 4:</span><br><span class="line">        w.remove(w[i])</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">IndexError: list index out of range</span><br></pre></td></tr></table></figure>
+<p>出现<code>IndexError</code>错误。</p>
+<h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><ul>
+<li><p>第一种是因为数组长度变小，迭代时候，指向出现了偏差，使用调试模式就能发现，当删除第一个”4”后，指针指向了第二个4，然后从第二个4开始迭代，此时跳过了第二个4的存在。</p>
+</li>
+<li><p>第二种是因为数组长度变小了，但len()记录的长度没变，所以导致了后面迭代的时候out of index。</p>
+</li>
+</ul>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p><strong>如果能保证迭代的时候的对象不会因为原对象的改变而改变，就可以解决，也就是说对原对象进行copy，而不是引用。</strong></p>
+<p>列举两种处理方法：</p>
+<ol>
+<li><p>使用[:]的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in w[:]:</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用deepcopy的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import copy</span><br><span class="line"></span><br><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line"></span><br><span class="line">for i in copy.deepcopy(w):</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure></li>
+</ol>
 
       
     </div>
@@ -426,7 +436,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/02/01/setdefault方法/" title="setdefault方法传入函数">https://kirakirazone.com/2019/02/01/setdefault方法/</a>
+    <a href="https://kirakirazone.com/2019/03/08/python增删可迭代对象/" title="python增删可迭代对象">https://kirakirazone.com/2019/03/08/python增删可迭代对象/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -454,8 +464,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/30/Python防注入/" rel="next" title="Python防注入">
-                <i class="fa fa-chevron-left"></i> Python防注入
+              <a href="/2019/03/07/prometheus添加hostname/" rel="next" title="prometheus曲线救国添加hostname">
+                <i class="fa fa-chevron-left"></i> prometheus曲线救国添加hostname
               </a>
             
           </div>
@@ -463,10 +473,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/02/kill-9不起作用/" rel="prev" title="kill -9 不起作用">
-                kill -9 不起作用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -638,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#setdefault-方法"><span class="nav-number">1.</span> <span class="nav-text">setdefault()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">2.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证猜测"><span class="nav-number">3.</span> <span class="nav-text">验证猜测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理方法"><span class="nav-number">4.</span> <span class="nav-text">处理方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产生原因"><span class="nav-number">2.</span> <span class="nav-text">产生原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">3.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
             
 
           </div>
@@ -804,9 +810,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/02/01/setdefault方法/';
-          this.page.identifier = '2019/02/01/setdefault方法/';
-          this.page.title = 'setdefault方法传入函数';
+          this.page.url = 'https://kirakirazone.com/2019/03/08/python增删可迭代对象/';
+          this.page.identifier = '2019/03/08/python增删可迭代对象/';
+          this.page.title = 'python增删可迭代对象';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
