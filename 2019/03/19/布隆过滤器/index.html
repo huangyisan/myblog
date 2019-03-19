@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="布隆过滤器概念">
+<meta name="description" content="判断value是否存在 常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。 布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。 布隆过滤器对值的判断存在两种情况，可能存在和绝对不存在。  原理布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash func">
 <meta name="keywords" content="python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="布隆过滤器">
 <meta property="og:url" content="https://kirakirazone.com/2019/03/19/布隆过滤器/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="布隆过滤器概念">
+<meta property="og:description" content="判断value是否存在 常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。 布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。 布隆过滤器对值的判断存在两种情况，可能存在和绝对不存在。  原理布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash func">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-03-19T06:45:31.074Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg">
+<meta property="og:updated_time" content="2019-03-19T07:35:07.906Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="布隆过滤器">
-<meta name="twitter:description" content="布隆过滤器概念">
+<meta name="twitter:description" content="判断value是否存在 常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。 布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。 布隆过滤器对值的判断存在两种情况，可能存在和绝对不存在。  原理布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash func">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg">
 
 
 
@@ -362,7 +364,24 @@
       
 
       
-        <h2 id="布隆过滤器概念"><a href="#布隆过滤器概念" class="headerlink" title="布隆过滤器概念"></a>布隆过滤器概念</h2>
+        <h2 id="判断value是否存在"><a href="#判断value是否存在" class="headerlink" title="判断value是否存在"></a>判断value是否存在</h2><ol>
+<li>常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。</li>
+<li>布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。</li>
+<li>布隆过滤器对值的判断存在两种情况，<strong>可能存在</strong>和<strong>绝对不存在</strong>。</li>
+</ol>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash function运算，得到的值和n进行取模运算，得到m个位置，把bit array的这些位置置为1，就完成了一次写入。</p>
+<h2 id="举个简单的例子"><a href="#举个简单的例子" class="headerlink" title="举个简单的例子"></a>举个简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg" alt=""></p>
+<ol>
+<li>需要存入的值为’huangyisan’，bit arrary长度为10。</li>
+<li>存在三个hash方法，分别对huangyisan运算。</li>
+<li>然后对函数执行得到的结果，和长度10取模。</li>
+<li>取模得到的值，在bit arrary中对应位置至于1。</li>
+</ol>
+<p>refer</p>
+<blockquote>
+<p><a href="https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d" target="_blank" rel="noopener">https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d</a></p>
+</blockquote>
+
       
     </div>
     
@@ -619,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#布隆过滤器概念"><span class="nav-number">1.</span> <span class="nav-text">布隆过滤器概念</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#判断value是否存在"><span class="nav-number">1.</span> <span class="nav-text">判断value是否存在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举个简单的例子"><span class="nav-number">3.</span> <span class="nav-text">举个简单的例子</span></a></li></ol></div>
             
 
           </div>

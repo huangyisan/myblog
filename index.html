@@ -365,8 +365,13 @@
       
         
           
-          布隆过滤器概念
-          
+          判断value是否存在
+常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。
+布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。
+布隆过滤器对值的判断存在两种情况，可能存在和绝对不存在。
+
+原理布隆过滤器两个要素，长度为n的bit ar
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/03/19/布隆过滤器/#more" rel="contents">
