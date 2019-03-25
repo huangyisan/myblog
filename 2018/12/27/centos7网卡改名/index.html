@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:1">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-03-19T08:50:14.358Z">
+<meta property="og:updated_time" content="2019-03-25T03:19:37.088Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos7网卡改名">
 <meta name="twitter:description" content="客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。我这边接手擦屁股。 先说udev服务，然后再看问题产生的原因。 system-udevd进程在centos6中为udevd进程：12[root@VM_31_91_centos6 ~]# ps -ef | grep udevroot       470     1  0 01:1">
@@ -397,6 +397,8 @@
 <h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ip link set eth1 down</span><br><span class="line">/sbin/ip link set eth1 name eth123</span><br><span class="line">/sbin/ip link set eth123 up</span><br></pre></td></tr></table></figure>
 <p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
+<p>最后修改ifcfg-xxx里面的NAME和DEVICE字段值为eth123。</p>
+<p>重启网卡即可。</p>
 <p>refer:</p>
 <blockquote>
 <p><a href="https://www.freedesktop.org/software/systemd/man/udev.html#" target="_blank" rel="noopener">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
