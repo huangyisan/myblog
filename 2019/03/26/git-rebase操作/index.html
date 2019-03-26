@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="同一分支 不同文件 无冲突情况 本地修改master，远端(模拟其他协同开发人员)修改remote_change 12$ lsmaster  remote_change  查看当前git log信息：   1234huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)$  git log --graph -">
+<meta name="description" content="同一分支 不同文件 无冲突情况 本地修改master，远端(模拟其他协同开发人员)修改remote_change  12$ lsmaster  remote_change  查看当前git log信息：  1234huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)$  git log --graph -">
 <meta name="keywords" content="linux,git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git rebase操作">
 <meta property="og:url" content="https://kirakirazone.com/2019/03/26/git-rebase操作/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="同一分支 不同文件 无冲突情况 本地修改master，远端(模拟其他协同开发人员)修改remote_change 12$ lsmaster  remote_change  查看当前git log信息：   1234huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)$  git log --graph -">
+<meta property="og:description" content="同一分支 不同文件 无冲突情况 本地修改master，远端(模拟其他协同开发人员)修改remote_change  12$ lsmaster  remote_change  查看当前git log信息：  1234huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)$  git log --graph -">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-03-26T10:20:09.612Z">
+<meta property="og:updated_time" content="2019-03-26T10:24:03.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git rebase操作">
-<meta name="twitter:description" content="同一分支 不同文件 无冲突情况 本地修改master，远端(模拟其他协同开发人员)修改remote_change 12$ lsmaster  remote_change  查看当前git log信息：   1234huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)$  git log --graph -">
+<meta name="twitter:description" content="同一分支 不同文件 无冲突情况 本地修改master，远端(模拟其他协同开发人员)修改remote_change  12$ lsmaster  remote_change  查看当前git log信息：  1234huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)$  git log --graph -">
 
 
 
@@ -363,11 +363,11 @@
 
       
         <h2 id="同一分支-不同文件-无冲突情况"><a href="#同一分支-不同文件-无冲突情况" class="headerlink" title="同一分支 不同文件 无冲突情况"></a>同一分支 不同文件 无冲突情况</h2><ol>
-<li><p>本地修改master，远端(模拟其他协同开发人员)修改remote_change</p>
+<li>本地修改master，远端(模拟其他协同开发人员)修改remote_change</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">master  remote_change</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看当前git log信息：</p>
-</li>
+<ol start="2">
+<li>查看当前git log信息：</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)</span><br><span class="line">$  git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* aed5259 (HEAD -&gt; master, origin/master) local change 2</span><br><span class="line">* d327114 local change 1</span><br></pre></td></tr></table></figure>
 <p>当前分支指向master，且和远程对齐。</p>
@@ -378,23 +378,25 @@
 </li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &apos;local change 3&apos;</span><br><span class="line">[master d327114] local change 3</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br><span class="line"></span><br><span class="line"> $ git commit -m &apos;local change 4&apos;</span><br><span class="line">[master aed5259] local change 4</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br></pre></td></tr></table></figure>
-<p>进行push，此时因为非本地端已经被提交，当前仓库不是最新代码，push被rejected，查看git log内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* 8dd9d20 (HEAD -&gt; master) local change 4</span><br><span class="line">* f6b8c95 local change 3</span><br><span class="line">* aed5259 (origin/master) local change 2</span><br><span class="line">* d327114 local change 1</span><br><span class="line">* d0e5f73 change local 17</span><br></pre></td></tr></table></figure></p>
+<p>进行push，此时因为非本地端已经被提交，当前仓库不是最新代码，push被rejected，查看git log内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* 8dd9d20 (HEAD -&gt; master) local change 4</span><br><span class="line">* f6b8c95 local change 3</span><br><span class="line">* aed5259 (origin/master) local change 2</span><br><span class="line">* d327114 local change 1</span><br><span class="line">* d0e5f73 change local 17</span><br></pre></td></tr></table></figure>
 <p>当前位置比远程仓库快2个位置。由于远程已经有提交内容，本地仓库不是最新代码，需要git pull.</p>
 <ol start="5">
-<li>仓库重新pull，并查看git log<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">*   5b4b59f (HEAD -&gt; master) Merge branch &apos;master&apos; of http://gitlab.ptest.cdn.pingan.com.cn:19090/huangyisan/testgit</span><br><span class="line">|\</span><br><span class="line">| * 3fb5469 (origin/master) 更新 remote_change 1</span><br><span class="line">* | 8dd9d20 local change 4</span><br><span class="line">* | f6b8c95 local change 3</span><br><span class="line">|/</span><br><span class="line">* aed5259 local change 2</span><br><span class="line">* d327114 local change 1</span><br></pre></td></tr></table></figure>
-</li>
+<li>仓库重新pull，并查看git log</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">*   5b4b59f (HEAD -&gt; master) Merge branch &apos;master&apos; of http://gitlab.ptest.cdn.pingan.com.cn:19090/huangyisan/testgit</span><br><span class="line">|\</span><br><span class="line">| * 3fb5469 (origin/master) 更新 remote_change 1</span><br><span class="line">* | 8dd9d20 local change 4</span><br><span class="line">* | f6b8c95 local change 3</span><br><span class="line">|/</span><br><span class="line">* aed5259 local change 2</span><br><span class="line">* d327114 local change 1</span><br></pre></td></tr></table></figure>
 <p>此时出现了’分叉’，本地指向的是和远程merge的内容，但远程是指向3fb5469位置，还没更新本地的两个commit提交内容。</p>
 <ol start="6">
-<li>使用rebase，查看git log<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: local change 3</span><br><span class="line">Applying: local change 4</span><br></pre></td></tr></table></figure>
-</li>
+<li>使用rebase，查看git log</li>
 </ol>
-<p>查看git log<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* c10a76b (HEAD -&gt; master) local change 4</span><br><span class="line">* 4101717 local change 3</span><br><span class="line">* 3fb5469 (origin/master) 更新 remote_change 1</span><br><span class="line">* aed5259 local change 2</span><br><span class="line">* d327114 local change 1</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: local change 3</span><br><span class="line">Applying: local change 4</span><br></pre></td></tr></table></figure>
+<p>查看git log</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* c10a76b (HEAD -&gt; master) local change 4</span><br><span class="line">* 4101717 local change 3</span><br><span class="line">* 3fb5469 (origin/master) 更新 remote_change 1</span><br><span class="line">* aed5259 local change 2</span><br><span class="line">* d327114 local change 1</span><br></pre></td></tr></table></figure>
 <p><strong>此时git log变成了一条直线。查看git log内容更加清晰明了。</strong><br>本地指向c10a76b 远端仓库指向3fb5469，还需要对本地进行git push</p>
 <ol start="7">
-<li>git push提交更变内容<br>由于只是rebase，并没有git push，所以还需要把本地的量词修改提交到远端仓库<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br><span class="line">Enumerating objects: 8, done.</span><br><span class="line">Counting objects: 100% (8/8), done.</span><br><span class="line">Delta compression using up to 4 threads</span><br><span class="line">Compressing objects: 100% (4/4), done.</span><br><span class="line">Writing objects: 100% (6/6), 569 bytes | 569.00 KiB/s, done.</span><br><span class="line">Total 6 (delta 0), reused 0 (delta 0)</span><br><span class="line">To http://xxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">   3fb5469..c10a76b  master -&gt; master</span><br></pre></td></tr></table></figure>
-</li>
+<li>git push提交更变内容<br>由于只是rebase，并没有git push，所以还需要把本地的量词修改提交到远端仓库</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br><span class="line">Enumerating objects: 8, done.</span><br><span class="line">Counting objects: 100% (8/8), done.</span><br><span class="line">Delta compression using up to 4 threads</span><br><span class="line">Compressing objects: 100% (4/4), done.</span><br><span class="line">Writing objects: 100% (6/6), 569 bytes | 569.00 KiB/s, done.</span><br><span class="line">Total 6 (delta 0), reused 0 (delta 0)</span><br><span class="line">To http://xxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">   3fb5469..c10a76b  master -&gt; master</span><br></pre></td></tr></table></figure>
 <h2 id="同一分支-相同文件-有冲突情况"><a href="#同一分支-相同文件-有冲突情况" class="headerlink" title="同一分支 相同文件 有冲突情况"></a>同一分支 相同文件 有冲突情况</h2>
       
     </div>
