@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="cicd,jenkins,">
 
 
 
@@ -79,16 +79,20 @@
 
 
 
-<meta name="description" content="PSN: hys15783167">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Kirakirazone">
-<meta property="og:url" content="https://kirakirazone.com/archives/2019/page/2/index.html">
+<meta name="description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
+<meta name="keywords" content="cicd,jenkins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="做一个不专业的jenkins回滚">
+<meta property="og:url" content="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="PSN: hys15783167">
+<meta property="og:description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg">
+<meta property="og:updated_time" content="2019-04-11T03:10:35.765Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kirakirazone">
-<meta name="twitter:description" content="PSN: hys15783167">
+<meta name="twitter:title" content="做一个不专业的jenkins回滚">
+<meta name="twitter:description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg">
 
 
 
@@ -118,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/archives/2019/page/2/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/">
 
 
 
 
 
-  <title>Archive | Kirakirazone</title>
+  <title>做一个不专业的jenkins回滚 | Kirakirazone</title>
   
 
 
@@ -143,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-right page-archive">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -269,390 +273,234 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 36 posts in total. Keep on posting.
-      </span>
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/">
 
-      
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kirakirazone">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">做一个不专业的jenkins回滚</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-11T10:58:56+08:00">
+                2019-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/11/做一个不专业的jenkins回滚/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/11/做一个不专业的jenkins回滚/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/12/二叉树种类和遍历/" itemprop="url">
-              
-                <span itemprop="name">二叉树种类和遍历</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-12T16:25:38+08:00" content="2019-02-12">
-          02-12
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/11/tcp_max_syn_backlog和somaxconn/" itemprop="url">
-              
-                <span itemprop="name">tcp_max_syn_backlog和net.core.somaxconn</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-11T13:22:38+08:00" content="2019-02-11">
-          02-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/05/linux平均负载/" itemprop="url">
-              
-                <span itemprop="name">linux平均负载</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-05T12:37:17+08:00" content="2019-02-05">
-          02-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/02/kill-9不起作用/" itemprop="url">
-              
-                <span itemprop="name">kill -9 不起作用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-02T09:57:44+08:00" content="2019-02-02">
-          02-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h2 id="war包回滚思路"><a href="#war包回滚思路" class="headerlink" title="war包回滚思路"></a>war包回滚思路</h2><h3 id="发布期间"><a href="#发布期间" class="headerlink" title="发布期间"></a>发布期间</h3><ol>
+<li>对正在提供服务的war包在<em>同目录</em>下，重命名为xxx.warbak</li>
+<li>并且对该war归档到指定目录</li>
+</ol>
+<h3 id="回滚期间"><a href="#回滚期间" class="headerlink" title="回滚期间"></a>回滚期间</h3><ol>
+<li>将同目录下war的备份文件还原成xxx.war</li>
+</ol>
+<h2 id="用到的组件如下"><a href="#用到的组件如下" class="headerlink" title="用到的组件如下:"></a>用到的组件如下:</h2><ol>
+<li>Customized Build Message Plugin（build后可以看到备注等自动传入的信息）</li>
+<li>Build With Parameters  (build的时候选填参数)</li>
+<li>Git Parameter Plug-In (选择分支，tag等)</li>
+<li>Publish Over SSH  (通过ssh方式发包)</li>
+</ol>
+<h2 id="配置介绍"><a href="#配置介绍" class="headerlink" title="配置介绍"></a>配置介绍</h2><ol>
+<li>每个publish over ssh的对象都存在两种情况，发布(deploy)和回滚(rollback)，所以需要对一个机器创建两个状态。</li>
+<li>根据build的时候传入的参数，deploy还是rollback，选择对应的行为。</li>
+</ol>
+<h2 id="配置截图"><a href="#配置截图" class="headerlink" title="配置截图"></a>配置截图</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg" alt=""></p>
+<h2 id="部分代码"><a href="#部分代码" class="headerlink" title="部分代码:"></a>部分代码:</h2><ol>
+<li>部署</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ -d &quot;/opt/$&#123;tomcat_dir&#125;/war&quot; ] &amp;&amp; echo &apos;back dir is exist&apos; || mkdir -p /opt/$&#123;tomcat_dir&#125;/war;</span><br><span class="line">cp /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.war /opt/$&#123;tomcat_dir&#125;/war/$&#123;tomcat_war&#125;.war_`date +&quot;%Y%m%d-%H%M&quot;` || echo &apos;not exist war&apos;;</span><br><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;war,warbak&#125; || echo &apos;not exist war&apos;;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>回滚</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;warbak,war&#125; || echo &apos;not exist war&apos;;</span><br><span class="line">/opt/$&#123;tomcat_dir&#125;/bin/catalina.sh start;</span><br></pre></td></tr></table></figure>
+<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ol>
+<li>由于采用的是maven项目，所以不论发布还是回滚都是会进行war包的build，其实在回滚的时候是不需要进行war包的build的。</li>
+</ol>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/01/setdefault方法/" itemprop="url">
-              
-                <span itemprop="name">setdefault方法传入函数</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-01T17:57:44+08:00" content="2019-02-01">
-          02-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/30/Python防注入/" itemprop="url">
-              
-                <span itemprop="name">Python防注入</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-30T18:41:38+08:00" content="2019-01-30">
-          01-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/28/LeetCode-只出现一次的数字/" itemprop="url">
-              
-                <span itemprop="name">LeetCode 只出现一次的数字</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-28T16:58:56+08:00" content="2019-01-28">
-          01-28
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/24/LeetCode-最后一个单词的长度/" itemprop="url">
-              
-                <span itemprop="name">LeetCode 最后一个单词长度</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-24T12:27:56+08:00" content="2019-01-24">
-          01-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/23/LeetCode-实现strStr/" itemprop="url">
-              
-                <span itemprop="name">LeetCode 实现strStr()</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-23T23:58:56+08:00" content="2019-01-23">
-          01-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/18/磁盘无法挂载/" itemprop="url">
-              
-                <span itemprop="name">磁盘无法挂载</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-18T15:40:12+08:00" content="2019-01-18">
-          01-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/" title="做一个不专业的jenkins回滚">https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cicd/" rel="tag"># cicd</a>
+          
+            <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/26/git-rebase操作/" rel="next" title="git rebase操作">
+                <i class="fa fa-chevron-left"></i> git rebase操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2019/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2019/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2019/page/3/">3</a><a class="extend next" rel="next" href="/archives/2019/page/3/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -660,6 +508,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -680,8 +542,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -771,6 +642,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#war包回滚思路"><span class="nav-number">1.</span> <span class="nav-text">war包回滚思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发布期间"><span class="nav-number">1.1.</span> <span class="nav-text">发布期间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚期间"><span class="nav-number">1.2.</span> <span class="nav-text">回滚期间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用到的组件如下"><span class="nav-number">2.</span> <span class="nav-text">用到的组件如下:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置介绍"><span class="nav-number">3.</span> <span class="nav-text">配置介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置截图"><span class="nav-number">4.</span> <span class="nav-text">配置截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部分代码"><span class="nav-number">5.</span> <span class="nav-text">部分代码:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存在问题"><span class="nav-number">6.</span> <span class="nav-text">存在问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -907,6 +794,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -924,6 +815,18 @@
       <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/';
+          this.page.identifier = '2019/04/11/做一个不专业的jenkins回滚/';
+          this.page.title = '做一个不专业的jenkins回滚';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://kirakirazone.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
