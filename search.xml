@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[误删正在输出的tomcat服务日志]]></title>
+    <url>%2F2019%2F04%2F17%2F%E8%AF%AF%E5%88%A0%E6%AD%A3%E5%9C%A8%E8%BE%93%E5%87%BA%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%2F</url>
+    <content type="text"><![CDATA[误删场景今天find写日志切割tomcat日志，需要匹配后缀为log,out,txt，之后忘记写括号,将log和out删除了。 1/usr/bin/find /opt/*/logs/* ( -name &quot;*.out&quot; -o -name &quot;*.log&quot; -o -name &quot;*.txt&quot; ) -mtime +30 | xargs -I &#123;&#125; rm -f &#123;&#125; tomcat不像nginx那样可以reload，其需要整个暂停，然后启动才能重新生成日志文件，但如果重启tomcat，则war包加载需要的时间比较长，且这段时间无法提供服务。 临时查看的方法虽然日志文件被删除，但在tomcat没有关闭之前文件描述符还是存在的，只是软连对象被删除而已。]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[做一个不专业的jenkins回滚]]></title>
     <url>%2F2019%2F04%2F11%2F%E5%81%9A%E4%B8%80%E4%B8%AA%E4%B8%8D%E4%B8%93%E4%B8%9A%E7%9A%84jenkins%E5%9B%9E%E6%BB%9A%2F</url>
     <content type="text"><![CDATA[war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录 回滚期间 将同目录下war的备份文件还原成xxx.war 用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters (build的时候选填参数) Git Parameter Plug-In (选择分支，tag等) Publish Over SSH (通过ssh方式发包) 配置介绍 每个publish over ssh的对象都存在两种情况，发布(deploy)和回滚(rollback)，所以需要对一个机器创建两个状态。 根据build的时候传入的参数，deploy还是rollback，选择对应的行为。 配置截图图小新开一个浏览器页面看 部分代码: 部署 123456[ -d &quot;/opt/$&#123;tomcat_dir&#125;/war&quot; ] &amp;&amp; echo &apos;back dir is exist&apos; || mkdir -p /opt/$&#123;tomcat_dir&#125;/war;cp /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.war /opt/$&#123;tomcat_dir&#125;/war/$&#123;tomcat_war&#125;.war_`date +&quot;%Y%m%d-%H%M&quot;` || echo &apos;not exist war&apos;;ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;sleep 3;rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;war,warbak&#125; || echo &apos;not exist war&apos;; 回滚 12345ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;sleep 3;rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;warbak,war&#125; || echo &apos;not exist war&apos;;/opt/$&#123;tomcat_dir&#125;/bin/catalina.sh start; 存在问题 由于采用的是maven项目，所以不论发布还是回滚都是会进行war包的build，其实在回滚的时候是不需要进行war包的build的。 refer: http://www.eryajf.net/1404.html]]></content>
