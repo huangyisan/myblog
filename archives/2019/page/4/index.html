@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="prometheus,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,22 +79,16 @@
 
 
 
-<meta name="description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。  方法 node_exporter中启用textfile采集的方式。 在textfile目录下">
-<meta name="keywords" content="prometheus">
-<meta property="og:type" content="article">
-<meta property="og:title" content="prometheus曲线救国添加hostname">
-<meta property="og:url" content="https://kirakirazone.com/2019/03/07/prometheus添加hostname/index.html">
+<meta name="description" content="PSN: hys15783167">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kirakirazone">
+<meta property="og:url" content="https://kirakirazone.com/archives/2019/page/4/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。  方法 node_exporter中启用textfile采集的方式。 在textfile目录下">
+<meta property="og:description" content="PSN: hys15783167">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg">
-<meta property="og:updated_time" content="2019-07-30T06:47:55.683Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="prometheus曲线救国添加hostname">
-<meta name="twitter:description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。  方法 node_exporter中启用textfile采集的方式。 在textfile目录下">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg">
+<meta name="twitter:title" content="Kirakirazone">
+<meta name="twitter:description" content="PSN: hys15783167">
 
 
 
@@ -124,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/03/07/prometheus添加hostname/">
+  <link rel="canonical" href="https://kirakirazone.com/archives/2019/page/4/">
 
 
 
 
 
-  <title>prometheus曲线救国添加hostname | Kirakirazone</title>
+  <title>Archive | Kirakirazone</title>
   
 
 
@@ -149,7 +143,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <div class="container sidebar-position-right page-archive">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -275,269 +269,75 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
 
-  
+      <span class="archive-page-counter">
+        
+        
+         
+        
+        OK! 39 posts in total. Keep on posting.
+      </span>
 
-  
-  
-  
+      
+
+        
+        
+        
+
+        
+          
+          <div class="collection-title">
+            <h1 class="archive-year" id="archive-year-2019">2019</h1>
+          </div>
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/03/07/prometheus添加hostname/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Huangyisan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Kirakirazone">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">prometheus曲线救国添加hostname</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/" itemprop="url">
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span itemprop="name">bash fork: retry: Resource temporarily unavailable</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-07T17:45:38+08:00">
-                2019-03-07
-              </time>
-            
+            </a>
+        
+      </h2>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/07/prometheus添加hostname/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/07/prometheus添加hostname/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><ol>
-<li>prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。</li>
-<li>只看ip，无法知道该机器的用户。</li>
-<li>grafana展现的时候，能根据hostname进行选择，展现机器数据。</li>
-</ol>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
-<li>node_exporter中启用textfile采集的方式。</li>
-<li>在textfile目录下，写入hostname。</li>
-<li>通过表达式获取hostname。</li>
-</ol>
-<h2 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h2><ol>
-<li>如何做到hostname的更变。</li>
-<li>表达式hostname只和写入的metric有关，如何关联到不存在hostname的metric中。</li>
-</ol>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
-<li><p>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ExecStartPre=/opt/scripts/gethostname.sh</span><br><span class="line"></span><br><span class="line"># cat /opt/scripts/gethostname.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role=\&quot;`/usr/bin/hostname`\&quot;&#125; 0&quot; &gt; /app/local/node_exporter/collect/hostname.prom</span><br><span class="line">echo 1 &gt; /dev/null</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># HELP machine_role Metric read from /app/local/node_exporter/collect/hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role=&quot;postfix01&quot;&#125; 0</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>其label是role，value是postfix01，也就是hostname</p>
-<p>prometheus中执行执行<code>machine_role</code>,可以得到element为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;ShangHai-SJ-L3-LC-Flume-01&quot;,service=&quot;L3&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这边有role和instance这个两个label，其中role为hostname的label，而instance则作为连接点的label。</p>
-<p>在grafana中的变量配置中就可以根据machine_role，先获取role，作为$hostname的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_values(machine_role&#123;service=&quot;$job&quot;&#125;,role)</span><br></pre></td></tr></table></figure></p>
-<p>然后再根据$hostname，来获取instance,作为$node的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_values(machine_role&#123;role=&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure></p>
-<p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance=~&quot;$node&quot;, mode=&apos;system&apos;&#125;) by (cpu))</span><br></pre></td></tr></table></figure></p>
-<h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
-<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg" alt=""></p>
-</li>
-<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg" alt=""></p>
-</li>
-<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg" alt=""></p>
-</li>
-</ul>
-<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><ul>
-<li>如果是通过dns方式发现，则是可以把hostname变成元label的。</li>
-<li>通过consul发现，则可以在consul客户端上报hostname，也可以把hostname变成元label。</li>
-</ul>
-<h2 id="待解决问题第二点解决方法"><a href="#待解决问题第二点解决方法" class="headerlink" title="待解决问题第二点解决方法"></a>待解决问题第二点解决方法</h2><p><strong>promSQL可以使用on ignore group_left group_right配合来把hostname拼凑进去。</strong></p>
-<p>machine_role查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  0</span><br></pre></td></tr></table></figure>
-<p>up查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">up&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>machine_role里面的role标签包含了主机名，但up没有，此时通过将两个方法结合在一起。<br>使用on方法，<em>可以理解为mysql的两表查询join</em> 两者的有共同的instance,job,service,ip标签</p>
-<p>不一定要全部都选择，但选择的多则相互匹配更加精确，<code>on(instance,job,service,ip)</code></p>
-<p>使用group_left或者group_right标记”多”的标签,这边多出来的标签是role，所以为<code>group_left(role)</code></p>
-<p>表达式架构为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;vector expr&gt; &lt;bin-op&gt; on(&lt;label list&gt;) group_left(&lt;label list&gt;) &lt;vector expr&gt;</span><br></pre></td></tr></table></figure>
-<p><bin-op>指加减乘除余幂</bin-op></p>
-<p>所以将up和machine_role拼凑和可以写为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role</span><br><span class="line">&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>如果用group_right，则把up和machine_role反一下即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role + on(instance, job,ip,service) group_right(role) up</span><br></pre></td></tr></table></figure>
-<p>此时得到的结果包含了role，如果作为告警，由于up为1表示正常，machine_role设置的是0，两者相加，若为0，则表示机器down。<br>告警表达式可以写成:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role == 0</span><br></pre></td></tr></table></figure>
-<p>此时如果告警，则会包含role这个标签，就可以传递给alertmanager，获取到role了。</p>
-<p>refer</p>
-<blockquote>
-<p><a href="https://www.robustperception.io/how-to-have-labels-for-machine-roles" target="_blank" rel="noopener">https://www.robustperception.io/how-to-have-labels-for-machine-roles</a><br><a href="https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2" target="_blank" rel="noopener">https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2</a></p>
-</blockquote>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
-        <p>WeChat Pay</p>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-01-02T23:16:17+08:00" content="2019-01-02">
+          01-02
+        </time>
       </div>
-    
 
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
-        <p>Alipay</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:</strong>
-    Huangyisan
-  </li>
-  <li class="post-copyright-link">
-    <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/03/07/prometheus添加hostname/" title="prometheus曲线救国添加hostname">https://kirakirazone.com/2019/03/07/prometheus添加hostname/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice: </strong>
-    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
-  </li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/prometheus/" rel="tag"># prometheus</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/03/06/position属性relative和absolute/" rel="next" title="position属性relative和absolute">
-                <i class="fa fa-chevron-left"></i> position属性relative和absolute
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/08/python增删可迭代对象/" rel="prev" title="python增删可迭代对象">
-                python增删可迭代对象 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
 
-    <div class="post-spread">
       
+
     </div>
   </div>
+  
+  
+  
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/2019/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2019/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2019/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
+
 
 
           </div>
@@ -545,20 +345,6 @@
 
 
           
-
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-
-  
-
-
 
         </div>
         
@@ -579,17 +365,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -679,22 +456,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题场景"><span class="nav-number">1.</span> <span class="nav-text">问题场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#待解决的问题"><span class="nav-number">3.</span> <span class="nav-text">待解决的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">4.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果截图"><span class="nav-number">5.</span> <span class="nav-text">效果截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他说明"><span class="nav-number">6.</span> <span class="nav-text">其他说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#待解决问题第二点解决方法"><span class="nav-number">7.</span> <span class="nav-text">待解决问题第二点解决方法</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -831,10 +592,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
@@ -852,18 +609,6 @@
       <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
     
 
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/03/07/prometheus添加hostname/';
-          this.page.identifier = '2019/03/07/prometheus添加hostname/';
-          this.page.title = 'prometheus曲线救国添加hostname';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://kirakirazone.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
     
 
   
