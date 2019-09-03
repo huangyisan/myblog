@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="leetcode,">
+  <meta name="keywords" content="python3,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例112输入: [2,2,1]输出: 1 示例212输入: [4,1,2,1,2]输出: 4 解题思路 使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。 数字A异或数字B两次，则结果为A。 利用这个方法，可以找到">
-<meta name="keywords" content="leetcode">
+<meta name="description" content="快速排序 快速排序用到的是分治思想。 实现方法是，在序列中先确定一个比较值k，左边部分的值比k小，右边部分的值比k大，然后对左边和右边两部分继续获取各自的比较值k，依次递归，直到都排列完成，从而整个数列都变得有序。 退出条件是，左边增长的角标大于右边缩小的角标。  排序基本思路 给定一个数组，比如[3，6，1，7，2，4，8]。 先选定一个k，作为比较值，比如选取数组第一个数值，3。 从右边开始，">
+<meta name="keywords" content="python3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode 只出现一次的数字">
-<meta property="og:url" content="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/index.html">
+<meta property="og:title" content="快速排序">
+<meta property="og:url" content="https://kirakirazone.com/2019/09/03/快速排序/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例112输入: [2,2,1]输出: 1 示例212输入: [4,1,2,1,2]输出: 4 解题思路 使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。 数字A异或数字B两次，则结果为A。 利用这个方法，可以找到">
+<meta property="og:description" content="快速排序 快速排序用到的是分治思想。 实现方法是，在序列中先确定一个比较值k，左边部分的值比k小，右边部分的值比k大，然后对左边和右边两部分继续获取各自的比较值k，依次递归，直到都排列完成，从而整个数列都变得有序。 退出条件是，左边增长的角标大于右边缩小的角标。  排序基本思路 给定一个数组，比如[3，6，1，7，2，4，8]。 先选定一个k，作为比较值，比如选取数组第一个数值，3。 从右边开始，">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2019-09-03T06:25:59.733Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode 只出现一次的数字">
-<meta name="twitter:description" content="需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例112输入: [2,2,1]输出: 1 示例212输入: [4,1,2,1,2]输出: 4 解题思路 使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。 数字A异或数字B两次，则结果为A。 利用这个方法，可以找到">
+<meta name="twitter:title" content="快速排序">
+<meta name="twitter:description" content="快速排序 快速排序用到的是分治思想。 实现方法是，在序列中先确定一个比较值k，左边部分的值比k小，右边部分的值比k大，然后对左边和右边两部分继续获取各自的比较值k，依次递归，直到都排列完成，从而整个数列都变得有序。 退出条件是，左边增长的角标大于右边缩小的角标。  排序基本思路 给定一个数组，比如[3，6，1，7，2，4，8]。 先选定一个k，作为比较值，比如选取数组第一个数值，3。 从右边开始，">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/09/03/快速排序/">
 
 
 
 
 
-  <title>LeetCode 只出现一次的数字 | Kirakirazone</title>
+  <title>快速排序 | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/09/03/快速排序/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LeetCode 只出现一次的数字</h1>
+          <h1 class="post-title" itemprop="name headline">快速排序</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-28T16:58:56+08:00">
-                2019-01-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-03T14:40:12+08:00">
+                2019-09-03
               </time>
             
 
@@ -325,28 +325,6 @@
           </span>
 
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -355,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/28/LeetCode-只出现一次的数字/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/28/LeetCode-只出现一次的数字/" itemprop="commentCount"></span>
+                <a href="/2019/09/03/快速排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/03/快速排序/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,17 +362,33 @@
       
 
       
-        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
-<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
-<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
-<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+        <h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><ol>
+<li>快速排序用到的是分治思想。</li>
+<li>实现方法是，在序列中先确定一个比较值k，左边部分的值比k小，右边部分的值比k大，然后对左边和右边两部分继续获取各自的比较值k，依次递归，直到都排列完成，从而整个数列都变得有序。</li>
+<li>退出条件是，左边增长的角标大于右边缩小的角标。</li>
 </ol>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>
+<h2 id="排序基本思路"><a href="#排序基本思路" class="headerlink" title="排序基本思路"></a>排序基本思路</h2><ol>
+<li>给定一个数组，比如<code>[3，6，1，7，2，4，8]</code>。</li>
+<li>先选定一个k，作为比较值，比如选取数组第一个数值，3。</li>
+<li>从右边开始，同3比较，右边第一个数值8，因为8&gt;3,所以8不需要动，此时还是<code>[3，6，1，7，2，4，8]</code>。</li>
+<li>接着比较倒数第二位4，4&gt;3，也不需要动，此时还是<code>[3，6，1，7，2，4，8]</code>。</li>
+<li>接着倒数第三位2，2&lt;3，则将2放入3的位置，变成<code>[2,6,1,7,2,4,8]</code>，此时右边角标为4。</li>
+<li>触发了右边的变换，所以这次开始从左边，2&lt;3，则不需要动，<code>[2,6,1,7,2,4,8]</code>。</li>
+<li>左边继续走，第二个为6，6&gt;3，则需要变换<code>[2,6,1,7,6,4,8]</code>，此时左边角标为1</li>
+<li>左边触发了交换，下面轮到右边，右边7，7&gt;3，不变，<code>[2,6,1,7,6,4,8]</code>。</li>
+<li>右边继续，右边1，1&lt;3，则交换，变成<code>[2,1,1,7,6,4,8]</code>，此时右边角标为1。</li>
+<li>轮到左边，左边继续，为1，依旧是<code>[2,1,1,7,6,4,8]</code>，此时左边角标为2。</li>
+<li>继续轮到左边，此时左边发现自己角标大于右边角标，则停止，将k的值赋予当前左边角标，数组也就成了<code>[2,1,3,7,6,4,8]</code>。</li>
+<li>之后出现左右两个子数组，继续递归，直到全部完成。</li>
+</ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p><a href="https://www.jianshu.com/p/2b2f1f79984e" target="_blank" rel="noopener">https://www.jianshu.com/p/2b2f1f79984e</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">quicklist = [3,6,1,7,2,4,8]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def quick_sort(arr):</span><br><span class="line">    return q_sort(arr, 0, len(arr) - 1)</span><br><span class="line"></span><br><span class="line">def q_sort(arr, left, right):</span><br><span class="line">    if left &lt; right:</span><br><span class="line">        pos = get_pos(arr,left,right)</span><br><span class="line">        # 递归左边排序，第一次left为0，pos-1的值为get_pos排序一次后的pos位置左移一位。</span><br><span class="line">        q_sort(arr,left,pos-1)</span><br><span class="line">        # 递归右边排序，pos+1的值为get_pos排序一次后的pos位置右移一位。</span><br><span class="line">        q_sort(arr,pos+1,right)</span><br><span class="line">    # 得到最终排序完的列表</span><br><span class="line">    return arr</span><br><span class="line"></span><br><span class="line">def get_pos(arr,left,right):</span><br><span class="line">    # 左边第一位作为pos值</span><br><span class="line">    pos = arr[left]</span><br><span class="line"></span><br><span class="line">    # 判断左右位置角标是否相遇</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        while left &lt; right and arr[right] &gt;= pos:</span><br><span class="line">            # 右边角标缩小</span><br><span class="line">            right -=1</span><br><span class="line">        # 将右边的换到左边</span><br><span class="line">        arr[left] = arr[right]</span><br><span class="line"></span><br><span class="line">        while left &lt; right and arr[left] &lt;= pos:</span><br><span class="line">            # 左边角标放大</span><br><span class="line">            left +=1</span><br><span class="line">        # 将左边的换到右边</span><br><span class="line">        arr[right] = arr[left]</span><br><span class="line">    # 当左边和右边位置碰到的时候，让此时左边的位置成为pos值，因为pos值当时是被抠出来的。</span><br><span class="line">    arr[left] = pos</span><br><span class="line">    # 获取此时的left位置</span><br><span class="line">    return left</span><br><span class="line"></span><br><span class="line">print(quick_sort(quicklist))</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>快速排序之所比较快，因为相比冒泡排序，每次交换是跳跃式的。每次排序的时候设置一个基准点，将小于等于基准点的数全部放到基准点的左边，将大于等于基准点的数全部放到基准点的右边。这样在每次交换的时候就不会像冒泡排序一样每次只能在相邻的数之间进行交换，交换的距离就大的多了。因此总的比较和交换次数就少了，速度自然就提高了。当然在最坏的情况下，仍可能是相邻的两个数进行了交换。因此快速排序的最差时间复杂度和冒泡排序是一样的都是 O(N2)，它的平均时间复杂度为 O(NlogN)。</p>
+<p>refer</p>
+<blockquote>
+<p><a href="https://wiki.jikexueyuan.com/project/easy-learn-algorithm/fast-sort.html" target="_blank" rel="noopener">https://wiki.jikexueyuan.com/project/easy-learn-algorithm/fast-sort.html</a><br><a href="https://www.jianshu.com/p/2b2f1f79984e" target="_blank" rel="noopener">https://www.jianshu.com/p/2b2f1f79984e</a></p>
+</blockquote>
+
       
     </div>
     
@@ -443,7 +437,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/" title="LeetCode 只出现一次的数字">https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/</a>
+    <a href="https://kirakirazone.com/2019/09/03/快速排序/" title="快速排序">https://kirakirazone.com/2019/09/03/快速排序/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -458,7 +452,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+            <a href="/tags/python3/" rel="tag"># python3</a>
           
         </div>
       
@@ -471,8 +465,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/24/LeetCode-最后一个单词的长度/" rel="next" title="LeetCode 最后一个单词长度">
-                <i class="fa fa-chevron-left"></i> LeetCode 最后一个单词长度
+              <a href="/2019/07/30/Redis主从复制/" rel="next" title="Redis主从复制(搬运)">
+                <i class="fa fa-chevron-left"></i> Redis主从复制(搬运)
               </a>
             
           </div>
@@ -480,10 +474,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/30/Python防注入/" rel="prev" title="Python防注入">
-                Python防注入 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -655,7 +645,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">2.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例1"><span class="nav-number">3.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例2"><span class="nav-number">4.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题思路"><span class="nav-number">5.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题代码"><span class="nav-number">6.</span> <span class="nav-text">解题代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序"><span class="nav-number">1.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序基本思路"><span class="nav-number">2.</span> <span class="nav-text">排序基本思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -821,9 +811,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/';
-          this.page.identifier = '2019/01/28/LeetCode-只出现一次的数字/';
-          this.page.title = 'LeetCode 只出现一次的数字';
+          this.page.url = 'https://kirakirazone.com/2019/09/03/快速排序/';
+          this.page.identifier = '2019/09/03/快速排序/';
+          this.page.title = '快速排序';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
