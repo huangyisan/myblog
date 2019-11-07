@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。 目录结构 在app中创建/management/commands目录 在com">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-07T06:51:18.000Z">
+<meta property="og:updated_time" content="2019-11-07T08:21:05.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="编写自定义 django-admin 命令">
 <meta name="twitter:description" content="我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。 目录结构 在app中创建/management/commands目录 在com">
@@ -380,6 +380,14 @@
 </ol>
 <p>例如跑page_manager.py，无需脚本后缀名</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 manager page_manager</span><br></pre></td></tr></table></figure>
+<h2 id="传参给脚本"><a href="#传参给脚本" class="headerlink" title="传参给脚本"></a>传参给脚本</h2><ol>
+<li>定义add_arguments方法</li>
+<li>使用options[‘key’]获取传入的参数</li>
+</ol>
+<p>test.py例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from django.core.management.base import BaseCommand, CommandError</span><br><span class="line">from gp_volume.models import Code, Volume, Page</span><br><span class="line">import datetime</span><br><span class="line"></span><br><span class="line">class Command(BaseCommand):</span><br><span class="line">    def add_arguments(self, parser):</span><br><span class="line">        # nargs=&apos;+&apos; 表示至少要有一个参数</span><br><span class="line">        parser.add_argument(&apos;code_id&apos;, nargs=&apos;+&apos;, type=str)</span><br><span class="line">        parser.add_argument(</span><br><span class="line">            &apos;--delete&apos;,</span><br><span class="line">            # store_True表示参数如果不写，默认没有。</span><br><span class="line">            action=&apos;store_True&apos;,</span><br><span class="line">            help=&apos;Delete poll instead of closing it&apos;,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    def handle(self, *args, **options):</span><br><span class="line">        # 判断是否存在delete参数</span><br><span class="line">        if options[&apos;delete&apos;]:</span><br><span class="line">            for code in options[&apos;code_id&apos;]:</span><br><span class="line">                Code.objects.get(code=code).delete()</span><br><span class="line">        else:</span><br><span class="line">            print(&apos;no args&apos;)</span><br></pre></td></tr></table></figure>
+<p>执行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 manage.py test --delete xxxxxxx</span><br></pre></td></tr></table></figure>
 <p>refer</p>
 <blockquote>
 <p><a href="https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/</a></p>
@@ -641,7 +649,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本编写"><span class="nav-number">2.</span> <span class="nav-text">脚本编写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本执行"><span class="nav-number">3.</span> <span class="nav-text">脚本执行</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本编写"><span class="nav-number">2.</span> <span class="nav-text">脚本编写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本执行"><span class="nav-number">3.</span> <span class="nav-text">脚本执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传参给脚本"><span class="nav-number">4.</span> <span class="nav-text">传参给脚本</span></a></li></ol></div>
             
 
           </div>
