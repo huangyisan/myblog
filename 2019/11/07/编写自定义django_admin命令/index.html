@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="linux,">
+  <meta name="keywords" content="django,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好 然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。 查看了下message日志：12345Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.J">
-<meta name="keywords" content="linux">
+<meta name="description" content="我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。 目录结构 在app中创建/management/commands目录 在com">
+<meta name="keywords" content="django">
 <meta property="og:type" content="article">
-<meta property="og:title" content="磁盘无法挂载">
-<meta property="og:url" content="https://kirakirazone.com/2019/01/18/磁盘无法挂载/index.html">
+<meta property="og:title" content="编写自定义 django-admin 命令">
+<meta property="og:url" content="https://kirakirazone.com/2019/11/07/编写自定义django_admin命令/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好 然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。 查看了下message日志：12345Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.J">
+<meta property="og:description" content="我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。 目录结构 在app中创建/management/commands目录 在com">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2019-11-07T06:51:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="磁盘无法挂载">
-<meta name="twitter:description" content="案例今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在/etc/fstab里面，个人不推荐写这里，写入/etc/rc.local更加好 然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。 查看了下message日志：12345Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.J">
+<meta name="twitter:title" content="编写自定义 django-admin 命令">
+<meta name="twitter:description" content="我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。 目录结构 在app中创建/management/commands目录 在com">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/01/18/磁盘无法挂载/">
+  <link rel="canonical" href="https://kirakirazone.com/2019/11/07/编写自定义django_admin命令/">
 
 
 
 
 
-  <title>磁盘无法挂载 | Kirakirazone</title>
+  <title>编写自定义 django-admin 命令 | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/18/磁盘无法挂载/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/11/07/编写自定义django_admin命令/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">磁盘无法挂载</h1>
+          <h1 class="post-title" itemprop="name headline">编写自定义 django-admin 命令</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-18T15:40:12+08:00">
-                2019-01-18
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-07T15:58:56+08:00">
+                2019-11-07
               </time>
             
 
@@ -333,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/18/磁盘无法挂载/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/18/磁盘无法挂载/" itemprop="commentCount"></span>
+                <a href="/2019/11/07/编写自定义django_admin命令/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/07/编写自定义django_admin命令/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,18 +362,27 @@
       
 
       
-        <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
-<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
-<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
-<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
-<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
-<p>尝试了下，的确成功了。</p>
-<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
-<p>Bug ID: 1566088</p>
-<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
-<p>refer:</p>
+        <p><em>我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。</em></p>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><ol>
+<li>在app中创建/management/commands目录</li>
+<li>在commands目录里面创建py脚本</li>
+</ol>
+<p>例如我的app叫做gp_volume，则在这个路径下创建/management/commands，然后放了两个脚本，一个是page_manager.py，一个是test.py。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">|-- admin.py</span><br><span class="line">|-- apps.py</span><br><span class="line">|-- __init__.py</span><br><span class="line">|-- management</span><br><span class="line">|   `-- commands</span><br><span class="line">|       |-- page_manager.py</span><br><span class="line">|       |-- __pycache__</span><br><span class="line">|       |   |-- page_manager.cpython-36.pyc</span><br><span class="line">|       |   `-- test.cpython-36.pyc</span><br><span class="line">|       `-- test.py</span><br></pre></td></tr></table></figure>
+<h2 id="脚本编写"><a href="#脚本编写" class="headerlink" title="脚本编写"></a>脚本编写</h2><ol>
+<li>脚本代码需要封装在Command这个类里面，且继承BaseCommand类</li>
+<li>对Command类的handle函数进行重写</li>
+</ol>
+<p>拿个page_manager.py举例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from django.core.management.base import BaseCommand, CommandError</span><br><span class="line">from gp_volume.models import Code, Volume, Page</span><br><span class="line">import datetime</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 编写Command类，并且继承BaseCommand</span><br><span class="line">class Command(BaseCommand):</span><br><span class="line"></span><br><span class="line">    # 重写handle函数</span><br><span class="line">    def handle(self, *args, **options):</span><br><span class="line">        code_list = Code.objects.filter(status=&apos;o&apos;, date=str(datetime.date.today()))</span><br><span class="line">        for code in code_list:</span><br><span class="line">            print(code.code)</span><br></pre></td></tr></table></figure>
+<h2 id="脚本执行"><a href="#脚本执行" class="headerlink" title="脚本执行"></a>脚本执行</h2><ol>
+<li>python3 manage.py ${script_name}</li>
+</ol>
+<p>例如跑page_manager.py，无需脚本后缀名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 manager page_manager</span><br></pre></td></tr></table></figure>
+<p>refer</p>
 <blockquote>
-<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+<p><a href="https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/</a></p>
 </blockquote>
 
       
@@ -424,7 +433,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/01/18/磁盘无法挂载/" title="磁盘无法挂载">https://kirakirazone.com/2019/01/18/磁盘无法挂载/</a>
+    <a href="https://kirakirazone.com/2019/11/07/编写自定义django_admin命令/" title="编写自定义 django-admin 命令">https://kirakirazone.com/2019/11/07/编写自定义django_admin命令/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -439,7 +448,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/django/" rel="tag"># django</a>
           
         </div>
       
@@ -452,8 +461,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/17/is和==比较区别/" rel="next" title="is和==比较区别">
-                <i class="fa fa-chevron-left"></i> is和==比较区别
+              <a href="/2019/11/04/Django_Model_Relationship/" rel="next" title="Django Model Relationship">
+                <i class="fa fa-chevron-left"></i> Django Model Relationship
               </a>
             
           </div>
@@ -461,10 +470,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/23/LeetCode-实现strStr/" rel="prev" title="LeetCode 实现strStr()">
-                LeetCode 实现strStr() <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -636,7 +641,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">1.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#诡异的systemctl-reload"><span class="nav-number">2.</span> <span class="nav-text">诡异的systemctl-reload</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本编写"><span class="nav-number">2.</span> <span class="nav-text">脚本编写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本执行"><span class="nav-number">3.</span> <span class="nav-text">脚本执行</span></a></li></ol></div>
             
 
           </div>
@@ -802,9 +807,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/01/18/磁盘无法挂载/';
-          this.page.identifier = '2019/01/18/磁盘无法挂载/';
-          this.page.title = '磁盘无法挂载';
+          this.page.url = 'https://kirakirazone.com/2019/11/07/编写自定义django_admin命令/';
+          this.page.identifier = '2019/11/07/编写自定义django_admin命令/';
+          this.page.title = '编写自定义 django-admin 命令';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
