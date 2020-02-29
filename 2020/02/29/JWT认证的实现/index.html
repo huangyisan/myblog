@@ -82,14 +82,14 @@
 <meta name="description" content="什么是JWT，以及原理网上有大把解释JWT认证原理的，直接看refer部分。 JWT认证 当用户登陆的时候，后端根据部分字段进行签名，然后将签名得到的数据返回给用户。 用户下一次请求数据的时候，在请求头的authentication字段携带token。 服务端收到token后进行解密，前两段用私钥签名的结果跟第三段对比，看是否一致，如果一致，则判定当前用户合法，反之则非法。 JWT的token为三">
 <meta name="keywords" content="python3,vue,js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nonlocal的用法">
-<meta property="og:url" content="https://kirakirazone.com/2019/02/20/JWT认证的实现/index.html">
+<meta property="og:title" content="JWT认证的实现">
+<meta property="og:url" content="https://kirakirazone.com/2020/02/29/JWT认证的实现/index.html">
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="什么是JWT，以及原理网上有大把解释JWT认证原理的，直接看refer部分。 JWT认证 当用户登陆的时候，后端根据部分字段进行签名，然后将签名得到的数据返回给用户。 用户下一次请求数据的时候，在请求头的authentication字段携带token。 服务端收到token后进行解密，前两段用私钥签名的结果跟第三段对比，看是否一致，如果一致，则判定当前用户合法，反之则非法。 JWT的token为三">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-29T14:16:33.627Z">
+<meta property="og:updated_time" content="2020-02-29T14:17:33.220Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nonlocal的用法">
+<meta name="twitter:title" content="JWT认证的实现">
 <meta name="twitter:description" content="什么是JWT，以及原理网上有大把解释JWT认证原理的，直接看refer部分。 JWT认证 当用户登陆的时候，后端根据部分字段进行签名，然后将签名得到的数据返回给用户。 用户下一次请求数据的时候，在请求头的authentication字段携带token。 服务端收到token后进行解密，前两段用私钥签名的结果跟第三段对比，看是否一致，如果一致，则判定当前用户合法，反之则非法。 JWT的token为三">
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/02/20/JWT认证的实现/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/02/29/JWT认证的实现/">
 
 
 
 
 
-  <title>nonlocal的用法 | Kirakirazone</title>
+  <title>JWT认证的实现 | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/02/20/JWT认证的实现/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/02/29/JWT认证的实现/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">nonlocal的用法</h1>
+          <h1 class="post-title" itemprop="name headline">JWT认证的实现</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-20T22:41:38+08:00">
-                2019-02-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-29T22:41:38+08:00">
+                2020-02-29
               </time>
             
 
@@ -333,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/02/20/JWT认证的实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/20/JWT认证的实现/" itemprop="commentCount"></span>
+                <a href="/2020/02/29/JWT认证的实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/29/JWT认证的实现/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -456,7 +456,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/02/20/JWT认证的实现/" title="nonlocal的用法">https://kirakirazone.com/2019/02/20/JWT认证的实现/</a>
+    <a href="https://kirakirazone.com/2020/02/29/JWT认证的实现/" title="JWT认证的实现">https://kirakirazone.com/2020/02/29/JWT认证的实现/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -488,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/20/nonlocal的用法/" rel="next" title="nonlocal的用法">
-                <i class="fa fa-chevron-left"></i> nonlocal的用法
+              <a href="/2019/11/07/编写自定义django_admin命令/" rel="next" title="编写自定义 django-admin 命令">
+                <i class="fa fa-chevron-left"></i> 编写自定义 django-admin 命令
               </a>
             
           </div>
@@ -497,10 +497,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/27/sed一些操作/" rel="prev" title="sed的一些操作">
-                sed的一些操作 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -843,9 +839,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/02/20/JWT认证的实现/';
-          this.page.identifier = '2019/02/20/JWT认证的实现/';
-          this.page.title = 'nonlocal的用法';
+          this.page.url = 'https://kirakirazone.com/2020/02/29/JWT认证的实现/';
+          this.page.identifier = '2020/02/29/JWT认证的实现/';
+          this.page.title = 'JWT认证的实现';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
