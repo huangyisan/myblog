@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="linux,">
+  <meta name="keywords" content="css，小程序,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
-<meta name="keywords" content="linux">
+<meta name="description" content="遇到的一些问题 最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。   当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。   排查结果 内容块无法准确拉伸位置到bottom: 88rpx，是因为父组件的高度有问题，这个父组件为最外层的组件.content，我当时给的高度是height: 100">
+<meta name="keywords" content="css，小程序">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bash fork: retry: Resource temporarily unavailable">
-<meta property="og:url" content="https://kirakirazone.com/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/index.html">
+<meta property="og:title" content="初始化样式和子绝父相">
+<meta property="og:url" content="https://kirakirazone.com/2020/03/02/初始化样式和子绝父相/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
+<meta property="og:description" content="遇到的一些问题 最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。   当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。   排查结果 内容块无法准确拉伸位置到bottom: 88rpx，是因为父组件的高度有问题，这个父组件为最外层的组件.content，我当时给的高度是height: 100">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3gy1gcfq81qns2j20b90jbt93.jpg">
 <meta property="og:updated_time" content="2020-03-02T10:19:56.320Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="bash fork: retry: Resource temporarily unavailable">
-<meta name="twitter:description" content="修改ulimit无法解决fork不出子进程的问题现场没有保留，大抵经过如下：朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错bash fork: retry: Resource temporarily unavailable 排查经过：  起先我以为是ulimit的配置没修改，或者不够大">
+<meta name="twitter:title" content="初始化样式和子绝父相">
+<meta name="twitter:description" content="遇到的一些问题 最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。   当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。   排查结果 内容块无法准确拉伸位置到bottom: 88rpx，是因为父组件的高度有问题，这个父组件为最外层的组件.content，我当时给的高度是height: 100">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/9f0d15f3gy1gcfq81qns2j20b90jbt93.jpg">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/03/02/初始化样式和子绝父相/">
 
 
 
 
 
-  <title>bash fork: retry: Resource temporarily unavailable | Kirakirazone</title>
+  <title>初始化样式和子绝父相 | Kirakirazone</title>
   
 
 
@@ -285,7 +287,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/03/02/初始化样式和子绝父相/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">bash fork: retry: Resource temporarily unavailable</h1>
+          <h1 class="post-title" itemprop="name headline">初始化样式和子绝父相</h1>
         
 
         <div class="post-meta">
@@ -314,8 +316,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-02T23:16:17+08:00">
-                2019-01-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-02T17:22:13+08:00">
+                2020-03-02
               </time>
             
 
@@ -333,8 +335,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/" itemprop="commentCount"></span>
+                <a href="/2020/03/02/初始化样式和子绝父相/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/02/初始化样式和子绝父相/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,55 +364,49 @@
       
 
       
-        <h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
-<p>排查经过：</p>
-<ol>
-<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
-<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
-<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
+        <h2 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h2><ol>
+<li><p>最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。</p>
+<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1gcfq81qns2j20b90jbt93.jpg" alt="zhongjian.png"></p>
+</li>
+<li><p>当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。</p>
+</li>
 </ol>
-<p>这下懵圈了</p>
-<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
-<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
-<p>最后是找到了这篇文章：</p>
+<h2 id="排查结果"><a href="#排查结果" class="headerlink" title="排查结果"></a>排查结果</h2><ol>
+<li>内容块无法准确拉伸位置到bottom: 88rpx，是因为父组件的高度有问题，这个父组件为最外层的组件.content，我当时给的高度是height: 100%。</li>
+<li>然后因为.content是page根组件的子组件，所以height:100% 是继承page的高度，但page并没有设定高度，所以出现了问题。</li>
+</ol>
+<h2 id="思考如何给page设置一个合理的高度"><a href="#思考如何给page设置一个合理的高度" class="headerlink" title="思考如何给page设置一个合理的高度"></a>思考如何给page设置一个合理的高度</h2><ol>
+<li>因为用的是小程序，所以手机端有不同的高度，苹果6和苹果x高度就不一致，如果我设定一个固定高度，那么适配不同手机屏幕肯定会存在问题。</li>
+<li>后来查阅了文档，vh这个属性表示视口高度，也就是当前屏幕可见范围的高度，100vh表示整个屏幕，不论这个屏幕是什么类型的手机。</li>
+<li>其实只要给.content设置100vh即可。</li>
+</ol>
+<h2 id="配合子绝父相"><a href="#配合子绝父相" class="headerlink" title="配合子绝父相"></a>配合子绝父相</h2><ol>
+<li>让.content作为父元素，使用相对定位，设置<code>position: relative</code>。</li>
+<li>再添加<code>height: 100vh;</code>属性。</li>
+<li>白色区块内容作为子元素，让其绝对定位，设置<code>position: absolute</code>。</li>
+<li>然后子元素使用top, bottom, left, right进行调整位置。</li>
+</ol>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><ol>
+<li>一开始初始化那会，要给最外层的先设定一个高度，如果是动态的话就给一个100vh的高度填满视口。</li>
+<li>在父元素没有高度的时候，子元素使用<code>height: 100%</code>是没有效果的，即便是根组件使用，也是没有效果，这个和<code>width: 100%</code>不一样，不会撑开高度，具体原因<strong>浏览器根本就不计算内容的高度，除非内容超出了视窗范围(导致滚动条出现)。或者你给整个页面设置一个绝对高度。否则，浏览器就会简单的让内容往下堆砌，页面的高度根本就无需考虑</strong>。</li>
+</ol>
+<h2 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h2><ol>
+<li><p>html代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">c-swiper</span> <span class="attr">class</span>=<span class="string">'foods-wrapper'</span>&gt;</span><span class="tag">&lt;/<span class="name">c-swiper</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">c-search</span>&gt;</span><span class="tag">&lt;/<span class="name">c-search</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">c-foods-list</span>&gt;</span><span class="tag">&lt;/<span class="name">c-foods-list</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">c-bottom-bar</span>&gt;</span><span class="tag">&lt;/<span class="name">c-bottom-bar</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li>content部分</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">	<span class="attribute">display</span>: flex;</span><br><span class="line">	<span class="attribute">flex-direction</span>: column;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#007AFF</span>;</span><br><span class="line">	<span class="comment">/* 视口高度100 */</span></span><br><span class="line">	<span class="attribute">height</span>: <span class="number">100vh</span>;</span><br><span class="line">	<span class="comment">/* 子绝父相，有利于子元素定位 */</span></span><br><span class="line">	<span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><p>foods-wrapper部分代码</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.foods-wrapper</span> &#123;</span><br><span class="line">	<span class="attribute">display</span>: flex;</span><br><span class="line">	<span class="attribute">flex-direction</span>: row;</span><br><span class="line">	<span class="attribute">position</span>: absolute;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#C03189</span>;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">	<span class="attribute">top</span>: <span class="number">350</span>rpx;</span><br><span class="line">	<span class="attribute">bottom</span>: <span class="number">88</span>rpx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>refer</p>
 <blockquote>
-<p><a href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable" target="_blank" rel="noopener">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
-</blockquote>
-<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
-<ul>
-<li>这个文件的数量改动后立马生效，不需要重启</li>
-<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
-</ul>
-<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>在centos7上</p>
-<ul>
-<li>获取当前进程数：<code>cat /sys/fs/cgroup/pids/pids.current</code>   类似使用<code>ps -ef | wc -l</code></li>
-<li>获取当前<strong>线程数和进程数</strong>总和：<code>wc -l /sys/fs/cgroup/pids/tasks</code>  类似使用<code>ps -eLf | wc -l</code></li>
-</ul>
-<p>centos7上也是可以实现pid.max：<br>只需要在/sys/fs/cgroup/pids/下创建以为目录，则该目录中就会自动创建pid.max：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote test]# pwd</span><br><span class="line">/sys/fs/cgroup/pids/test</span><br><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br></pre></td></tr></table></figure></p>
-<p>对当前shell交互进程限制</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br><span class="line">[root@leanote test]# cat cgroup.procs </span><br><span class="line">[root@leanote test]# echo $$</span><br><span class="line">14514</span><br><span class="line">[root@leanote test]# echo 14514 &gt; cgroup.procs </span><br><span class="line">[root@leanote test]# echo 1 &gt; pids.max </span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: Resource temporarily unavailable</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: retry: No child processes</span><br></pre></td></tr></table></figure>
-<ul>
-<li>给pid.max输入1后，直接就出<code>-bash: fork: retry: No child processes</code>报错了。</li>
-<li>pid.max只会对cgroup.procs中存在的进程进行pid.max限制。</li>
-<li>当进程消失后,cgroup.procs中的进程号也会自动消失。</li>
-</ul>
-<p>在上一级不存在pid.max是因为对整个系统没必要做限制。<br>Ubuntu系统上<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code>这个其实是对用户编号为0的用户进行了pid.max的限制。</p>
-<p>refer:</p>
-<p>知乎上看到有个小伙伴也遇到这个问题了</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
-</blockquote>
-<p>fork的文档</p>
-<blockquote>
-<p><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
-</blockquote>
-<p>cgroup介绍</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007241437" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007241437</a><br><a href="https://mccxj.github.io/blog/20171230_os-thread-limit.html" target="_blank" rel="noopener">https://mccxj.github.io/blog/20171230_os-thread-limit.html</a></p>
-</blockquote>
-<p>cgroup 进程数限制</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007468509" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007468509</a></p>
+<p><a href="http://www.webhek.com/post/css-100-percent-height.html" target="_blank" rel="noopener">http://www.webhek.com/post/css-100-percent-height.html</a></p>
 </blockquote>
 
       
@@ -461,7 +457,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/" title="bash fork: retry: Resource temporarily unavailable">https://kirakirazone.com/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</a>
+    <a href="https://kirakirazone.com/2020/03/02/初始化样式和子绝父相/" title="初始化样式和子绝父相">https://kirakirazone.com/2020/03/02/初始化样式和子绝父相/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -476,7 +472,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/css，小程序/" rel="tag"># css，小程序</a>
           
         </div>
       
@@ -489,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/29/sort函数中key的理解/" rel="next" title="sort函数中key的理解">
-                <i class="fa fa-chevron-left"></i> sort函数中key的理解
+              <a href="/2020/02/29/JWT认证的实现/" rel="next" title="JWT认证的实现">
+                <i class="fa fa-chevron-left"></i> JWT认证的实现
               </a>
             
           </div>
@@ -498,10 +494,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/06/未配置中间证书CA引起的安卓端无法通过https建联加载图片案例/" rel="prev" title="未配置中间证书CA引起的安卓端无法通过https建联加载图片案例">
-                未配置中间证书CA引起的安卓端无法通过https建联加载图片案例 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -673,7 +665,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改ulimit无法解决fork不出子进程的问题"><span class="nav-number">1.</span> <span class="nav-text">修改ulimit无法解决fork不出子进程的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#centos7"><span class="nav-number">2.</span> <span class="nav-text">centos7</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的一些问题"><span class="nav-number">1.</span> <span class="nav-text">遇到的一些问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排查结果"><span class="nav-number">2.</span> <span class="nav-text">排查结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考如何给page设置一个合理的高度"><span class="nav-number">3.</span> <span class="nav-text">思考如何给page设置一个合理的高度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配合子绝父相"><span class="nav-number">4.</span> <span class="nav-text">配合子绝父相</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意点"><span class="nav-number">5.</span> <span class="nav-text">注意点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最终代码"><span class="nav-number">6.</span> <span class="nav-text">最终代码</span></a></li></ol></div>
             
 
           </div>
@@ -844,9 +836,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/';
-          this.page.identifier = '2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/';
-          this.page.title = 'bash fork: retry: Resource temporarily unavailable';
+          this.page.url = 'https://kirakirazone.com/2020/03/02/初始化样式和子绝父相/';
+          this.page.identifier = '2020/03/02/初始化样式和子绝父相/';
+          this.page.title = '初始化样式和子绝父相';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
