@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[css居中-水平方向]]></title>
     <url>%2F2020%2F03%2F14%2Fcss%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91%2F</url>
-    <content type="text"><![CDATA[行级元素(inline inline-*类型)水平居中 只需要将需要水平居中的行级元素包裹在父级块级元素内，对父级元素设置text-align: center;属性即可。 对inline, inline-block, inline-table, inline-flex等属性都适用。 See the Pen Centering Inline Elements by huangyisan (@huangyisan) on CodePen. 块级元素水平居中 给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。 如果不给width属性，则宽度填满父级元素空间。 See the Pen Centering Single Block Level Element by huangyisan (@huangyisan) on CodePen.]]></content>
+    <content type="text"><![CDATA[行级元素(inline inline-*类型)水平居中 只需要将需要水平居中的行级元素包裹在父级块级元素内，对父级元素设置text-align: center;属性即可。 对inline, inline-block, inline-table, inline-flex等属性都适用。 See the Pen Centering Inline Elements by huangyisan (@huangyisan) on CodePen. 一个块级元素水平居中 给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。 如果不给width属性，则宽度填满父级元素空间。 See the Pen Centering Single Block Level Element by huangyisan (@huangyisan) on CodePen. 多个块级元素水平居中 方法一： 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定inline-block属性 See the Pen Centering Row of Blocks by huangyisan (@huangyisan) on CodePen. 方法二：也可以给这些块级元素采用flex布局，也就是给其父级元素添加display: flex;，然后再给justify-content: center; See the Pen Centering Row of Blocks by huangyisan (@huangyisan) on CodePen.]]></content>
       <tags>
         <tag>css</tag>
         <tag>html</tag>

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="行级元素(inline inline-*类型)水平居中 只需要将需要水平居中的行级元素包裹在父级块级元素内，对父级元素设置text-align: center;属性即可。 对inline, inline-block, inline-table, inline-flex等属性都适用。    See the Pen   Centering Inline Elements by huangyisan (">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-14T07:41:43.872Z">
+<meta property="og:updated_time" content="2020-03-14T12:40:50.787Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="css居中-水平方向">
 <meta name="twitter:description" content="行级元素(inline inline-*类型)水平居中 只需要将需要水平居中的行级元素包裹在父级块级元素内，对父级元素设置text-align: center;属性即可。 对inline, inline-block, inline-table, inline-flex等属性都适用。    See the Pen   Centering Inline Elements by huangyisan (">
@@ -371,11 +371,25 @@
 
 
 
-<h2 id="块级元素水平居中"><a href="#块级元素水平居中" class="headerlink" title="块级元素水平居中"></a>块级元素水平居中</h2><ul>
+<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
 <li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
 <li>如果不给width属性，则宽度填满父级元素空间。</li>
 </ul>
 <iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
+<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<ul>
+<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
 
 
 
@@ -638,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#行级元素-inline-inline-类型-水平居中"><span class="nav-number">1.</span> <span class="nav-text">行级元素(inline inline-*类型)水平居中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块级元素水平居中"><span class="nav-number">2.</span> <span class="nav-text">块级元素水平居中</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#行级元素-inline-inline-类型-水平居中"><span class="nav-number">1.</span> <span class="nav-text">行级元素(inline inline-*类型)水平居中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个块级元素水平居中"><span class="nav-number">2.</span> <span class="nav-text">一个块级元素水平居中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个块级元素水平居中"><span class="nav-number">3.</span> <span class="nav-text">多个块级元素水平居中</span></a></li></ol></div>
             
 
           </div>
