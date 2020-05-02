@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="tcphttp封装Ethernet2(以太网2帧头) | IPV4 | TCP | HTTP | FCS(以太网2帧尾) tcp端口号 取值范围 16bit 范围0-65535  0–2^16-1 1-1023 知名端口 1024-65535 非知名端口    tcp信道协议种类 单信道协议:一个应用程序对应一个端口 多信道协议:一个应用程序对应多个端口，比如ftp,tcp20(控制端口)和tcp">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络tcp_udp协议">
+<meta property="og:url" content="https://kirakirazone.com/2019/07/29/网络tcp_udp协议/index.html">
+<meta property="og:site_name" content="Kirakirazone">
+<meta property="og:description" content="tcphttp封装Ethernet2(以太网2帧头) | IPV4 | TCP | HTTP | FCS(以太网2帧尾) tcp端口号 取值范围 16bit 范围0-65535  0–2^16-1 1-1023 知名端口 1024-65535 非知名端口    tcp信道协议种类 单信道协议:一个应用程序对应一个端口 多信道协议:一个应用程序对应多个端口，比如ftp,tcp20(控制端口)和tcp">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gziza7nxj20ks0e241r.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzqxjim2j20os0iateh.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpoe43aj20pa0i6n36.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpv5go7j20ta0a2whd.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gznh8e5jj20ta0a2whd.jpg">
+<meta property="og:updated_time" content="2020-05-02T02:29:48.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络tcp_udp协议">
+<meta name="twitter:description" content="tcphttp封装Ethernet2(以太网2帧头) | IPV4 | TCP | HTTP | FCS(以太网2帧尾) tcp端口号 取值范围 16bit 范围0-65535  0–2^16-1 1-1023 知名端口 1024-65535 非知名端口    tcp信道协议种类 单信道协议:一个应用程序对应一个端口 多信道协议:一个应用程序对应多个端口，比如ftp,tcp20(控制端口)和tcp">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gziza7nxj20ks0e241r.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kirakirazone.com/2019/07/29/网络tcp_udp协议/">
+
+
+
+
+
+  <title>网络tcp_udp协议 | Kirakirazone</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kirakirazone</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/07/29/网络tcp_udp协议/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kirakirazone">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">网络tcp_udp协议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-29T20:24:07+08:00">
+                2019-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/29/网络tcp_udp协议/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/29/网络tcp_udp协议/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="tcp"><a href="#tcp" class="headerlink" title="tcp"></a>tcp</h1><h2 id="http封装"><a href="#http封装" class="headerlink" title="http封装"></a>http封装</h2><p>Ethernet2(以太网2帧头) | IPV4 | TCP | HTTP | FCS(以太网2帧尾)</p>
+<h2 id="tcp端口号"><a href="#tcp端口号" class="headerlink" title="tcp端口号"></a>tcp端口号</h2><ol>
+<li>取值范围<ul>
+<li>16bit 范围0-65535  0–2^16-1</li>
+<li>1-1023 知名端口</li>
+<li>1024-65535 非知名端口</li>
+</ul>
+</li>
+</ol>
+<h2 id="tcp信道协议种类"><a href="#tcp信道协议种类" class="headerlink" title="tcp信道协议种类"></a>tcp信道协议种类</h2><ol>
+<li>单信道协议:一个应用程序对应一个端口</li>
+<li>多信道协议:一个应用程序对应多个端口，比如ftp,tcp20(控制端口)和tcp21(数据端口)</li>
+</ol>
+<p>tcp对带宽抢占率远低于udp</p>
+<h2 id="tcp头部封装"><a href="#tcp头部封装" class="headerlink" title="tcp头部封装"></a>tcp头部封装</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gziza7nxj20ks0e241r.jpg" alt=""></p>
+<ol>
+<li>tcp header 取值范围20Byte-60Byte。</li>
+<li>header length，因为长度可变，该字段告诉接受者tcp报头长度。</li>
+<li>Resv. 保留字段全部置0。</li>
+<li>6个控制位，syn置1 则表示发送syn，也就是三次握手的第一个阶段。</li>
+<li>URG，服务器一对多处理报文的时候，如果tcp URG置为1，则优先对这些数据进行处理。</li>
+<li>只有当需要对tcp启用高级功能的到时候，才需要添加options可选项</li>
+<li>padding是因为三层包头和四层包头大小都必须被4整除，所以当options选项被使用的时候，无法被4整除的时候，对padding进行用连续的0填充，填充到可以被4整除</li>
+<li>ergent pointer 紧急指针配合URG位，让多股tcp应用，哪一股被优先处理</li>
+</ol>
+<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzqxjim2j20os0iateh.jpg" alt=""></p>
+<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpoe43aj20pa0i6n36.jpg" alt=""></p>
+<h2 id="面向连接协议"><a href="#面向连接协议" class="headerlink" title="面向连接协议:"></a>面向连接协议:</h2><ol>
+<li>流量控制<ul>
+<li>限速，(源末两端接受带宽不一致，如果源端带宽大，全速发送给接收端，则接收端会产生拥塞。) 在发送数据之前进行协商速率，通过windown字段(单位字节，Byte)进行协商,比如协商为100字节，则源端发送100字节数据给接收端，接收端收到后，返回一个确认给源端，如果没确认，则表示数据丢失，需要数据重传。窗口不是固定不变，在每次发送流量之前都会进行windown协商。<br>带宽大的时候，窗口经过协商会变大，直到占用链路最大字节的时候，又会控制窗口大小，防止拥塞发生，这种行为称之为滑动窗口。 </li>
+<li>tcp延迟启动(slow start) 第一次协商为1 字节， 第二次为2字节 第n次为2^(n-1)次方,(下载的时候先比较小，然后逐渐变大)</li>
+<li>全局同步问题：slow start 窗口逐渐变大，当超出阈值带宽的时候，会减半，然后又逐渐变大，触发阈值再减半，依次循环。其带宽利用是一个折线。平均带宽利用不会百分百打满。当存在大量tcp应用的时候，此时这些应用一起发送数据的时候，就会出现全局同步的问题，大家都在利用带宽，发现不足了，瞬间减半窗口。</li>
+<li>滑动窗口的协商发生在接收方回复syn-ack的时候。</li>
+</ul>
+</li>
+<li>防乱序<ul>
+<li>处理延迟，串行化延迟，传输延迟，队列延迟</li>
+<li>队列延迟，导致源给目的地发送多个数据，导致乱序—-抖动。</li>
+<li>通过squence number来标记数据包，进行顺序接受。</li>
+</ul>
+</li>
+<li>防丢包<ul>
+<li>acknowlegde number中包含一个确认号，确认号的值通常为发送方发送的最大序列号值加1。比如发送方发送 1 2 3 ，则接收方发送确认号4，发送方知道4后，接着发送4 5 6。如果接收方只收到了4 5 ，则其返回确认号为6，那么发送方发现接收方漏了6，则对6进行重发。 如果发送方只收到了4，返回了确认号5， 那么发送方会对 5 6 都重发。</li>
+</ul>
+</li>
+<li>完整性检查<ul>
+<li>根据接收到的数据跟tcp中的checksum字段比较。因为并不是HMAC的方式，所以无法检测数据是否被篡改，只能检测流量在发送的时候是否因为拥塞导致冲突。</li>
+</ul>
+</li>
+<li>数据重传<ul>
+<li>根据发送方发来的确认号，以及发送过去的序列号，对比查看是否需要重传。</li>
+</ul>
+</li>
+</ol>
+<h2 id="tcp注意点"><a href="#tcp注意点" class="headerlink" title="tcp注意点"></a>tcp注意点</h2><ol>
+<li><p>tcp只支持单播(unicast)数据的发送,如果用了tcp，则无法组播或者广播。相对udp不够灵活，udp支持单播 组播 广播。</p>
+</li>
+<li><p>完全连接，完成三次握手。</p>
+</li>
+<li>半开连接，发送端未发送最后一次ack的连接，接收端不会自动断开，会默认被保持，且消耗服务器内存和cpu。</li>
+</ol>
+<h1 id="udp"><a href="#udp" class="headerlink" title="udp"></a>udp</h1><p><strong>面向无连接，不可靠传输</strong></p>
+<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpv5go7j20ta0a2whd.jpg" alt=""></p>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>ip header | udp header | data</p>
+<h2 id="udp头部报文"><a href="#udp头部报文" class="headerlink" title="udp头部报文"></a>udp头部报文</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gznh8e5jj20ta0a2whd.jpg" alt=""></p>
+<ol>
+<li>udp头部占用8字节，传输时候没有确认机制。</li>
+<li><p>udp主持组播和广播</p>
+</li>
+<li><p>媒体流量基本用udp封装，所以媒体对序列的要求，则封装一个rtp(实时传输协议)的包头，其squence 为12字节，保证源末报文可以根据序列进行重组。 ethernet2 | udp | rtp | VoIP | FCS</p>
+</li>
+</ol>
+<h1 id="tcp-udp对比"><a href="#tcp-udp对比" class="headerlink" title="tcp udp对比"></a>tcp udp对比</h1><ol>
+<li>可靠 tcp强</li>
+<li>安全 udp强  tcp 三次握手容易被攻击</li>
+<li>带宽利用   udp利用高  tcp存在全局同步的问题，解决办法 QoS WRED加权随机早期检测</li>
+<li>应用灵活   tcp只支持单播，udp更加灵活</li>
+<li>不用支持重传的服务  VoIP 用udp</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://kirakirazone.com/2019/07/29/网络tcp_udp协议/" title="网络tcp_udp协议">https://kirakirazone.com/2019/07/29/网络tcp_udp协议/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/17/误删正在输出的服务日志/" rel="next" title="误删正在输出的tomcat服务日志">
+                <i class="fa fa-chevron-left"></i> 误删正在输出的tomcat服务日志
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/30/Redis内存模型和持久化/" rel="prev" title="Redis内存模型和持久化(搬运)">
+                Redis内存模型和持久化(搬运) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Huangyisan</p>
+              <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/huangyisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:anonymousyisan@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://mynotebook.readthedocs.io/en/latest/" title="readthedocs" target="_blank">readthedocs</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tcp"><span class="nav-number">1.</span> <span class="nav-text">tcp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#http封装"><span class="nav-number">1.1.</span> <span class="nav-text">http封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcp端口号"><span class="nav-number">1.2.</span> <span class="nav-text">tcp端口号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcp信道协议种类"><span class="nav-number">1.3.</span> <span class="nav-text">tcp信道协议种类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcp头部封装"><span class="nav-number">1.4.</span> <span class="nav-text">tcp头部封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三次握手"><span class="nav-number">1.5.</span> <span class="nav-text">三次握手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四次挥手"><span class="nav-number">1.6.</span> <span class="nav-text">四次挥手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向连接协议"><span class="nav-number">1.7.</span> <span class="nav-text">面向连接协议:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcp注意点"><span class="nav-number">1.8.</span> <span class="nav-text">tcp注意点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#udp"><span class="nav-number">2.</span> <span class="nav-text">udp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#封装"><span class="nav-number">2.1.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#udp头部报文"><span class="nav-number">2.2.</span> <span class="nav-text">udp头部报文</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tcp-udp对比"><span class="nav-number">3.</span> <span class="nav-text">tcp udp对比</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+<div class="BbeiAn-info">
+   	浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784" rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://kirakirazone.com/2019/07/29/网络tcp_udp协议/';
+          this.page.identifier = '2019/07/29/网络tcp_udp协议/';
+          this.page.title = '网络tcp_udp协议';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://kirakirazone.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
