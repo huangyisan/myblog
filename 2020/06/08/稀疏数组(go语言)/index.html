@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="小程序,">
+  <meta name="keywords" content="go,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="我的小程序菜单栏点击延迟很大 小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。 微信开发工具的模拟界面点击没有任何的延迟感。 点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。  排查思路 使用微信开发工具的”Audits”进行体验评分，体验分挺高的，但我自己的体验还是很差啊。  翻阅网上资料，修改样式也就差不多那么几种方式，">
-<meta name="keywords" content="小程序">
+<meta name="description" content="判断value是否存在稀疏数组使用场景当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来压缩保存该二维数组。 稀疏数组处理方法 稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。 稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。  简单的例子  原二维数组看做棋盘，白">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用正确的姿势动态修改小程序样式">
-<meta property="og:url" content="https://kirakirazone.com/2020/03/13/小程序wxs的使用/index.html">
+<meta property="og:title" content="稀疏数组">
+<meta property="og:url" content="https://kirakirazone.com/2020/06/08/稀疏数组(go语言)/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="我的小程序菜单栏点击延迟很大 小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。 微信开发工具的模拟界面点击没有任何的延迟感。 点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。  排查思路 使用微信开发工具的”Audits”进行体验评分，体验分挺高的，但我自己的体验还是很差啊。  翻阅网上资料，修改样式也就差不多那么几种方式，">
+<meta property="og:description" content="判断value是否存在稀疏数组使用场景当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来压缩保存该二维数组。 稀疏数组处理方法 稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。 稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。  简单的例子  原二维数组看做棋盘，白">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1gfknynjddkj21120hcq4m.jpg">
 <meta property="og:updated_time" content="2020-06-08T03:14:26.884Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用正确的姿势动态修改小程序样式">
-<meta name="twitter:description" content="我的小程序菜单栏点击延迟很大 小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。 微信开发工具的模拟界面点击没有任何的延迟感。 点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。  排查思路 使用微信开发工具的”Audits”进行体验评分，体验分挺高的，但我自己的体验还是很差啊。  翻阅网上资料，修改样式也就差不多那么几种方式，">
+<meta name="twitter:title" content="稀疏数组">
+<meta name="twitter:description" content="判断value是否存在稀疏数组使用场景当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来压缩保存该二维数组。 稀疏数组处理方法 稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。 稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。  简单的例子  原二维数组看做棋盘，白">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1gfknynjddkj21120hcq4m.jpg">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2020/03/13/小程序wxs的使用/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/06/08/稀疏数组(go语言)/">
 
 
 
 
 
-  <title>用正确的姿势动态修改小程序样式 | Kirakirazone</title>
+  <title>稀疏数组 | Kirakirazone</title>
   
 
 
@@ -285,7 +287,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/03/13/小程序wxs的使用/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/06/08/稀疏数组(go语言)/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">用正确的姿势动态修改小程序样式</h1>
+          <h1 class="post-title" itemprop="name headline">稀疏数组</h1>
         
 
         <div class="post-meta">
@@ -314,8 +316,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-13T19:22:13+08:00">
-                2020-03-13
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-08T13:58:56+08:00">
+                2020-06-08
               </time>
             
 
@@ -333,8 +335,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/03/13/小程序wxs的使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/13/小程序wxs的使用/" itemprop="commentCount"></span>
+                <a href="/2020/06/08/稀疏数组(go语言)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/06/08/稀疏数组(go语言)/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,79 +364,24 @@
       
 
       
-        <h2 id="我的小程序菜单栏点击延迟很大"><a href="#我的小程序菜单栏点击延迟很大" class="headerlink" title="我的小程序菜单栏点击延迟很大"></a>我的小程序菜单栏点击延迟很大</h2><ol>
-<li>小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。</li>
-<li>微信开发工具的模拟界面点击没有任何的延迟感。</li>
-<li>点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。</li>
+        <h2 id="判断value是否存在"><a href="#判断value是否存在" class="headerlink" title="判断value是否存在"></a>判断value是否存在</h2><h2 id="稀疏数组使用场景"><a href="#稀疏数组使用场景" class="headerlink" title="稀疏数组使用场景"></a>稀疏数组使用场景</h2><p>当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来<strong>压缩保存</strong>该二维数组。</p>
+<h2 id="稀疏数组处理方法"><a href="#稀疏数组处理方法" class="headerlink" title="稀疏数组处理方法"></a>稀疏数组处理方法</h2><ol>
+<li>稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。</li>
+<li>稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。</li>
 </ol>
-<h2 id="排查思路"><a href="#排查思路" class="headerlink" title="排查思路"></a>排查思路</h2><ol>
-<li><p>使用微信开发工具的”Audits”进行体验评分，体验分挺高的，但我自己的体验还是很差啊。</p>
-</li>
-<li><p>翻阅网上资料，修改样式也就差不多那么几种方式，我也是这样写的，感觉没毛病呀。</p>
-</li>
-<li><p>最小化配置，删减了所有其他相关组件，就留下了一个菜单，关联的样式也全部删掉，真机测试，还是有延迟。</p>
-</li>
-<li><p>怀疑是自己手机的问题，于是我用了下饿了么的小程序，大受打击，同时也让朋友真机测了下，也说有延迟感觉。</p>
-</li>
-<li><p>难道是uni-app框架的锅？行吧，我用小程序原生代码写了个菜单，点击发现的确比uniapp流畅点，但还是没有饿了么小程序那个菜单来的顺滑。</p>
-</li>
-<li><p>wdnmd，网上搜来搜去，说卡的基本上是组件过多，图片过多导致，跟我这个不太一样。</p>
-</li>
-<li><p>就这么过去了将近3天，一直没有头绪。让我更加在意的是饿了么为什么能那么流畅？</p>
-</li>
+<h2 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1gfknynjddkj21120hcq4m.jpg" alt="稀疏数组.png"></p>
+<ol>
+<li>原二维数组看做棋盘，白子为1，黑子为2。</li>
+<li>稀疏数组第一行表示了”棋盘大小”为<strong>7*7</strong>，值为0，该值只是用于甄别其他有效值。</li>
+<li>稀疏数组第二行至第四行表示了”棋盘”内白子黑子的分布，顺序为从上到下，从左到右。</li>
+<li>可以将行和列看为x轴和y轴。</li>
 </ol>
-<h2 id="uni-app原代码"><a href="#uni-app原代码" class="headerlink" title="uni-app原代码"></a>uni-app原代码</h2><h3 id="template部分代码"><a href="#template部分代码" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;block v-for=&apos;(item,index) in foodsInfo&apos; :key=&apos;item.category&apos;&gt;</span><br><span class="line">	&lt;view class=&apos;side-left-item&apos; @click=&quot;itemClick(index)&quot; :class=&quot;&#123;active: index === currentIndex&#125;&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;/text&gt;</span><br><span class="line">	&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="JS部分代码"><a href="#JS部分代码" class="headerlink" title="JS部分代码"></a>JS部分代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">data() &#123;</span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		currentIndex: <span class="number">0</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">	itemClick(index) &#123;</span><br><span class="line">		<span class="keyword">this</span>.currentIndex = index</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="小程序原生代码"><a href="#小程序原生代码" class="headerlink" title="小程序原生代码"></a>小程序原生代码</h2><h3 id="视图层部分代码"><a href="#视图层部分代码" class="headerlink" title="视图层部分代码"></a>视图层部分代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;block wx:for=&quot;&#123;&#123;leftData&#125;&#125;&quot; wx:for-item=&quot;lcai&quot; wx:key=&quot;index&quot;&gt;</span><br><span class="line">&lt;view bindtap=&quot;btnClick&quot; data-index=&quot;&#123;&#123;index&#125;&#125;&quot; class=&quot;inner &#123;&#123;currentIndex == index? &apos;active&apos; : &apos;&apos;&#125;&#125;&quot;&gt;&#123;&#123;lcai.name&#125;&#125;&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="逻辑层部分代码"><a href="#逻辑层部分代码" class="headerlink" title="逻辑层部分代码"></a>逻辑层部分代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    currentIndex: <span class="number">0</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  btnClick: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> index = e.currentTarget.dataset.index;</span><br><span class="line">    <span class="built_in">console</span>.log(index)</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      currentIndex: index</span><br><span class="line">    &#125;) </span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="原代码的实现方式"><a href="#原代码的实现方式" class="headerlink" title="原代码的实现方式"></a>原代码的实现方式</h3><ol>
-<li>跟网上说的基本上一致，绑定点击事件，通过判断当前元素的index和currentIndex是否相等，返回true或者false来动态添加active样式(color:red; background-color: gray;)。</li>
-<li>看着没有任何的问题，在pc端也是这么写的。</li>
+<h3 id="二维数组矩阵用稀疏数组表示-go语言思路"><a href="#二维数组矩阵用稀疏数组表示-go语言思路" class="headerlink" title="二维数组矩阵用稀疏数组表示(go语言思路)"></a>二维数组矩阵用稀疏数组表示(go语言思路)</h3><ol>
+<li>每一个棋子有三个属性，<strong>x轴坐标</strong>，<strong>y轴坐标</strong>，<strong>颜色</strong>。一个棋子的属性可以用结构体来表示。</li>
+<li>稀疏数组由于存在长度不确定性，所以使用切片的方式来表示。</li>
+<li>稀疏数组的第一个元素围棋盘布局。</li>
 </ol>
-<h2 id="直到我看到了这篇文章"><a href="#直到我看到了这篇文章" class="headerlink" title="直到我看到了这篇文章"></a>直到我看到了这篇文章</h2><ul>
-<li><p>植树节晚上洗完澡一直在考虑这个问题，没有头绪，谷歌搜了下通用类的小程序优化思路。看到了如下这篇文章，才恍然大悟。</p>
-</li>
-<li><blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/82741561" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82741561</a></p>
-</blockquote>
-</li>
-</ul>
-<h3 id="为什么会慢？"><a href="#为什么会慢？" class="headerlink" title="为什么会慢？"></a>为什么会慢？</h3><ul>
-<li>小程序的视图层(wxml)和逻辑层(js)是独立分开的。这样视图层不能运行js代码，逻辑层的js代码也不能修改视图层的dom</li>
-<li>当数据更新以及事件系统只能靠线程间通讯，但跨线程通信的成本极高，一些频繁通讯的场景，触摸、滚动等。</li>
-<li>一个点击行为，需要经过视图层、Native、逻辑层三者之间2个完整来回的通信，通信的耗时开销较大，用户的交互就会出现延时卡顿的情况。</li>
-<li>for循环对数据格式修改，也会造成逻辑层和视图层频繁通讯。</li>
-</ul>
-<h3 id="wxs的出现"><a href="#wxs的出现" class="headerlink" title="wxs的出现"></a>wxs的出现</h3><ul>
-<li>wxs是一种被限制了的js，他可以运行在视图层。<strong>换句话说wxs和视图层的交互不需要经过Native层</strong>。</li>
-<li>他是不可以操作dom的，因为小程序的视图层和逻辑层的分开就是为了不想用js直接操作dom。</li>
-<li>wxs无法直接修改业务数据，只能对当前组件的class和style处理，或者数据进行格式化。</li>
-<li>如果要修改业务逻辑数据，则需要用callMethod方法。</li>
-</ul>
-<h3 id="wxs适合的场景"><a href="#wxs适合的场景" class="headerlink" title="wxs适合的场景"></a>wxs适合的场景</h3><ul>
-<li>用户交互频繁、仅需改动组件样式（比如布局位置），无需改动数据内容的场景，比如侧滑菜单、索引列表、滚动渐变等 - 数据格式处理，比如文本、日期格式化，或者国际化。</li>
-</ul>
-<h2 id="修改后的uni-app代码"><a href="#修改后的uni-app代码" class="headerlink" title="修改后的uni-app代码"></a>修改后的uni-app代码</h2><h3 id="template部分代码-1"><a href="#template部分代码-1" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;block v-for=&apos;(item,index) in foodsInfo&apos; :key=&apos;index&apos;&gt;</span><br><span class="line">  &lt;!-- 绑定多个class的方式，用数组，变量不需要加&#123;&#123;&#125;&#125;     点击事件绑定wxs中export的clickwxs--&gt;</span><br><span class="line">	&lt;view :data-index=&quot;index&quot; :class=&apos;[&quot;side-left-item&quot;, &quot;inner_&quot; + index]&apos; @click=&quot;clickwxs.tapName&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;/text&gt;</span><br><span class="line">	&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="WXS部分代码"><a href="#WXS部分代码" class="headerlink" title="WXS部分代码"></a>WXS部分代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//该代码和上面template代码为同一个文件下。</span></span><br><span class="line"><span class="comment">//命名为clickwxs</span></span><br><span class="line">&lt;script <span class="built_in">module</span>=<span class="string">"clickwxs"</span> lang=<span class="string">"wxs"</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ins</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(event))</span><br><span class="line">  <span class="keyword">var</span> owner = ins.selectAllComponents(<span class="string">'.side-left-item'</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 移除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">'active'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'.inner'</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">var</span> instance = ins.selectComponent(<span class="string">'.inner_'</span> + event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(instance)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">'active'</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="修改后的微信小程序原生代码"><a href="#修改后的微信小程序原生代码" class="headerlink" title="修改后的微信小程序原生代码"></a>修改后的微信小程序原生代码</h2><h3 id="视图层代码"><a href="#视图层代码" class="headerlink" title="视图层代码"></a>视图层代码</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入wxs--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wxs</span> <span class="attr">module</span>=<span class="string">"wxs"</span> <span class="attr">src</span>=<span class="string">"./index.wxs"</span>&gt;</span><span class="tag">&lt;/<span class="name">wxs</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scroll-view</span> <span class="attr">scroll-y</span>=<span class="string">"true"</span> <span class="attr">class</span>=<span class="string">"scroll"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;leftData&#125;&#125;"</span> <span class="attr">wx:for-item</span>=<span class="string">"lcai"</span> <span class="attr">wx:key</span>=<span class="string">"index"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">bindtap</span>=<span class="string">"&#123;&#123;wxs.tapName&#125;&#125;"</span> <span class="attr">data-index</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">class</span>=<span class="string">"inner inner_&#123;&#123;index&#125;&#125;"</span>&gt;</span>&#123;&#123;lcai.name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scroll-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="wxs代码"><a href="#wxs代码" class="headerlink" title="wxs代码"></a>wxs代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ownerInstance</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 获取所有class="inner"的组件</span></span><br><span class="line">  <span class="keyword">var</span> owner = ownerInstance.selectAllComponents(<span class="string">'.inner'</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 清除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">'active'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'.inner_'</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> instance = ownerInstance.selectComponent(<span class="string">'.inner_'</span> + event.currentTarget.dataset.index)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">'active'</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><strong>修改完后，无论是uni-app框架的小程序，还是小程序原生的写法，点击延迟感不再有。</strong></p>
-<h2 id="两份代码github地址"><a href="#两份代码github地址" class="headerlink" title="两份代码github地址"></a>两份代码github地址</h2><ol>
-<li><blockquote>
-<p><a href="https://github.com/huangyisan/fooods" target="_blank" rel="noopener">https://github.com/huangyisan/fooods</a>  leftbuttom分支</p>
-</blockquote>
-</li>
-<li><blockquote>
-<p><a href="https://github.com/huangyisan/ori-fooods" target="_blank" rel="noopener">https://github.com/huangyisan/ori-fooods</a></p>
-</blockquote>
-</li>
-</ol>
-<p>refer</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/82741561" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82741561</a></p>
-<p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html</a></p>
-<p><a href="https://www.cnblogs.com/murenziwei/p/11233505.html" target="_blank" rel="noopener">https://www.cnblogs.com/murenziwei/p/11233505.html</a></p>
-</blockquote>
+<h3 id="go代码对二维数组压缩保存为稀疏数组"><a href="#go代码对二维数组压缩保存为稀疏数组" class="headerlink" title="go代码对二维数组压缩保存为稀疏数组"></a>go代码对二维数组压缩保存为稀疏数组</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义一个7*7的二维数组, 将黑子白子进行赋值.</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line">	chessMap[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">2</span>] = <span class="number">2</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">4</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">5</span>][<span class="number">3</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 打印原始数据</span></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d\t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Printf(<span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 用稀疏数组表示</span></span><br><span class="line">	<span class="comment">/* 每一个棋子都有三个属性</span></span><br><span class="line"><span class="comment">		1. x轴位置</span></span><br><span class="line"><span class="comment">		2. y轴位置</span></span><br><span class="line"><span class="comment">		3. 棋子颜色</span></span><br><span class="line"><span class="comment">		这三个属性可以使用结构体来表示</span></span><br><span class="line"><span class="comment">		然后将结构体依次append进数组中, 就可以作为一个稀疏数组了.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子属性的结构体</span></span><br><span class="line">	 <span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">	 	axisX <span class="keyword">int</span></span><br><span class="line">	 	axisY <span class="keyword">int</span></span><br><span class="line">	 	value <span class="keyword">int</span></span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子结构体的切片</span></span><br><span class="line">	 <span class="keyword">var</span> chessSparseMap []chess</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// chessSparseMap稀疏数组第一行定义x,y和value</span></span><br><span class="line">	 firstLine := chess&#123;</span><br><span class="line">	 	axisX: <span class="number">7</span>,</span><br><span class="line">	 	axisY: <span class="number">7</span>,</span><br><span class="line">	 	value: <span class="number">0</span>,</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 chessSparseMap = <span class="built_in">append</span>(chessSparseMap, firstLine)</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 对原始数据进行遍历, 然后将获取到有数值内容的值,存储到chess结构体中, 并且将该结构体append到chessSparseMap里面.</span></span><br><span class="line">	<span class="keyword">for</span> k,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> k2,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			<span class="keyword">if</span> v2 != <span class="number">0</span> &#123;</span><br><span class="line">				tmpChess := chess&#123;</span><br><span class="line">					axisX:k,</span><br><span class="line">					axisY:k2,</span><br><span class="line">					value:v2,</span><br><span class="line">				&#125;</span><br><span class="line">				chessSparseMap = <span class="built_in">append</span>(chessSparseMap, tmpChess)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"稀疏数组为"</span>)</span><br><span class="line">	fmt.Println(chessSparseMap)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -484,7 +431,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2020/03/13/小程序wxs的使用/" title="用正确的姿势动态修改小程序样式">https://kirakirazone.com/2020/03/13/小程序wxs的使用/</a>
+    <a href="https://kirakirazone.com/2020/06/08/稀疏数组(go语言)/" title="稀疏数组">https://kirakirazone.com/2020/06/08/稀疏数组(go语言)/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -499,7 +446,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/小程序/" rel="tag"># 小程序</a>
+            <a href="/tags/go/" rel="tag"># go</a>
           
         </div>
       
@@ -512,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/02/初始化样式和子绝父相/" rel="next" title="初始化样式和子绝父相">
-                <i class="fa fa-chevron-left"></i> 初始化样式和子绝父相
+              <a href="/2020/04/30/原码反码补码以及位运算/" rel="next" title="原码反码补码以及位运算">
+                <i class="fa fa-chevron-left"></i> 原码反码补码以及位运算
               </a>
             
           </div>
@@ -521,10 +468,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/03/14/css居中-水平方向/" rel="prev" title="css居中-水平方向">
-                css居中-水平方向 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -696,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#我的小程序菜单栏点击延迟很大"><span class="nav-number">1.</span> <span class="nav-text">我的小程序菜单栏点击延迟很大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排查思路"><span class="nav-number">2.</span> <span class="nav-text">排查思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uni-app原代码"><span class="nav-number">3.</span> <span class="nav-text">uni-app原代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#template部分代码"><span class="nav-number">3.1.</span> <span class="nav-text">template部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JS部分代码"><span class="nav-number">3.2.</span> <span class="nav-text">JS部分代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序原生代码"><span class="nav-number">4.</span> <span class="nav-text">小程序原生代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层部分代码"><span class="nav-number">4.1.</span> <span class="nav-text">视图层部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑层部分代码"><span class="nav-number">4.2.</span> <span class="nav-text">逻辑层部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原代码的实现方式"><span class="nav-number">4.3.</span> <span class="nav-text">原代码的实现方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直到我看到了这篇文章"><span class="nav-number">5.</span> <span class="nav-text">直到我看到了这篇文章</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么会慢？"><span class="nav-number">5.1.</span> <span class="nav-text">为什么会慢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wxs的出现"><span class="nav-number">5.2.</span> <span class="nav-text">wxs的出现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wxs适合的场景"><span class="nav-number">5.3.</span> <span class="nav-text">wxs适合的场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改后的uni-app代码"><span class="nav-number">6.</span> <span class="nav-text">修改后的uni-app代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#template部分代码-1"><span class="nav-number">6.1.</span> <span class="nav-text">template部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WXS部分代码"><span class="nav-number">6.2.</span> <span class="nav-text">WXS部分代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改后的微信小程序原生代码"><span class="nav-number">7.</span> <span class="nav-text">修改后的微信小程序原生代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层代码"><span class="nav-number">7.1.</span> <span class="nav-text">视图层代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wxs代码"><span class="nav-number">7.2.</span> <span class="nav-text">wxs代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">8.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两份代码github地址"><span class="nav-number">9.</span> <span class="nav-text">两份代码github地址</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#判断value是否存在"><span class="nav-number">1.</span> <span class="nav-text">判断value是否存在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#稀疏数组使用场景"><span class="nav-number">2.</span> <span class="nav-text">稀疏数组使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#稀疏数组处理方法"><span class="nav-number">3.</span> <span class="nav-text">稀疏数组处理方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的例子"><span class="nav-number">4.</span> <span class="nav-text">简单的例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二维数组矩阵用稀疏数组表示-go语言思路"><span class="nav-number">4.1.</span> <span class="nav-text">二维数组矩阵用稀疏数组表示(go语言思路)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go代码对二维数组压缩保存为稀疏数组"><span class="nav-number">4.2.</span> <span class="nav-text">go代码对二维数组压缩保存为稀疏数组</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -867,9 +810,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2020/03/13/小程序wxs的使用/';
-          this.page.identifier = '2020/03/13/小程序wxs的使用/';
-          this.page.title = '用正确的姿势动态修改小程序样式';
+          this.page.url = 'https://kirakirazone.com/2020/06/08/稀疏数组(go语言)/';
+          this.page.identifier = '2020/06/08/稀疏数组(go语言)/';
+          this.page.title = '稀疏数组';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
