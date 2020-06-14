@@ -736,6 +736,29 @@
       </tags>
   </entry>
   <entry>
+    <title>True or False</title>
+    <url>/2018/12/18/True-or-False/</url>
+    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
+<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
+<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
+<blockquote>
+<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
+</blockquote>
+<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>bash fork: retry: Resource temporarily unavailable</title>
     <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
     <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
@@ -791,29 +814,6 @@
 ]]></content>
       <tags>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>True or False</title>
-    <url>/2018/12/18/True-or-False/</url>
-    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
-<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
-<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
-<blockquote>
-<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
-</blockquote>
-<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
@@ -957,6 +957,52 @@
       </tags>
   </entry>
   <entry>
+    <title>css居中-水平方向</title>
+    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
+    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
+<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
+<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
+<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
+</ul>
+<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
+<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
+<li>如果不给width属性，则宽度填满父级元素空间。</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
+<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<ul>
+<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+
+<p>ref:</p>
+<blockquote>
+<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>css</tag>
+        <tag>html</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CSS选择器权重</title>
     <url>/2019/03/05/css%E9%80%89%E6%8B%A9%E5%99%A8%E6%9D%83%E9%87%8D/</url>
     <content><![CDATA[<h2 id="CSS选择器类型"><a href="#CSS选择器类型" class="headerlink" title="CSS选择器类型"></a>CSS选择器类型</h2><ul>
@@ -1005,52 +1051,6 @@
 ]]></content>
       <tags>
         <tag>css</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>css居中-水平方向</title>
-    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
-    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
-<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
-<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
-<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
-</ul>
-<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
-<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
-<li>如果不给width属性，则宽度填满父级元素空间。</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
-<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<ul>
-<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-
-<p>ref:</p>
-<blockquote>
-<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>css</tag>
-        <tag>html</tag>
       </tags>
   </entry>
   <entry>
@@ -1341,7 +1341,7 @@
     <url>/2020/06/14/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E4%BB%A5%E5%8F%8A%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2/</url>
     <content><![CDATA[<h2 id="go语言基本类型"><a href="#go语言基本类型" class="headerlink" title="go语言基本类型"></a>go语言基本类型</h2><p>说难不难，说容易也不容易，得把这些类型全部搞清楚。</p>
 <ol>
-<li><p>数字类型</p>
+<li><p><strong>数字类型</strong></p>
 <ul>
 <li><p>整形</p>
 <ul>
@@ -1382,13 +1382,13 @@
 </li>
 </ol>
 <ol start="2">
-<li><p>字符类型</p>
+<li><p><strong>字符类型</strong></p>
 <ul>
 <li>字符类型strings是一串byte，使用双引号，或者单反引号来表示，<code>&quot;hello&quot;</code>, <code>\</code>hello``。</li>
 <li>双引号内的字符串，不可以跨行，且会受到转义字符的影响，比如\n,\t，如果想要不受影响，则使用单反引号。</li>
 </ul>
 </li>
-<li><p>布尔类型</p>
+<li><p><strong>布尔类型</strong></p>
 <ul>
 <li>bool类型只有false和true两种，且不可以像python那样存在隐式转换。</li>
 </ul>
@@ -1951,6 +1951,40 @@
       </tags>
   </entry>
   <entry>
+    <title>split函数</title>
+    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
+<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
+<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
+<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
+<p>然后手工验证了下两者的情况：</p>
+<ul>
+<li><p>split(“ “)的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>split()的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查了下split()的用法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
+<ol>
+<li>以任何whitespace字符串作为分隔符。</li>
+<li>除所有的empty string。</li>
+</ol>
+<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>tcp_max_syn_backlog和net.core.somaxconn</title>
     <url>/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/</url>
     <content><![CDATA[<p><strong>kernel 3.10.0-693.2.2.el7.x86_64</strong></p>
@@ -2058,40 +2092,6 @@
       <tags>
         <tag>linux</tag>
         <tag>network</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>split函数</title>
-    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
-<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
-<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
-<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
-<p>然后手工验证了下两者的情况：</p>
-<ul>
-<li><p>split(“ “)的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>split()的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查了下split()的用法</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
-<ol>
-<li>以任何whitespace字符串作为分隔符。</li>
-<li>除所有的empty string。</li>
-</ol>
-<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
