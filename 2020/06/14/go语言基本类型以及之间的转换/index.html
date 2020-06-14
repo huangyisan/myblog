@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="go语言基本类型说难不难，说容易也不容易，得把这些类型全部搞清楚。  数字类型  整形  有符号型      |    Type     | Size               | Range                               | | :---------: | :----------------- | ---------------------------------">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-06-14T08:47:11.343Z">
+<meta property="og:updated_time" content="2020-06-14T08:55:34.528Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go语言基本类型以及之间的转换">
 <meta name="twitter:description" content="go语言基本类型说难不难，说容易也不容易，得把这些类型全部搞清楚。  数字类型  整形  有符号型      |    Type     | Size               | Range                               | | :---------: | :----------------- | ---------------------------------">
@@ -382,7 +382,8 @@
 |    int64    | 64 bits            | -2 &lt;sup&gt;63&lt;/sup&gt; ~ 2&lt;sup&gt;63&lt;/sup&gt;-1 |
 |     int     | 视当前操作系统而定 | 视当前操作系统而定                  |
 
-    * 无符号型
+* 无符号型
+
 
 
 |    Type     | Size               | Range                |
@@ -393,11 +394,14 @@
 |   uint64    | 64 bits            | 0 ~ 2&lt;sup&gt;64&lt;/sup&gt;-1 |
 |    uint     | 视当前操作系统而定 | 视当前操作系统而定   |
 
+
+
+
+
 * byte和rune类型
+1. byte类型实则为unit8类型，他用来存放ASCII字符。
 
-  1. byte类型实则为unit8类型，他用来存放ASCII字符。
-
-  2. rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。
+2. rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。
   3. byte和rune都是用单引号引起来，比如&apos;A&apos;, &apos;黄&apos;。
   4. **如果没有指定类型，则默认为rune类型**，比如var char = &apos;A&apos;, 此时char是rune类型。
   5. **如果要用byte类型，则需要声明的时候指定byte类型**，比如var char byte = &apos;A&apos;，此时char是byte类型。
@@ -409,6 +413,10 @@
 | :-----: | ------ | ------ |
 | float32 | 32bits | 7位    |
 | float64 | 64bits | 15位   |
+
+
+
+
 
 * float32
 
