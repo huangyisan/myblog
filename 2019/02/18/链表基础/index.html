@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="链表定义链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer) 链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。 链表常见结构 单链表   第一个节点称之为头节点，最后一个称之为尾节点。 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。 单链表只能单方向遍">
+<meta name="description" content="链表定义链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer) 链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。 链表常见结构单向链表  第一个节点称之为头节点，头结点不存放数据，最后一个称之为尾节点。 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。 单">
 <meta name="keywords" content="python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链表基础">
 <meta property="og:url" content="https://kirakirazone.com/2019/02/18/链表基础/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="链表定义链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer) 链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。 链表常见结构 单链表   第一个节点称之为头节点，最后一个称之为尾节点。 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。 单链表只能单方向遍">
+<meta property="og:description" content="链表定义链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer) 链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。 链表常见结构单向链表  第一个节点称之为头节点，头结点不存放数据，最后一个称之为尾节点。 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。 单">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aenkj7b8j20bc015t8h.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepbxd64j209q01o742.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepjmdd9j20gy015t8i.jpg">
-<meta property="og:updated_time" content="2020-06-14T02:11:06.852Z">
+<meta property="og:updated_time" content="2020-06-14T02:13:11.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表基础">
-<meta name="twitter:description" content="链表定义链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer) 链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。 链表常见结构 单链表   第一个节点称之为头节点，最后一个称之为尾节点。 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。 单链表只能单方向遍">
+<meta name="twitter:description" content="链表定义链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer) 链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。 链表常见结构单向链表  第一个节点称之为头节点，头结点不存放数据，最后一个称之为尾节点。 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。 单">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aenkj7b8j20bc015t8h.jpg">
 
 
@@ -368,23 +368,17 @@
       
         <h2 id="链表定义"><a href="#链表定义" class="headerlink" title="链表定义"></a>链表定义</h2><p>链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)</p>
 <p><strong>链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。</strong></p>
-<h2 id="链表常见结构"><a href="#链表常见结构" class="headerlink" title="链表常见结构"></a>链表常见结构</h2><ol>
-<li>单链表<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aenkj7b8j20bc015t8h.jpg" alt=""></li>
-</ol>
+<h2 id="链表常见结构"><a href="#链表常见结构" class="headerlink" title="链表常见结构"></a>链表常见结构</h2><h3 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aenkj7b8j20bc015t8h.jpg" alt=""></p>
 <ul>
-<li>第一个节点称之为头节点，最后一个称之为尾节点。</li>
+<li>第一个节点称之为头节点，头结点不存放数据，最后一个称之为尾节点。</li>
 <li>每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。</li>
 <li>单链表只能单方向遍历，且最后尾节点的下一个地址指针指向为NULL。</li>
 </ul>
-<ol start="2">
-<li>循环链表<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepbxd64j209q01o742.jpg" alt=""></li>
-</ol>
+<h3 id="循环链表"><a href="#循环链表" class="headerlink" title="循环链表"></a>循环链表</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepbxd64j209q01o742.jpg" alt=""></p>
 <ul>
 <li>首尾节点连接在一起，可以是单链表的首尾相连，也可以是双链表的首尾相连。</li>
 </ul>
-<ol start="3">
-<li>双向链表<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepjmdd9j20gy015t8i.jpg" alt=""></li>
-</ol>
+<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepjmdd9j20gy015t8i.jpg" alt=""></p>
 <ul>
 <li>双向链表有两个连接，一个指向前一个节点(若是头节点，则指向NULL)，另外一个指向下一个节点(若是尾节点，则指向NULL)。</li>
 </ul>
@@ -667,7 +661,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表定义"><span class="nav-number">1.</span> <span class="nav-text">链表定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表常见结构"><span class="nav-number">2.</span> <span class="nav-text">链表常见结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表的查找、插入、删除"><span class="nav-number">3.</span> <span class="nav-text">链表的查找、插入、删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入删除行为复杂度"><span class="nav-number">3.1.</span> <span class="nav-text">插入删除行为复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询行为复杂度"><span class="nav-number">3.2.</span> <span class="nav-text">查询行为复杂度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表和数组"><span class="nav-number">4.</span> <span class="nav-text">链表和数组</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表定义"><span class="nav-number">1.</span> <span class="nav-text">链表定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表常见结构"><span class="nav-number">2.</span> <span class="nav-text">链表常见结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单向链表"><span class="nav-number">2.1.</span> <span class="nav-text">单向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环链表"><span class="nav-number">2.2.</span> <span class="nav-text">循环链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双向链表"><span class="nav-number">2.3.</span> <span class="nav-text">双向链表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表的查找、插入、删除"><span class="nav-number">3.</span> <span class="nav-text">链表的查找、插入、删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入删除行为复杂度"><span class="nav-number">3.1.</span> <span class="nav-text">插入删除行为复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询行为复杂度"><span class="nav-number">3.2.</span> <span class="nav-text">查询行为复杂度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链表和数组"><span class="nav-number">4.</span> <span class="nav-text">链表和数组</span></a></li></ol></div>
             
 
           </div>
