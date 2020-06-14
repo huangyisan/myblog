@@ -736,29 +736,6 @@
       </tags>
   </entry>
   <entry>
-    <title>True or False</title>
-    <url>/2018/12/18/True-or-False/</url>
-    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
-<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
-<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
-<blockquote>
-<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
-</blockquote>
-<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>bash fork: retry: Resource temporarily unavailable</title>
     <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
     <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
@@ -814,6 +791,29 @@
 ]]></content>
       <tags>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>True or False</title>
+    <url>/2018/12/18/True-or-False/</url>
+    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
+<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
+<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
+<blockquote>
+<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
+</blockquote>
+<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
@@ -957,52 +957,6 @@
       </tags>
   </entry>
   <entry>
-    <title>css居中-水平方向</title>
-    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
-    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
-<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
-<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
-<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
-</ul>
-<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
-<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
-<li>如果不给width属性，则宽度填满父级元素空间。</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
-<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<ul>
-<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-
-<p>ref:</p>
-<blockquote>
-<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>css</tag>
-        <tag>html</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CSS选择器权重</title>
     <url>/2019/03/05/css%E9%80%89%E6%8B%A9%E5%99%A8%E6%9D%83%E9%87%8D/</url>
     <content><![CDATA[<h2 id="CSS选择器类型"><a href="#CSS选择器类型" class="headerlink" title="CSS选择器类型"></a>CSS选择器类型</h2><ul>
@@ -1051,6 +1005,52 @@
 ]]></content>
       <tags>
         <tag>css</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>css居中-水平方向</title>
+    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
+    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
+<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
+<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
+<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
+</ul>
+<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
+<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
+<li>如果不给width属性，则宽度填满父级元素空间。</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
+<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<ul>
+<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+
+<p>ref:</p>
+<blockquote>
+<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>css</tag>
+        <tag>html</tag>
       </tags>
   </entry>
   <entry>
@@ -1416,9 +1416,54 @@
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> num32 <span class="keyword">int64</span> = <span class="number">999999</span></span><br><span class="line">	num64 := <span class="keyword">int8</span>(num32) <span class="comment">//转换成了小范围int8</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换前的值为%d, 类型为%T\n转换后的值为%d, 类型为%T\n"</span>, num32, num32, num64, num64)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output 结果溢出导致不是期望的结果</span><br><span class="line">转换前的值为<span class="number">999999</span>, 类型为<span class="keyword">int64</span></span><br><span class="line">转换后的值为<span class="number">63</span>, 类型为<span class="keyword">int8</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="跟字符串之转换"><a href="#跟字符串之转换" class="headerlink" title="跟字符串之转换"></a>跟字符串之转换</h3><ol>
+<h3 id="转换为字符串"><a href="#转换为字符串" class="headerlink" title="转换为字符串"></a>转换为字符串</h3><ol>
 <li><p>使用<code>fmt.Sprintf</code>方式进行转换, 该方法传入对象，以及对象所属类型，然后转换成string类型返回。</p>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> num32 <span class="keyword">int32</span> = <span class="number">64</span></span><br><span class="line">	<span class="keyword">var</span> flo32 <span class="keyword">float32</span> = <span class="number">12.34</span></span><br><span class="line">	<span class="keyword">var</span> Bool <span class="keyword">bool</span> = <span class="literal">false</span></span><br><span class="line">	<span class="keyword">var</span> Byte <span class="keyword">byte</span> = <span class="string">'h'</span></span><br><span class="line">	<span class="keyword">var</span> Rune <span class="keyword">rune</span> = <span class="string">'黄'</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 传入类型以及内容</span></span><br><span class="line">	str := fmt.Sprintf(<span class="string">"%d"</span>, num32) <span class="comment">// num32是%d类型，转换为string类型返回给str</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line"></span><br><span class="line">	str = fmt.Sprintf(<span class="string">"%f"</span>, flo32) <span class="comment">// %f, 表示浮点类型, 这里会对精度补足0，所以如果要作为字符串的话，还需要把末尾的0去掉</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line"></span><br><span class="line">	str = fmt.Sprintf(<span class="string">"%t"</span>, Bool) <span class="comment">// %t，表示false或者true</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line"></span><br><span class="line">	str = fmt.Sprintf(<span class="string">"%c"</span>, Byte) <span class="comment">// %c，表示字符类型</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line"></span><br><span class="line">	str = fmt.Sprintf(<span class="string">"%c"</span>, Rune) <span class="comment">// %c，表示字符类型</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">转换后得到的内容为<span class="number">64</span>, 类型为<span class="keyword">string</span></span><br><span class="line">转换后得到的内容为<span class="number">12.340000</span>, 类型为<span class="keyword">string</span></span><br><span class="line">转换后得到的内容为<span class="literal">false</span>, 类型为<span class="keyword">string</span></span><br><span class="line">转换后得到的内容为h, 类型为<span class="keyword">string</span></span><br><span class="line">转换后得到的内容为黄, 类型为<span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li><p>使用<code>strconv</code>进行转换</p>
+<p><a href="https://studygolang.com/pkgdoc" target="_blank" rel="noopener">strconv使用文档</a></p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> num32 <span class="keyword">int32</span> = <span class="number">64</span></span><br><span class="line">	<span class="keyword">var</span> flo32 <span class="keyword">float32</span> = <span class="number">12.34</span></span><br><span class="line">	<span class="keyword">var</span> Bool <span class="keyword">bool</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 传入类型以及内容</span></span><br><span class="line">	str := strconv.FormatInt(<span class="keyword">int64</span>(num32), <span class="number">10</span>) <span class="comment">// 告诉带转换的num32为10进制。</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line"></span><br><span class="line">	str = strconv.FormatFloat(<span class="keyword">float64</span>(flo32), <span class="string">'f'</span>, <span class="number">3</span>, <span class="number">32</span>) <span class="comment">//格式为float类型，保留10位小数，原数据是float64类型</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line"></span><br><span class="line">	str = strconv.FormatBool(Bool) <span class="comment">// 只需要传入布尔类型即可， 根据内容返回true还是false</span></span><br><span class="line">	fmt.Printf(<span class="string">"转换后得到的内容为%v, 类型为%T\n"</span>,str,str)</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="转换为Bool类型"><a href="#转换为Bool类型" class="headerlink" title="转换为Bool类型"></a>转换为Bool类型</h3><p>   <code>func ParseBool</code></p>
+<p>   <a href="https://github.com/golang/go/blob/master/src/strconv/atob.go?name=release#10" target="_blank" rel="noopener">func ParseBool参考</a></p>
+<p>   返回字符串表示的Bool值。<strong>它接受字符串1、0、t、f、T、F、true、false、True、False、TRUE、FALSE；否则返回错误。</strong>返回两个值，一个是转换后的值，一个是err。</p>
+   <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> str <span class="keyword">string</span> = <span class="string">"false"</span></span><br><span class="line">	<span class="keyword">var</span> numTrue <span class="keyword">string</span> = <span class="string">"1"</span></span><br><span class="line"></span><br><span class="line">	strBool, _ := strconv.ParseBool(str)</span><br><span class="line">	numBool, _ := strconv.ParseBool(numTrue)</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"strBool值为%t, numBool值为%t\n"</span>, strBool, numBool)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="字符串转换为数字类型"><a href="#字符串转换为数字类型" class="headerlink" title="字符串转换为数字类型"></a>字符串转换为数字类型</h3><ol>
+<li><p><code>strconv.ParseInt()</code>方式转换为有符号int类型</p>
+<ul>
+<li><strong>strconv.ParseInt()的bitSize参数不会将字符串转换为您选择的类型, 而只是在此处将结果限制为特定的“位”，如果想要得到你要的int类型必须手动转换类型。</strong></li>
+<li>接受正负号。</li>
+<li>具体参考<a href="https://studygolang.com/static/pkgdoc/pkg/strconv.htm#pkg-index" target="_blank" rel="noopener">func ParseInt</a></li>
+<li>strconv.ParseUint()该方法转换为无符号int类型，<strong>不接受正负号</strong></li>
+</ul>
+</li>
+</ol>
+   <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> str <span class="keyword">string</span> = <span class="string">"123"</span></span><br><span class="line"></span><br><span class="line">    num, _ := strconv.ParseInt(str, <span class="number">10</span>, <span class="number">64</span>)</span><br><span class="line">    unum, _ := strconv.ParseUint(str, <span class="number">10</span>, <span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">"num值为%d, num类型为%T\n"</span>, num,num)</span><br><span class="line">    fmt.Printf(<span class="string">"unum值为%d, unum类型为%T\n"</span>, unum,unum)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">num值为<span class="number">123</span>, num类型为<span class="keyword">int64</span></span><br><span class="line">unum值为<span class="number">123</span>, unum类型为<span class="keyword">uint64</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p><code>strconv.ParseFloat()</code>将转换为float类型</p>
+<ul>
+<li>得到的</li>
+<li>具体参考<a href="https://github.com/golang/go/blob/master/src/strconv/atof.go?name=release#533" target="_blank" rel="noopener">func ParseFloat</a> </li>
+<li>bitSize指定了期望的接收类型，32是float32（返回值可以不改变精确值的赋值给float32），64是float64。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> str <span class="keyword">string</span> = <span class="string">"123.33"</span></span><br><span class="line"></span><br><span class="line">    num, _ := strconv.ParseFloat(str, <span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">"num值为%f, num类型为%T\n"</span>, num,num)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">num值为<span class="number">123.330000</span>, num类型为<span class="keyword">float64</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="String类型和byte类型互转"><a href="#String类型和byte类型互转" class="headerlink" title="String类型和byte类型互转"></a>String类型和byte类型互转</h3><ol>
+<li><p>string无法直接转换为byte，<strong>需要转换为[]byte进行处理</strong>。</p>
+</li>
+<li><p>byte转换成string，可以直接使用<code>string()</code>方法转换</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	str := <span class="string">"huangyisan"</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 转换成byte数组, 可以处理英文和数组 ,[]byte按照字节来处理,而汉字占用3个字节</span></span><br><span class="line">	arr1 := []<span class="keyword">byte</span>(str)</span><br><span class="line">	arr1[<span class="number">0</span>] = <span class="string">'z'</span></span><br><span class="line">    fmt.Println(arr1)</span><br><span class="line">	str = <span class="keyword">string</span>(arr1) <span class="comment">// 将[]byte转换为string类型</span></span><br><span class="line">	fmt.Println(str)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[<span class="number">122</span> <span class="number">117</span> <span class="number">97</span> <span class="number">110</span> <span class="number">103</span> <span class="number">121</span> <span class="number">105</span> <span class="number">115</span> <span class="number">97</span> <span class="number">110</span>] <span class="comment">// 因为byte的实现是uint8, 所以这边打印出来的是数字。</span></span><br><span class="line">zuangyisan</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="string类型和rune类型互转"><a href="#string类型和rune类型互转" class="headerlink" title="string类型和rune类型互转"></a>string类型和rune类型互转</h3><ol>
+<li><p>string类型转换成rune类型，跟byte一样，<strong>需要先作为切片</strong>。</p>
+</li>
+<li><p>rune类型转string类型，可以直接使用<code>string()</code>方法。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    str := <span class="string">"huangyisan"</span></span><br><span class="line">    <span class="comment">//转换成rune数组, 可以处理中文</span></span><br><span class="line">    arr2 := []<span class="keyword">rune</span>(str)</span><br><span class="line">    fmt.Println(arr2)</span><br><span class="line">    arr2[<span class="number">0</span>] = <span class="string">'黄'</span></span><br><span class="line">    str = <span class="keyword">string</span>(arr2) <span class="comment">// 使用string将rune切片转换为string类型。</span></span><br><span class="line">    fmt.Println(str)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line">[<span class="number">104</span> <span class="number">117</span> <span class="number">97</span> <span class="number">110</span> <span class="number">103</span> <span class="number">121</span> <span class="number">105</span> <span class="number">115</span> <span class="number">97</span> <span class="number">110</span>]  <span class="comment">// 因为byte的实现是int32, 所以这边打印出来的是数字。</span></span><br><span class="line">黄uangyisan</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 ]]></content>
@@ -1906,40 +1951,6 @@
       </tags>
   </entry>
   <entry>
-    <title>split函数</title>
-    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
-<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
-<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
-<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
-<p>然后手工验证了下两者的情况：</p>
-<ul>
-<li><p>split(“ “)的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>split()的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查了下split()的用法</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
-<ol>
-<li>以任何whitespace字符串作为分隔符。</li>
-<li>除所有的empty string。</li>
-</ol>
-<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>tcp_max_syn_backlog和net.core.somaxconn</title>
     <url>/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/</url>
     <content><![CDATA[<p><strong>kernel 3.10.0-693.2.2.el7.x86_64</strong></p>
@@ -2047,6 +2058,40 @@
       <tags>
         <tag>linux</tag>
         <tag>network</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>split函数</title>
+    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
+<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
+<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
+<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
+<p>然后手工验证了下两者的情况：</p>
+<ul>
+<li><p>split(“ “)的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>split()的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查了下split()的用法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
+<ol>
+<li>以任何whitespace字符串作为分隔符。</li>
+<li>除所有的empty string。</li>
+</ol>
+<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
