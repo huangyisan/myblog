@@ -6,7 +6,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpoe43aj20pa0i6n36.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpv5go7j20ta0a2whd.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gznh8e5jj20ta0a2whd.jpg">
-<meta property="og:updated_time" content="2020-06-14T02:19:46.000Z">
+<meta property="og:updated_time" content="2020-06-14T02:41:29.056Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络tcp_udp协议">
 <meta name="twitter:description" content="tcphttp封装Ethernet2(以太网2帧头) | IPV4 | TCP | HTTP | FCS(以太网2帧尾) tcp端口号 取值范围 16bit 范围0-65535  0–2^16-1 1-1023 知名端口 1024-65535 非知名端口    tcp信道协议种类 单信道协议:一个应用程序对应一个端口 多信道协议:一个应用程序对应多个端口，比如ftp,tcp20(控制端口)和tcp">
@@ -144,7 +144,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -154,7 +154,7 @@
   <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -286,20 +286,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/07/29/网络tcp_udp协议/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kirakirazone">
     </span>
 
@@ -382,7 +382,7 @@
 <li>多信道协议:一个应用程序对应多个端口，比如ftp,tcp20(控制端口)和tcp21(数据端口)</li>
 </ol>
 <p>tcp对带宽抢占率远低于udp</p>
-<h2 id="tcp头部封装"><a href="#tcp头部封装" class="headerlink" title="tcp头部封装"></a>tcp头部封装</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gziza7nxj20ks0e241r.jpg" alt=""></p>
+<h2 id="tcp头部封装"><a href="#tcp头部封装" class="headerlink" title="tcp头部封装"></a>tcp头部封装</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gziza7nxj20ks0e241r.jpg" alt></p>
 <ol>
 <li>tcp header 取值范围20Byte-60Byte。</li>
 <li>header length，因为长度可变，该字段告诉接受者tcp报头长度。</li>
@@ -393,8 +393,8 @@
 <li>padding是因为三层包头和四层包头大小都必须被4整除，所以当options选项被使用的时候，无法被4整除的时候，对padding进行用连续的0填充，填充到可以被4整除</li>
 <li>ergent pointer 紧急指针配合URG位，让多股tcp应用，哪一股被优先处理</li>
 </ol>
-<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzqxjim2j20os0iateh.jpg" alt=""></p>
-<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpoe43aj20pa0i6n36.jpg" alt=""></p>
+<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzqxjim2j20os0iateh.jpg" alt></p>
+<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpoe43aj20pa0i6n36.jpg" alt></p>
 <h2 id="面向连接协议"><a href="#面向连接协议" class="headerlink" title="面向连接协议:"></a>面向连接协议:</h2><ol>
 <li>流量控制<ul>
 <li>限速，(源末两端接受带宽不一致，如果源端带宽大，全速发送给接收端，则接收端会产生拥塞。) 在发送数据之前进行协商速率，通过windown字段(单位字节，Byte)进行协商,比如协商为100字节，则源端发送100字节数据给接收端，接收端收到后，返回一个确认给源端，如果没确认，则表示数据丢失，需要数据重传。窗口不是固定不变，在每次发送流量之前都会进行windown协商。<br>带宽大的时候，窗口经过协商会变大，直到占用链路最大字节的时候，又会控制窗口大小，防止拥塞发生，这种行为称之为滑动窗口。 </li>
@@ -430,9 +430,9 @@
 <li>半开连接，发送端未发送最后一次ack的连接，接收端不会自动断开，会默认被保持，且消耗服务器内存和cpu。</li>
 </ol>
 <h1 id="udp"><a href="#udp" class="headerlink" title="udp"></a>udp</h1><p><strong>面向无连接，不可靠传输</strong></p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpv5go7j20ta0a2whd.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gzpv5go7j20ta0a2whd.jpg" alt></p>
 <h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>ip header | udp header | data</p>
-<h2 id="udp头部报文"><a href="#udp头部报文" class="headerlink" title="udp头部报文"></a>udp头部报文</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gznh8e5jj20ta0a2whd.jpg" alt=""></p>
+<h2 id="udp头部报文"><a href="#udp头部报文" class="headerlink" title="udp头部报文"></a>udp头部报文</h2><p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5gznh8e5jj20ta0a2whd.jpg" alt></p>
 <ol>
 <li>udp头部占用8字节，传输时候没有确认机制。</li>
 <li><p>udp主持组播和广播</p>
@@ -610,7 +610,7 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Huangyisan</p>
               <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>

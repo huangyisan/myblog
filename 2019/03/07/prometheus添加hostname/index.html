@@ -6,7 +6,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg">
-<meta property="og:updated_time" content="2020-06-14T02:19:46.000Z">
+<meta property="og:updated_time" content="2020-06-14T02:41:29.052Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="prometheus曲线救国添加hostname">
 <meta name="twitter:description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。  方法 node_exporter中启用textfile采集的方式。 在textfile目录下">
@@ -142,7 +142,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -152,7 +152,7 @@
   <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -284,20 +284,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/03/07/prometheus添加hostname/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kirakirazone">
     </span>
 
@@ -395,11 +395,11 @@
 <p>然后再根据$hostname，来获取instance,作为$node的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_values(machine_role&#123;role=&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure></p>
 <p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance=~&quot;$node&quot;, mode=&apos;system&apos;&#125;) by (cpu))</span><br></pre></td></tr></table></figure></p>
 <h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
-<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg" alt=""></p>
+<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg" alt></p>
 </li>
-<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg" alt=""></p>
+<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg" alt></p>
 </li>
-<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg" alt=""></p>
+<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg" alt></p>
 </li>
 </ul>
 <h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><ul>
@@ -591,7 +591,7 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Huangyisan</p>
               <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>

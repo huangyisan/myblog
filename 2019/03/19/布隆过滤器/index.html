@@ -6,7 +6,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -88,7 +88,7 @@
 <meta property="og:description" content="判断value是否存在 常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。 布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。 布隆过滤器对值的判断存在两种情况，可能存在和绝对不存在。  原理布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash func">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg">
-<meta property="og:updated_time" content="2020-06-14T02:19:46.000Z">
+<meta property="og:updated_time" content="2020-06-14T02:41:29.056Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="布隆过滤器">
 <meta name="twitter:description" content="判断value是否存在 常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。 布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。 布隆过滤器对值的判断存在两种情况，可能存在和绝对不存在。  原理布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash func">
@@ -140,7 +140,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -150,7 +150,7 @@
   <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -282,20 +282,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/03/19/布隆过滤器/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kirakirazone">
     </span>
 
@@ -370,7 +370,7 @@
 <li>布隆过滤器对值的判断存在两种情况，<strong>可能存在</strong>和<strong>绝对不存在</strong>。</li>
 </ol>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash function运算，得到的值和n进行取模运算，得到m个位置，把bit array的这些位置置为1，就完成了一次写入。</p>
-<h2 id="举个简单的例子"><a href="#举个简单的例子" class="headerlink" title="举个简单的例子"></a>举个简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg" alt=""></p>
+<h2 id="举个简单的例子"><a href="#举个简单的例子" class="headerlink" title="举个简单的例子"></a>举个简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg" alt></p>
 <ol>
 <li>需要存入的值为’huangyisan’，bit arrary长度为10。</li>
 <li>存在三个hash方法，分别对huangyisan运算。</li>
@@ -548,7 +548,7 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Huangyisan</p>
               <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>

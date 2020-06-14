@@ -6,7 +6,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -89,7 +89,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hsqct4vtj20fe09s0tq.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hu5nkyvkj20aj09laab.jpg">
-<meta property="og:updated_time" content="2020-06-14T02:19:45.996Z">
+<meta property="og:updated_time" content="2020-06-14T02:41:29.052Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis内存模型和持久化(搬运)">
 <meta name="twitter:description" content="Redis内存模型Redis内存统计使用info memory进行统计 123456789101112131415161718192021222324252627282930313233343536373839404142127.0.0.1:6379&amp;gt; info memory# Memoryused_memory:853392used_memory_human:833.39Kused_mem">
@@ -141,7 +141,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
   
   
@@ -151,7 +151,7 @@
   <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -283,20 +283,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kirakirazone">
     </span>
 
@@ -489,7 +489,7 @@
 <li>dirty &gt;= n</li>
 </ul>
 <h3 id="bgsave执行流程"><a href="#bgsave执行流程" class="headerlink" title="bgsave执行流程"></a>bgsave执行流程</h3><p>bgsave执行流程图</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hsqct4vtj20fe09s0tq.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hsqct4vtj20fe09s0tq.jpg" alt></p>
 <p>五个步骤</p>
 <ol>
 <li><p>Redis父进程首先判断：当前是否在执行save，或bgsave/bgrewriteaof（直接调用bgrewriteaof命令，该命令的执行与bgsave有些类似，都是fork子进程进行具体的工作，且都只有在fork时阻塞）的子进程，如果在执行则bgsave命令直接返回。bgsave/bgrewriteaof 的子进程不能同时执行，主要是基于性能方面的考虑：两个并发的子进程同时执行大量的磁盘写操作，可能引起严重的性能问题。</p>
@@ -585,7 +585,7 @@
 </li>
 </ol>
 <p><strong>只有当auto-aof-rewrite-min-size和auto-aof-rewrite-percentage两个参数同时满足时，才会自动触发AOF重写，即bgrewriteaof操作。</strong></p>
-<h4 id="文件重写的流程"><a href="#文件重写的流程" class="headerlink" title="文件重写的流程"></a>文件重写的流程</h4><p>重写流程图<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hu5nkyvkj20aj09laab.jpg" alt=""></p>
+<h4 id="文件重写的流程"><a href="#文件重写的流程" class="headerlink" title="文件重写的流程"></a>文件重写的流程</h4><p>重写流程图<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hu5nkyvkj20aj09laab.jpg" alt></p>
 <ol>
 <li>Redis父进程首先判断当前是否存在正在执行 bgsave/bgrewriteaof的子进程，如果存在则bgrewriteaof命令直接返回，如果存在bgsave命令则等bgsave执行完成后再执行。</li>
 <li>父进程执行fork操作创建子进程，这个过程中父进程是阻塞的。</li>
@@ -805,7 +805,7 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Huangyisan</p>
               <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>
