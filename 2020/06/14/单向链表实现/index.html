@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="cicd,jenkins,">
+  <meta name="keywords" content="go,">
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
-<meta name="keywords" content="cicd,jenkins">
+<meta name="description" content="链表基础链表基础 go语言实现单向链表1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="做一个不专业的jenkins回滚">
-<meta property="og:url" content="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/index.html">
+<meta property="og:title" content="单向链表实现">
+<meta property="og:url" content="https://kirakirazone.com/2020/06/14/单向链表实现/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
+<meta property="og:description" content="链表基础链表基础 go语言实现单向链表1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg">
 <meta property="og:updated_time" content="2020-06-14T01:59:52.732Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="做一个不专业的jenkins回滚">
-<meta name="twitter:description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg">
+<meta name="twitter:title" content="单向链表实现">
+<meta name="twitter:description" content="链表基础链表基础 go语言实现单向链表1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/06/14/单向链表实现/">
 
 
 
 
 
-  <title>做一个不专业的jenkins回滚 | Kirakirazone</title>
+  <title>单向链表实现 | Kirakirazone</title>
   
 
 
@@ -287,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/06/14/单向链表实现/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -304,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">做一个不专业的jenkins回滚</h1>
+          <h1 class="post-title" itemprop="name headline">单向链表实现</h1>
         
 
         <div class="post-meta">
@@ -316,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-11T10:58:56+08:00">
-                2019-04-11
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-14T09:57:23+08:00">
+                2020-06-14
               </time>
             
 
@@ -335,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/11/做一个不专业的jenkins回滚/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/11/做一个不专业的jenkins回滚/" itemprop="commentCount"></span>
+                <a href="/2020/06/14/单向链表实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/06/14/单向链表实现/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -364,40 +362,8 @@
       
 
       
-        <h2 id="war包回滚思路"><a href="#war包回滚思路" class="headerlink" title="war包回滚思路"></a>war包回滚思路</h2><h3 id="发布期间"><a href="#发布期间" class="headerlink" title="发布期间"></a>发布期间</h3><ol>
-<li>对正在提供服务的war包在<em>同目录</em>下，重命名为xxx.warbak</li>
-<li>并且对该war归档到指定目录</li>
-</ol>
-<h3 id="回滚期间"><a href="#回滚期间" class="headerlink" title="回滚期间"></a>回滚期间</h3><ol>
-<li>将同目录下war的备份文件还原成xxx.war</li>
-</ol>
-<h2 id="用到的组件如下"><a href="#用到的组件如下" class="headerlink" title="用到的组件如下:"></a>用到的组件如下:</h2><ol>
-<li>Customized Build Message Plugin（build后可以看到备注等自动传入的信息）</li>
-<li>Build With Parameters  (build的时候选填参数)</li>
-<li>Git Parameter Plug-In (选择分支，tag等)</li>
-<li>Publish Over SSH  (通过ssh方式发包)</li>
-</ol>
-<h2 id="配置介绍"><a href="#配置介绍" class="headerlink" title="配置介绍"></a>配置介绍</h2><ol>
-<li>每个publish over ssh的对象都存在两种情况，发布(deploy)和回滚(rollback)，所以需要对一个机器创建两个状态。</li>
-<li>根据build的时候传入的参数，deploy还是rollback，选择对应的行为。</li>
-</ol>
-<h2 id="配置截图"><a href="#配置截图" class="headerlink" title="配置截图"></a>配置截图</h2><p><strong>图小新开一个浏览器页面看</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg" alt=""></p>
-<h2 id="部分代码"><a href="#部分代码" class="headerlink" title="部分代码:"></a>部分代码:</h2><ol>
-<li>部署</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ -d &quot;/opt/$&#123;tomcat_dir&#125;/war&quot; ] &amp;&amp; echo &apos;back dir is exist&apos; || mkdir -p /opt/$&#123;tomcat_dir&#125;/war;</span><br><span class="line">cp /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.war /opt/$&#123;tomcat_dir&#125;/war/$&#123;tomcat_war&#125;.war_`date +&quot;%Y%m%d-%H%M&quot;` || echo &apos;not exist war&apos;;</span><br><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;war,warbak&#125; || echo &apos;not exist war&apos;;</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>回滚</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;warbak,war&#125; || echo &apos;not exist war&apos;;</span><br><span class="line">/opt/$&#123;tomcat_dir&#125;/bin/catalina.sh start;</span><br></pre></td></tr></table></figure>
-<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ol>
-<li>由于采用的是maven项目，所以不论发布还是回滚都是会进行war包的build，其实在回滚的时候是不需要进行war包的build的。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="http://www.eryajf.net/1404.html" target="_blank" rel="noopener">http://www.eryajf.net/1404.html</a></p>
-</blockquote>
+        <h2 id="链表基础"><a href="#链表基础" class="headerlink" title="链表基础"></a>链表基础</h2><p><a href="https://kirakirazone.com/2019/02/18/链表基础/">链表基础</a></p>
+<h3 id="go语言实现单向链表"><a href="#go语言实现单向链表" class="headerlink" title="go语言实现单向链表"></a>go语言实现单向链表</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">设计一个单向链表，要求插入的数据能够有序。</span></span><br><span class="line"><span class="comment">NO.1 C</span></span><br><span class="line"><span class="comment">No.2 PHP</span></span><br><span class="line"><span class="comment">No.3 Java</span></span><br><span class="line"><span class="comment">No.4 NodeJs</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">链表会有一个head头，该节点不包含任何数据。</span></span><br><span class="line"><span class="comment">遍历链表，从head开始，取next的，依次取，如果为nil说明到链表尾部。</span></span><br><span class="line"><span class="comment">插入元素，从head开始，取出下一个节点的No进行比较，如果大于则在当前位置插入，让插入的新节点指向下一个节点，临时节点指向新节点。</span></span><br><span class="line"><span class="comment">删除元素，从head开始，取出下一个节点的No进行比较，如果大于则在当前位置删除, 将临时节点的next指向下下个节点。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> LanNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	No <span class="keyword">int</span></span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// next指向下一个节点</span></span><br><span class="line">	next *LanNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newNode</span><span class="params">(no <span class="keyword">int</span>, name <span class="keyword">string</span>)</span> *<span class="title">LanNode</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;LanNode&#123;</span><br><span class="line">		No:no,</span><br><span class="line">		Name:name,</span><br><span class="line">		<span class="comment">// 默认让next指向下一个节点，所以只需要传入no和string即可。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertNode</span><span class="params">(head *LanNode, newNode *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给定一个临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 该临时节点为内存引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="comment">// 如果当前链表为空，则直接插入newNode</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			tmp.next = newNode</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到链表尾部，插入成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 当next的No大于新节点的No，表示可以插入</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No &gt; newNode.No &#123;</span><br><span class="line">			<span class="comment">// 让插入的新节点指向next节点</span></span><br><span class="line">			newNode.next = tmp.next</span><br><span class="line">			<span class="comment">// 让tmp的next节点指向新节点</span></span><br><span class="line">			tmp.next = newNode</span><br><span class="line">			fmt.Println(<span class="string">"已经插入到合适位置"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存在相同的情况，则退出</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == newNode.No &#123;</span><br><span class="line">			fmt.Println(<span class="string">"无法插入该节点，已有相同No"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteNode</span><span class="params">(head *LanNode, no <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给tmp一个赋值，作为临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 这个tmp其实是内存的引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"不存在待删除的no"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == no &#123;</span><br><span class="line">			<span class="comment">// 将tmp当前的节点next指向tmp下一个节点的下一个节点。</span></span><br><span class="line">			tmp.next = tmp.next.next</span><br><span class="line">			fmt.Println(<span class="string">"删除成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对节点进行遍历</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">listNode</span><span class="params">(head *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从head的next开始遍历，直到nil为止</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> head.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到底部"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"No为%d, Name为%s语言 ==&gt; "</span>,head.next.No, head.next.Name)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		head = head.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义head头，不需要存放任何数据</span></span><br><span class="line">	headNode := &amp;LanNode&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义四个新的节点</span></span><br><span class="line">	nodeC := newNode(<span class="number">1</span>, <span class="string">"C"</span>)</span><br><span class="line">	nodePHP := newNode(<span class="number">2</span>, <span class="string">"PHP"</span>)</span><br><span class="line">	nodeJava := newNode(<span class="number">3</span>, <span class="string">"Java"</span>)</span><br><span class="line">	nodeNodeJs := newNode(<span class="number">4</span>, <span class="string">"NodeJs"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 进行数据插入, 这里乱序插入</span></span><br><span class="line">	insertNode(headNode, nodeC)</span><br><span class="line">	insertNode(headNode, nodeJava)</span><br><span class="line">	insertNode(headNode, nodeNodeJs)</span><br><span class="line">	insertNode(headNode, nodePHP)</span><br><span class="line"></span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除一个数据3</span></span><br><span class="line">	deleteNode(headNode, <span class="number">3</span>)</span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -447,7 +413,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/" title="做一个不专业的jenkins回滚">https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/</a>
+    <a href="https://kirakirazone.com/2020/06/14/单向链表实现/" title="单向链表实现">https://kirakirazone.com/2020/06/14/单向链表实现/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -462,9 +428,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/cicd/" rel="tag"># cicd</a>
-          
-            <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+            <a href="/tags/go/" rel="tag"># go</a>
           
         </div>
       
@@ -477,8 +441,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/26/git-rebase操作/" rel="next" title="git rebase操作">
-                <i class="fa fa-chevron-left"></i> git rebase操作
+              <a href="/2020/06/11/队列/" rel="next" title="队列">
+                <i class="fa fa-chevron-left"></i> 队列
               </a>
             
           </div>
@@ -486,10 +450,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/17/误删正在输出的服务日志/" rel="prev" title="误删正在输出的tomcat服务日志">
-                误删正在输出的tomcat服务日志 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -661,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#war包回滚思路"><span class="nav-number">1.</span> <span class="nav-text">war包回滚思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发布期间"><span class="nav-number">1.1.</span> <span class="nav-text">发布期间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚期间"><span class="nav-number">1.2.</span> <span class="nav-text">回滚期间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用到的组件如下"><span class="nav-number">2.</span> <span class="nav-text">用到的组件如下:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置介绍"><span class="nav-number">3.</span> <span class="nav-text">配置介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置截图"><span class="nav-number">4.</span> <span class="nav-text">配置截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部分代码"><span class="nav-number">5.</span> <span class="nav-text">部分代码:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存在问题"><span class="nav-number">6.</span> <span class="nav-text">存在问题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表基础"><span class="nav-number">1.</span> <span class="nav-text">链表基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#go语言实现单向链表"><span class="nav-number">1.1.</span> <span class="nav-text">go语言实现单向链表</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -832,9 +792,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/04/11/做一个不专业的jenkins回滚/';
-          this.page.identifier = '2019/04/11/做一个不专业的jenkins回滚/';
-          this.page.title = '做一个不专业的jenkins回滚';
+          this.page.url = 'https://kirakirazone.com/2020/06/14/单向链表实现/';
+          this.page.identifier = '2020/06/14/单向链表实现/';
+          this.page.title = '单向链表实现';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
