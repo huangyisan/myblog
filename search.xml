@@ -1343,8 +1343,7 @@
 <ol>
 <li><p><strong>数字类型</strong></p>
 <ul>
-<li><p>整形</p>
-<ul>
+<li>整形<ul>
 <li>有符号型</li>
 </ul>
 </li>
@@ -1359,10 +1358,8 @@
 |    int64    | 64 bits            | -2 &lt;sup&gt;63&lt;/sup&gt; ~ 2&lt;sup&gt;63&lt;/sup&gt;-1 |
 |     int     | 视当前操作系统而定 | 视当前操作系统而定                  |
 
+
 * 无符号型
-
-
-
 
 
 |    Type     | Size               | Range                |
@@ -1372,9 +1369,6 @@
 |   uint32    | 32 bits            | 0 ~ 2&lt;sup&gt;32&lt;/sup&gt;-1 |
 |   uint64    | 64 bits            | 0 ~ 2&lt;sup&gt;64&lt;/sup&gt;-1 |
 |    uint     | 视当前操作系统而定 | 视当前操作系统而定   |
-
-
-
 
 
 * byte和rune类型
@@ -1392,9 +1386,6 @@
 | :-----: | ------ | ------ |
 | float32 | 32bits | 7位    |
 | float64 | 64bits | 15位   |
-
-
-
 
 
 * float32
