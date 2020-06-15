@@ -79,22 +79,23 @@
 
 
 
-<meta name="description" content="go语言基本类型 数字类型  整形  有符号型        * 无符号型    ![无符号型](https://image.kirakirazone.com/image/无符号整型.png)      * byte和rune类型  1. byte类型实则为unit8类型，他用来存放ASCII字符。 2. rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。 3.">
+<meta name="description" content="go语言基本类型数字类型1. 有符号整型  2. 无符号整型  3. byte和rune类型  byte类型实则为unit8类型，他用来存放ASCII字符。  rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。  byte和rune都是用单引号引起来，比如’A’, ‘黄’。  如果没有指定类型，则默认为rune类型，比如var char = ‘A’, 此时cha">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go语言基本类型以及之间的转换">
 <meta property="og:url" content="https://kirakirazone.com/2020/06/14/go语言基本类型以及之间的转换/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="go语言基本类型 数字类型  整形  有符号型        * 无符号型    ![无符号型](https://image.kirakirazone.com/image/无符号整型.png)      * byte和rune类型  1. byte类型实则为unit8类型，他用来存放ASCII字符。 2. rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。 3.">
+<meta property="og:description" content="go语言基本类型数字类型1. 有符号整型  2. 无符号整型  3. byte和rune类型  byte类型实则为unit8类型，他用来存放ASCII字符。  rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。  byte和rune都是用单引号引起来，比如’A’, ‘黄’。  如果没有指定类型，则默认为rune类型，比如var char = ‘A’, 此时cha">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://image.kirakirazone.com/image/有符号整型.png">
+<meta property="og:image" content="https://image.kirakirazone.com/image/无符号整型.png">
 <meta property="og:image" content="https://image.kirakirazone.com/image/浮点型.png">
 <meta property="og:image" content="https://image.kirakirazone.com/单精度">
 <meta property="og:image" content="https://image.kirakirazone.com/双精度">
-<meta property="og:updated_time" content="2020-06-15T01:12:25.251Z">
+<meta property="og:updated_time" content="2020-06-15T01:27:46.875Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go语言基本类型以及之间的转换">
-<meta name="twitter:description" content="go语言基本类型 数字类型  整形  有符号型        * 无符号型    ![无符号型](https://image.kirakirazone.com/image/无符号整型.png)      * byte和rune类型  1. byte类型实则为unit8类型，他用来存放ASCII字符。 2. rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。 3.">
+<meta name="twitter:description" content="go语言基本类型数字类型1. 有符号整型  2. 无符号整型  3. byte和rune类型  byte类型实则为unit8类型，他用来存放ASCII字符。  rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。  byte和rune都是用单引号引起来，比如’A’, ‘黄’。  如果没有指定类型，则默认为rune类型，比如var char = ‘A’, 此时cha">
 <meta name="twitter:image" content="https://image.kirakirazone.com/image/有符号整型.png">
 
 
@@ -367,66 +368,43 @@
       
 
       
-        <h2 id="go语言基本类型"><a href="#go语言基本类型" class="headerlink" title="go语言基本类型"></a>go语言基本类型</h2><ol>
-<li><p><strong>数字类型</strong></p>
-<ul>
-<li><p>整形</p>
-<ul>
-<li><p>有符号型</p>
+        <h2 id="go语言基本类型"><a href="#go语言基本类型" class="headerlink" title="go语言基本类型"></a>go语言基本类型</h2><h4 id="数字类型"><a href="#数字类型" class="headerlink" title="数字类型"></a>数字类型</h4><p><strong>1. 有符号整型</strong></p>
 <p><img src="https://image.kirakirazone.com/image/有符号整型.png" alt="有符号型"></p>
+<p><strong>2. 无符号整型</strong></p>
+<p><img src="https://image.kirakirazone.com/image/无符号整型.png" alt="无符号型"></p>
+<p><strong>3. byte和rune类型</strong></p>
+<ol>
+<li><p>byte类型实则为unit8类型，他用来存放ASCII字符。</p>
 </li>
-</ul>
+<li><p>rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。</p>
 </li>
-</ul>
+<li><p>byte和rune都是用单引号引起来，比如’A’, ‘黄’。</p>
+</li>
+<li><p><strong>如果没有指定类型，则默认为rune类型</strong>，比如var char = ‘A’, 此时char是rune类型。</p>
+</li>
+<li><p><strong>如果要用byte类型，则需要声明的时候指定byte类型</strong>，比如var char byte = ‘A’，此时char是byte类型。</p>
+</li>
+<li><p>因为byte和rune类型，实际是整数，所以如果对于’A’的存放使用byte，则是存了65这个值。</p>
 </li>
 </ol>
-<pre><code>* 无符号型
-
-  ![无符号型](https://image.kirakirazone.com/image/无符号整型.png)
-
-
-
-
-
-* byte和rune类型
-
-1. byte类型实则为unit8类型，他用来存放ASCII字符。
-2. rune类型实则为int32类型，他用来存放以utf-8编码的unicode字符类型。
-3. byte和rune都是用单引号引起来，比如&apos;A&apos;, &apos;黄&apos;。
-4. **如果没有指定类型，则默认为rune类型**，比如var char = &apos;A&apos;, 此时char是rune类型。
-5. **如果要用byte类型，则需要声明的时候指定byte类型**，比如var char byte = &apos;A&apos;，此时char是byte类型。
-6. 因为byte和rune类型，实际是整数，所以如果对于&apos;A&apos;的存放使用byte，则是存了65这个值。
-</code></pre><ul>
-<li><p>浮点型</p>
+<p><strong>4. 浮点型</strong></p>
 <p><img src="https://image.kirakirazone.com/image/浮点型.png" alt="浮点型"></p>
-<ul>
-<li>float32</li>
-</ul>
-<p>单精度，存储占用4个字节，也即4*8=32位，其中1位用来符号，8位用来指数，剩下的23位表示尾数。</p>
+<p>​    <strong>float32</strong></p>
+<p>​    单精度，存储占用4个字节，也即4*8=32位，其中1位用来符号，8位用来指数，剩下的23位表示尾数。</p>
 <p><img src="https://image.kirakirazone.com/单精度" alt="单精度"></p>
-<ul>
-<li>float64</li>
-</ul>
-<p>双精度，存储占用8个字节，也即8*8=64位，其中1位用来符号，11位用来指数，剩下的52位表示尾数。</p>
+<p>​    <strong>float64</strong></p>
+<p>​    双精度，存储占用8个字节，也即8*8=64位，其中1位用来符号，11位用来指数，剩下的52位表示尾数。</p>
 <p><img src="https://image.kirakirazone.com/双精度" alt="双精度"></p>
-</li>
-</ul>
 <p>​       </p>
-<ol start="2">
-<li><strong>字符类型</strong></li>
-</ol>
-<ul>
-<li>字符类型strings是一串byte，使用双引号，或者单反引号来表示，<code>&quot;hello&quot;</code>, `hello`。<ul>
-<li>双引号内的字符串，不可以跨行，且会受到转义字符的影响，比如\n,\t，如果想要不受影响，则使用单反引号。</li>
-</ul>
+<h4 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h4><ol>
+<li><p>字符类型strings是一串byte，使用双引号，或者单反引号来表示，<code>&quot;hello&quot;</code>, `hello`。</p>
 </li>
-</ul>
-<ol start="3">
-<li><strong>布尔类型</strong></li>
+<li><p>双引号内的字符串，不可以跨行，且会受到转义字符的影响，比如\n,\t，如果想要不受影响，则使用单反引号。</p>
+</li>
 </ol>
-<ul>
+<h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><ol>
 <li>bool类型只有false和true两种，且不可以像python那样存在隐式转换。</li>
-</ul>
+</ol>
 <h2 id="类型之间的转换"><a href="#类型之间的转换" class="headerlink" title="类型之间的转换"></a>类型之间的转换</h2><ol>
 <li>go语言不存在类型之间的隐式转换，都需要进行显式转换。</li>
 <li>转换可以从小范围往大范围转换，也可以大范围往小范围转换，<strong>但大范围转小范围往往会导致结果溢出</strong>。</li>
@@ -756,7 +734,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#go语言基本类型"><span class="nav-number">1.</span> <span class="nav-text">go语言基本类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型之间的转换"><span class="nav-number">2.</span> <span class="nav-text">类型之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字类型之间的转换"><span class="nav-number">2.1.</span> <span class="nav-text">数字类型之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#只需要进行T-v-的方式即可"><span class="nav-number">2.1.1.</span> <span class="nav-text">只需要进行T(v)的方式即可</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换为字符串"><span class="nav-number">2.2.</span> <span class="nav-text">转换为字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换为Bool类型"><span class="nav-number">2.3.</span> <span class="nav-text">转换为Bool类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串转换为数字类型"><span class="nav-number">2.4.</span> <span class="nav-text">字符串转换为数字类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String类型和byte类型互转"><span class="nav-number">2.5.</span> <span class="nav-text">String类型和byte类型互转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#string类型和rune类型互转"><span class="nav-number">2.6.</span> <span class="nav-text">string类型和rune类型互转</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#go语言基本类型"><span class="nav-number">1.</span> <span class="nav-text">go语言基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数字类型"><span class="nav-number">1.0.1.</span> <span class="nav-text">数字类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符类型"><span class="nav-number">1.0.2.</span> <span class="nav-text">字符类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔类型"><span class="nav-number">1.0.3.</span> <span class="nav-text">布尔类型</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#类型之间的转换"><span class="nav-number">2.</span> <span class="nav-text">类型之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字类型之间的转换"><span class="nav-number">2.1.</span> <span class="nav-text">数字类型之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#只需要进行T-v-的方式即可"><span class="nav-number">2.1.1.</span> <span class="nav-text">只需要进行T(v)的方式即可</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换为字符串"><span class="nav-number">2.2.</span> <span class="nav-text">转换为字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换为Bool类型"><span class="nav-number">2.3.</span> <span class="nav-text">转换为Bool类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串转换为数字类型"><span class="nav-number">2.4.</span> <span class="nav-text">字符串转换为数字类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String类型和byte类型互转"><span class="nav-number">2.5.</span> <span class="nav-text">String类型和byte类型互转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#string类型和rune类型互转"><span class="nav-number">2.6.</span> <span class="nav-text">string类型和rune类型互转</span></a></li></ol></li></div>
             
 
           </div>
