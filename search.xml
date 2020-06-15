@@ -1339,28 +1339,22 @@
   <entry>
     <title>go语言基本类型以及之间的转换</title>
     <url>/2020/06/14/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E4%BB%A5%E5%8F%8A%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2/</url>
-    <content><![CDATA[<h2 id="go语言基本类型"><a href="#go语言基本类型" class="headerlink" title="go语言基本类型"></a>go语言基本类型</h2><p>说难不难，说容易也不容易，得把这些类型全部搞清楚。</p>
-<ol>
+    <content><![CDATA[<h2 id="go语言基本类型"><a href="#go语言基本类型" class="headerlink" title="go语言基本类型"></a>go语言基本类型</h2><ol>
 <li><p><strong>数字类型</strong></p>
 <ul>
 <li><p>整形</p>
 <ul>
-<li>有符号型</li>
+<li><p>有符号型</p>
+<p><img src="https://image.kirakirazone.com/image/有符号整型.png" alt="有符号型"></p>
+</li>
 </ul>
-<p>| Type        | Size               | Range                               |<br>| ———– | —————— | ———————————– |<br>| int8        | 8 bits             | -2<sup>7</sup> ~ 2<sup>7</sup>-1    |<br>| int16       | 16 bits            | -2 <sup>15</sup> ~ 2<sup>15</sup>-1 |<br>| int32(rune) | 32 bits            | -2 <sup>31</sup> ~ 2<sup>31</sup>-1 |<br>| int64       | 64 bits            | -2 <sup>63</sup> ~ 2<sup>63</sup>-1 |<br>| int         | 视当前操作系统而定 | 视当前操作系统而定                  |</p>
 </li>
 </ul>
 </li>
 </ol>
 <pre><code>* 无符号型
 
-| Type        | Size               | Range                |
-| ----------- | ------------------ | -------------------- |
-| uint8(byte) | 8 bits             | 0 ~ 2&lt;sup&gt;8&lt;/sup&gt;-1  |
-| uint16      | 16 bits            | 0 ~ 2&lt;sup&gt;16&lt;/sup&gt;-1 |
-| uint32      | 32 bits            | 0 ~ 2&lt;sup&gt;32&lt;/sup&gt;-1 |
-| uint64      | 64 bits            | 0 ~ 2&lt;sup&gt;64&lt;/sup&gt;-1 |
-| uint        | 视当前操作系统而定 | 视当前操作系统而定   |
+  ![无符号型](https://image.kirakirazone.com/image/无符号整型.png)
 
 * byte和rune类型
 
@@ -1372,17 +1366,16 @@
 6. 因为byte和rune类型，实际是整数，所以如果对于&apos;A&apos;的存放使用byte，则是存了65这个值。
 </code></pre><ul>
 <li><p>浮点型</p>
-<p>| Type    | Size   | 有效位 |<br>| ——- | —— | —— |<br>| float32 | 32bits | 7位    |<br>| float64 | 64bits | 15位   |</p>
+<p><img src="https://image.kirakirazone.com/image/浮点型.png" alt="浮点型"></p>
 <ul>
-<li><p>float32</p>
+<li>float32</li>
+</ul>
 <p>单精度，存储占用4个字节，也即4*8=32位，其中1位用来符号，8位用来指数，剩下的23位表示尾数。</p>
 <p><img src="https://image.kirakirazone.com/单精度" alt="单精度"></p>
 <ul>
 <li><p>float64</p>
 <p>双精度，存储占用8个字节，也即8*8=64位，其中1位用来符号，11位用来指数，剩下的52位表示尾数。</p>
-<p><img src="https://image.kirakirazone.com/双精度" alt="双精度"></p>
-</li>
-</ul>
+<p> <img src="https://image.kirakirazone.com/双精度" alt="双精度"></p>
 </li>
 </ul>
 </li>
