@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="python3,">
+  <meta name="keywords" content="go,数据结构,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="原码、反码、补码无符号用原码 计算机的运算都用的补码 正数 原码， 反码，补码都相同  负数 反码等于原码符号位不变，其他取反。 补码等于反码+1  例子 2的原码为0000 0010, 因为是正数，所以反码、补码都相同为0000 0010。  -2的原码为1000 0010, 最高位1为符号位，1表示负数，0表示正数。所以其反码为1111 1101, 补码为反码+1, 则为1111 1110。">
-<meta name="keywords" content="python3">
+<meta name="description" content="链表基础链表基础 双向链表  双向链表可以向前或者向后查找。 双向链表可以实现自我删除。 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时">
+<meta name="keywords" content="go,数据结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="原码反码补码以及位运算">
-<meta property="og:url" content="https://kirakirazone.com/2020/04/30/原码反码补码以及位运算/index.html">
+<meta property="og:title" content="单向链表实现">
+<meta property="og:url" content="https://kirakirazone.com/2020/06/15/双向链表实现/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="原码、反码、补码无符号用原码 计算机的运算都用的补码 正数 原码， 反码，补码都相同  负数 反码等于原码符号位不变，其他取反。 补码等于反码+1  例子 2的原码为0000 0010, 因为是正数，所以反码、补码都相同为0000 0010。  -2的原码为1000 0010, 最高位1为符号位，1表示负数，0表示正数。所以其反码为1111 1101, 补码为反码+1, 则为1111 1110。">
+<meta property="og:description" content="链表基础链表基础 双向链表  双向链表可以向前或者向后查找。 双向链表可以实现自我删除。 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://image.kirakirazone.com/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg">
 <meta property="og:updated_time" content="2020-06-15T12:57:37.676Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="原码反码补码以及位运算">
-<meta name="twitter:description" content="原码、反码、补码无符号用原码 计算机的运算都用的补码 正数 原码， 反码，补码都相同  负数 反码等于原码符号位不变，其他取反。 补码等于反码+1  例子 2的原码为0000 0010, 因为是正数，所以反码、补码都相同为0000 0010。  -2的原码为1000 0010, 最高位1为符号位，1表示负数，0表示正数。所以其反码为1111 1101, 补码为反码+1, 则为1111 1110。">
+<meta name="twitter:title" content="单向链表实现">
+<meta name="twitter:description" content="链表基础链表基础 双向链表  双向链表可以向前或者向后查找。 双向链表可以实现自我删除。 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时">
+<meta name="twitter:image" content="https://image.kirakirazone.com/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2020/04/30/原码反码补码以及位运算/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/06/15/双向链表实现/">
 
 
 
 
 
-  <title>原码反码补码以及位运算 | Kirakirazone</title>
+  <title>单向链表实现 | Kirakirazone</title>
   
 
 
@@ -285,7 +287,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/04/30/原码反码补码以及位运算/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/06/15/双向链表实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">原码反码补码以及位运算</h1>
+          <h1 class="post-title" itemprop="name headline">单向链表实现</h1>
         
 
         <div class="post-meta">
@@ -314,8 +316,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-30T16:41:38+08:00">
-                2020-04-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-15T20:52:44+08:00">
+                2020-06-15
               </time>
             
 
@@ -333,8 +335,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/04/30/原码反码补码以及位运算/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/30/原码反码补码以及位运算/" itemprop="commentCount"></span>
+                <a href="/2020/06/15/双向链表实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/06/15/双向链表实现/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,41 +364,16 @@
       
 
       
-        <h2 id="原码、反码、补码"><a href="#原码、反码、补码" class="headerlink" title="原码、反码、补码"></a>原码、反码、补码</h2><p><strong>无符号用原码</strong></p>
-<p><strong>计算机的运算都用的补码</strong></p>
-<h3 id="正数"><a href="#正数" class="headerlink" title="正数"></a>正数</h3><ol>
-<li>原码， 反码，补码都相同</li>
-</ol>
-<h3 id="负数"><a href="#负数" class="headerlink" title="负数"></a>负数</h3><ol>
-<li>反码等于原码符号位不变，其他取反。</li>
-<li>补码等于反码+1</li>
-</ol>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><ol>
-<li><p>2的原码为0000 0010, 因为是正数，所以反码、补码都相同为0000 0010。</p>
-</li>
-<li><p>-2的原码为1000 0010, 最高位1为符号位，1表示负数，0表示正数。所以其反码为1111 1101, 补码为反码+1, 则为1111 1110。</p>
-</li>
-</ol>
-<h2 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h2><ol>
-<li><strong>位运算使用的都是反码。</strong></li>
-<li><strong>位运算如果存在负数，最后都需要还原为原码得到真值。</strong></li>
-</ol>
-<h3 id="异或"><a href="#异或" class="headerlink" title="异或"></a>异或</h3><h4 id="2和2做异或"><a href="#2和2做异或" class="headerlink" title="-2和2做异或"></a>-2和2做异或</h4><p>-2补码为1111 1110，2补码为0000 0010， 两者异或得到1111 1100。</p>
-<p>因为存在-2,负数，所以需要对结果-1，<strong>然后除了符号位进行取反操作，得到真正的值(原码)</strong>，即对1111 1100减1，得到1111 1011，然后除去符号位取反，得到1000 0100，该值为-4。</p>
-<h4 id="位移运算"><a href="#位移运算" class="headerlink" title="位移运算"></a>位移运算</h4><ol>
-<li>右移运算，&gt;&gt; <strong>低位溢出，符号位不变，并用符号位(正数0补，负数1补)补溢出的高位</strong></li>
-<li>左移运算，&lt;&lt; <strong>符号位不变，不够部分用0来补</strong></li>
-<li><strong>位移运算如果存在负数，最后都需要还原为原码得到真值。</strong></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&gt;&gt;2</span><br></pre></td></tr></table></figure>
-<p>1的补码为0000 0001, 右移2位，符号位不变，得到0000 0000即为0</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&lt;&lt;2</span><br></pre></td></tr></table></figure>
-<p>左移两位，符号位不变，不够的部分0补，得到0000 0100即为4</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-2&gt;&gt;2</span><br></pre></td></tr></table></figure>
-<p>-2的补码为1111 1110,右移2位，符号不变，高位溢出，用符号位1来补，得到1111 1111，<strong>然后-1，除去符号位取反还原回原码，1000 0001</strong>即为-1.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-2&lt;&lt;2</span><br></pre></td></tr></table></figure>
-<p>-2的补码为1111 1110,右移2位，符号不变，不够部分用0补，得到1111 1000，然后-1，除去符号位取反得到原码为1000 1000，即为-8。</p>
-<h2 id="有些东西迟早还是要还的。。。"><a href="#有些东西迟早还是要还的。。。" class="headerlink" title="有些东西迟早还是要还的。。。"></a>有些东西迟早还是要还的。。。</h2>
+        <h2 id="链表基础"><a href="#链表基础" class="headerlink" title="链表基础"></a>链表基础</h2><p><a href="https://kirakirazone.com/2019/02/18/链表基础/">链表基础</a></p>
+<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p><img src="https://image.kirakirazone.com/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg" alt="双向链表.png"></p>
+<ul>
+<li>双向链表可以向前或者向后查找。</li>
+<li>双向链表可以实现自我删除。</li>
+<li>插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</li>
+<li>删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</li>
+</ul>
+<h3 id="go语言实现双向链表"><a href="#go语言实现双向链表" class="headerlink" title="go语言实现双向链表"></a>go语言实现双向链表</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1. 双向链表可以向前或者向后查找。</span></span><br><span class="line"><span class="comment">2. 双向链表可以实现自我删除。</span></span><br><span class="line"><span class="comment">3. 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</span></span><br><span class="line"><span class="comment">4. 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> LanNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	No <span class="keyword">int</span></span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// next指向下一个节点</span></span><br><span class="line">	next *LanNode</span><br><span class="line">	<span class="comment">// pre指向上一个节点</span></span><br><span class="line">	pre  *LanNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newNode</span><span class="params">(no <span class="keyword">int</span>, name <span class="keyword">string</span>)</span> *<span class="title">LanNode</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;LanNode&#123;</span><br><span class="line">		No:no,</span><br><span class="line">		Name:name,</span><br><span class="line">		<span class="comment">// 默认让next指向下一个节点，所以只需要传入no和string即可。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertNode</span><span class="params">(head *LanNode, newNode *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给定一个临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 该临时节点为内存引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="comment">// 如果当前链表为空，则直接插入newNode</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			tmp.next = newNode</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到链表尾部，插入成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 当next的No大于新节点的No，表示可以插入</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No &gt; newNode.No &#123;</span><br><span class="line">			<span class="comment">// 让插入的新节点指向next节点</span></span><br><span class="line">			newNode.next = tmp.next</span><br><span class="line">			<span class="comment">// 新节点的pre指向当前临时的tmp节点()</span></span><br><span class="line">			newNode.pre = tmp</span><br><span class="line">			<span class="comment">// 让tmp下一个节点的pre指向newNode</span></span><br><span class="line">			tmp.next.pre = newNode</span><br><span class="line">			<span class="comment">// 让tmp的next节点指向新节点</span></span><br><span class="line">			tmp.next = newNode</span><br><span class="line"></span><br><span class="line">			fmt.Println(<span class="string">"已经插入到合适位置"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存在相同的情况，则退出</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == newNode.No &#123;</span><br><span class="line">			fmt.Println(<span class="string">"无法插入该节点，已有相同No"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteNode</span><span class="params">(head *LanNode, no <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给tmp一个赋值，作为临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 这个tmp其实是内存的引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"不存在待删除的no"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == no &#123;</span><br><span class="line">			<span class="comment">// 将tmp当前的节点next指向tmp下一个节点的下一个节点。</span></span><br><span class="line">			tmp.next = tmp.next.next</span><br><span class="line">			<span class="comment">// 因为tmp.next.next可能是nil, 那么如果是的话,则nil没有pre, 为nil的时候直接暂停,不需要pre了.</span></span><br><span class="line">			<span class="keyword">if</span> tmp.next != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="comment">// 因为tmp.next已经指向了tmp.next.next, 所以这里的tmp.next已经跳过了被删除的节点. 让tmp的下个节点的pre指向tmp</span></span><br><span class="line">				tmp.next.pre = tmp</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(<span class="string">"删除成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对节点进行遍历</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">listNode</span><span class="params">(head *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从head的next开始遍历，直到nil为止</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> head.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到底部"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"No为%d, Name为%s语言 ==&gt; "</span>,head.next.No, head.next.Name)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		head = head.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义head头，不需要存放任何数据</span></span><br><span class="line">	headNode := &amp;LanNode&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义四个新的节点</span></span><br><span class="line">	nodeC := newNode(<span class="number">1</span>, <span class="string">"C"</span>)</span><br><span class="line">	nodePHP := newNode(<span class="number">2</span>, <span class="string">"PHP"</span>)</span><br><span class="line">	nodeJava := newNode(<span class="number">3</span>, <span class="string">"Java"</span>)</span><br><span class="line">	nodeNodeJs := newNode(<span class="number">4</span>, <span class="string">"NodeJs"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 进行数据插入, 这里乱序插入</span></span><br><span class="line">	insertNode(headNode, nodeC)</span><br><span class="line">	insertNode(headNode, nodeJava)</span><br><span class="line">	insertNode(headNode, nodeNodeJs)</span><br><span class="line">	insertNode(headNode, nodePHP)</span><br><span class="line"></span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除一个数据3</span></span><br><span class="line">	deleteNode(headNode, <span class="number">3</span>)</span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -445,7 +422,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2020/04/30/原码反码补码以及位运算/" title="原码反码补码以及位运算">https://kirakirazone.com/2020/04/30/原码反码补码以及位运算/</a>
+    <a href="https://kirakirazone.com/2020/06/15/双向链表实现/" title="单向链表实现">https://kirakirazone.com/2020/06/15/双向链表实现/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -460,7 +437,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python3/" rel="tag"># python3</a>
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
           
         </div>
       
@@ -473,8 +452,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/18/css居中-垂直方向/" rel="next" title="css居中-垂直方向">
-                <i class="fa fa-chevron-left"></i> css居中-垂直方向
+              <a href="/2020/06/14/go语言基本类型以及之间的转换/" rel="next" title="go语言基本类型以及之间的转换">
+                <i class="fa fa-chevron-left"></i> go语言基本类型以及之间的转换
               </a>
             
           </div>
@@ -482,10 +461,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/06/08/稀疏数组/" rel="prev" title="稀疏数组(go语言实现)">
-                稀疏数组(go语言实现) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -657,7 +632,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原码、反码、补码"><span class="nav-number">1.</span> <span class="nav-text">原码、反码、补码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正数"><span class="nav-number">1.1.</span> <span class="nav-text">正数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负数"><span class="nav-number">1.2.</span> <span class="nav-text">负数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-number">1.3.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位运算"><span class="nav-number">2.</span> <span class="nav-text">位运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#异或"><span class="nav-number">2.1.</span> <span class="nav-text">异或</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2和2做异或"><span class="nav-number">2.1.1.</span> <span class="nav-text">-2和2做异或</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#位移运算"><span class="nav-number">2.1.2.</span> <span class="nav-text">位移运算</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有些东西迟早还是要还的。。。"><span class="nav-number">3.</span> <span class="nav-text">有些东西迟早还是要还的。。。</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链表基础"><span class="nav-number">1.</span> <span class="nav-text">链表基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#双向链表"><span class="nav-number">1.1.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go语言实现双向链表"><span class="nav-number">1.2.</span> <span class="nav-text">go语言实现双向链表</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -828,9 +803,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2020/04/30/原码反码补码以及位运算/';
-          this.page.identifier = '2020/04/30/原码反码补码以及位运算/';
-          this.page.title = '原码反码补码以及位运算';
+          this.page.url = 'https://kirakirazone.com/2020/06/15/双向链表实现/';
+          this.page.identifier = '2020/06/15/双向链表实现/';
+          this.page.title = '单向链表实现';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
