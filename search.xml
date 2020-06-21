@@ -1456,11 +1456,11 @@
   <entry>
     <title>helm的简单使用</title>
     <url>/2020/06/21/helm%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="HELM基本介绍"><a href="#HELM基本介绍" class="headerlink" title="HELM基本介绍"></a>HELM基本介绍</h2><p>helm是一个可以让k8s上的应用服务进行简便安装，方便管理的工具。可以理解对yum/apt等包管理工具，只不过他是k8s特有的。</p>
+    <content><![CDATA[<h1 id="HELM基本介绍"><a href="#HELM基本介绍" class="headerlink" title="HELM基本介绍"></a>HELM基本介绍</h1><p>helm是一个可以让k8s上的应用服务进行简便安装，方便管理的工具。可以理解对yum/apt等包管理工具，只不过他是k8s特有的。</p>
 <p>目前helm有v2以及v3版本。v2版本需要客户端和服务端相互配合，服务端成为tiller，而v3的版本则不需要服务端的支持了。对于helm的命令，v2和v3也有许些区别。</p>
 <p>为什么要有helm? 通常我们一个k8s应用服务有pods, depolyment, services，ingress等等若干组件来组成，且部分组件还有相互调用的关系，你可以需要编写很多个yaml文件来处理其中之间的关系。你自己对这些文件了如指掌，但如果进行交付给他人维护，或者要做ci/cd的话，可能就不是很方便了。使用helm，编写chart，或者使用互联网上已经存在的现存chart，通过命令，非常便捷的部署和管理应用服务。</p>
 <p>本篇使用的是v3版本。</p>
-<h2 id="HELM的三个概念"><a href="#HELM的三个概念" class="headerlink" title="HELM的三个概念"></a>HELM的三个概念</h2><ul>
+<h1 id="HELM的三个概念"><a href="#HELM的三个概念" class="headerlink" title="HELM的三个概念"></a>HELM的三个概念</h1><ul>
 <li><p><strong>Chart</strong>，chart类似yum list 所看到的包。安装后则在k8s上进行运行。</p>
 </li>
 <li><p><strong>Repository</strong>，则是helm的源，和yum源类似，可以配置多个，但刚安装完毕的helm没有默认源，需要手工配置。</p>
@@ -1468,7 +1468,7 @@
 <li><p><strong>Release</strong>，则是安装了chart后，在k8s上运行的服务，称之为release。简单理解就是，某个应用还未部署在k8s上，称之为chart，部署后称之为release。</p>
 </li>
 </ul>
-<h2 id="HELM的使用"><a href="#HELM的使用" class="headerlink" title="HELM的使用"></a>HELM的使用</h2><h3 id="HELM的安装"><a href="#HELM的安装" class="headerlink" title="HELM的安装"></a>HELM的安装</h3><p>常用的三个平台(linux, mac, win)都有对应的二进制包，可以去github下载。<a href="https://github.com/helm/helm" target="_blank" rel="noopener">github地址</a></p>
+<h1 id="HELM的使用"><a href="#HELM的使用" class="headerlink" title="HELM的使用"></a>HELM的使用</h1><h3 id="HELM的安装"><a href="#HELM的安装" class="headerlink" title="HELM的安装"></a>HELM的安装</h3><p>常用的三个平台(linux, mac, win)都有对应的二进制包，可以去github下载。<a href="https://github.com/helm/helm" target="_blank" rel="noopener">github地址</a></p>
 <h3 id="配置HELM源"><a href="#配置HELM源" class="headerlink" title="配置HELM源"></a>配置HELM源</h3><p>跟yum类似，但helm一开始是不存在默认的源，需要手工配置。</p>
 <p>配置命令为<code>helm repo add 源名称 源地址</code>。国内可以添加微软的源，谷歌的基本上被墙。</p>
 <figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm repo add google https://kubernetes-charts.storage.googleapis.com/</span><br><span class="line"><span class="string">"google"</span> has been added to your repositories</span><br></pre></td></tr></table></figure>
@@ -1540,6 +1540,36 @@
 ]]></content>
       <tags>
         <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2410,36 +2440,6 @@
 <h2 id="有些东西迟早还是要还的。。。"><a href="#有些东西迟早还是要还的。。。" class="headerlink" title="有些东西迟早还是要还的。。。"></a>有些东西迟早还是要还的。。。</h2>]]></content>
       <tags>
         <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
