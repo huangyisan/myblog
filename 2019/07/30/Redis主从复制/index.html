@@ -88,7 +88,7 @@
 <meta property="og:description" content="如何使用主从复制建立复制主从复制的开启，完全是在从节点发起的；不需要我们在主节点做任何事情。 从节点开启主从复制，有3种方式  配置文件  在从服务器的配置文件中加入：slaveof \&amp;lt;masterip&amp;gt; \&amp;lt;masterport&amp;gt;   启动命令  redis-server启动命令后加入 –slaveof \&amp;lt;masterip&amp;gt; \&amp;lt;masterport&amp;gt;   客户端命令">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hwl7a3ssj20fe092my9.jpg">
-<meta property="og:updated_time" content="2020-06-21T15:14:44.923Z">
+<meta property="og:updated_time" content="2020-06-21T15:17:59.363Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis主从复制(搬运)">
 <meta name="twitter:description" content="如何使用主从复制建立复制主从复制的开启，完全是在从节点发起的；不需要我们在主节点做任何事情。 从节点开启主从复制，有3种方式  配置文件  在从服务器的配置文件中加入：slaveof \&amp;lt;masterip&amp;gt; \&amp;lt;masterport&amp;gt;   启动命令  redis-server启动命令后加入 –slaveof \&amp;lt;masterip&amp;gt; \&amp;lt;masterport&amp;gt;   客户端命令">
@@ -327,6 +327,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/application/" itemprop="url" rel="index">
+                    <span itemprop="name">application</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -437,7 +459,7 @@
 </li>
 </ol>
 <h4 id="数据同步阶段–全量复制和部分复制"><a href="#数据同步阶段–全量复制和部分复制" class="headerlink" title="数据同步阶段–全量复制和部分复制"></a>数据同步阶段–全量复制和部分复制</h4><ol>
-<li><p>全量复制<br><strong>用于初次复制或其他无法进行部分复制的情况，将主节点中的所有数据都发送给从节点，是一个非常重型的操作。</strong><br>Redis通过psync命令进行全量复制的过程如下：</p>
+<li><p>全量复制<br> <strong>用于初次复制或其他无法进行部分复制的情况，将主节点中的所有数据都发送给从节点，是一个非常重型的操作。</strong><br> Redis通过psync命令进行全量复制的过程如下：</p>
 <ol>
 <li>从节点判断无法进行部分复制，向主节点发送全量复制的请求；或从节点发送部分复制的请求，但主节点判断无法进行全量复制。</li>
 <li>主节点收到全量复制的命令后，执行bgsave，在后台生成RDB文件，并使用一个缓冲区（称为复制缓冲区）记录从现在开始执行的所有写命令。</li>
@@ -446,22 +468,30 @@
 <li>如果从节点开启了AOF，则会触发bgrewriteaof的执行，从而保证AOF文件更新至主节点的最新状态。</li>
 </ol>
 </li>
-<li><p>部分复制<br><strong>用于网络中断等情况后的复制，只将中断期间主节点执行的写命令发送给从节点，与全量复制相比更加高效。需要注意的是，如果网络中断时间过长，导致主节点没有能够完整地保存中断期间执行的写命令，则无法进行部分复制，仍使用全量复制。</strong><br>部分复制的实现，依赖于三个重要的概念：</p>
+<li><p>部分复制<br> <strong>用于网络中断等情况后的复制，只将中断期间主节点执行的写命令发送给从节点，与全量复制相比更加高效。需要注意的是，如果网络中断时间过长，导致主节点没有能够完整地保存中断期间执行的写命令，则无法进行部分复制，仍使用全量复制。</strong><br> 部分复制的实现，依赖于三个重要的概念：</p>
 <ol>
 <li>复制偏移量<ul>
-<li>主节点和从节点分别维护一个复制偏移量（offset），代表的是主节点向从节点传递的字节数；主节点每次向从节点传播N个字节数据时，主节点的offset增加N；从节点每次收到主节点传来的N个字节数据时，从节点的offset增加N。</li>
+<li>主节点和从节点分别维护一个复制偏移量（offset），代表的是主节点向从节点传递的字节数；主节点每次向从节点传播N个字节数据时，主节点的offset增加N；从节点每次收到主节点传来的N个字节数据时，从节点的offset增加N。<ul>
 <li>offset用于判断主从节点的数据库状态是否一致：<strong>如果二者offset相同，则一致</strong>；<strong>如果offset不同，则不一致</strong>，此时可以根据两个offset找出从节点缺少的那部分数据。</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>复制积压缓冲区</p>
 <ul>
-<li>复制积压缓冲区是由主节点维护的、固定长度的、先进先出(FIFO)队列，默认大小1MB；当主节点开始有从节点时创建，其作用是备份主节点最近发送给从节点的数据。注意，<strong>无论主节点有一个还是多个从节点，都只需要一个复制积压缓冲区。</strong></li>
-<li>在命令传播阶段，主节点除了将写命令发送给从节点，还会发送一份给复制积压缓冲区，作为写命令的备份；除了存储写命令，复制积压缓冲区中还存储了其中的每个字节对应的复制偏移量（offset）。<strong>由于复制积压缓冲区定长且是先进先出，所以它保存的是主节点最近执行的写命令；时间较早的写命令会被挤出缓冲区</strong>。</li>
-<li><p>由于该缓冲区长度固定且有限，因此可以备份的写命令也有限，当主从节点offset的差距过大超过缓冲区长度时，将无法执行部分复制，只能执行全量复制。</p>
+<li><p>复制积压缓冲区是由主节点维护的、固定长度的、先进先出(FIFO)队列，默认大小1MB；当主节点开始有从节点时创建，其作用是备份主节点最近发送给从节点的数据。注意，<strong>无论主节点有一个还是多个从节点，都只需要一个复制积压缓冲区。</strong></p>
 <ul>
-<li><strong>从节点将offset发送给主节点后，主节点根据offset和缓冲区大小决定能否执行部分复制</strong>：<ul>
-<li>如果offset偏移量之后的数据，仍然都在复制积压缓冲区里，则执行部分复制；</li>
-<li>如果offset偏移量之后的数据已不在复制积压缓冲区中（数据已被挤出），则执行全量复制。<ol start="3">
+<li><p>在命令传播阶段，主节点除了将写命令发送给从节点，还会发送一份给复制积压缓冲区，作为写命令的备份；除了存储写命令，复制积压缓冲区中还存储了其中的每个字节对应的复制偏移量（offset）。<strong>由于复制积压缓冲区定长且是先进先出，所以它保存的是主节点最近执行的写命令；时间较早的写命令会被挤出缓冲区</strong>。</p>
+<ul>
+<li><p>由于该缓冲区长度固定且有限，因此可以备份的写命令也有限，当主从节点offset的差距过大超过缓冲区长度时，将无法执行部分复制，只能执行全量复制。</p>
+<pre><code>* **从节点将offset发送给主节点后，主节点根据offset和缓冲区大小决定能否执行部分复制**：
+  * 如果offset偏移量之后的数据，仍然都在复制积压缓冲区里，则执行部分复制；
+    * 如果offset偏移量之后的数据已不在复制积压缓冲区中（数据已被挤出），则执行全量复制。
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<ol start="3">
 <li>服务器运行ID(runid)</li>
 </ol>
 <ul>
@@ -469,10 +499,6 @@
 <li>主从节点初次复制时，主节点将自己的runid发送给从节点，从节点将这个runid保存起来；当断线重连时，从节点会将这个runid发送给主节点；主节点根据runid判断能否进行部分复制</li>
 <li>如果从节点保存的runid与主节点现在的runid相同，说明主从节点之前同步过，主节点会继续尝试使用部分复制(到底能不能部分复制还要看offset和复制积压缓冲区的情况)。</li>
 <li>如果从节点保存的runid与主节点现在的runid不同，说明从节点在断线前同步的Redis节点并不是当前的主节点，只能进行全量复制。</li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -709,7 +735,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>

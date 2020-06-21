@@ -360,7 +360,7 @@
 </li>
 </ol>
 <h4 id="数据同步阶段–全量复制和部分复制"><a href="#数据同步阶段–全量复制和部分复制" class="headerlink" title="数据同步阶段–全量复制和部分复制"></a>数据同步阶段–全量复制和部分复制</h4><ol>
-<li><p>全量复制<br><strong>用于初次复制或其他无法进行部分复制的情况，将主节点中的所有数据都发送给从节点，是一个非常重型的操作。</strong><br>Redis通过psync命令进行全量复制的过程如下：</p>
+<li><p>全量复制<br> <strong>用于初次复制或其他无法进行部分复制的情况，将主节点中的所有数据都发送给从节点，是一个非常重型的操作。</strong><br> Redis通过psync命令进行全量复制的过程如下：</p>
 <ol>
 <li>从节点判断无法进行部分复制，向主节点发送全量复制的请求；或从节点发送部分复制的请求，但主节点判断无法进行全量复制。</li>
 <li>主节点收到全量复制的命令后，执行bgsave，在后台生成RDB文件，并使用一个缓冲区（称为复制缓冲区）记录从现在开始执行的所有写命令。</li>
@@ -369,22 +369,30 @@
 <li>如果从节点开启了AOF，则会触发bgrewriteaof的执行，从而保证AOF文件更新至主节点的最新状态。</li>
 </ol>
 </li>
-<li><p>部分复制<br><strong>用于网络中断等情况后的复制，只将中断期间主节点执行的写命令发送给从节点，与全量复制相比更加高效。需要注意的是，如果网络中断时间过长，导致主节点没有能够完整地保存中断期间执行的写命令，则无法进行部分复制，仍使用全量复制。</strong><br>部分复制的实现，依赖于三个重要的概念：</p>
+<li><p>部分复制<br> <strong>用于网络中断等情况后的复制，只将中断期间主节点执行的写命令发送给从节点，与全量复制相比更加高效。需要注意的是，如果网络中断时间过长，导致主节点没有能够完整地保存中断期间执行的写命令，则无法进行部分复制，仍使用全量复制。</strong><br> 部分复制的实现，依赖于三个重要的概念：</p>
 <ol>
 <li>复制偏移量<ul>
-<li>主节点和从节点分别维护一个复制偏移量（offset），代表的是主节点向从节点传递的字节数；主节点每次向从节点传播N个字节数据时，主节点的offset增加N；从节点每次收到主节点传来的N个字节数据时，从节点的offset增加N。</li>
+<li>主节点和从节点分别维护一个复制偏移量（offset），代表的是主节点向从节点传递的字节数；主节点每次向从节点传播N个字节数据时，主节点的offset增加N；从节点每次收到主节点传来的N个字节数据时，从节点的offset增加N。<ul>
 <li>offset用于判断主从节点的数据库状态是否一致：<strong>如果二者offset相同，则一致</strong>；<strong>如果offset不同，则不一致</strong>，此时可以根据两个offset找出从节点缺少的那部分数据。</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>复制积压缓冲区</p>
 <ul>
-<li>复制积压缓冲区是由主节点维护的、固定长度的、先进先出(FIFO)队列，默认大小1MB；当主节点开始有从节点时创建，其作用是备份主节点最近发送给从节点的数据。注意，<strong>无论主节点有一个还是多个从节点，都只需要一个复制积压缓冲区。</strong></li>
-<li>在命令传播阶段，主节点除了将写命令发送给从节点，还会发送一份给复制积压缓冲区，作为写命令的备份；除了存储写命令，复制积压缓冲区中还存储了其中的每个字节对应的复制偏移量（offset）。<strong>由于复制积压缓冲区定长且是先进先出，所以它保存的是主节点最近执行的写命令；时间较早的写命令会被挤出缓冲区</strong>。</li>
-<li><p>由于该缓冲区长度固定且有限，因此可以备份的写命令也有限，当主从节点offset的差距过大超过缓冲区长度时，将无法执行部分复制，只能执行全量复制。</p>
+<li><p>复制积压缓冲区是由主节点维护的、固定长度的、先进先出(FIFO)队列，默认大小1MB；当主节点开始有从节点时创建，其作用是备份主节点最近发送给从节点的数据。注意，<strong>无论主节点有一个还是多个从节点，都只需要一个复制积压缓冲区。</strong></p>
 <ul>
-<li><strong>从节点将offset发送给主节点后，主节点根据offset和缓冲区大小决定能否执行部分复制</strong>：<ul>
-<li>如果offset偏移量之后的数据，仍然都在复制积压缓冲区里，则执行部分复制；</li>
-<li>如果offset偏移量之后的数据已不在复制积压缓冲区中（数据已被挤出），则执行全量复制。<ol start="3">
+<li><p>在命令传播阶段，主节点除了将写命令发送给从节点，还会发送一份给复制积压缓冲区，作为写命令的备份；除了存储写命令，复制积压缓冲区中还存储了其中的每个字节对应的复制偏移量（offset）。<strong>由于复制积压缓冲区定长且是先进先出，所以它保存的是主节点最近执行的写命令；时间较早的写命令会被挤出缓冲区</strong>。</p>
+<ul>
+<li><p>由于该缓冲区长度固定且有限，因此可以备份的写命令也有限，当主从节点offset的差距过大超过缓冲区长度时，将无法执行部分复制，只能执行全量复制。</p>
+<pre><code>* **从节点将offset发送给主节点后，主节点根据offset和缓冲区大小决定能否执行部分复制**：
+  * 如果offset偏移量之后的数据，仍然都在复制积压缓冲区里，则执行部分复制；
+    * 如果offset偏移量之后的数据已不在复制积压缓冲区中（数据已被挤出），则执行全量复制。
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<ol start="3">
 <li>服务器运行ID(runid)</li>
 </ol>
 <ul>
@@ -392,10 +400,6 @@
 <li>主从节点初次复制时，主节点将自己的runid发送给从节点，从节点将这个runid保存起来；当断线重连时，从节点会将这个runid发送给主节点；主节点根据runid判断能否进行部分复制</li>
 <li>如果从节点保存的runid与主节点现在的runid相同，说明主从节点之前同步过，主节点会继续尝试使用部分复制(到底能不能部分复制还要看offset和复制积压缓冲区的情况)。</li>
 <li>如果从节点保存的runid与主节点现在的runid不同，说明从节点在断线前同步的Redis节点并不是当前的主节点，只能进行全量复制。</li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -446,6 +450,9 @@
 <p><a href="https://www.cnblogs.com/kismetv/p/9236731.html" target="_blank" rel="noopener">https://www.cnblogs.com/kismetv/p/9236731.html</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -659,7 +666,7 @@
 <li>直接调用bgrewriteaof命令，该命令的执行与bgsave有些类似：都是fork子进程进行具体的工作，且都只有在fork时阻塞。</li>
 </ul>
 </li>
-<li><p>自动触发<br><strong>根据auto-aof-rewrite-min-size和auto-aof-rewrite-percentage参数，以及aof_current_size和aof_base_size状态确定触发时机</strong>。</p>
+<li><p>自动触发<br> <strong>根据auto-aof-rewrite-min-size和auto-aof-rewrite-percentage参数，以及aof_current_size和aof_base_size状态确定触发时机</strong>。</p>
 <ol>
 <li>auto-aof-rewrite-min-size<ul>
 <li>执行AOF重写时，文件的最小体积，默认值为64MB。</li>
@@ -731,6 +738,9 @@
 <p><a href="https://www.cnblogs.com/kismetv/p/8654978.html" target="_blank" rel="noopener">https://www.cnblogs.com/kismetv/p/8654978.html</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -1531,6 +1541,9 @@
 <p><a href="https://helm.sh/docs/" target="_blank" rel="noopener">https://helm.sh/docs/</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
         <tag>k8s</tag>
         <tag>helm</tag>
@@ -1581,6 +1594,9 @@
 <p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -2297,6 +2313,9 @@
 </blockquote>
 <p>下次写sudo su两个命令。</p>
 ]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -2339,6 +2358,9 @@
 <p><a href="http://www.eryajf.net/1404.html" target="_blank" rel="noopener">http://www.eryajf.net/1404.html</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
         <tag>cicd</tag>
         <tag>jenkins</tag>
@@ -2392,6 +2414,9 @@
 <p><a href="http://www.webhek.com/post/css-100-percent-height.html" target="_blank" rel="noopener">http://www.webhek.com/post/css-100-percent-height.html</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>front end</category>
+      </categories>
       <tags>
         <tag>css，小程序</tag>
       </tags>
@@ -2453,24 +2478,6 @@
 <h2 id="有些东西迟早还是要还的。。。"><a href="#有些东西迟早还是要还的。。。" class="headerlink" title="有些东西迟早还是要还的。。。"></a>有些东西迟早还是要还的。。。</h2>]]></content>
       <tags>
         <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>双向链表实现</title>
-    <url>/2020/06/15/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h2 id="链表基础"><a href="#链表基础" class="headerlink" title="链表基础"></a>链表基础</h2><p><a href="https://kirakirazone.com/2019/02/18/链表基础/">链表基础</a></p>
-<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p><img src="https://image.kirakirazone.com/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg" alt="双向链表.png"></p>
-<ul>
-<li>双向链表可以向前或者向后查找。</li>
-<li>双向链表可以实现自我删除。</li>
-<li>插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</li>
-<li>删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</li>
-</ul>
-<h3 id="go语言实现双向链表"><a href="#go语言实现双向链表" class="headerlink" title="go语言实现双向链表"></a>go语言实现双向链表</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1. 双向链表可以向前或者向后查找。</span></span><br><span class="line"><span class="comment">2. 双向链表可以实现自我删除。</span></span><br><span class="line"><span class="comment">3. 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</span></span><br><span class="line"><span class="comment">4. 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> LanNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	No <span class="keyword">int</span></span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// next指向下一个节点</span></span><br><span class="line">	next *LanNode</span><br><span class="line">	<span class="comment">// pre指向上一个节点</span></span><br><span class="line">	pre  *LanNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newNode</span><span class="params">(no <span class="keyword">int</span>, name <span class="keyword">string</span>)</span> *<span class="title">LanNode</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;LanNode&#123;</span><br><span class="line">		No:no,</span><br><span class="line">		Name:name,</span><br><span class="line">		<span class="comment">// 默认让next指向下一个节点，所以只需要传入no和string即可。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertNode</span><span class="params">(head *LanNode, newNode *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给定一个临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 该临时节点为内存引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="comment">// 如果当前链表为空，则直接插入newNode</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			tmp.next = newNode</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到链表尾部，插入成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 当next的No大于新节点的No，表示可以插入</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No &gt; newNode.No &#123;</span><br><span class="line">			<span class="comment">// 让插入的新节点指向next节点</span></span><br><span class="line">			newNode.next = tmp.next</span><br><span class="line">			<span class="comment">// 新节点的pre指向当前临时的tmp节点()</span></span><br><span class="line">			newNode.pre = tmp</span><br><span class="line">			<span class="comment">// 让tmp下一个节点的pre指向newNode</span></span><br><span class="line">			tmp.next.pre = newNode</span><br><span class="line">			<span class="comment">// 让tmp的next节点指向新节点</span></span><br><span class="line">			tmp.next = newNode</span><br><span class="line"></span><br><span class="line">			fmt.Println(<span class="string">"已经插入到合适位置"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存在相同的情况，则退出</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == newNode.No &#123;</span><br><span class="line">			fmt.Println(<span class="string">"无法插入该节点，已有相同No"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteNode</span><span class="params">(head *LanNode, no <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给tmp一个赋值，作为临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 这个tmp其实是内存的引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"不存在待删除的no"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == no &#123;</span><br><span class="line">			<span class="comment">// 将tmp当前的节点next指向tmp下一个节点的下一个节点。</span></span><br><span class="line">			tmp.next = tmp.next.next</span><br><span class="line">			<span class="comment">// 因为tmp.next.next可能是nil, 那么如果是的话,则nil没有pre, 为nil的时候直接暂停,不需要pre了.</span></span><br><span class="line">			<span class="keyword">if</span> tmp.next != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="comment">// 因为tmp.next已经指向了tmp.next.next, 所以这里的tmp.next已经跳过了被删除的节点. 让tmp的下个节点的pre指向tmp</span></span><br><span class="line">				tmp.next.pre = tmp</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(<span class="string">"删除成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对节点进行遍历</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">listNode</span><span class="params">(head *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从head的next开始遍历，直到nil为止</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> head.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到底部"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"No为%d, Name为%s语言 ==&gt; "</span>,head.next.No, head.next.Name)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		head = head.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义head头，不需要存放任何数据</span></span><br><span class="line">	headNode := &amp;LanNode&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义四个新的节点</span></span><br><span class="line">	nodeC := newNode(<span class="number">1</span>, <span class="string">"C"</span>)</span><br><span class="line">	nodePHP := newNode(<span class="number">2</span>, <span class="string">"PHP"</span>)</span><br><span class="line">	nodeJava := newNode(<span class="number">3</span>, <span class="string">"Java"</span>)</span><br><span class="line">	nodeNodeJs := newNode(<span class="number">4</span>, <span class="string">"NodeJs"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 进行数据插入, 这里乱序插入</span></span><br><span class="line">	insertNode(headNode, nodeC)</span><br><span class="line">	insertNode(headNode, nodeJava)</span><br><span class="line">	insertNode(headNode, nodeNodeJs)</span><br><span class="line">	insertNode(headNode, nodePHP)</span><br><span class="line"></span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除一个数据3</span></span><br><span class="line">	deleteNode(headNode, <span class="number">3</span>)</span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>go</tag>
-        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -2584,6 +2591,24 @@
       </tags>
   </entry>
   <entry>
+    <title>双向链表实现</title>
+    <url>/2020/06/15/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h2 id="链表基础"><a href="#链表基础" class="headerlink" title="链表基础"></a>链表基础</h2><p><a href="https://kirakirazone.com/2019/02/18/链表基础/">链表基础</a></p>
+<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p><img src="https://image.kirakirazone.com/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg" alt="双向链表.png"></p>
+<ul>
+<li>双向链表可以向前或者向后查找。</li>
+<li>双向链表可以实现自我删除。</li>
+<li>插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</li>
+<li>删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</li>
+</ul>
+<h3 id="go语言实现双向链表"><a href="#go语言实现双向链表" class="headerlink" title="go语言实现双向链表"></a>go语言实现双向链表</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1. 双向链表可以向前或者向后查找。</span></span><br><span class="line"><span class="comment">2. 双向链表可以实现自我删除。</span></span><br><span class="line"><span class="comment">3. 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</span></span><br><span class="line"><span class="comment">4. 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> LanNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	No <span class="keyword">int</span></span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// next指向下一个节点</span></span><br><span class="line">	next *LanNode</span><br><span class="line">	<span class="comment">// pre指向上一个节点</span></span><br><span class="line">	pre  *LanNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newNode</span><span class="params">(no <span class="keyword">int</span>, name <span class="keyword">string</span>)</span> *<span class="title">LanNode</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;LanNode&#123;</span><br><span class="line">		No:no,</span><br><span class="line">		Name:name,</span><br><span class="line">		<span class="comment">// 默认让next指向下一个节点，所以只需要传入no和string即可。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertNode</span><span class="params">(head *LanNode, newNode *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给定一个临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 该临时节点为内存引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="comment">// 如果当前链表为空，则直接插入newNode</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			tmp.next = newNode</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到链表尾部，插入成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 当next的No大于新节点的No，表示可以插入</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No &gt; newNode.No &#123;</span><br><span class="line">			<span class="comment">// 让插入的新节点指向next节点</span></span><br><span class="line">			newNode.next = tmp.next</span><br><span class="line">			<span class="comment">// 新节点的pre指向当前临时的tmp节点()</span></span><br><span class="line">			newNode.pre = tmp</span><br><span class="line">			<span class="comment">// 让tmp下一个节点的pre指向newNode</span></span><br><span class="line">			tmp.next.pre = newNode</span><br><span class="line">			<span class="comment">// 让tmp的next节点指向新节点</span></span><br><span class="line">			tmp.next = newNode</span><br><span class="line"></span><br><span class="line">			fmt.Println(<span class="string">"已经插入到合适位置"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存在相同的情况，则退出</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == newNode.No &#123;</span><br><span class="line">			fmt.Println(<span class="string">"无法插入该节点，已有相同No"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteNode</span><span class="params">(head *LanNode, no <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给tmp一个赋值，作为临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 这个tmp其实是内存的引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"不存在待删除的no"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == no &#123;</span><br><span class="line">			<span class="comment">// 将tmp当前的节点next指向tmp下一个节点的下一个节点。</span></span><br><span class="line">			tmp.next = tmp.next.next</span><br><span class="line">			<span class="comment">// 因为tmp.next.next可能是nil, 那么如果是的话,则nil没有pre, 为nil的时候直接暂停,不需要pre了.</span></span><br><span class="line">			<span class="keyword">if</span> tmp.next != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="comment">// 因为tmp.next已经指向了tmp.next.next, 所以这里的tmp.next已经跳过了被删除的节点. 让tmp的下个节点的pre指向tmp</span></span><br><span class="line">				tmp.next.pre = tmp</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(<span class="string">"删除成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对节点进行遍历</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">listNode</span><span class="params">(head *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从head的next开始遍历，直到nil为止</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> head.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到底部"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"No为%d, Name为%s语言 ==&gt; "</span>,head.next.No, head.next.Name)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		head = head.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义head头，不需要存放任何数据</span></span><br><span class="line">	headNode := &amp;LanNode&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义四个新的节点</span></span><br><span class="line">	nodeC := newNode(<span class="number">1</span>, <span class="string">"C"</span>)</span><br><span class="line">	nodePHP := newNode(<span class="number">2</span>, <span class="string">"PHP"</span>)</span><br><span class="line">	nodeJava := newNode(<span class="number">3</span>, <span class="string">"Java"</span>)</span><br><span class="line">	nodeNodeJs := newNode(<span class="number">4</span>, <span class="string">"NodeJs"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 进行数据插入, 这里乱序插入</span></span><br><span class="line">	insertNode(headNode, nodeC)</span><br><span class="line">	insertNode(headNode, nodeJava)</span><br><span class="line">	insertNode(headNode, nodeNodeJs)</span><br><span class="line">	insertNode(headNode, nodePHP)</span><br><span class="line"></span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除一个数据3</span></span><br><span class="line">	deleteNode(headNode, <span class="number">3</span>)</span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>go</tag>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>带宽测试</title>
     <url>/2019/01/15/%E5%B8%A6%E5%AE%BD%E6%B5%8B%E8%AF%95/</url>
     <content><![CDATA[<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>当时是想测试单台服务器，流量到某带宽值，cpu，内存，磁盘io的表现。<br>现在单说iperf和nc的简单使用。</p>
@@ -2610,6 +2635,9 @@
 <p><a href="https://askubuntu.com/questions/7976/how-do-you-test-the-network-speed-between-two-boxes" target="_blank" rel="noopener">https://askubuntu.com/questions/7976/how-do-you-test-the-network-speed-between-two-boxes</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -2759,6 +2787,9 @@
 <p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -2827,6 +2858,9 @@
 <p><a href="https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>django</category>
+      </categories>
       <tags>
         <tag>django</tag>
       </tags>
