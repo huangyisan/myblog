@@ -1526,6 +1526,10 @@
 <li><a href="https://helm.sh/docs/helm/helm_pull/" target="_blank" rel="noopener">helm pull chart名称</a> 下载指定chart，查看其编写文件</li>
 <li>很多命令可以配合–flag内容来做更多的展现，<a href="https://helm.sh/docs/helm/" target="_blank" rel="noopener">更多参考</a></li>
 </ul>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://helm.sh/docs/" target="_blank" rel="noopener">https://helm.sh/docs/</a></p>
+</blockquote>
 ]]></content>
       <tags>
         <tag>k8s</tag>
