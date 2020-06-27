@@ -1349,7 +1349,7 @@
   <entry>
     <title>go语言defer细节</title>
     <url>/2020/06/27/go%E8%AF%AD%E8%A8%80defer%E7%BB%86%E8%8A%82/</url>
-    <content><![CDATA[<h2 id="go语言中的defer"><a href="#go语言中的defer" class="headerlink" title="go语言中的defer"></a>go语言中的defer</h2><ol>
+    <content><![CDATA[<h3 id="go语言中的defer"><a href="#go语言中的defer" class="headerlink" title="go语言中的defer"></a>go语言中的defer</h3><ol>
 <li>当执行defer时，会将defer后面的语句压入到单独的栈(defer栈)。</li>
 <li>当函数执行完毕后（遇到return，panic或者函数顺序执行完），在从defer栈中，按照先入后出的方式，执行。</li>
 <li>如果函数的定义为匿名返回值,则defer无法修改。</li>
