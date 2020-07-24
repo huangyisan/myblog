@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="情景和思路当需要接入多个kubernetes集群的情况，如果使用–kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用kubectl config use-context ${context_name}命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。 配置文件路径配置文件一">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-07-24T03:31:17.812Z">
+<meta property="og:updated_time" content="2020-07-24T05:21:05.044Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="k8s配置多集群接入">
 <meta name="twitter:description" content="情景和思路当需要接入多个kubernetes集群的情况，如果使用–kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用kubectl config use-context ${context_name}命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。 配置文件路径配置文件一">
@@ -406,7 +406,8 @@
 <p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
 <p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
-<h2 id="手动命令行进行配置"><a href="#手动命令行进行配置" class="headerlink" title="手动命令行进行配置"></a>手动命令行进行配置</h2><p>refer:</p>
+<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
+<p>refer:</p>
 <blockquote>
 <p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
 </blockquote>
@@ -667,7 +668,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#情景和思路"><span class="nav-number">1.</span> <span class="nav-text">情景和思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置文件路径"><span class="nav-number">2.</span> <span class="nav-text">配置文件路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在原有集群上追加额外集群信息"><span class="nav-number">3.</span> <span class="nav-text">在原有集群上追加额外集群信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原有配置信息"><span class="nav-number">3.0.1.</span> <span class="nav-text">原有配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#追加第二个集群的信息"><span class="nav-number">3.0.2.</span> <span class="nav-text">追加第二个集群的信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换成另外一个集群"><span class="nav-number">3.1.</span> <span class="nav-text">切换成另外一个集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动命令行进行配置"><span class="nav-number">3.2.</span> <span class="nav-text">手动命令行进行配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#情景和思路"><span class="nav-number">1.</span> <span class="nav-text">情景和思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置文件路径"><span class="nav-number">2.</span> <span class="nav-text">配置文件路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在原有集群上追加额外集群信息"><span class="nav-number">3.</span> <span class="nav-text">在原有集群上追加额外集群信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原有配置信息"><span class="nav-number">3.0.1.</span> <span class="nav-text">原有配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#追加第二个集群的信息"><span class="nav-number">3.0.2.</span> <span class="nav-text">追加第二个集群的信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换成另外一个集群"><span class="nav-number">3.1.</span> <span class="nav-text">切换成另外一个集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动命令行进行配置三大件"><span class="nav-number">3.2.</span> <span class="nav-text">手动命令行进行配置三大件</span></a></li></ol></div>
             
 
           </div>

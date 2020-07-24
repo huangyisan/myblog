@@ -1638,7 +1638,8 @@
 <p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
 <p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
-<h2 id="手动命令行进行配置"><a href="#手动命令行进行配置" class="headerlink" title="手动命令行进行配置"></a>手动命令行进行配置</h2><p>refer:</p>
+<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
+<p>refer:</p>
 <blockquote>
 <p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
 </blockquote>
