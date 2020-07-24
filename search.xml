@@ -1614,6 +1614,43 @@
       </tags>
   </entry>
   <entry>
+    <title>k8s配置多集群接入</title>
+    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用–kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
+<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
+<ul>
+<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
+</li>
+<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
+</li>
+<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
+</li>
+</ul>
+<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
+<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
+<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
+<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
+<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
+<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
+<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
+<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
+<h2 id="手动命令行进行配置"><a href="#手动命令行进行配置" class="headerlink" title="手动命令行进行配置"></a>手动命令行进行配置</h2><p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>kill -9 不起作用</title>
     <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
     <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
