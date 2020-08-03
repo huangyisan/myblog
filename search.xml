@@ -2404,6 +2404,75 @@
       </tags>
   </entry>
   <entry>
+    <title>使用argo cd部署服务</title>
+    <url>/2020/08/23/%E4%BD%BF%E7%94%A8argo%20cd%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><p><img src="https://image.kirakirazone.com/image/argo-cd-tech.png" alt></p>
+<h1 id="常用组件说明"><a href="#常用组件说明" class="headerlink" title="常用组件说明"></a>常用组件说明</h1><ul>
+<li><p>argo cd: 用于kubernetes容器部署</p>
+</li>
+<li><p>helm：用于生成helm template</p>
+</li>
+<li><p>kustomize: 对生成的template进行细化定制</p>
+</li>
+</ul>
+<h1 id="部署流程说明"><a href="#部署流程说明" class="headerlink" title="部署流程说明"></a>部署流程说明</h1><ol>
+<li>gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。</li>
+<li>用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修改values.yaml，不更改源文件。</li>
+<li>用户编写kustomization.yaml，针对helm template生成的文件根据环境（dev,test,prod）不同细化配置。</li>
+<li>用户将变更推送到gitlab。</li>
+<li>argo-cd触发同步，根据plugin中编写的方式，在kubernetes中进行部署。</li>
+</ol>
+<h1 id="案例：concourse部署"><a href="#案例：concourse部署" class="headerlink" title="案例：concourse部署"></a>案例：concourse部署</h1><p><strong>通过部署concourse来具体说明该流程步骤。</strong></p>
+<h3 id="步骤一：镜像官方concourse-chart镜像到本地gitlab"><a href="#步骤一：镜像官方concourse-chart镜像到本地gitlab" class="headerlink" title="步骤一：镜像官方concourse chart镜像到本地gitlab"></a>步骤一：镜像官方concourse chart镜像到本地gitlab</h3><p>此操作在gitlab界面上，点点点就能完成，不再赘述。</p>
+<h3 id="步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"><a href="#步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中" class="headerlink" title="步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"></a>步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中</h3><p>创建完毕后的目录结构如下所示<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── chart</span><br><span class="line">├── kustomization.yaml</span><br><span class="line">├── patches</span><br><span class="line">├── resources</span><br><span class="line">│   └── concourse-virtualservice.yaml</span><br><span class="line">└── values.yaml</span><br></pre></td></tr></table></figure></p>
+<p><strong>目录结构说明：</strong></p>
+<ol>
+<li>chart为从gitlab上mirror到gitlab，并且作为submodule的路径，没有看到文件是需要执行<code>git submodule update --init</code></li>
+<li>kustomization.yaml该文件为kustomize执行build的时候所需要的，里面编写了需要替换或者更变的yaml配置内容。</li>
+<li>patches路径用来细分patch文件，提高可读性，kustomization.yaml可以引入。</li>
+<li>resources路径是摆放需要合并的原文件，kustomization.yaml可以引入。</li>
+<li>values.yaml基于镜像仓库中的values.yaml再根据实际情况进行修改。</li>
+</ol>
+<h3 id="步骤三：以镜像中values-yaml为模板进行编写"><a href="#步骤三：以镜像中values-yaml为模板进行编写" class="headerlink" title="步骤三：以镜像中values.yaml为模板进行编写"></a>步骤三：以镜像中values.yaml为模板进行编写</h3><p><strong>原镜像仓库中的values.yaml文件只做修改参考模板，不进行变更。</strong></p>
+<ol>
+<li>修改values.yaml中的一些值，比如登陆密码，pvc大小等。</li>
+</ol>
+<h3 id="步骤四：编写kustomization-yaml文件"><a href="#步骤四：编写kustomization-yaml文件" class="headerlink" title="步骤四：编写kustomization.yaml文件"></a>步骤四：编写kustomization.yaml文件</h3><ol>
+<li><p>该文件主要对helm template -f values.yaml生成的yaml模板进行修改。</p>
+</li>
+<li><p>样例：</p>
+<ol>
+<li><p>kustomization.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">kustomize.config.k8s.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Kustomization</span></span><br><span class="line"></span><br><span class="line"><span class="attr">images:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">concourse/concourse</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/concourse</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">docker.io/bitnami/minideb</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/minideb</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">docker.io/bitnami/postgresql</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/postgresql</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">all.yaml</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">resources/concourse-virtualservice.yaml</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>resources/concourse-virtualservice.yaml</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: concourse-virtualservice</span><br><span class="line">  namespace: concourse-ci</span><br><span class="line">spec:</span><br><span class="line">  gateways:</span><br><span class="line">  - istio-system/ingressgateway</span><br><span class="line">  hosts:</span><br><span class="line">  - concourse-auto-prod.hys.com</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: concourse-ci-web.concourse-ci.svc.cluster.local</span><br><span class="line">        port:</span><br><span class="line">          number: 8080</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="步骤五：推送配置到gitlab"><a href="#步骤五：推送配置到gitlab" class="headerlink" title="步骤五：推送配置到gitlab"></a>步骤五：推送配置到gitlab</h3><p>该步骤省略</p>
+<h3 id="步骤六：argo-cd配置APP，并进行sync操作"><a href="#步骤六：argo-cd配置APP，并进行sync操作" class="headerlink" title="步骤六：argo-cd配置APP，并进行sync操作"></a>步骤六：argo-cd配置APP，并进行sync操作</h3><p>该步骤待补充</p>
+<h3 id="碰到的一些问题"><a href="#碰到的一些问题" class="headerlink" title="碰到的一些问题"></a>碰到的一些问题</h3><ol>
+<li>values.yaml中的namespace配置需要和argo-cd中app配置的namespace一致。</li>
+<li></li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes-sigs.github.io/kustomize/api-reference/" target="_blank" rel="noopener">https://kubernetes-sigs.github.io/kustomize/api-reference/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>helm</tag>
+        <tag>kubernetes</tag>
+        <tag>argo-cd</tag>
+        <tag>kustomize</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>做一个不专业的jenkins回滚</title>
     <url>/2019/04/11/%E5%81%9A%E4%B8%80%E4%B8%AA%E4%B8%8D%E4%B8%93%E4%B8%9A%E7%9A%84jenkins%E5%9B%9E%E6%BB%9A/</url>
     <content><![CDATA[<h2 id="war包回滚思路"><a href="#war包回滚思路" class="headerlink" title="war包回滚思路"></a>war包回滚思路</h2><h3 id="发布期间"><a href="#发布期间" class="headerlink" title="发布期间"></a>发布期间</h3><ol>
