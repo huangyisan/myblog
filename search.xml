@@ -1614,6 +1614,59 @@
       </tags>
   </entry>
   <entry>
+    <title>k8s拉取私有镜像</title>
+    <url>/2020/08/06/k8s%E6%8B%89%E5%8F%96%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><h2 id="生产遇到的问题"><a href="#生产遇到的问题" class="headerlink" title="生产遇到的问题"></a>生产遇到的问题</h2><p>k8s环境在一个阿里账号下，但阿里镜像仓库在另外的一个阿里账号下。</p>
+<p>在k8s环境中部署服务的时候，发现镜像拉取失败，使用<code>kubectl describe pod xxx</code>在event字段发现如下报错：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type     Reason     Age                From                Message</span><br><span class="line">  ----     ------     ----               ----                -------</span><br><span class="line">  Normal   Scheduled  &lt;unknown&gt;          default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ErrImagePull</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Failed to pull image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": rpc error: code = Unknown desc = failed to pull and unpack image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": failed to resolve reference "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ImagePullBackOff</span><br></pre></td></tr></table></figure>
+<p>报错信息表明了镜像不存在，或者需要认证后才能拉取。</p>
+<p>然后上阿里云控制台检查了下，发现仓库是私有类型，当时改成了公有类型，的确可以拉取镜像了。</p>
+<p><strong>但是如果镜像是根据公司业务定制化，包含了公司敏感信息，那么此时就不适合作为公有类型了</strong>。</p>
+<h2 id="两种方法解决拉取私有镜像的问题"><a href="#两种方法解决拉取私有镜像的问题" class="headerlink" title="两种方法解决拉取私有镜像的问题"></a>两种方法解决拉取私有镜像的问题</h2><h3 id="方法一：通过Docker-credentials创建K8S-Secret资源"><a href="#方法一：通过Docker-credentials创建K8S-Secret资源" class="headerlink" title="方法一：通过Docker credentials创建K8S Secret资源"></a>方法一：通过Docker credentials创建K8S Secret资源</h3><ol>
+<li><p>使用docker login ${registry-addr}。</p>
+</li>
+<li><p>输入用户名和密码。</p>
+</li>
+<li><p>认证通过后docker会把认证信息以明文的方式默认存放到<code>/root/.docker/config.json</code>文件内。<strong>该文件存放了所有认证通过的镜像仓库，并且使用base64编码了用户名和密码，所以如果要查看用户名和密码，只需要base64 decode即可。</strong></p>
+</li>
+<li><p>使用一下命令就可以在k8s的secret资源中添加一条记录了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic $&#123;secret-name&#125; \</span><br><span class="line">    --from-file=.dockerconfigjson=&lt;path/to/.docker/config.json&gt; \</span><br><span class="line">    --type=kubernetes.io/dockerconfigjson</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="方法二：使用命令行的方式添加K8S-Secret资源"><a href="#方法二：使用命令行的方式添加K8S-Secret资源" class="headerlink" title="方法二：使用命令行的方式添加K8S Secret资源"></a>方法二：使用命令行的方式添加K8S Secret资源</h2><ol>
+<li><p>使用如下命令就可以在k8s的secret资源中添加一条记录了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret docker-registry regcred --docker-server=&lt;your-registry-server&gt; --docker-username=&lt;your-name&gt; --docker-password=&lt;your-pword&gt; --docker-email=&lt;your-email&gt;</span><br></pre></td></tr></table></figure>
+<p>其中your-email可以任意填写</p>
+</li>
+</ol>
+<h2 id="验证镜像拉取"><a href="#验证镜像拉取" class="headerlink" title="验证镜像拉取"></a>验证镜像拉取</h2><ol>
+<li><p>修改yaml文件，添加imagePullSecrets字段，使用name: ${secret-name}来指定使用哪个secret资源。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    env: test</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest</span><br><span class="line">    imagePullPolicy: Always</span><br><span class="line">  imagePullSecrets:</span><br><span class="line">  - name: ali-hys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除pod后重新部署，查看event字段发现已经可以正常拉取了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type    Reason     Age        From                Message</span><br><span class="line">  ----    ------     ----       ----                -------</span><br><span class="line">  Normal  Scheduled  &lt;unknown&gt;  default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Normal  Pulling    6s         kubelet, k3s-node2  Pulling image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Pulled     6s         kubelet, k3s-node2  Successfully pulled image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Created    6s         kubelet, k3s-node2  Created container nginx</span><br><span class="line">  Normal  Started    5s         kubelet, k3s-node2  Started container nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="查看secret资源"><a href="#查看secret资源" class="headerlink" title="查看secret资源"></a>查看secret资源</h2><ol>
+<li><p>kubectl get secret -n \&lt;namespace></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@test ~/k8s] # kubectl get secret</span><br><span class="line">NAME                                 TYPE                                  DATA   AGE</span><br><span class="line">default-token-jktlx                  kubernetes.io/service-account-token   3      48d</span><br><span class="line">my-release-ingress-nginx-admission   Opaque                                3      26h</span><br><span class="line">ali-hys                              kubernetes.io/dockerconfigjson        1      55m</span><br><span class="line">ali-json                             kubernetes.io/dockerconfigjson        1      31m</span><br><span class="line">You have new mail in /var/spool/mail/root</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>通过get指定的secret名称，-o yaml导出，其实也可以看到base64编码后的信息，只要decode就能看到明文</strong></p>
+</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>k8s配置多集群接入</title>
     <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
     <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
@@ -2405,7 +2458,7 @@
   </entry>
   <entry>
     <title>使用argo cd部署服务</title>
-    <url>/2020/08/23/%E4%BD%BF%E7%94%A8argo%20cd%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1/</url>
+    <url>/2020/08/03/%E4%BD%BF%E7%94%A8argo%20cd%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1/</url>
     <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><p><img src="https://image.kirakirazone.com/image/argo-cd-tech.png" alt></p>
 <h1 id="常用组件说明"><a href="#常用组件说明" class="headerlink" title="常用组件说明"></a>常用组件说明</h1><ul>
 <li><p>argo cd: 用于kubernetes容器部署</p>

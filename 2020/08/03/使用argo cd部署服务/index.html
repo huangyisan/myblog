@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="python3,">
+  <meta name="keywords" content="helm,kubernetes,argo-cd,kustomize,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
-<meta name="keywords" content="python3">
+<meta name="description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes容器部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修">
+<meta name="keywords" content="helm,kubernetes,argo-cd,kustomize">
 <meta property="og:type" content="article">
-<meta property="og:title" content="setdefault方法传入函数">
-<meta property="og:url" content="https://kirakirazone.com/2019/02/01/setdefault方法/index.html">
+<meta property="og:title" content="使用argo cd部署服务">
+<meta property="og:url" content="https://kirakirazone.com/2020/08/03/使用argo cd部署服务/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
+<meta property="og:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes容器部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://image.kirakirazone.com/image/argo-cd-tech.png">
 <meta property="og:updated_time" content="2020-08-06T09:44:07.504Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="setdefault方法传入函数">
-<meta name="twitter:description" content="setdefault()方法myvalue = dict_a.setdefault(a,b) 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。 案例请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。 于是用了setdefault()方法，代码大致如下: 12345dict_a = &amp;#123;&amp;#125;for i in x">
+<meta name="twitter:title" content="使用argo cd部署服务">
+<meta name="twitter:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes容器部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修">
+<meta name="twitter:image" content="https://image.kirakirazone.com/image/argo-cd-tech.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/02/01/setdefault方法/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/08/03/使用argo cd部署服务/">
 
 
 
 
 
-  <title>setdefault方法传入函数 | Kirakirazone</title>
+  <title>使用argo cd部署服务 | Kirakirazone</title>
   
 
 
@@ -285,7 +287,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/02/01/setdefault方法/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/08/03/使用argo cd部署服务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">setdefault方法传入函数</h1>
+          <h1 class="post-title" itemprop="name headline">使用argo cd部署服务</h1>
         
 
         <div class="post-meta">
@@ -314,8 +316,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-01T17:57:44+08:00">
-                2019-02-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-03T17:39:22+08:00">
+                2020-08-03
               </time>
             
 
@@ -325,6 +327,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/application/" itemprop="url" rel="index">
+                    <span itemprop="name">application</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -333,8 +357,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/02/01/setdefault方法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/01/setdefault方法/" itemprop="commentCount"></span>
+                <a href="/2020/08/03/使用argo cd部署服务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/08/03/使用argo cd部署服务/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,21 +386,61 @@
       
 
       
-        <h2 id="setdefault-方法"><a href="#setdefault-方法" class="headerlink" title="setdefault()方法"></a>setdefault()方法</h2><p>myvalue = dict_a.setdefault(a,b)</p>
-<p>从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。</p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。</p>
-<p>于是用了setdefault()方法，代码大致如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
-<p>因为func_api()函数会请求线上，调用接口。</p>
-<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
-<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
-<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
-<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
-<p>这样就避免了重复调用func的问题。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
+        <h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><p><img src="https://image.kirakirazone.com/image/argo-cd-tech.png" alt></p>
+<h1 id="常用组件说明"><a href="#常用组件说明" class="headerlink" title="常用组件说明"></a>常用组件说明</h1><ul>
+<li><p>argo cd: 用于kubernetes容器部署</p>
+</li>
+<li><p>helm：用于生成helm template</p>
+</li>
+<li><p>kustomize: 对生成的template进行细化定制</p>
+</li>
+</ul>
+<h1 id="部署流程说明"><a href="#部署流程说明" class="headerlink" title="部署流程说明"></a>部署流程说明</h1><ol>
+<li>gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。</li>
+<li>用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修改values.yaml，不更改源文件。</li>
+<li>用户编写kustomization.yaml，针对helm template生成的文件根据环境（dev,test,prod）不同细化配置。</li>
+<li>用户将变更推送到gitlab。</li>
+<li>argo-cd触发同步，根据plugin中编写的方式，在kubernetes中进行部署。</li>
+</ol>
+<h1 id="案例：concourse部署"><a href="#案例：concourse部署" class="headerlink" title="案例：concourse部署"></a>案例：concourse部署</h1><p><strong>通过部署concourse来具体说明该流程步骤。</strong></p>
+<h3 id="步骤一：镜像官方concourse-chart镜像到本地gitlab"><a href="#步骤一：镜像官方concourse-chart镜像到本地gitlab" class="headerlink" title="步骤一：镜像官方concourse chart镜像到本地gitlab"></a>步骤一：镜像官方concourse chart镜像到本地gitlab</h3><p>此操作在gitlab界面上，点点点就能完成，不再赘述。</p>
+<h3 id="步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"><a href="#步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中" class="headerlink" title="步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"></a>步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中</h3><p>创建完毕后的目录结构如下所示<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── chart</span><br><span class="line">├── kustomization.yaml</span><br><span class="line">├── patches</span><br><span class="line">├── resources</span><br><span class="line">│   └── concourse-virtualservice.yaml</span><br><span class="line">└── values.yaml</span><br></pre></td></tr></table></figure></p>
+<p><strong>目录结构说明：</strong></p>
+<ol>
+<li>chart为从gitlab上mirror到gitlab，并且作为submodule的路径，没有看到文件是需要执行<code>git submodule update --init</code></li>
+<li>kustomization.yaml该文件为kustomize执行build的时候所需要的，里面编写了需要替换或者更变的yaml配置内容。</li>
+<li>patches路径用来细分patch文件，提高可读性，kustomization.yaml可以引入。</li>
+<li>resources路径是摆放需要合并的原文件，kustomization.yaml可以引入。</li>
+<li>values.yaml基于镜像仓库中的values.yaml再根据实际情况进行修改。</li>
+</ol>
+<h3 id="步骤三：以镜像中values-yaml为模板进行编写"><a href="#步骤三：以镜像中values-yaml为模板进行编写" class="headerlink" title="步骤三：以镜像中values.yaml为模板进行编写"></a>步骤三：以镜像中values.yaml为模板进行编写</h3><p><strong>原镜像仓库中的values.yaml文件只做修改参考模板，不进行变更。</strong></p>
+<ol>
+<li>修改values.yaml中的一些值，比如登陆密码，pvc大小等。</li>
+</ol>
+<h3 id="步骤四：编写kustomization-yaml文件"><a href="#步骤四：编写kustomization-yaml文件" class="headerlink" title="步骤四：编写kustomization.yaml文件"></a>步骤四：编写kustomization.yaml文件</h3><ol>
+<li><p>该文件主要对helm template -f values.yaml生成的yaml模板进行修改。</p>
+</li>
+<li><p>样例：</p>
+<ol>
+<li><p>kustomization.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">kustomize.config.k8s.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Kustomization</span></span><br><span class="line"></span><br><span class="line"><span class="attr">images:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">concourse/concourse</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/concourse</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">docker.io/bitnami/minideb</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/minideb</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">docker.io/bitnami/postgresql</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/postgresql</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">all.yaml</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">resources/concourse-virtualservice.yaml</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>resources/concourse-virtualservice.yaml</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: concourse-virtualservice</span><br><span class="line">  namespace: concourse-ci</span><br><span class="line">spec:</span><br><span class="line">  gateways:</span><br><span class="line">  - istio-system/ingressgateway</span><br><span class="line">  hosts:</span><br><span class="line">  - concourse-auto-prod.hys.com</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: concourse-ci-web.concourse-ci.svc.cluster.local</span><br><span class="line">        port:</span><br><span class="line">          number: 8080</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="步骤五：推送配置到gitlab"><a href="#步骤五：推送配置到gitlab" class="headerlink" title="步骤五：推送配置到gitlab"></a>步骤五：推送配置到gitlab</h3><p>该步骤省略</p>
+<h3 id="步骤六：argo-cd配置APP，并进行sync操作"><a href="#步骤六：argo-cd配置APP，并进行sync操作" class="headerlink" title="步骤六：argo-cd配置APP，并进行sync操作"></a>步骤六：argo-cd配置APP，并进行sync操作</h3><p>该步骤待补充</p>
+<h3 id="碰到的一些问题"><a href="#碰到的一些问题" class="headerlink" title="碰到的一些问题"></a>碰到的一些问题</h3><ol>
+<li>values.yaml中的namespace配置需要和argo-cd中app配置的namespace一致。</li>
+<li></li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes-sigs.github.io/kustomize/api-reference/" target="_blank" rel="noopener">https://kubernetes-sigs.github.io/kustomize/api-reference/</a></p>
+</blockquote>
 
       
     </div>
@@ -426,7 +490,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/02/01/setdefault方法/" title="setdefault方法传入函数">https://kirakirazone.com/2019/02/01/setdefault方法/</a>
+    <a href="https://kirakirazone.com/2020/08/03/使用argo cd部署服务/" title="使用argo cd部署服务">https://kirakirazone.com/2020/08/03/使用argo cd部署服务/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -441,7 +505,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python3/" rel="tag"># python3</a>
+            <a href="/tags/helm/" rel="tag"># helm</a>
+          
+            <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+          
+            <a href="/tags/argo-cd/" rel="tag"># argo-cd</a>
+          
+            <a href="/tags/kustomize/" rel="tag"># kustomize</a>
           
         </div>
       
@@ -454,8 +524,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/30/Python防注入/" rel="next" title="Python防注入">
-                <i class="fa fa-chevron-left"></i> Python防注入
+              <a href="/2020/07/24/k8s配置多集群接入/" rel="next" title="k8s配置多集群接入">
+                <i class="fa fa-chevron-left"></i> k8s配置多集群接入
               </a>
             
           </div>
@@ -464,8 +534,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/02/kill-9不起作用/" rel="prev" title="kill -9 不起作用">
-                kill -9 不起作用 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/08/06/k8s拉取私有镜像/" rel="prev" title="k8s拉取私有镜像">
+                k8s拉取私有镜像 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -638,7 +708,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#setdefault-方法"><span class="nav-number">1.</span> <span class="nav-text">setdefault()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">2.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证猜测"><span class="nav-number">3.</span> <span class="nav-text">验证猜测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理方法"><span class="nav-number">4.</span> <span class="nav-text">处理方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署流程图"><span class="nav-number">1.</span> <span class="nav-text">部署流程图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用组件说明"><span class="nav-number">2.</span> <span class="nav-text">常用组件说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部署流程说明"><span class="nav-number">3.</span> <span class="nav-text">部署流程说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#案例：concourse部署"><span class="nav-number">4.</span> <span class="nav-text">案例：concourse部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤一：镜像官方concourse-chart镜像到本地gitlab"><span class="nav-number">4.0.1.</span> <span class="nav-text">步骤一：镜像官方concourse chart镜像到本地gitlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"><span class="nav-number">4.0.2.</span> <span class="nav-text">步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤三：以镜像中values-yaml为模板进行编写"><span class="nav-number">4.0.3.</span> <span class="nav-text">步骤三：以镜像中values.yaml为模板进行编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤四：编写kustomization-yaml文件"><span class="nav-number">4.0.4.</span> <span class="nav-text">步骤四：编写kustomization.yaml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤五：推送配置到gitlab"><span class="nav-number">4.0.5.</span> <span class="nav-text">步骤五：推送配置到gitlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤六：argo-cd配置APP，并进行sync操作"><span class="nav-number">4.0.6.</span> <span class="nav-text">步骤六：argo-cd配置APP，并进行sync操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碰到的一些问题"><span class="nav-number">4.0.7.</span> <span class="nav-text">碰到的一些问题</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -809,9 +879,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/02/01/setdefault方法/';
-          this.page.identifier = '2019/02/01/setdefault方法/';
-          this.page.title = 'setdefault方法传入函数';
+          this.page.url = 'https://kirakirazone.com/2020/08/03/使用argo cd部署服务/';
+          this.page.identifier = '2020/08/03/使用argo cd部署服务/';
+          this.page.title = '使用argo cd部署服务';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
