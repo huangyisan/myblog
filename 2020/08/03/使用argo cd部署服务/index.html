@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="helm,kubernetes,argo-cd,kustomize,">
+  <meta name="keywords" content="helm,kubernetes,argo-cd,kustomize,concourse,">
 
 
 
@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes容器部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修">
-<meta name="keywords" content="helm,kubernetes,argo-cd,kustomize">
+<meta name="description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes application部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为">
+<meta name="keywords" content="helm,kubernetes,argo-cd,kustomize,concourse">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用argo cd部署服务">
 <meta property="og:url" content="https://kirakirazone.com/2020/08/03/使用argo cd部署服务/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes容器部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修">
+<meta property="og:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes application部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://image.kirakirazone.com/image/argo-cd-tech.png">
-<meta property="og:updated_time" content="2020-08-06T09:44:07.504Z">
+<meta property="og:updated_time" content="2020-08-12T05:52:55.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用argo cd部署服务">
-<meta name="twitter:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes容器部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为模板，根据实际情况修">
+<meta name="twitter:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes application部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为">
 <meta name="twitter:image" content="https://image.kirakirazone.com/image/argo-cd-tech.png">
 
 
@@ -388,7 +388,7 @@
       
         <h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><p><img src="https://image.kirakirazone.com/image/argo-cd-tech.png" alt></p>
 <h1 id="常用组件说明"><a href="#常用组件说明" class="headerlink" title="常用组件说明"></a>常用组件说明</h1><ul>
-<li><p>argo cd: 用于kubernetes容器部署</p>
+<li><p>argo cd: 用于kubernetes application部署</p>
 </li>
 <li><p>helm：用于生成helm template</p>
 </li>
@@ -403,15 +403,16 @@
 <li>argo-cd触发同步，根据plugin中编写的方式，在kubernetes中进行部署。</li>
 </ol>
 <h1 id="案例：concourse部署"><a href="#案例：concourse部署" class="headerlink" title="案例：concourse部署"></a>案例：concourse部署</h1><p><strong>通过部署concourse来具体说明该流程步骤。</strong></p>
-<h3 id="步骤一：镜像官方concourse-chart镜像到本地gitlab"><a href="#步骤一：镜像官方concourse-chart镜像到本地gitlab" class="headerlink" title="步骤一：镜像官方concourse chart镜像到本地gitlab"></a>步骤一：镜像官方concourse chart镜像到本地gitlab</h3><p>此操作在gitlab界面上，点点点就能完成，不再赘述。</p>
-<h3 id="步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"><a href="#步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中" class="headerlink" title="步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"></a>步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中</h3><p>创建完毕后的目录结构如下所示<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── chart</span><br><span class="line">├── kustomization.yaml</span><br><span class="line">├── patches</span><br><span class="line">├── resources</span><br><span class="line">│   └── concourse-virtualservice.yaml</span><br><span class="line">└── values.yaml</span><br></pre></td></tr></table></figure></p>
+<h3 id="步骤一：镜像官方concourse-chart镜像到本地gitlab"><a href="#步骤一：镜像官方concourse-chart镜像到本地gitlab" class="headerlink" title="步骤一：镜像官方concourse chart镜像到本地gitlab"></a>步骤一：镜像官方concourse chart镜像到本地gitlab</h3><p>此操作在gitlab界面上，点点点就能完成，不再赘述。参考官方文档：</p>
+<p><a href="https://docs.gitlab.com/ee/user/project/repository/repository_mirroring.html" target="_blank" rel="noopener">https://docs.gitlab.com/ee/user/project/repository/repository_mirroring.html</a></p>
+<h3 id="步骤二：创建一个concourse仓库，并且将之前创建的mirror仓库作为submodule加入到该仓库中"><a href="#步骤二：创建一个concourse仓库，并且将之前创建的mirror仓库作为submodule加入到该仓库中" class="headerlink" title="步骤二：创建一个concourse仓库，并且将之前创建的mirror仓库作为submodule加入到该仓库中"></a>步骤二：创建一个concourse仓库，并且将之前创建的mirror仓库作为submodule加入到该仓库中</h3><p>创建完毕后的目录结构如下所示<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── chart</span><br><span class="line">├── kustomization.yaml</span><br><span class="line">├── patches</span><br><span class="line">├── resources</span><br><span class="line">│   └── concourse-virtualservice.yaml</span><br><span class="line">└── values.yaml</span><br></pre></td></tr></table></figure></p>
 <p><strong>目录结构说明：</strong></p>
 <ol>
-<li>chart为从gitlab上mirror到gitlab，并且作为submodule的路径，没有看到文件是需要执行<code>git submodule update --init</code></li>
-<li>kustomization.yaml该文件为kustomize执行build的时候所需要的，里面编写了需要替换或者更变的yaml配置内容。</li>
-<li>patches路径用来细分patch文件，提高可读性，kustomization.yaml可以引入。</li>
-<li>resources路径是摆放需要合并的原文件，kustomization.yaml可以引入。</li>
-<li>values.yaml基于镜像仓库中的values.yaml再根据实际情况进行修改。</li>
+<li>chart为从github上mirror到gitlab，并且作为submodule的路径，第一次拉取仓库需要执行<code>git submodule update --init</code>才能看到chat目录。</li>
+<li>kustomization.yaml该文件为kustomize执行build的时候所需要，里面编写了需要替换或者更变的yaml配置内容。</li>
+<li>patches路径用来细分patch文件，提高可读性，kustomization.yaml中进行引入。</li>
+<li>resources路径是摆放需要合并的原文件，kustomization.yaml中进行引入。</li>
+<li>values.yaml基于镜像仓库中的values.yaml再根据实际情况进行修改，比如修改了所需磁盘大小，外网访问地址信息等。</li>
 </ol>
 <h3 id="步骤三：以镜像中values-yaml为模板进行编写"><a href="#步骤三：以镜像中values-yaml为模板进行编写" class="headerlink" title="步骤三：以镜像中values.yaml为模板进行编写"></a>步骤三：以镜像中values.yaml为模板进行编写</h3><p><strong>原镜像仓库中的values.yaml文件只做修改参考模板，不进行变更。</strong></p>
 <ol>
@@ -431,11 +432,10 @@
 </ol>
 </li>
 </ol>
-<h3 id="步骤五：推送配置到gitlab"><a href="#步骤五：推送配置到gitlab" class="headerlink" title="步骤五：推送配置到gitlab"></a>步骤五：推送配置到gitlab</h3><p>该步骤省略</p>
+<h3 id="步骤五：将修改完后的yaml文件提交到gitlab"><a href="#步骤五：将修改完后的yaml文件提交到gitlab" class="headerlink" title="步骤五：将修改完后的yaml文件提交到gitlab"></a>步骤五：将修改完后的yaml文件提交到gitlab</h3><p>该步骤省略</p>
 <h3 id="步骤六：argo-cd配置APP，并进行sync操作"><a href="#步骤六：argo-cd配置APP，并进行sync操作" class="headerlink" title="步骤六：argo-cd配置APP，并进行sync操作"></a>步骤六：argo-cd配置APP，并进行sync操作</h3><p>该步骤待补充</p>
 <h3 id="碰到的一些问题"><a href="#碰到的一些问题" class="headerlink" title="碰到的一些问题"></a>碰到的一些问题</h3><ol>
 <li>values.yaml中的namespace配置需要和argo-cd中app配置的namespace一致。</li>
-<li></li>
 </ol>
 <p>refer:</p>
 <blockquote>
@@ -512,6 +512,8 @@
             <a href="/tags/argo-cd/" rel="tag"># argo-cd</a>
           
             <a href="/tags/kustomize/" rel="tag"># kustomize</a>
+          
+            <a href="/tags/concourse/" rel="tag"># concourse</a>
           
         </div>
       
@@ -645,7 +647,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -708,7 +710,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署流程图"><span class="nav-number">1.</span> <span class="nav-text">部署流程图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用组件说明"><span class="nav-number">2.</span> <span class="nav-text">常用组件说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部署流程说明"><span class="nav-number">3.</span> <span class="nav-text">部署流程说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#案例：concourse部署"><span class="nav-number">4.</span> <span class="nav-text">案例：concourse部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤一：镜像官方concourse-chart镜像到本地gitlab"><span class="nav-number">4.0.1.</span> <span class="nav-text">步骤一：镜像官方concourse chart镜像到本地gitlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中"><span class="nav-number">4.0.2.</span> <span class="nav-text">步骤二：创建一个concourse仓库，并且将该镜像仓库作为submodule加入到该仓库中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤三：以镜像中values-yaml为模板进行编写"><span class="nav-number">4.0.3.</span> <span class="nav-text">步骤三：以镜像中values.yaml为模板进行编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤四：编写kustomization-yaml文件"><span class="nav-number">4.0.4.</span> <span class="nav-text">步骤四：编写kustomization.yaml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤五：推送配置到gitlab"><span class="nav-number">4.0.5.</span> <span class="nav-text">步骤五：推送配置到gitlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤六：argo-cd配置APP，并进行sync操作"><span class="nav-number">4.0.6.</span> <span class="nav-text">步骤六：argo-cd配置APP，并进行sync操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碰到的一些问题"><span class="nav-number">4.0.7.</span> <span class="nav-text">碰到的一些问题</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署流程图"><span class="nav-number">1.</span> <span class="nav-text">部署流程图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用组件说明"><span class="nav-number">2.</span> <span class="nav-text">常用组件说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部署流程说明"><span class="nav-number">3.</span> <span class="nav-text">部署流程说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#案例：concourse部署"><span class="nav-number">4.</span> <span class="nav-text">案例：concourse部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤一：镜像官方concourse-chart镜像到本地gitlab"><span class="nav-number">4.0.1.</span> <span class="nav-text">步骤一：镜像官方concourse chart镜像到本地gitlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤二：创建一个concourse仓库，并且将之前创建的mirror仓库作为submodule加入到该仓库中"><span class="nav-number">4.0.2.</span> <span class="nav-text">步骤二：创建一个concourse仓库，并且将之前创建的mirror仓库作为submodule加入到该仓库中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤三：以镜像中values-yaml为模板进行编写"><span class="nav-number">4.0.3.</span> <span class="nav-text">步骤三：以镜像中values.yaml为模板进行编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤四：编写kustomization-yaml文件"><span class="nav-number">4.0.4.</span> <span class="nav-text">步骤四：编写kustomization.yaml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤五：将修改完后的yaml文件提交到gitlab"><span class="nav-number">4.0.5.</span> <span class="nav-text">步骤五：将修改完后的yaml文件提交到gitlab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤六：argo-cd配置APP，并进行sync操作"><span class="nav-number">4.0.6.</span> <span class="nav-text">步骤六：argo-cd配置APP，并进行sync操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碰到的一些问题"><span class="nav-number">4.0.7.</span> <span class="nav-text">碰到的一些问题</span></a></li></ol></li></ol></div>
             
 
           </div>
