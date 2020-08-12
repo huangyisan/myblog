@@ -88,7 +88,7 @@
 <meta property="og:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes application部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://image.kirakirazone.com/image/argo-cd-tech.png">
-<meta property="og:updated_time" content="2020-08-12T06:13:55.245Z">
+<meta property="og:updated_time" content="2020-08-12T06:16:09.709Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用argo cd部署服务">
 <meta name="twitter:description" content="部署流程图 常用组件说明 argo cd: 用于kubernetes application部署  helm：用于生成helm template  kustomize: 对生成的template进行细化定制   部署流程说明 gitlab从github中对所需部署的服务helm chart进行镜像克隆(mirror方式)，并作为submodule。 用户以镜像仓库中的values.yaml文件作为">
@@ -421,7 +421,7 @@
 <h3 id="步骤四：编写kustomization-yaml文件"><a href="#步骤四：编写kustomization-yaml文件" class="headerlink" title="步骤四：编写kustomization.yaml文件"></a>步骤四：编写kustomization.yaml文件</h3><ol>
 <li><p>该文件主要对helm template -f values.yaml生成的yaml模板进行修改。</p>
 </li>
-<li><p>样例：</p>
+<li><p>样例： </p>
 <ol>
 <li><p>kustomization.yaml</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">kustomize.config.k8s.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Kustomization</span></span><br><span class="line"></span><br><span class="line"><span class="attr">images:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">concourse/concourse</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/concourse</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">docker.io/bitnami/minideb</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/minideb</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">docker.io/bitnami/postgresql</span></span><br><span class="line"><span class="attr">  newName:</span> <span class="string">registry.cn-shanghai.aliyuncs.com/hys-private/postgresql</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">all.yaml</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">resources/concourse-virtualservice.yaml</span></span><br></pre></td></tr></table></figure>
