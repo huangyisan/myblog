@@ -876,11 +876,11 @@
       </tags>
   </entry>
   <entry>
-    <title>concourse食用指北-自动创建pipelines</title>
-    <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%97-%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BApipelines/</url>
+    <title>concourse食用指北01-自动创建pipelines</title>
+    <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9701-%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BApipelines/</url>
     <content><![CDATA[<p>之前没有接触过使用concourse做ci/cd工具，这次进行了尝试，该文档主要是记录了对使用过程中的一些改进。</p>
 <p>我这边会记录对每个需求的设计和改进。</p>
-<h2 id="需求一"><a href="#需求一" class="headerlink" title="需求一"></a>需求一</h2><ol>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
 <li>只需要提交代码，能让concourse自动创建pipelines。</li>
 </ol>
 <h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
@@ -925,6 +925,50 @@
 </ol>
 <h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
 <li>self-update.yml的job执行必须在set-pipelines.yml的job之前执行完成，所以需要给set-pipelines.yml一个delay的延时，如果set-pipelines.yml的job先于self-update.yml执行完成，则子pipelines无法会更新。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>concourse食用指北02-镜像构建</title>
+    <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9702-%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>根据仓库的dockerfile，自动构建镜像，并且推送到镜像仓库</li>
+</ol>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
+<li>镜像构建可以使用<a href="https://github.com/concourse/docker-image-resource" target="_blank" rel="noopener">docker-image-resource</a></li>
+</ol>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>拉取dockerfile代码仓库</li>
+<li>构建镜像</li>
+<li>推送到镜像仓库</li>
+</ol>
+<h3 id="第一版pipeline部分配置"><a href="#第一版pipeline部分配置" class="headerlink" title="第一版pipeline部分配置"></a>第一版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/test.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"><span class="attr">    tag_filter:</span> <span class="string">"v*"</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">- name:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">docker</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="string">((repository.harbor.url))/test-image</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.harbor.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.harbor.password))</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="attr">  serial:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo/.git/ref</span></span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>定义两个resource，一个为git类型，用于git仓库的操作；另外一个为docker-image类型，用于镜像构建以及镜像仓库的操作。</li>
+<li>jobs的put阶段，表示对dockerfile的构建，以及镜像仓库的推送。</li>
+<li>tag_file用于给定镜像的tag，这边使用.git/ref表示，git仓库用的哪个tag，则将该tag添加给镜像。</li>
+</ol>
+<h3 id="SemVer捕获"><a href="#SemVer捕获" class="headerlink" title="SemVer捕获"></a>SemVer捕获</h3><ol>
+<li>让镜像tag使用Semantic Versioning</li>
+<li>docker的镜像tag采用<a href="https://semver.org/" target="_blank" rel="noopener">SemVer</a>的方式，而代码仓库的tag未必完全遵循了SemVer。</li>
+</ol>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><ol>
+<li>开发协商代码仓库的tag使用规范。</li>
+<li>concourse编写task，用正则的方式捕获tag中SemVer部分。</li>
+<li>镜像构建的时候采用上步骤中捕获到的SemVer。</li>
+</ol>
+<h3 id="第二版pipeline部分配置"><a href="#第二版pipeline部分配置" class="headerlink" title="第二版pipeline部分配置"></a>第二版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line">    <span class="string">***</span></span><br><span class="line"><span class="attr">    - task:</span> <span class="string">get-servmer</span></span><br><span class="line"><span class="attr">      file:</span> <span class="string">concourse-brain/tasks/get-sermver.yaml</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo-tag/tag</span></span><br><span class="line">    <span class="string">***</span></span><br></pre></td></tr></table></figure>
+<p><code>git-repo-tag/tag</code>该文件记录了task执行后捕获到的SemVer</p>
+<p><strong>get-sermver.yaml 部分task配置</strong><br><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">platform:</span> <span class="string">linux</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">run:</span></span><br><span class="line"><span class="attr">  path:</span> <span class="string">/bin/sh</span></span><br><span class="line"><span class="attr">  args:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="bullet">-c</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">|</span></span><br><span class="line"><span class="string">    cd git-repo</span></span><br><span class="line"><span class="string">    last_tag=$(git describe --tags $(git rev-list --tags --max-count=1))</span></span><br><span class="line"><span class="string">    echo $&#123;last_tag&#125; &gt; last_tag</span></span><br><span class="line"><span class="string">    res=$(perl -nle'print $&amp; while m&#123;REGEX&#125;g' last_tag)</span></span><br><span class="line"><span class="string">    if [ ! -n "$res" ] ;then echo $&#123;last_tag&#125; &gt; ../outputs-file/tag; else echo $&#123;res&#125; &gt; ../git-repo-tag/tag ;fi</span></span><br></pre></td></tr></table></figure></p>
+<p>主要是将tag进行正则匹配，写入git-repo-tag/tag，供docker-image resource读取。</p>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
+<li>一般alpine，busybox等镜像没有pcre库，也就是grep无法支持perl模式-P，导致一些正则无法正常匹配。</li>
+<li>安装pcre产生的镜像空间远大于安装perl，可以直接采用perl的方式来解决上述问题。具体语法为<code>perl -nle&#39;print $&amp; while m{REGEX}g&#39; file</code></li>
 </ol>
 ]]></content>
       <tags>

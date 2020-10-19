@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="linux,">
+  <meta name="keywords" content="linux,concourse,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="原始文件redis.conf内容：1234567891011121314151617input &amp;#123;  redis &amp;#123;    host =&amp;gt; &amp;quot;127.0.0.1:6379&amp;quot;    key =&amp;gt; &amp;quot;logstash:demo&amp;quot;    data_type =&amp;gt; &amp;quot;list&amp;quot;    codec =&amp;gt;">
-<meta name="keywords" content="linux">
+<meta name="description" content="需求 根据仓库的dockerfile，自动构建镜像，并且推送到镜像仓库  知识点 镜像构建可以使用docker-image-resource  思路 拉取dockerfile代码仓库 构建镜像 推送到镜像仓库  第一版pipeline部分配置123456789101112131415161718192021222324252627282930resources:- name: git-repo">
+<meta name="keywords" content="linux,concourse">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sed的一些操作">
-<meta property="og:url" content="https://kirakirazone.com/2019/02/27/sed一些操作/index.html">
+<meta property="og:title" content="concourse食用指北02-镜像构建">
+<meta property="og:url" content="https://kirakirazone.com/2020/10/19/concourse食用指北02-镜像构建/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="原始文件redis.conf内容：1234567891011121314151617input &amp;#123;  redis &amp;#123;    host =&amp;gt; &amp;quot;127.0.0.1:6379&amp;quot;    key =&amp;gt; &amp;quot;logstash:demo&amp;quot;    data_type =&amp;gt; &amp;quot;list&amp;quot;    codec =&amp;gt;">
+<meta property="og:description" content="需求 根据仓库的dockerfile，自动构建镜像，并且推送到镜像仓库  知识点 镜像构建可以使用docker-image-resource  思路 拉取dockerfile代码仓库 构建镜像 推送到镜像仓库  第一版pipeline部分配置123456789101112131415161718192021222324252627282930resources:- name: git-repo">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2020-10-19T09:38:48.948Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sed的一些操作">
-<meta name="twitter:description" content="原始文件redis.conf内容：1234567891011121314151617input &amp;#123;  redis &amp;#123;    host =&amp;gt; &amp;quot;127.0.0.1:6379&amp;quot;    key =&amp;gt; &amp;quot;logstash:demo&amp;quot;    data_type =&amp;gt; &amp;quot;list&amp;quot;    codec =&amp;gt;">
+<meta name="twitter:title" content="concourse食用指北02-镜像构建">
+<meta name="twitter:description" content="需求 根据仓库的dockerfile，自动构建镜像，并且推送到镜像仓库  知识点 镜像构建可以使用docker-image-resource  思路 拉取dockerfile代码仓库 构建镜像 推送到镜像仓库  第一版pipeline部分配置123456789101112131415161718192021222324252627282930resources:- name: git-repo">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/02/27/sed一些操作/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/10/19/concourse食用指北02-镜像构建/">
 
 
 
 
 
-  <title>sed的一些操作 | Kirakirazone</title>
+  <title>concourse食用指北02-镜像构建 | Kirakirazone</title>
   
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/02/27/sed一些操作/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/10/19/concourse食用指北02-镜像构建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sed的一些操作</h1>
+          <h1 class="post-title" itemprop="name headline">concourse食用指北02-镜像构建</h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-27T09:45:38+08:00">
-                2019-02-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-19T16:15:56+08:00">
+                2020-10-19
               </time>
             
 
@@ -333,8 +333,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/02/27/sed一些操作/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/27/sed一些操作/" itemprop="commentCount"></span>
+                <a href="/2020/10/19/concourse食用指北02-镜像构建/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/19/concourse食用指北02-镜像构建/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -362,37 +362,42 @@
       
 
       
-        <h2 id="原始文件redis-conf内容："><a href="#原始文件redis-conf内容：" class="headerlink" title="原始文件redis.conf内容："></a>原始文件redis.conf内容：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key =&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type =&gt; &quot;list&quot;</span><br><span class="line">    codec =&gt; &quot;json&quot;</span><br><span class="line">    type =&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags =&gt; [&quot;logstashdemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="获取sed匹配内容的下一行"><a href="#获取sed匹配内容的下一行" class="headerlink" title="获取sed匹配内容的下一行"></a>获取sed匹配内容的下一行</h2><p>原始文件redis.conf内容:</p>
-<ul>
-<li><p>思路：<br>若要只抓取<code>tags =&gt; [&quot;logstashdemo&quot;]</code>内容，则需要匹配<code>type =&gt; &quot;logstash-redis-demo&quot;</code>这一行内容。</p>
-</li>
-<li><p>sed匹配内容下一行写法:<br><code>sed -n &#39;/matchString/{n;p}&#39; filename</code></p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sed -n &apos;/logstash-redis-demo/&#123;n;p&#125;&apos; redis.conf </span><br><span class="line">    tags =&gt; [&quot;logstashdemo&quot;]</span><br></pre></td></tr></table></figure>
-<h2 id="替换sed匹配行内容的下一行的指定内容"><a href="#替换sed匹配行内容的下一行的指定内容" class="headerlink" title="替换sed匹配行内容的下一行的指定内容"></a>替换sed匹配行内容的下一行的指定内容</h2><ul>
-<li><p>思路：<br>先匹配到<code>tags =&gt; [&quot;logstashdemo&quot;]</code>内容，然后对该内容下一行内容<code>tags =&gt; [&quot;logstashdemo&quot;]</code>的<code>logstashdemo</code>改为<code>replacedemo</code></p>
-</li>
-<li><p>sed替换匹配行下一行内容写法:<br><code>sed -i &#39;/查询匹配的内容/{n;s/下一行内要被替换的内容/替换内容/;}&#39; filename</code></p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sed -i &apos;/logstash-redis-demo/&#123;n;s/logstashdemo/replacedemo/;&#125;&apos; redis.conf </span><br><span class="line">[root@leanote ~]# cat redis.conf </span><br><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key =&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type =&gt; &quot;list&quot;</span><br><span class="line">    codec =&gt; &quot;json&quot;</span><br><span class="line">    type =&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags =&gt; [&quot;replacedemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="sed内容存在变量情况"><a href="#sed内容存在变量情况" class="headerlink" title="sed内容存在变量情况"></a>sed内容存在变量情况</h2><ul>
-<li><p>方法一，将外部单引号用双引号替代</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# echo $beitihuan</span><br><span class="line">list</span><br><span class="line">[root@leanote ~]# echo $tihuan   </span><br><span class="line">str</span><br><span class="line">[root@leanote ~]# sed -e &quot;/key/&#123;n;s/$&#123;beitihuan&#125;/$&#123;tihuan&#125;/;&#125;&quot; redis.conf </span><br><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key =&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type =&gt; &quot;str&quot;</span><br><span class="line">    codec =&gt; &quot;json&quot;</span><br><span class="line">    type =&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags =&gt; [&quot;replacedemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>方法二，不修改外部单引号，将变量用单引号引起来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sed -e &apos;/key/&#123;n;s/&apos;$&#123;beitihuan&#125;&apos;/&apos;$&#123;tihuan&#125;&apos;/;&#125;&apos; redis.conf </span><br><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key =&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type =&gt; &quot;str&quot;</span><br><span class="line">    codec =&gt; &quot;json&quot;</span><br><span class="line">    type =&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags =&gt; [&quot;replacedemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>注意点<br><strong>如果变量存在特殊符号，比如<code>/</code>，那么此时这个符号会影响sed的分隔符，需要将sed分隔符替换成其他的。</strong></p>
-</li>
-</ul>
-<h2 id="sed对软连文件进行操作"><a href="#sed对软连文件进行操作" class="headerlink" title="sed对软连文件进行操作"></a>sed对软连文件进行操作</h2><p><strong>sed对<code>软连文件</code>进行操作，倘若不指定<code>--follow-symlinks</code>，则软连文件和原始文件会被拆分,原始文件不会被修改，而软连的文件会被修改，且变成一个独立文件。</strong></p>
-<p>sed操作没有指定<code>--follow-symlinks</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 16 Feb 27 10:58 redis.conf -&gt; /root/redis.conf</span><br><span class="line">[root@leanote conf]# sed -i &apos;/key/&#123;n;s/&apos;$&#123;beitihuan&#125;&apos;/&apos;$&#123;tihuan&#125;&apos;/;&#125;&apos; redis.conf </span><br><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 248 Feb 27 11:00 redis.conf</span><br></pre></td></tr></table></figure>
-<p>sed操作指定<code>--follow-symlinks</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote conf]# sed -i --follow-symlinks &apos;/key/&#123;n;s/&apos;$&#123;beitihuan&#125;&apos;/&apos;$&#123;tihuan&#125;&apos;/;&#125;&apos; redis.conf</span><br><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 16 Feb 27 11:02 redis.conf -&gt; /root/redis.conf</span><br></pre></td></tr></table></figure>
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>根据仓库的dockerfile，自动构建镜像，并且推送到镜像仓库</li>
+</ol>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
+<li>镜像构建可以使用<a href="https://github.com/concourse/docker-image-resource" target="_blank" rel="noopener">docker-image-resource</a></li>
+</ol>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>拉取dockerfile代码仓库</li>
+<li>构建镜像</li>
+<li>推送到镜像仓库</li>
+</ol>
+<h3 id="第一版pipeline部分配置"><a href="#第一版pipeline部分配置" class="headerlink" title="第一版pipeline部分配置"></a>第一版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/test.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"><span class="attr">    tag_filter:</span> <span class="string">"v*"</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">- name:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">docker</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="string">((repository.harbor.url))/test-image</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.harbor.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.harbor.password))</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="attr">  serial:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo/.git/ref</span></span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>定义两个resource，一个为git类型，用于git仓库的操作；另外一个为docker-image类型，用于镜像构建以及镜像仓库的操作。</li>
+<li>jobs的put阶段，表示对dockerfile的构建，以及镜像仓库的推送。</li>
+<li>tag_file用于给定镜像的tag，这边使用.git/ref表示，git仓库用的哪个tag，则将该tag添加给镜像。</li>
+</ol>
+<h3 id="SemVer捕获"><a href="#SemVer捕获" class="headerlink" title="SemVer捕获"></a>SemVer捕获</h3><ol>
+<li>让镜像tag使用Semantic Versioning</li>
+<li>docker的镜像tag采用<a href="https://semver.org/" target="_blank" rel="noopener">SemVer</a>的方式，而代码仓库的tag未必完全遵循了SemVer。</li>
+</ol>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><ol>
+<li>开发协商代码仓库的tag使用规范。</li>
+<li>concourse编写task，用正则的方式捕获tag中SemVer部分。</li>
+<li>镜像构建的时候采用上步骤中捕获到的SemVer。</li>
+</ol>
+<h3 id="第二版pipeline部分配置"><a href="#第二版pipeline部分配置" class="headerlink" title="第二版pipeline部分配置"></a>第二版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line">    <span class="string">***</span></span><br><span class="line"><span class="attr">    - task:</span> <span class="string">get-servmer</span></span><br><span class="line"><span class="attr">      file:</span> <span class="string">concourse-brain/tasks/get-sermver.yaml</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo-tag/tag</span></span><br><span class="line">    <span class="string">***</span></span><br></pre></td></tr></table></figure>
+<p><code>git-repo-tag/tag</code>该文件记录了task执行后捕获到的SemVer</p>
+<p><strong>get-sermver.yaml 部分task配置</strong><br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">platform:</span> <span class="string">linux</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">run:</span></span><br><span class="line"><span class="attr">  path:</span> <span class="string">/bin/sh</span></span><br><span class="line"><span class="attr">  args:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="bullet">-c</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">|</span></span><br><span class="line"><span class="string">    cd git-repo</span></span><br><span class="line"><span class="string">    last_tag=$(git describe --tags $(git rev-list --tags --max-count=1))</span></span><br><span class="line"><span class="string">    echo $&#123;last_tag&#125; &gt; last_tag</span></span><br><span class="line"><span class="string">    res=$(perl -nle'print $&amp; while m&#123;REGEX&#125;g' last_tag)</span></span><br><span class="line"><span class="string">    if [ ! -n "$res" ] ;then echo $&#123;last_tag&#125; &gt; ../outputs-file/tag; else echo $&#123;res&#125; &gt; ../git-repo-tag/tag ;fi</span></span><br></pre></td></tr></table></figure></p>
+<p>主要是将tag进行正则匹配，写入git-repo-tag/tag，供docker-image resource读取。</p>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
+<li>一般alpine，busybox等镜像没有pcre库，也就是grep无法支持perl模式-P，导致一些正则无法正常匹配。</li>
+<li>安装pcre产生的镜像空间远大于安装perl，可以直接采用perl的方式来解决上述问题。具体语法为<code>perl -nle&#39;print $&amp; while m{REGEX}g&#39; file</code></li>
+</ol>
+
       
     </div>
     
@@ -441,7 +446,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/02/27/sed一些操作/" title="sed的一些操作">https://kirakirazone.com/2019/02/27/sed一些操作/</a>
+    <a href="https://kirakirazone.com/2020/10/19/concourse食用指北02-镜像构建/" title="concourse食用指北02-镜像构建">https://kirakirazone.com/2020/10/19/concourse食用指北02-镜像构建/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -458,6 +463,8 @@
           
             <a href="/tags/linux/" rel="tag"># linux</a>
           
+            <a href="/tags/concourse/" rel="tag"># concourse</a>
+          
         </div>
       
 
@@ -469,8 +476,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/20/nonlocal的用法/" rel="next" title="nonlocal的用法">
-                <i class="fa fa-chevron-left"></i> nonlocal的用法
+              <a href="/2020/08/06/k8s拉取私有镜像/" rel="next" title="k8s拉取私有镜像">
+                <i class="fa fa-chevron-left"></i> k8s拉取私有镜像
               </a>
             
           </div>
@@ -479,8 +486,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/05/css选择器权重/" rel="prev" title="CSS选择器权重">
-                CSS选择器权重 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/10/19/concourse食用指北01-自动创建pipelines/" rel="prev" title="concourse食用指北01-自动创建pipelines">
+                concourse食用指北01-自动创建pipelines <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -653,7 +660,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原始文件redis-conf内容："><span class="nav-number">1.</span> <span class="nav-text">原始文件redis.conf内容：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取sed匹配内容的下一行"><span class="nav-number">2.</span> <span class="nav-text">获取sed匹配内容的下一行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#替换sed匹配行内容的下一行的指定内容"><span class="nav-number">3.</span> <span class="nav-text">替换sed匹配行内容的下一行的指定内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed内容存在变量情况"><span class="nav-number">4.</span> <span class="nav-text">sed内容存在变量情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed对软连文件进行操作"><span class="nav-number">5.</span> <span class="nav-text">sed对软连文件进行操作</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#知识点"><span class="nav-number">1.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">1.2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一版pipeline部分配置"><span class="nav-number">1.3.</span> <span class="nav-text">第一版pipeline部分配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SemVer捕获"><span class="nav-number">1.4.</span> <span class="nav-text">SemVer捕获</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方法"><span class="nav-number">1.5.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二版pipeline部分配置"><span class="nav-number">1.6.</span> <span class="nav-text">第二版pipeline部分配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意点"><span class="nav-number">1.7.</span> <span class="nav-text">注意点</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -824,9 +831,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/02/27/sed一些操作/';
-          this.page.identifier = '2019/02/27/sed一些操作/';
-          this.page.title = 'sed的一些操作';
+          this.page.url = 'https://kirakirazone.com/2020/10/19/concourse食用指北02-镜像构建/';
+          this.page.identifier = '2020/10/19/concourse食用指北02-镜像构建/';
+          this.page.title = 'concourse食用指北02-镜像构建';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
