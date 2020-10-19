@@ -876,6 +876,63 @@
       </tags>
   </entry>
   <entry>
+    <title>concourse食用指北-自动创建pipelines</title>
+    <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%97-%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BApipelines/</url>
+    <content><![CDATA[<p>之前没有接触过使用concourse做ci/cd工具，这次进行了尝试，该文档主要是记录了对使用过程中的一些改进。</p>
+<p>我这边会记录对每个需求的设计和改进。</p>
+<h2 id="需求一"><a href="#需求一" class="headerlink" title="需求一"></a>需求一</h2><ol>
+<li>只需要提交代码，能让concourse自动创建pipelines。</li>
+</ol>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
+<li>concourse有别于jenkins，其UI主要是用来查看pipelines/jobs的状态，在页面不允许创建，修改或者删除pipelines。</li>
+<li>创建pipelines通过cli的方式可以使用<code>set-pipeline</code>命令来实现，具体语句为<code>fly -t main set-pipeline -p ${pipeline_name} -c ${config_file}</code>。</li>
+<li>pipeline yaml中可以使用<code>set_pipeline</code>关键字来生成pipeline。</li>
+</ol>
+<h3 id="初版目录结构"><a href="#初版目录结构" class="headerlink" title="初版目录结构"></a>初版目录结构</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── pipelines</span><br><span class="line">├── README.md</span><br><span class="line">└── set-pipelines.yml</span><br></pre></td></tr></table></figure>
+<p><strong>结构说明</strong></p>
+<ol>
+<li>pipelines目录用于存放子pipelines。</li>
+<li>set-pipelines.yml文件中定义了待创建的pipelines，例如如下部分，表明创建一个名称为test-pipeline，该pipelines的生成是根据set-pipeline/pipelines/test-pipeline.yml配置文件。</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">  - name:</span> <span class="string">set-pipelines</span></span><br><span class="line"><span class="attr">    plan:</span></span><br><span class="line"><span class="attr">      - get:</span> <span class="string">set-pipeline</span></span><br><span class="line"><span class="attr">        trigger:</span> <span class="literal">true</span> <span class="comment"># 触发式更新</span></span><br><span class="line"><span class="attr">      - set_pipeline:</span> <span class="string">test-pipeline</span></span><br><span class="line"><span class="attr">        file:</span> <span class="string">set-pipeline/pipelines/test-pipeline.yml</span></span><br><span class="line"><span class="string">***</span></span><br></pre></td></tr></table></figure>
+<h3 id="初版存在的问题"><a href="#初版存在的问题" class="headerlink" title="初版存在的问题"></a>初版存在的问题</h3><ol>
+<li>虽然子pipeline的更新无需手动了，但set-pipelines.yml文件的更新还是需要手工执行fly -t main set-pipeline的命令。</li>
+</ol>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><ol>
+<li>引入一个总控的pipeline，去控制set-pipelines.yml</li>
+<li>当pipeline代码仓库更新的时候，self-update.yml去触发更新set-pipelines.yml，而self-update.yml定义好后一般无需对其进行修改。</li>
+</ol>
+<h3 id="第二版目录结构"><a href="#第二版目录结构" class="headerlink" title="第二版目录结构"></a>第二版目录结构</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">.</span></span><br><span class="line"><span class="string">├──</span> <span class="string">pipelines</span></span><br><span class="line"><span class="string">├──</span> <span class="string">README.md</span></span><br><span class="line"><span class="string">├──</span> <span class="string">self-update.yml</span></span><br><span class="line"><span class="string">└──</span> <span class="string">set-pipelines.yml</span></span><br></pre></td></tr></table></figure>
+<p><strong>结构说明</strong></p>
+<ol>
+<li>self-update,yml该文件用于控制set-pipelines.yml，其对set-pipelines,yml的文件控制也是采用了set-pipeline</li>
+</ol>
+<h3 id="第二版存在的问题"><a href="#第二版存在的问题" class="headerlink" title="第二版存在的问题"></a>第二版存在的问题</h3><ol>
+<li>如果添加子pipeline，需要两步走，第一步在pipelines文件夹内放入子pipeline定义的yaml文件，第二步，修改set-pipelines.yml文件，新增子pipeline在set-pipeline上下文的定义。</li>
+</ol>
+<h3 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h3><ol>
+<li>采用动态的方式生成set-pipelines.yml文件，也就是在concouse运行的时候，根据目录结构自动生成set-pipelines.yml，从而满足需求。</li>
+</ol>
+<h3 id="第三版目录结构"><a href="#第三版目录结构" class="headerlink" title="第三版目录结构"></a>第三版目录结构</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">├──</span> <span class="string">pipeline_render.py</span></span><br><span class="line"><span class="string">├──</span> <span class="string">pipelines</span></span><br><span class="line"><span class="string">├──</span> <span class="string">README.md</span></span><br><span class="line"><span class="string">├──</span> <span class="string">self-update.yml</span></span><br><span class="line"><span class="string">├──</span> <span class="string">set-pipelines.jinja</span></span><br></pre></td></tr></table></figure>
+<p><strong>结构说明</strong></p>
+<ol>
+<li>新增set-pipelines.jinja以及pipeline_render.py两个文件，pipeline_render.py读取pipelines目录下的文件，根据set-pipelines.jinja模板动态生成set-pipelines.yml，提供给concouse使用。</li>
+</ol>
+<h3 id="实现知识点"><a href="#实现知识点" class="headerlink" title="实现知识点"></a>实现知识点</h3><ol>
+<li>配合python镜像，对pipelines仓库下pipelines目录进行set-pipelines.yml文件渲染。</li>
+<li>定义outputs，将渲染好的新内容定向到该outputs中。</li>
+<li>根据outputs的路径，进行set-pipelines。</li>
+</ol>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
+<li>self-update.yml的job执行必须在set-pipelines.yml的job之前执行完成，所以需要给set-pipelines.yml一个delay的延时，如果set-pipelines.yml的job先于self-update.yml执行完成，则子pipelines无法会更新。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>css居中-垂直方向</title>
     <url>/2020/03/18/css%E5%B1%85%E4%B8%AD-%E5%9E%82%E7%9B%B4%E6%96%B9%E5%90%91/</url>
     <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/14/css居中-水平方向/">查看如何水平居中</a></p>
