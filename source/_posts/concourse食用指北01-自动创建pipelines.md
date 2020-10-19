@@ -1,5 +1,5 @@
 ---
-title: concourse食用指北-自动创建pipelines
+title: concourse食用指北01-自动创建pipelines
 date: 2020-10-19 16:15:56
 tags: [concourse, linux]
 ---
@@ -8,7 +8,7 @@ tags: [concourse, linux]
 
 我这边会记录对每个需求的设计和改进。
 
-## 需求一
+## 需求
 1. 只需要提交代码，能让concourse自动创建pipelines。
 
 ### 知识点
