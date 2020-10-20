@@ -5,7 +5,7 @@ tags: [concourse, linux]
 ---
 
 ## 需求
-1. 编写一个自定义的resource
+1. 编写一个自定义微信告警resource
 
 ### 知识点
 1. 一个resource的执行有三个阶段组成，`check`，`in`，`out`。
