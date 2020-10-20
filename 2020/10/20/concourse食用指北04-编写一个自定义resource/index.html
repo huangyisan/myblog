@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="需求 编写一个自定义的resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你的re">
+<meta name="description" content="需求 编写一个自定义微信告警resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你">
 <meta name="keywords" content="linux,concourse">
 <meta property="og:type" content="article">
 <meta property="og:title" content="concourse食用指北04-编写一个自定义resource">
 <meta property="og:url" content="https://kirakirazone.com/2020/10/20/concourse食用指北04-编写一个自定义resource/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="需求 编写一个自定义的resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你的re">
+<meta property="og:description" content="需求 编写一个自定义微信告警resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://image.kirakirazone.com/image/wechat_message.png">
-<meta property="og:updated_time" content="2020-10-20T03:30:19.212Z">
+<meta property="og:updated_time" content="2020-10-20T03:30:59.205Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="concourse食用指北04-编写一个自定义resource">
-<meta name="twitter:description" content="需求 编写一个自定义的resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你的re">
+<meta name="twitter:description" content="需求 编写一个自定义微信告警resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你">
 <meta name="twitter:image" content="https://image.kirakirazone.com/image/wechat_message.png">
 
 
@@ -365,7 +365,7 @@
 
       
         <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
-<li>编写一个自定义的resource</li>
+<li>编写一个自定义微信告警resource</li>
 </ol>
 <h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
 <li>一个resource的执行有三个阶段组成，<code>check</code>，<code>in</code>，<code>out</code>。</li>

@@ -1024,7 +1024,7 @@
     <title>concourse食用指北04-编写一个自定义resource</title>
     <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9704-%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89resource/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
-<li>编写一个自定义的resource</li>
+<li>编写一个自定义微信告警resource</li>
 </ol>
 <h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
 <li>一个resource的执行有三个阶段组成，<code>check</code>，<code>in</code>，<code>out</code>。</li>
