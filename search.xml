@@ -124,6 +124,27 @@
       </tags>
   </entry>
   <entry>
+    <title>LeetCode 只出现一次的数字</title>
+    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
+<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
+<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
+<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+</ol>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JWT认证的实现</title>
     <url>/2020/02/29/JWT%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h2 id="什么是JWT，以及原理"><a href="#什么是JWT，以及原理" class="headerlink" title="什么是JWT，以及原理"></a>什么是JWT，以及原理</h2><p>网上有大把解释JWT认证原理的，直接看refer部分。</p>
@@ -176,27 +197,6 @@
         <tag>python3</tag>
         <tag>vue</tag>
         <tag>js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 只出现一次的数字</title>
-    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
-<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
-<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
-<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
-</ol>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
       </tags>
   </entry>
   <entry>
@@ -1768,6 +1768,39 @@
       </tags>
   </entry>
   <entry>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>k8s配置多集群接入</title>
     <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
     <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
@@ -1803,39 +1836,6 @@
       </categories>
       <tags>
         <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
