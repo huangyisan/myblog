@@ -124,27 +124,6 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode 只出现一次的数字</title>
-    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
-<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
-<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
-<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
-</ol>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JWT认证的实现</title>
     <url>/2020/02/29/JWT%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h2 id="什么是JWT，以及原理"><a href="#什么是JWT，以及原理" class="headerlink" title="什么是JWT，以及原理"></a>什么是JWT，以及原理</h2><p>网上有大把解释JWT认证原理的，直接看refer部分。</p>
@@ -197,6 +176,27 @@
         <tag>python3</tag>
         <tag>vue</tag>
         <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 只出现一次的数字</title>
+    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
+<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
+<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
+<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+</ol>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
       </tags>
   </entry>
   <entry>
@@ -969,6 +969,125 @@
 <h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
 <li>一般alpine，busybox等镜像没有pcre库，也就是grep无法支持perl模式-P，导致一些正则无法正常匹配。</li>
 <li>安装pcre产生的镜像空间远大于安装perl，可以直接采用perl的方式来解决上述问题。具体语法为<code>perl -nle&#39;print $&amp; while m{REGEX}g&#39; file</code></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>concourse食用指北03-HelmChart构建</title>
+    <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9703-HelmChart%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>根据仓库的helm chart，自动构建Chart，并且推送到Chart仓库</li>
+</ol>
+<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><ol>
+<li>没有合适的resource，需要自己通过脚本实现。</li>
+<li>需要自己构建helm的镜像，用于chart的推送。</li>
+</ol>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>首先构建用于helm打包chart的基础镜像</li>
+<li>编写打包脚本</li>
+<li>配合脚本镜像chart打包，并上传至chart仓库</li>
+</ol>
+<h3 id="helm基础镜像dockerfile部分内容"><a href="#helm基础镜像dockerfile部分内容" class="headerlink" title="helm基础镜像dockerfile部分内容"></a>helm基础镜像dockerfile部分内容</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line">COPY helm /usr/local/bin/helm</span><br><span class="line">RUN chmod +x /usr/local/bin/helm</span><br><span class="line">RUN helm plugin install https://github.com/chartmuseum/helm-push</span><br><span class="line">RUN helm repo add --username=xxx --password='yyy' harbor https:/hubname.com/chartrepo/yourreponame</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>将helm二进制文件添加到镜像中。</li>
+<li>安装helm-push插件，用于构建中push chart。</li>
+<li>添加helm源。</li>
+</ol>
+<h3 id="chart打包推送脚本部分内容"><a href="#chart打包推送脚本部分内容" class="headerlink" title="chart打包推送脚本部分内容"></a>chart打包推送脚本部分内容</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line">chart_name=`cat $1/Chart.yaml | grep -E "^name"| awk '&#123;print $NF&#125;'`</span><br><span class="line">chart_version=`cat $1/Chart.yaml | grep -E "^version"| awk '&#123;print $NF&#125;'`</span><br><span class="line">helm package $1</span><br><span class="line">repo_name=`helm repo list | grep -E "$&#123;Harbor_Url&#125;" | awk '&#123;print $1&#125;'`</span><br><span class="line">helm push $&#123;package_info&#125; $&#123;repo_name&#125;</span><br><span class="line">***</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>chart的名称以及version是从Chart.yaml文件中获取。</li>
+<li>打包后推送至当前helm镜像中的chart仓库中。</li>
+</ol>
+<h3 id="推送chart-pipeline部分配置"><a href="#推送chart-pipeline部分配置" class="headerlink" title="推送chart pipeline部分配置"></a>推送chart pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/xxx/harbor-script.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">- name:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/helmchart/mysql.git</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">upload-chart</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - task:</span> <span class="string">upload-helm</span></span><br><span class="line"><span class="attr">      config:</span></span><br><span class="line"><span class="attr">        platform:</span> <span class="string">linux</span></span><br><span class="line"><span class="attr">        image_resource:</span></span><br><span class="line"><span class="attr">          type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">          source:</span> </span><br><span class="line"><span class="attr">            repository:</span> <span class="string">((repository.harbor.url))/helm-box</span></span><br><span class="line"><span class="attr">            username:</span> <span class="string">((repository.harbor.username))</span></span><br><span class="line"><span class="attr">            password:</span> <span class="string">((repository.harbor.password))</span></span><br><span class="line"><span class="attr">            tag:</span> <span class="string">v1.3</span></span><br><span class="line"><span class="attr">        inputs:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">        run:</span></span><br><span class="line"><span class="attr">          user:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">          path:</span> <span class="string">/bin/sh</span></span><br><span class="line"><span class="attr">          args:</span> <span class="string">["harbor-script/Upload-Chart.sh","mysql"]</span></span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>将harbor-script以及chart-template两个resource获取到。</li>
+<li>将上述两个资源作为inputs提供给helm-box使用。</li>
+<li>在helm-box中执行Upload-Chart.sh脚本，传入待打包的路径名。</li>
+</ol>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
+<li>上述功能，可以自定义编写成自定义的resource，这样传入的变量可以进行更好的控制。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>concourse食用指北04-编写一个自定义resource</title>
+    <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9704-%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89resource/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>编写一个自定义的resource</li>
+</ol>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
+<li>一个resource的执行有三个阶段组成，<code>check</code>，<code>in</code>，<code>out</code>。</li>
+<li>任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。</li>
+<li>check对应check，in阶段对应yaml中的<code>get</code>，out阶段对应yaml中的<code>put</code>。</li>
+<li>如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。</li>
+<li>in阶段和out阶段只是逻辑上对你的resource代码进行区别，并不是强制某些代码必须写在in阶段。而check阶段的代码则是强制。</li>
+<li>三个阶段执行顺序为check阶段，in阶段，out阶段。</li>
+<li>编写的dockerfile需要将check in out作为可执行文件放入/opt/resource下面。</li>
+</ol>
+<h3 id="check阶段"><a href="#check阶段" class="headerlink" title="check阶段"></a>check阶段</h3><ol>
+<li>check阶段为资源执行的第一个阶段，主要用于检查资源的最新版本。</li>
+<li>传入两个字段，一个为source，一个为version， 例如<code>{“source”: {“url”: “git-url”,  “user”: “abc”, “password”: “xyz”}, “version”: &quot;777&quot;}</code></li>
+<li>标准输出则为数组形式的kv键值对[{“key1”: “value”, “key2”:” value2”}]</li>
+</ol>
+<h3 id="in阶段"><a href="#in阶段" class="headerlink" title="in阶段"></a>in阶段</h3><ol>
+<li>in阶段为check之后的第二个阶段。</li>
+<li>在out阶段执行完毕后，也会再次执行in阶段，用于预期目标的验证。</li>
+<li>in阶段传入三个字段，source，version，params，例如<code>{“source”: {“url”: “git-url”,  “user”: “abc”, “password”: “xyz”}, “version”: &quot;777&quot;, params:{&quot;tag&quot;:123}}</code></li>
+<li>其标准输出为以必须存在以”version”为key的多维字典，例如<code>{&quot;version&quot;: {&quot;key&quot;: version, &quot;metadata&quot;: [{ &quot;name&quot;: &quot;commit&quot;, &quot;value&quot;: &quot;61cebf&quot; },{ &quot;name&quot;: &quot;author&quot;, &quot;value&quot;: &quot;Hulk Hogan&quot; }]}}</code></li>
+</ol>
+<h3 id="out阶段"><a href="#out阶段" class="headerlink" title="out阶段"></a>out阶段</h3><ol>
+<li>out阶段为最后一个阶段。</li>
+<li>out阶段传入三个字段source，params，例如<code>{&quot;params&quot;: {&quot;branch&quot;:&quot;develop&quot;,&quot;repo&quot;: &quot;some-repo&quot;},&quot;source&quot;: {&quot;uri&quot;: &quot;git@...&quot;,&quot;private_key&quot;: &quot;...&quot;}}</code></li>
+<li>其标准输出为必须存在以”version”为key的多维字典{“version”: { “ref”: “61cebf” },”metadata”:[{ “name”: “commit”, “value”: “61cebf” },{ “name”: “author”, “value”: “Mick Foley” }]}</li>
+</ol>
+<h2 id="尝试编写一个用于微信告警的resource-type"><a href="#尝试编写一个用于微信告警的resource-type" class="headerlink" title="尝试编写一个用于微信告警的resource type"></a>尝试编写一个用于微信告警的resource type</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>该resource不属于像git，docker-image等需要检查版本的resource，所以check阶段可以省略。但check脚本还是需要。</li>
+<li>in阶段，因为只是告警，所以在自身resource中不需要尝试拉取任何资源。</li>
+<li>out阶段，此阶段用于告警通知，需要规划变量进行传入。变量包含但不限于微信机器人token，告警内容，告警级别等。</li>
+</ol>
+<h3 id="check阶段部分代码"><a href="#check阶段部分代码" class="headerlink" title="check阶段部分代码"></a>check阶段部分代码</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_check</span><span class="params">()</span>:</span></span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> [&#123;<span class="string">"version"</span>: timestamp, <span class="string">"stage"</span>: <span class="string">"check"</span>&#125;]</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(json.dumps(_check()))</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>这边没有直接打印空，而是采取打印时间戳，这样就能在concourse ui页面看到是否正常执行了check。</li>
+</ol>
+<h3 id="in阶段部分代码"><a href="#in阶段部分代码" class="headerlink" title="in阶段部分代码"></a>in阶段部分代码</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_check</span><span class="params">()</span>:</span></span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"version"</span>: &#123;<span class="string">"version"</span>: timestamp, <span class="string">"stage"</span>: <span class="string">"in"</span>&#125;&#125;</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(json.dumps(_check()))</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>雷同check部分代码。</li>
+</ol>
+<h3 id="out部分阶段代码"><a href="#out部分阶段代码" class="headerlink" title="out部分阶段代码"></a>out部分阶段代码</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_env</span><span class="params">()</span>:</span></span><br><span class="line">    BUILD_PIPELINE_NAME = os.getenv(<span class="string">'BUILD_PIPELINE_NAME'</span>)</span><br><span class="line">    BUILD_PIPELINE_ID = os.getenv(<span class="string">'BUILD_PIPELINE_ID'</span>)</span><br><span class="line">    BUILD_NAME = os.getenv(<span class="string">'BUILD_NAME'</span>)</span><br><span class="line">    BUILD_TEAM_NAME = os.getenv(<span class="string">'BUILD_TEAM_NAME'</span>)</span><br><span class="line">    BUILD_JOB_NAME = os.getenv(<span class="string">'BUILD_JOB_NAME'</span>)</span><br><span class="line">    BUILD_ID = os.getenv(<span class="string">'BUILD_ID'</span>)</span><br><span class="line">    BUILD_TEAM_ID = os.getenv(<span class="string">'BUILD_TEAM_ID'</span>)</span><br><span class="line">    BUILD_JOB_ID = os.getenv(<span class="string">'BUILD_JOB_ID'</span>)</span><br><span class="line">    ATC_EXTERNAL_URL = os.getenv(<span class="string">'ATC_EXTERNAL_URL'</span>)</span><br><span class="line">    URL = <span class="string">'&#123;ATC_EXTERNAL_URL&#125;/teams/&#123;BUILD_TEAM_NAME&#125;/pipelines/&#123;BUILD_PIPELINE_NAME&#125;/jobs/&#123;BUILD_JOB_NAME&#125;/builds/&#123;BUILD_NAME&#125;'</span>.format(</span><br><span class="line">        ATC_EXTERNAL_URL=ATC_EXTERNAL_URL,</span><br><span class="line">        BUILD_TEAM_NAME=BUILD_TEAM_NAME,</span><br><span class="line">        BUILD_PIPELINE_NAME=BUILD_PIPELINE_NAME,</span><br><span class="line">        BUILD_JOB_NAME=BUILD_JOB_NAME,</span><br><span class="line">        BUILD_NAME=BUILD_NAME)</span><br><span class="line">    env_dict = &#123;</span><br><span class="line">        <span class="string">'BUILD_PIPELINE_NAME'</span>: BUILD_PIPELINE_NAME,</span><br><span class="line">        <span class="string">'BUILD_PIPELINE_ID'</span>: BUILD_PIPELINE_ID,</span><br><span class="line">        <span class="string">'BUILD_NAME'</span>: BUILD_NAME,</span><br><span class="line">        <span class="string">'BUILD_TEAM_NAME'</span>: BUILD_TEAM_NAME,</span><br><span class="line">        <span class="string">'BUILD_JOB_NAME'</span>: BUILD_JOB_NAME,</span><br><span class="line">        <span class="string">'BUILD_ID'</span>: BUILD_ID,</span><br><span class="line">        <span class="string">'BUILD_TEAM_ID'</span>: BUILD_TEAM_ID,</span><br><span class="line">        <span class="string">'BUILD_JOB_ID'</span>: BUILD_JOB_ID,</span><br><span class="line">        <span class="string">'ATC_EXTERNAL_URL'</span>: ATC_EXTERNAL_URL,</span><br><span class="line">        <span class="string">'URL'</span>: URL</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> env_dict</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">payload_data</span><span class="params">(payload)</span>:</span></span><br><span class="line">    <span class="comment"># source = payload["source"]</span></span><br><span class="line">    source = payload[<span class="string">"params"</span>]</span><br><span class="line">    url = <span class="string">"https://qyapi.weixin.qq.com/cgi-bin/webhook/send"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"url"</span>) <span class="keyword">else</span> source.get(<span class="string">"url"</span>)</span><br><span class="line">    secret = source[<span class="string">"secret"</span>]</span><br><span class="line">    msgtype = <span class="string">"markdown"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"msgtype"</span>) <span class="keyword">else</span> source.get(<span class="string">"msgtype"</span>)</span><br><span class="line">    <span class="comment"># success, failed, abort</span></span><br><span class="line">    level = <span class="string">"success"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"level"</span>) <span class="keyword">else</span> source.get(<span class="string">"level"</span>)</span><br><span class="line">    content = <span class="string">"No content"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"content"</span>) <span class="keyword">else</span> source.get(<span class="string">"content"</span>)</span><br><span class="line">    payload_dict = &#123;<span class="string">"url"</span>: url, <span class="string">"secret"</span>: secret, <span class="string">"msgtype"</span>: msgtype, <span class="string">"level"</span>: level,</span><br><span class="line">                    <span class="string">"content"</span>: content&#125;</span><br><span class="line">    <span class="keyword">return</span> payload_dict</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_out</span><span class="params">(stream)</span>:</span></span><br><span class="line">    payload = get_args(stream)</span><br><span class="line">    payload_dict = payload_data(payload)</span><br><span class="line"></span><br><span class="line">    url, secret, msgtype, level, content = payload_dict.values()</span><br><span class="line"></span><br><span class="line">    data = message(msgtype, level, content)</span><br><span class="line">    post_message(url, secret, data)</span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"version"</span>: &#123;<span class="string">"version"</span>: timestamp&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>get_env函数用于获取concouse在up一个容器的时候传入的metadata，<strong>其metadata信息是作为环境变量存储在镜像里面的</strong>。</li>
+<li>payload_data函数用于获取yaml配置中put的参数，通过从params中获取。</li>
+<li>_out方法执行了向微信接口进行post数据，并最终返回标准输出给main函数进行打印。</li>
+</ol>
+<h2 id="dockerfile的编写"><a href="#dockerfile的编写" class="headerlink" title="dockerfile的编写"></a>dockerfile的编写</h2><h3 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h3><ol>
+<li>需要将check in out三个文件放入/opt/resource下面。</li>
+<li>给check in out文件可执行权限。</li>
+</ol>
+<h3 id="dockerfile样例"><a href="#dockerfile样例" class="headerlink" title="dockerfile样例"></a>dockerfile样例</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM alpine</span><br><span class="line">MAINTAINER anonymousyisan@gmail.com</span><br><span class="line"></span><br><span class="line">RUN apk add --update --no-cache python3  py-pip &amp;&amp; ln -sf python3 /usr/bin/python</span><br><span class="line">RUN pip install requests</span><br><span class="line"></span><br><span class="line">COPY assets/check.py /opt/resource/check</span><br><span class="line">COPY assets/in.py /opt/resource/in</span><br><span class="line">COPY assets/out.py /opt/resource/out</span><br><span class="line"></span><br><span class="line">RUN chmod +x /opt/resource/*</span><br></pre></td></tr></table></figure>
+<h2 id="yaml配置自定义resource"><a href="#yaml配置自定义resource" class="headerlink" title="yaml配置自定义resource"></a>yaml配置自定义resource</h2><h3 id="yaml部分配置"><a href="#yaml部分配置" class="headerlink" title="yaml部分配置"></a>yaml部分配置</h3><h4 id="定义resource-type以及定义resource"><a href="#定义resource-type以及定义resource" class="headerlink" title="定义resource type以及定义resource"></a>定义resource type以及定义resource</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">resource_types:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">wx-alert-resource</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="string">dockerhuangyisan/wechat-notification-resource</span></span><br><span class="line"><span class="attr">    tag:</span> <span class="string">latest</span></span><br><span class="line"></span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">wx-alert</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">wx-alert-resource</span></span><br></pre></td></tr></table></figure>
+<h4 id="hook阶段执行put"><a href="#hook阶段执行put" class="headerlink" title="hook阶段执行put"></a>hook阶段执行put</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line">      <span class="string">****</span></span><br><span class="line"><span class="attr">      on_success:</span></span><br><span class="line"><span class="attr">        put:</span> <span class="string">wx-alert</span></span><br><span class="line"><span class="attr">        params:</span></span><br><span class="line"><span class="attr">          secret:</span> <span class="string">((wx.secret))</span></span><br><span class="line"><span class="attr">          msgtype:</span> <span class="string">markdown</span></span><br><span class="line"><span class="attr">          level:</span> <span class="string">success</span></span><br><span class="line"><span class="attr">          content:</span> <span class="string">Job</span> <span class="string">Success!</span></span><br></pre></td></tr></table></figure>
+<h3 id="微信端告警样例"><a href="#微信端告警样例" class="headerlink" title="微信端告警样例"></a>微信端告警样例</h3><p><img src="https://image.kirakirazone.com/image/wechat_message.png" alt="wechat_message_example"></p>
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><ol>
+<li>如果想在resource中进行调试，不要直接在标准输出中打印，因为concouse会捕获标准输出进行验证是否为合法VersionResult，所以处理办法就是将标准输出定向到标准错误输出中，python可以使用print(“strings”, file=sys.stderr),  shell可以exec 3&gt;&1;exec 1&gt;&amp;2。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>wechat notification resource源码地址:<a href="https://github.com/huangyisan/wechat_notification_resource" target="_blank" rel="noopener">https://github.com/huangyisan/wechat_notification_resource</a></li>
+<li>官方介绍: <a href="https://concourse-ci.org/implementing-resource-types.html" target="_blank" rel="noopener">https://concourse-ci.org/implementing-resource-types.html</a></li>
+<li><a href="https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39" target="_blank" rel="noopener">https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39</a></li>
 </ol>
 ]]></content>
       <tags>
@@ -1768,39 +1887,6 @@
       </tags>
   </entry>
   <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>k8s配置多集群接入</title>
     <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
     <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
@@ -1836,6 +1922,39 @@
       </categories>
       <tags>
         <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>

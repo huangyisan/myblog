@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,concourse,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="需求 编写一个自定义的resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你的re">
+<meta name="keywords" content="linux,concourse">
+<meta property="og:type" content="article">
+<meta property="og:title" content="concourse食用指北04-编写一个自定义resource">
+<meta property="og:url" content="https://kirakirazone.com/2020/10/20/concourse食用指北04-编写一个自定义resource/index.html">
+<meta property="og:site_name" content="Kirakirazone">
+<meta property="og:description" content="需求 编写一个自定义的resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你的re">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://image.kirakirazone.com/image/wechat_message.png">
+<meta property="og:updated_time" content="2020-10-20T03:30:19.212Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="concourse食用指北04-编写一个自定义resource">
+<meta name="twitter:description" content="需求 编写一个自定义的resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你的re">
+<meta name="twitter:image" content="https://image.kirakirazone.com/image/wechat_message.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kirakirazone.com/2020/10/20/concourse食用指北04-编写一个自定义resource/">
+
+
+
+
+
+  <title>concourse食用指北04-编写一个自定义resource | Kirakirazone</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kirakirazone</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/10/20/concourse食用指北04-编写一个自定义resource/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kirakirazone">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">concourse食用指北04-编写一个自定义resource</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-20T11:27:32+08:00">
+                2020-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/10/20/concourse食用指北04-编写一个自定义resource/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/20/concourse食用指北04-编写一个自定义resource/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>编写一个自定义的resource</li>
+</ol>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
+<li>一个resource的执行有三个阶段组成，<code>check</code>，<code>in</code>，<code>out</code>。</li>
+<li>任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。</li>
+<li>check对应check，in阶段对应yaml中的<code>get</code>，out阶段对应yaml中的<code>put</code>。</li>
+<li>如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。</li>
+<li>in阶段和out阶段只是逻辑上对你的resource代码进行区别，并不是强制某些代码必须写在in阶段。而check阶段的代码则是强制。</li>
+<li>三个阶段执行顺序为check阶段，in阶段，out阶段。</li>
+<li>编写的dockerfile需要将check in out作为可执行文件放入/opt/resource下面。</li>
+</ol>
+<h3 id="check阶段"><a href="#check阶段" class="headerlink" title="check阶段"></a>check阶段</h3><ol>
+<li>check阶段为资源执行的第一个阶段，主要用于检查资源的最新版本。</li>
+<li>传入两个字段，一个为source，一个为version， 例如<code>{“source”: {“url”: “git-url”,  “user”: “abc”, “password”: “xyz”}, “version”: &quot;777&quot;}</code></li>
+<li>标准输出则为数组形式的kv键值对[{“key1”: “value”, “key2”:” value2”}]</li>
+</ol>
+<h3 id="in阶段"><a href="#in阶段" class="headerlink" title="in阶段"></a>in阶段</h3><ol>
+<li>in阶段为check之后的第二个阶段。</li>
+<li>在out阶段执行完毕后，也会再次执行in阶段，用于预期目标的验证。</li>
+<li>in阶段传入三个字段，source，version，params，例如<code>{“source”: {“url”: “git-url”,  “user”: “abc”, “password”: “xyz”}, “version”: &quot;777&quot;, params:{&quot;tag&quot;:123}}</code></li>
+<li>其标准输出为以必须存在以”version”为key的多维字典，例如<code>{&quot;version&quot;: {&quot;key&quot;: version, &quot;metadata&quot;: [{ &quot;name&quot;: &quot;commit&quot;, &quot;value&quot;: &quot;61cebf&quot; },{ &quot;name&quot;: &quot;author&quot;, &quot;value&quot;: &quot;Hulk Hogan&quot; }]}}</code></li>
+</ol>
+<h3 id="out阶段"><a href="#out阶段" class="headerlink" title="out阶段"></a>out阶段</h3><ol>
+<li>out阶段为最后一个阶段。</li>
+<li>out阶段传入三个字段source，params，例如<code>{&quot;params&quot;: {&quot;branch&quot;:&quot;develop&quot;,&quot;repo&quot;: &quot;some-repo&quot;},&quot;source&quot;: {&quot;uri&quot;: &quot;git@...&quot;,&quot;private_key&quot;: &quot;...&quot;}}</code></li>
+<li>其标准输出为必须存在以”version”为key的多维字典{“version”: { “ref”: “61cebf” },”metadata”:[{ “name”: “commit”, “value”: “61cebf” },{ “name”: “author”, “value”: “Mick Foley” }]}</li>
+</ol>
+<h2 id="尝试编写一个用于微信告警的resource-type"><a href="#尝试编写一个用于微信告警的resource-type" class="headerlink" title="尝试编写一个用于微信告警的resource type"></a>尝试编写一个用于微信告警的resource type</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>该resource不属于像git，docker-image等需要检查版本的resource，所以check阶段可以省略。但check脚本还是需要。</li>
+<li>in阶段，因为只是告警，所以在自身resource中不需要尝试拉取任何资源。</li>
+<li>out阶段，此阶段用于告警通知，需要规划变量进行传入。变量包含但不限于微信机器人token，告警内容，告警级别等。</li>
+</ol>
+<h3 id="check阶段部分代码"><a href="#check阶段部分代码" class="headerlink" title="check阶段部分代码"></a>check阶段部分代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_check</span><span class="params">()</span>:</span></span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> [&#123;<span class="string">"version"</span>: timestamp, <span class="string">"stage"</span>: <span class="string">"check"</span>&#125;]</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(json.dumps(_check()))</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>这边没有直接打印空，而是采取打印时间戳，这样就能在concourse ui页面看到是否正常执行了check。</li>
+</ol>
+<h3 id="in阶段部分代码"><a href="#in阶段部分代码" class="headerlink" title="in阶段部分代码"></a>in阶段部分代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_check</span><span class="params">()</span>:</span></span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"version"</span>: &#123;<span class="string">"version"</span>: timestamp, <span class="string">"stage"</span>: <span class="string">"in"</span>&#125;&#125;</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(json.dumps(_check()))</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>雷同check部分代码。</li>
+</ol>
+<h3 id="out部分阶段代码"><a href="#out部分阶段代码" class="headerlink" title="out部分阶段代码"></a>out部分阶段代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_env</span><span class="params">()</span>:</span></span><br><span class="line">    BUILD_PIPELINE_NAME = os.getenv(<span class="string">'BUILD_PIPELINE_NAME'</span>)</span><br><span class="line">    BUILD_PIPELINE_ID = os.getenv(<span class="string">'BUILD_PIPELINE_ID'</span>)</span><br><span class="line">    BUILD_NAME = os.getenv(<span class="string">'BUILD_NAME'</span>)</span><br><span class="line">    BUILD_TEAM_NAME = os.getenv(<span class="string">'BUILD_TEAM_NAME'</span>)</span><br><span class="line">    BUILD_JOB_NAME = os.getenv(<span class="string">'BUILD_JOB_NAME'</span>)</span><br><span class="line">    BUILD_ID = os.getenv(<span class="string">'BUILD_ID'</span>)</span><br><span class="line">    BUILD_TEAM_ID = os.getenv(<span class="string">'BUILD_TEAM_ID'</span>)</span><br><span class="line">    BUILD_JOB_ID = os.getenv(<span class="string">'BUILD_JOB_ID'</span>)</span><br><span class="line">    ATC_EXTERNAL_URL = os.getenv(<span class="string">'ATC_EXTERNAL_URL'</span>)</span><br><span class="line">    URL = <span class="string">'&#123;ATC_EXTERNAL_URL&#125;/teams/&#123;BUILD_TEAM_NAME&#125;/pipelines/&#123;BUILD_PIPELINE_NAME&#125;/jobs/&#123;BUILD_JOB_NAME&#125;/builds/&#123;BUILD_NAME&#125;'</span>.format(</span><br><span class="line">        ATC_EXTERNAL_URL=ATC_EXTERNAL_URL,</span><br><span class="line">        BUILD_TEAM_NAME=BUILD_TEAM_NAME,</span><br><span class="line">        BUILD_PIPELINE_NAME=BUILD_PIPELINE_NAME,</span><br><span class="line">        BUILD_JOB_NAME=BUILD_JOB_NAME,</span><br><span class="line">        BUILD_NAME=BUILD_NAME)</span><br><span class="line">    env_dict = &#123;</span><br><span class="line">        <span class="string">'BUILD_PIPELINE_NAME'</span>: BUILD_PIPELINE_NAME,</span><br><span class="line">        <span class="string">'BUILD_PIPELINE_ID'</span>: BUILD_PIPELINE_ID,</span><br><span class="line">        <span class="string">'BUILD_NAME'</span>: BUILD_NAME,</span><br><span class="line">        <span class="string">'BUILD_TEAM_NAME'</span>: BUILD_TEAM_NAME,</span><br><span class="line">        <span class="string">'BUILD_JOB_NAME'</span>: BUILD_JOB_NAME,</span><br><span class="line">        <span class="string">'BUILD_ID'</span>: BUILD_ID,</span><br><span class="line">        <span class="string">'BUILD_TEAM_ID'</span>: BUILD_TEAM_ID,</span><br><span class="line">        <span class="string">'BUILD_JOB_ID'</span>: BUILD_JOB_ID,</span><br><span class="line">        <span class="string">'ATC_EXTERNAL_URL'</span>: ATC_EXTERNAL_URL,</span><br><span class="line">        <span class="string">'URL'</span>: URL</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> env_dict</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">payload_data</span><span class="params">(payload)</span>:</span></span><br><span class="line">    <span class="comment"># source = payload["source"]</span></span><br><span class="line">    source = payload[<span class="string">"params"</span>]</span><br><span class="line">    url = <span class="string">"https://qyapi.weixin.qq.com/cgi-bin/webhook/send"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"url"</span>) <span class="keyword">else</span> source.get(<span class="string">"url"</span>)</span><br><span class="line">    secret = source[<span class="string">"secret"</span>]</span><br><span class="line">    msgtype = <span class="string">"markdown"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"msgtype"</span>) <span class="keyword">else</span> source.get(<span class="string">"msgtype"</span>)</span><br><span class="line">    <span class="comment"># success, failed, abort</span></span><br><span class="line">    level = <span class="string">"success"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"level"</span>) <span class="keyword">else</span> source.get(<span class="string">"level"</span>)</span><br><span class="line">    content = <span class="string">"No content"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"content"</span>) <span class="keyword">else</span> source.get(<span class="string">"content"</span>)</span><br><span class="line">    payload_dict = &#123;<span class="string">"url"</span>: url, <span class="string">"secret"</span>: secret, <span class="string">"msgtype"</span>: msgtype, <span class="string">"level"</span>: level,</span><br><span class="line">                    <span class="string">"content"</span>: content&#125;</span><br><span class="line">    <span class="keyword">return</span> payload_dict</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_out</span><span class="params">(stream)</span>:</span></span><br><span class="line">    payload = get_args(stream)</span><br><span class="line">    payload_dict = payload_data(payload)</span><br><span class="line"></span><br><span class="line">    url, secret, msgtype, level, content = payload_dict.values()</span><br><span class="line"></span><br><span class="line">    data = message(msgtype, level, content)</span><br><span class="line">    post_message(url, secret, data)</span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"version"</span>: &#123;<span class="string">"version"</span>: timestamp&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>get_env函数用于获取concouse在up一个容器的时候传入的metadata，<strong>其metadata信息是作为环境变量存储在镜像里面的</strong>。</li>
+<li>payload_data函数用于获取yaml配置中put的参数，通过从params中获取。</li>
+<li>_out方法执行了向微信接口进行post数据，并最终返回标准输出给main函数进行打印。</li>
+</ol>
+<h2 id="dockerfile的编写"><a href="#dockerfile的编写" class="headerlink" title="dockerfile的编写"></a>dockerfile的编写</h2><h3 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h3><ol>
+<li>需要将check in out三个文件放入/opt/resource下面。</li>
+<li>给check in out文件可执行权限。</li>
+</ol>
+<h3 id="dockerfile样例"><a href="#dockerfile样例" class="headerlink" title="dockerfile样例"></a>dockerfile样例</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FROM alpine</span><br><span class="line">MAINTAINER anonymousyisan@gmail.com</span><br><span class="line"></span><br><span class="line">RUN apk add --update --no-cache python3  py-pip &amp;&amp; ln -sf python3 /usr/bin/python</span><br><span class="line">RUN pip install requests</span><br><span class="line"></span><br><span class="line">COPY assets/check.py /opt/resource/check</span><br><span class="line">COPY assets/in.py /opt/resource/in</span><br><span class="line">COPY assets/out.py /opt/resource/out</span><br><span class="line"></span><br><span class="line">RUN chmod +x /opt/resource/*</span><br></pre></td></tr></table></figure>
+<h2 id="yaml配置自定义resource"><a href="#yaml配置自定义resource" class="headerlink" title="yaml配置自定义resource"></a>yaml配置自定义resource</h2><h3 id="yaml部分配置"><a href="#yaml部分配置" class="headerlink" title="yaml部分配置"></a>yaml部分配置</h3><h4 id="定义resource-type以及定义resource"><a href="#定义resource-type以及定义resource" class="headerlink" title="定义resource type以及定义resource"></a>定义resource type以及定义resource</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">resource_types:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">wx-alert-resource</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="string">dockerhuangyisan/wechat-notification-resource</span></span><br><span class="line"><span class="attr">    tag:</span> <span class="string">latest</span></span><br><span class="line"></span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">wx-alert</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">wx-alert-resource</span></span><br></pre></td></tr></table></figure>
+<h4 id="hook阶段执行put"><a href="#hook阶段执行put" class="headerlink" title="hook阶段执行put"></a>hook阶段执行put</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line">      <span class="string">****</span></span><br><span class="line"><span class="attr">      on_success:</span></span><br><span class="line"><span class="attr">        put:</span> <span class="string">wx-alert</span></span><br><span class="line"><span class="attr">        params:</span></span><br><span class="line"><span class="attr">          secret:</span> <span class="string">((wx.secret))</span></span><br><span class="line"><span class="attr">          msgtype:</span> <span class="string">markdown</span></span><br><span class="line"><span class="attr">          level:</span> <span class="string">success</span></span><br><span class="line"><span class="attr">          content:</span> <span class="string">Job</span> <span class="string">Success!</span></span><br></pre></td></tr></table></figure>
+<h3 id="微信端告警样例"><a href="#微信端告警样例" class="headerlink" title="微信端告警样例"></a>微信端告警样例</h3><p><img src="https://image.kirakirazone.com/image/wechat_message.png" alt="wechat_message_example"></p>
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><ol>
+<li>如果想在resource中进行调试，不要直接在标准输出中打印，因为concouse会捕获标准输出进行验证是否为合法VersionResult，所以处理办法就是将标准输出定向到标准错误输出中，python可以使用print(“strings”, file=sys.stderr),  shell可以exec 3&gt;&1;exec 1&gt;&amp;2。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>wechat notification resource源码地址:<a href="https://github.com/huangyisan/wechat_notification_resource" target="_blank" rel="noopener">https://github.com/huangyisan/wechat_notification_resource</a></li>
+<li>官方介绍: <a href="https://concourse-ci.org/implementing-resource-types.html" target="_blank" rel="noopener">https://concourse-ci.org/implementing-resource-types.html</a></li>
+<li><a href="https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39" target="_blank" rel="noopener">https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://kirakirazone.com/2020/10/20/concourse食用指北04-编写一个自定义resource/" title="concourse食用指北04-编写一个自定义resource">https://kirakirazone.com/2020/10/20/concourse食用指北04-编写一个自定义resource/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/concourse/" rel="tag"># concourse</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/20/concourse食用指北03-HelmChart构建/" rel="next" title="concourse食用指北03-HelmChart构建">
+                <i class="fa fa-chevron-left"></i> concourse食用指北03-HelmChart构建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Huangyisan</p>
+              <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/huangyisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:anonymousyisan@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://mynotebook.readthedocs.io/en/latest/" title="readthedocs" target="_blank">readthedocs</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#知识点"><span class="nav-number">1.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#check阶段"><span class="nav-number">1.2.</span> <span class="nav-text">check阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in阶段"><span class="nav-number">1.3.</span> <span class="nav-text">in阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#out阶段"><span class="nav-number">1.4.</span> <span class="nav-text">out阶段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尝试编写一个用于微信告警的resource-type"><span class="nav-number">2.</span> <span class="nav-text">尝试编写一个用于微信告警的resource type</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#check阶段部分代码"><span class="nav-number">2.2.</span> <span class="nav-text">check阶段部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in阶段部分代码"><span class="nav-number">2.3.</span> <span class="nav-text">in阶段部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#out部分阶段代码"><span class="nav-number">2.4.</span> <span class="nav-text">out部分阶段代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dockerfile的编写"><span class="nav-number">3.</span> <span class="nav-text">dockerfile的编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#要点"><span class="nav-number">3.1.</span> <span class="nav-text">要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dockerfile样例"><span class="nav-number">3.2.</span> <span class="nav-text">dockerfile样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yaml配置自定义resource"><span class="nav-number">4.</span> <span class="nav-text">yaml配置自定义resource</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yaml部分配置"><span class="nav-number">4.1.</span> <span class="nav-text">yaml部分配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义resource-type以及定义resource"><span class="nav-number">4.1.1.</span> <span class="nav-text">定义resource type以及定义resource</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hook阶段执行put"><span class="nav-number">4.1.2.</span> <span class="nav-text">hook阶段执行put</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信端告警样例"><span class="nav-number">4.2.</span> <span class="nav-text">微信端告警样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试技巧"><span class="nav-number">5.</span> <span class="nav-text">调试技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+<div class="BbeiAn-info">
+   	浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784" rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://kirakirazone.com/2020/10/20/concourse食用指北04-编写一个自定义resource/';
+          this.page.identifier = '2020/10/20/concourse食用指北04-编写一个自定义resource/';
+          this.page.title = 'concourse食用指北04-编写一个自定义resource';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://kirakirazone.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
