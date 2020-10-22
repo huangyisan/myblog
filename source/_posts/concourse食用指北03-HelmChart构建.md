@@ -2,6 +2,7 @@
 title: concourse食用指北03-HelmChart构建
 date: 2020-10-20 08:07:32
 tags: [concourse, linux]
+categories: application
 ---
 
 ## 需求

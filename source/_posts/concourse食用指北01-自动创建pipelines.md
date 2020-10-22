@@ -2,6 +2,7 @@
 title: concourse食用指北01-自动创建pipelines
 date: 2020-10-19 16:15:56
 tags: [concourse, linux]
+categories: application
 ---
 
 之前没有接触过使用concourse做ci/cd工具，这次进行了尝试，该文档主要是记录了对使用过程中的一些改进。

@@ -2,6 +2,7 @@
 title: concourse食用指北02-镜像构建
 date: 2020-10-19 17:39:22
 tags: [concourse, linux]
+categories: application
 ---
 
 ## 需求
