@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="leetcode,">
+  <meta name="keywords" content="linux,concourse,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例112输入: [2,2,1]输出: 1 示例212输入: [4,1,2,1,2]输出: 4 解题思路 使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。 数字A异或数字B两次，则结果为A。 利用这个方法，可以找到">
-<meta name="keywords" content="leetcode">
+<meta name="description" content="需求 编写一个自定义微信告警resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你">
+<meta name="keywords" content="linux,concourse">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode 只出现一次的数字">
-<meta property="og:url" content="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/index.html">
+<meta property="og:title" content="concourse食用指北04-编写一个自定义resource">
+<meta property="og:url" content="https://kirakirazone.com/2020/10/20/concourse食用指北05-一些优化和技巧/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例112输入: [2,2,1]输出: 1 示例212输入: [4,1,2,1,2]输出: 4 解题思路 使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。 数字A异或数字B两次，则结果为A。 利用这个方法，可以找到">
+<meta property="og:description" content="需求 编写一个自定义微信告警resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://image.kirakirazone.com/image/wechat_message.png">
 <meta property="og:updated_time" content="2020-10-22T03:43:04.284Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode 只出现一次的数字">
-<meta name="twitter:description" content="需求给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 说明你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 示例112输入: [2,2,1]输出: 1 示例212输入: [4,1,2,1,2]输出: 4 解题思路 使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。 数字A异或数字B两次，则结果为A。 利用这个方法，可以找到">
+<meta name="twitter:title" content="concourse食用指北04-编写一个自定义resource">
+<meta name="twitter:description" content="需求 编写一个自定义微信告警resource  知识点 一个resource的执行有三个阶段组成，check，in，out。 任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。 check对应check，in阶段对应yaml中的get，out阶段对应yaml中的put。 如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。 in阶段和out阶段只是逻辑上对你">
+<meta name="twitter:image" content="https://image.kirakirazone.com/image/wechat_message.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/10/20/concourse食用指北05-一些优化和技巧/">
 
 
 
 
 
-  <title>LeetCode 只出现一次的数字 | Kirakirazone</title>
+  <title>concourse食用指北04-编写一个自定义resource | Kirakirazone</title>
   
 
 
@@ -285,7 +287,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/10/20/concourse食用指北05-一些优化和技巧/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -302,7 +304,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LeetCode 只出现一次的数字</h1>
+          <h1 class="post-title" itemprop="name headline">concourse食用指北04-编写一个自定义resource</h1>
         
 
         <div class="post-meta">
@@ -314,8 +316,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-28T16:58:56+08:00">
-                2019-01-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-20T11:27:32+08:00">
+                2020-10-20
               </time>
             
 
@@ -337,8 +339,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">leetcode</span>
+                  <a href="/categories/application/" itemprop="url" rel="index">
+                    <span itemprop="name">application</span>
                   </a>
                 </span>
 
@@ -355,8 +357,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/28/LeetCode-只出现一次的数字/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/28/LeetCode-只出现一次的数字/" itemprop="commentCount"></span>
+                <a href="/2020/10/20/concourse食用指北05-一些优化和技巧/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/20/concourse食用指北05-一些优化和技巧/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,17 +386,73 @@
       
 
       
-        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
-<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
-<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
-<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>编写一个自定义微信告警resource</li>
 </ol>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
+<li>一个resource的执行有三个阶段组成，<code>check</code>，<code>in</code>，<code>out</code>。</li>
+<li>任意一个阶段，传入的字段都为固定，且都有其固定的标准输出格式。</li>
+<li>check对应check，in阶段对应yaml中的<code>get</code>，out阶段对应yaml中的<code>put</code>。</li>
+<li>如果要在concourse ui打印输出，则需要将标准输出重定向到标准错误输出。</li>
+<li>in阶段和out阶段只是逻辑上对你的resource代码进行区别，并不是强制某些代码必须写在in阶段。而check阶段的代码则是强制。</li>
+<li>三个阶段执行顺序为check阶段，in阶段，out阶段。</li>
+<li>编写的dockerfile需要将check in out作为可执行文件放入/opt/resource下面。</li>
+</ol>
+<h3 id="check阶段"><a href="#check阶段" class="headerlink" title="check阶段"></a>check阶段</h3><ol>
+<li>check阶段为资源执行的第一个阶段，主要用于检查资源的最新版本。</li>
+<li>传入两个字段，一个为source，一个为version， 例如<code>{“source”: {“url”: “git-url”,  “user”: “abc”, “password”: “xyz”}, “version”: &quot;777&quot;}</code></li>
+<li>标准输出则为数组形式的kv键值对[{“key1”: “value”, “key2”:” value2”}]</li>
+</ol>
+<h3 id="in阶段"><a href="#in阶段" class="headerlink" title="in阶段"></a>in阶段</h3><ol>
+<li>in阶段为check之后的第二个阶段。</li>
+<li>在out阶段执行完毕后，也会再次执行in阶段，用于预期目标的验证。</li>
+<li>in阶段传入三个字段，source，version，params，例如<code>{“source”: {“url”: “git-url”,  “user”: “abc”, “password”: “xyz”}, “version”: &quot;777&quot;, params:{&quot;tag&quot;:123}}</code></li>
+<li>其标准输出为以必须存在以”version”为key的多维字典，例如<code>{&quot;version&quot;: {&quot;key&quot;: version, &quot;metadata&quot;: [{ &quot;name&quot;: &quot;commit&quot;, &quot;value&quot;: &quot;61cebf&quot; },{ &quot;name&quot;: &quot;author&quot;, &quot;value&quot;: &quot;Hulk Hogan&quot; }]}}</code></li>
+</ol>
+<h3 id="out阶段"><a href="#out阶段" class="headerlink" title="out阶段"></a>out阶段</h3><ol>
+<li>out阶段为最后一个阶段。</li>
+<li>out阶段传入三个字段source，params，例如<code>{&quot;params&quot;: {&quot;branch&quot;:&quot;develop&quot;,&quot;repo&quot;: &quot;some-repo&quot;},&quot;source&quot;: {&quot;uri&quot;: &quot;git@...&quot;,&quot;private_key&quot;: &quot;...&quot;}}</code></li>
+<li>其标准输出为必须存在以”version”为key的多维字典{“version”: { “ref”: “61cebf” },”metadata”:[{ “name”: “commit”, “value”: “61cebf” },{ “name”: “author”, “value”: “Mick Foley” }]}</li>
+</ol>
+<h2 id="尝试编写一个用于微信告警的resource-type"><a href="#尝试编写一个用于微信告警的resource-type" class="headerlink" title="尝试编写一个用于微信告警的resource type"></a>尝试编写一个用于微信告警的resource type</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>该resource不属于像git，docker-image等需要检查版本的resource，所以check阶段可以省略。但check脚本还是需要。</li>
+<li>in阶段，因为只是告警，所以在自身resource中不需要尝试拉取任何资源。</li>
+<li>out阶段，此阶段用于告警通知，需要规划变量进行传入。变量包含但不限于微信机器人token，告警内容，告警级别等。</li>
+</ol>
+<h3 id="check阶段部分代码"><a href="#check阶段部分代码" class="headerlink" title="check阶段部分代码"></a>check阶段部分代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_check</span><span class="params">()</span>:</span></span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> [&#123;<span class="string">"version"</span>: timestamp, <span class="string">"stage"</span>: <span class="string">"check"</span>&#125;]</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(json.dumps(_check()))</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>这边没有直接打印空，而是采取打印时间戳，这样就能在concourse ui页面看到是否正常执行了check。</li>
+</ol>
+<h3 id="in阶段部分代码"><a href="#in阶段部分代码" class="headerlink" title="in阶段部分代码"></a>in阶段部分代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_check</span><span class="params">()</span>:</span></span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"version"</span>: &#123;<span class="string">"version"</span>: timestamp, <span class="string">"stage"</span>: <span class="string">"in"</span>&#125;&#125;</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(json.dumps(_check()))</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>雷同check部分代码。</li>
+</ol>
+<h3 id="out部分阶段代码"><a href="#out部分阶段代码" class="headerlink" title="out部分阶段代码"></a>out部分阶段代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_env</span><span class="params">()</span>:</span></span><br><span class="line">    BUILD_PIPELINE_NAME = os.getenv(<span class="string">'BUILD_PIPELINE_NAME'</span>)</span><br><span class="line">    BUILD_PIPELINE_ID = os.getenv(<span class="string">'BUILD_PIPELINE_ID'</span>)</span><br><span class="line">    BUILD_NAME = os.getenv(<span class="string">'BUILD_NAME'</span>)</span><br><span class="line">    BUILD_TEAM_NAME = os.getenv(<span class="string">'BUILD_TEAM_NAME'</span>)</span><br><span class="line">    BUILD_JOB_NAME = os.getenv(<span class="string">'BUILD_JOB_NAME'</span>)</span><br><span class="line">    BUILD_ID = os.getenv(<span class="string">'BUILD_ID'</span>)</span><br><span class="line">    BUILD_TEAM_ID = os.getenv(<span class="string">'BUILD_TEAM_ID'</span>)</span><br><span class="line">    BUILD_JOB_ID = os.getenv(<span class="string">'BUILD_JOB_ID'</span>)</span><br><span class="line">    ATC_EXTERNAL_URL = os.getenv(<span class="string">'ATC_EXTERNAL_URL'</span>)</span><br><span class="line">    URL = <span class="string">'&#123;ATC_EXTERNAL_URL&#125;/teams/&#123;BUILD_TEAM_NAME&#125;/pipelines/&#123;BUILD_PIPELINE_NAME&#125;/jobs/&#123;BUILD_JOB_NAME&#125;/builds/&#123;BUILD_NAME&#125;'</span>.format(</span><br><span class="line">        ATC_EXTERNAL_URL=ATC_EXTERNAL_URL,</span><br><span class="line">        BUILD_TEAM_NAME=BUILD_TEAM_NAME,</span><br><span class="line">        BUILD_PIPELINE_NAME=BUILD_PIPELINE_NAME,</span><br><span class="line">        BUILD_JOB_NAME=BUILD_JOB_NAME,</span><br><span class="line">        BUILD_NAME=BUILD_NAME)</span><br><span class="line">    env_dict = &#123;</span><br><span class="line">        <span class="string">'BUILD_PIPELINE_NAME'</span>: BUILD_PIPELINE_NAME,</span><br><span class="line">        <span class="string">'BUILD_PIPELINE_ID'</span>: BUILD_PIPELINE_ID,</span><br><span class="line">        <span class="string">'BUILD_NAME'</span>: BUILD_NAME,</span><br><span class="line">        <span class="string">'BUILD_TEAM_NAME'</span>: BUILD_TEAM_NAME,</span><br><span class="line">        <span class="string">'BUILD_JOB_NAME'</span>: BUILD_JOB_NAME,</span><br><span class="line">        <span class="string">'BUILD_ID'</span>: BUILD_ID,</span><br><span class="line">        <span class="string">'BUILD_TEAM_ID'</span>: BUILD_TEAM_ID,</span><br><span class="line">        <span class="string">'BUILD_JOB_ID'</span>: BUILD_JOB_ID,</span><br><span class="line">        <span class="string">'ATC_EXTERNAL_URL'</span>: ATC_EXTERNAL_URL,</span><br><span class="line">        <span class="string">'URL'</span>: URL</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> env_dict</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">payload_data</span><span class="params">(payload)</span>:</span></span><br><span class="line">    <span class="comment"># source = payload["source"]</span></span><br><span class="line">    source = payload[<span class="string">"params"</span>]</span><br><span class="line">    url = <span class="string">"https://qyapi.weixin.qq.com/cgi-bin/webhook/send"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"url"</span>) <span class="keyword">else</span> source.get(<span class="string">"url"</span>)</span><br><span class="line">    secret = source[<span class="string">"secret"</span>]</span><br><span class="line">    msgtype = <span class="string">"markdown"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"msgtype"</span>) <span class="keyword">else</span> source.get(<span class="string">"msgtype"</span>)</span><br><span class="line">    <span class="comment"># success, failed, abort</span></span><br><span class="line">    level = <span class="string">"success"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"level"</span>) <span class="keyword">else</span> source.get(<span class="string">"level"</span>)</span><br><span class="line">    content = <span class="string">"No content"</span> <span class="keyword">if</span> <span class="keyword">not</span> source.get(<span class="string">"content"</span>) <span class="keyword">else</span> source.get(<span class="string">"content"</span>)</span><br><span class="line">    payload_dict = &#123;<span class="string">"url"</span>: url, <span class="string">"secret"</span>: secret, <span class="string">"msgtype"</span>: msgtype, <span class="string">"level"</span>: level,</span><br><span class="line">                    <span class="string">"content"</span>: content&#125;</span><br><span class="line">    <span class="keyword">return</span> payload_dict</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_out</span><span class="params">(stream)</span>:</span></span><br><span class="line">    payload = get_args(stream)</span><br><span class="line">    payload_dict = payload_data(payload)</span><br><span class="line"></span><br><span class="line">    url, secret, msgtype, level, content = payload_dict.values()</span><br><span class="line"></span><br><span class="line">    data = message(msgtype, level, content)</span><br><span class="line">    post_message(url, secret, data)</span><br><span class="line">    timestamp = get_timestamp()</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"version"</span>: &#123;<span class="string">"version"</span>: timestamp&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>get_env函数用于获取concouse在up一个容器的时候传入的metadata，<strong>其metadata信息是作为环境变量存储在镜像里面的</strong>。</li>
+<li>payload_data函数用于获取yaml配置中put的参数，通过从params中获取。</li>
+<li>_out方法执行了向微信接口进行post数据，并最终返回标准输出给main函数进行打印。</li>
+</ol>
+<h2 id="dockerfile的编写"><a href="#dockerfile的编写" class="headerlink" title="dockerfile的编写"></a>dockerfile的编写</h2><h3 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h3><ol>
+<li>需要将check in out三个文件放入/opt/resource下面。</li>
+<li>给check in out文件可执行权限。</li>
+</ol>
+<h3 id="dockerfile样例"><a href="#dockerfile样例" class="headerlink" title="dockerfile样例"></a>dockerfile样例</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FROM alpine</span><br><span class="line">MAINTAINER anonymousyisan@gmail.com</span><br><span class="line"></span><br><span class="line">RUN apk add --update --no-cache python3  py-pip &amp;&amp; ln -sf python3 /usr/bin/python</span><br><span class="line">RUN pip install requests</span><br><span class="line"></span><br><span class="line">COPY assets/check.py /opt/resource/check</span><br><span class="line">COPY assets/in.py /opt/resource/in</span><br><span class="line">COPY assets/out.py /opt/resource/out</span><br><span class="line"></span><br><span class="line">RUN chmod +x /opt/resource/*</span><br></pre></td></tr></table></figure>
+<h2 id="yaml配置自定义resource"><a href="#yaml配置自定义resource" class="headerlink" title="yaml配置自定义resource"></a>yaml配置自定义resource</h2><h3 id="yaml部分配置"><a href="#yaml部分配置" class="headerlink" title="yaml部分配置"></a>yaml部分配置</h3><h4 id="定义resource-type以及定义resource"><a href="#定义resource-type以及定义resource" class="headerlink" title="定义resource type以及定义resource"></a>定义resource type以及定义resource</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">resource_types:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">wx-alert-resource</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="string">dockerhuangyisan/wechat-notification-resource</span></span><br><span class="line"><span class="attr">    tag:</span> <span class="string">latest</span></span><br><span class="line"></span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">wx-alert</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">wx-alert-resource</span></span><br></pre></td></tr></table></figure>
+<h4 id="hook阶段执行put"><a href="#hook阶段执行put" class="headerlink" title="hook阶段执行put"></a>hook阶段执行put</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line">      <span class="string">****</span></span><br><span class="line"><span class="attr">      on_success:</span></span><br><span class="line"><span class="attr">        put:</span> <span class="string">wx-alert</span></span><br><span class="line"><span class="attr">        params:</span></span><br><span class="line"><span class="attr">          secret:</span> <span class="string">((wx.secret))</span></span><br><span class="line"><span class="attr">          msgtype:</span> <span class="string">markdown</span></span><br><span class="line"><span class="attr">          level:</span> <span class="string">success</span></span><br><span class="line"><span class="attr">          content:</span> <span class="string">Job</span> <span class="string">Success!</span></span><br></pre></td></tr></table></figure>
+<h3 id="微信端告警样例"><a href="#微信端告警样例" class="headerlink" title="微信端告警样例"></a>微信端告警样例</h3><p><img src="https://image.kirakirazone.com/image/wechat_message.png" alt="wechat_message_example"></p>
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><ol>
+<li>如果想在resource中进行调试，不要直接在标准输出中打印，因为concouse会捕获标准输出进行验证是否为合法VersionResult，所以处理办法就是将标准输出定向到标准错误输出中，python可以使用print(“strings”, file=sys.stderr),  shell可以exec 3&gt;&1;exec 1&gt;&amp;2。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>wechat notification resource源码地址:<a href="https://github.com/huangyisan/wechat_notification_resource" target="_blank" rel="noopener">https://github.com/huangyisan/wechat_notification_resource</a></li>
+<li>官方介绍: <a href="https://concourse-ci.org/implementing-resource-types.html" target="_blank" rel="noopener">https://concourse-ci.org/implementing-resource-types.html</a></li>
+<li><a href="https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39" target="_blank" rel="noopener">https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39</a></li>
+</ol>
+
       
     </div>
     
@@ -443,7 +501,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/" title="LeetCode 只出现一次的数字">https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/</a>
+    <a href="https://kirakirazone.com/2020/10/20/concourse食用指北05-一些优化和技巧/" title="concourse食用指北04-编写一个自定义resource">https://kirakirazone.com/2020/10/20/concourse食用指北05-一些优化和技巧/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -458,7 +516,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/concourse/" rel="tag"># concourse</a>
           
         </div>
       
@@ -471,8 +531,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/24/LeetCode-最后一个单词的长度/" rel="next" title="LeetCode 最后一个单词长度">
-                <i class="fa fa-chevron-left"></i> LeetCode 最后一个单词长度
+              <a href="/2020/10/20/concourse食用指北03-HelmChart构建/" rel="next" title="concourse食用指北03-HelmChart构建">
+                <i class="fa fa-chevron-left"></i> concourse食用指北03-HelmChart构建
               </a>
             
           </div>
@@ -481,8 +541,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/30/Python防注入/" rel="prev" title="Python防注入">
-                Python防注入 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/10/20/concourse食用指北04-编写一个自定义resource/" rel="prev" title="concourse食用指北04-编写一个自定义resource">
+                concourse食用指北04-编写一个自定义resource <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -655,7 +715,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">2.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例1"><span class="nav-number">3.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例2"><span class="nav-number">4.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题思路"><span class="nav-number">5.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题代码"><span class="nav-number">6.</span> <span class="nav-text">解题代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#知识点"><span class="nav-number">1.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#check阶段"><span class="nav-number">1.2.</span> <span class="nav-text">check阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in阶段"><span class="nav-number">1.3.</span> <span class="nav-text">in阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#out阶段"><span class="nav-number">1.4.</span> <span class="nav-text">out阶段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尝试编写一个用于微信告警的resource-type"><span class="nav-number">2.</span> <span class="nav-text">尝试编写一个用于微信告警的resource type</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#check阶段部分代码"><span class="nav-number">2.2.</span> <span class="nav-text">check阶段部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in阶段部分代码"><span class="nav-number">2.3.</span> <span class="nav-text">in阶段部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#out部分阶段代码"><span class="nav-number">2.4.</span> <span class="nav-text">out部分阶段代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dockerfile的编写"><span class="nav-number">3.</span> <span class="nav-text">dockerfile的编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#要点"><span class="nav-number">3.1.</span> <span class="nav-text">要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dockerfile样例"><span class="nav-number">3.2.</span> <span class="nav-text">dockerfile样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yaml配置自定义resource"><span class="nav-number">4.</span> <span class="nav-text">yaml配置自定义resource</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yaml部分配置"><span class="nav-number">4.1.</span> <span class="nav-text">yaml部分配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义resource-type以及定义resource"><span class="nav-number">4.1.1.</span> <span class="nav-text">定义resource type以及定义resource</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hook阶段执行put"><span class="nav-number">4.1.2.</span> <span class="nav-text">hook阶段执行put</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信端告警样例"><span class="nav-number">4.2.</span> <span class="nav-text">微信端告警样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试技巧"><span class="nav-number">5.</span> <span class="nav-text">调试技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -826,9 +886,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/01/28/LeetCode-只出现一次的数字/';
-          this.page.identifier = '2019/01/28/LeetCode-只出现一次的数字/';
-          this.page.title = 'LeetCode 只出现一次的数字';
+          this.page.url = 'https://kirakirazone.com/2020/10/20/concourse食用指北05-一些优化和技巧/';
+          this.page.identifier = '2020/10/20/concourse食用指北05-一些优化和技巧/';
+          this.page.title = 'concourse食用指北04-编写一个自定义resource';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://kirakirazone.disqus.com/embed.js';
