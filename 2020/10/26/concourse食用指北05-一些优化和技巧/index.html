@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="需求待补充">
+<meta name="description" content="使用vscode编辑器pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。 可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。 直接在”扩展”里面搜索">
 <meta name="keywords" content="linux,concourse">
 <meta property="og:type" content="article">
 <meta property="og:title" content="concourse食用指北05-一些优化和技巧">
-<meta property="og:url" content="https://kirakirazone.com/2020/10/25/concourse食用指北05-一些优化和技巧/index.html">
+<meta property="og:url" content="https://kirakirazone.com/2020/10/26/concourse食用指北05-一些优化和技巧/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="需求待补充">
+<meta property="og:description" content="使用vscode编辑器pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。 可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。 直接在”扩展”里面搜索">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-10-25T13:28:57.912Z">
+<meta property="og:updated_time" content="2020-10-26T15:27:38.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="concourse食用指北05-一些优化和技巧">
-<meta name="twitter:description" content="需求待补充">
+<meta name="twitter:description" content="使用vscode编辑器pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。 可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。 直接在”扩展”里面搜索">
 
 
 
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="https://kirakirazone.com/2020/10/25/concourse食用指北05-一些优化和技巧/">
+  <link rel="canonical" href="https://kirakirazone.com/2020/10/26/concourse食用指北05-一些优化和技巧/">
 
 
 
@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/10/25/concourse食用指北05-一些优化和技巧/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/10/26/concourse食用指北05-一些优化和技巧/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Huangyisan">
@@ -314,8 +314,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-25T22:04:32+08:00">
-                2020-10-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-26T22:45:32+08:00">
+                2020-10-26
               </time>
             
 
@@ -355,8 +355,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/10/25/concourse食用指北05-一些优化和技巧/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/25/concourse食用指北05-一些优化和技巧/" itemprop="commentCount"></span>
+                <a href="/2020/10/26/concourse食用指北05-一些优化和技巧/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/26/concourse食用指北05-一些优化和技巧/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +384,15 @@
       
 
       
-        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>待补充</p>
+        <h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
+<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
+<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
+<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
+<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
+<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
+<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
+<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
+<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
 
       
     </div>
@@ -434,7 +442,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2020/10/25/concourse食用指北05-一些优化和技巧/" title="concourse食用指北05-一些优化和技巧">https://kirakirazone.com/2020/10/25/concourse食用指北05-一些优化和技巧/</a>
+    <a href="https://kirakirazone.com/2020/10/26/concourse食用指北05-一些优化和技巧/" title="concourse食用指北05-一些优化和技巧">https://kirakirazone.com/2020/10/26/concourse食用指北05-一些优化和技巧/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -644,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用vscode编辑器"><span class="nav-number">1.</span> <span class="nav-text">使用vscode编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像的制作"><span class="nav-number">2.</span> <span class="nav-text">镜像的制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并行执行任务"><span class="nav-number">3.</span> <span class="nav-text">并行执行任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加一些重试机制"><span class="nav-number">4.</span> <span class="nav-text">添加一些重试机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置超时"><span class="nav-number">5.</span> <span class="nav-text">设置超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相同的task进行抽取"><span class="nav-number">6.</span> <span class="nav-text">相同的task进行抽取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将一些统一的配置进行抽取"><span class="nav-number">7.</span> <span class="nav-text">将一些统一的配置进行抽取</span></a></li></ol></div>
             
 
           </div>
@@ -815,8 +823,8 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2020/10/25/concourse食用指北05-一些优化和技巧/';
-          this.page.identifier = '2020/10/25/concourse食用指北05-一些优化和技巧/';
+          this.page.url = 'https://kirakirazone.com/2020/10/26/concourse食用指北05-一些优化和技巧/';
+          this.page.identifier = '2020/10/26/concourse食用指北05-一些优化和技巧/';
           this.page.title = 'concourse食用指北05-一些优化和技巧';
         };
         var d = document, s = d.createElement('script');
