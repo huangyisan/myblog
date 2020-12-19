@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JWT认证的实现</title>
+    <url>/2020/02/29/JWT%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h2 id="什么是JWT，以及原理"><a href="#什么是JWT，以及原理" class="headerlink" title="什么是JWT，以及原理"></a>什么是JWT，以及原理</h2><p>网上有大把解释JWT认证原理的，直接看refer部分。</p>
+<h2 id="JWT认证"><a href="#JWT认证" class="headerlink" title="JWT认证"></a>JWT认证</h2><ol>
+<li>当用户登陆的时候，后端根据部分字段进行签名，然后将签名得到的数据返回给用户。</li>
+<li>用户下一次请求数据的时候，在请求头的authentication字段携带token。</li>
+<li>服务端收到token后进行解密，前两段用私钥签名的结果跟第三段对比，看是否一致，如果一致，则判定当前用户合法，反之则非法。</li>
+<li>JWT的token为三段，前两段用base64编码，可以解开，第一段是描述认证方式和算法，第二段就是具体的一些信息，第三段为服务端私钥根据前两段内容进行的签名，也就是加密部分。</li>
+</ol>
+<h2 id="JWT后端部分代码"><a href="#JWT后端部分代码" class="headerlink" title="JWT后端部分代码"></a>JWT后端部分代码</h2><ol>
+<li><p>后端使用python写，求快，直接用的sanic库，以下为主要代码，只求结果正确。</p>
+</li>
+<li><p>主要逻辑：</p>
+<ol>
+<li>登录认证通过，则后端根据username以及一些基本信息生成token，然后返回给前端</li>
+</ol>
+</li>
+</ol>
+   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br><span class="line">    token = jwt.encode(payload, <span class="string">'today'</span>, headers=jwt_headers, algorithm=<span class="string">'HS256'</span>).decode()</span><br><span class="line">		<span class="comment"># 若用户名和密码为admin， 则认为认证通过</span></span><br><span class="line">    <span class="keyword">if</span> username == <span class="string">'admin'</span> <span class="keyword">and</span> password == <span class="string">'admin'</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">200</span>, <span class="string">'info'</span>: <span class="string">'authSuccess'</span>,<span class="string">'access_token'</span>: token, <span class="string">'account_id'</span>: username&#125;)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'authFaildd'</span>&#125;)</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>其他但凡和后端存在数据交互的，则进行token的认证，将该方法作为装饰器。</li>
+</ol>
+<pre><code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'执行check'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(request)</span>:</span></span><br><span class="line">        print(<span class="string">'执行wrapper'</span>)</span><br><span class="line">        jwt_headers = &#123;</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"HS256"</span>,</span><br><span class="line">            <span class="string">"typ"</span>: <span class="string">"JWT"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        token = request.headers.get(<span class="string">'authorization'</span>)</span><br><span class="line">        <span class="keyword">if</span> token:</span><br><span class="line">            token = token.split(<span class="string">' '</span>)[<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                payload = jwt.decode(token, <span class="string">'today'</span>, audience=<span class="string">'yisan.com'</span>, headers=jwt_headers, algorithms=[<span class="string">'HS256'</span>])</span><br><span class="line">                <span class="keyword">if</span> payload:</span><br><span class="line">                    <span class="keyword">return</span> func(request)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                print(e)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 具体要请求的接口数据</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">405</span>, <span class="string">'info'</span>: <span class="string">'函数没有返回值'</span>&#125;)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+</code></pre><h2 id="JWT前端部分代码"><a href="#JWT前端部分代码" class="headerlink" title="JWT前端部分代码"></a>JWT前端部分代码</h2><ol>
+<li><p>主要使用axios的响应拦截器，对返回json数据的code值进行判断。</p>
+</li>
+<li><p>主要逻辑</p>
+<ol>
+<li><p>axios相应拦截器</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">instance.interceptors.response.use(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> code = res.data.code</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">document</span>.location)</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">  <span class="comment">// 后端返回401, 且当前uri不是/login, 则跳转到login页面</span></span><br><span class="line">  <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname !== <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'登陆失败或失效'</span>)</span><br><span class="line">    sessionStorage.removeItem(<span class="string">'token'</span>)</span><br><span class="line">    router.push(<span class="string">'/login'</span>)</span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">   <span class="comment">// 后端返回401， 且当前uri是/login, 则不跳转，防止死循环</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname === <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="comment">// console.log('不跳转了')</span></span><br><span class="line">    <span class="comment">// return false</span></span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>/login页面，在created阶段，发送token验证请求，如果当前为登陆状态，则跳转至/homepage</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">created() &#123;</span><br><span class="line">  <span class="keyword">this</span>.token = sessionStorage.getItem(<span class="string">'token'</span>)</span><br><span class="line">  tokenCheck(<span class="keyword">this</span>.token).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">    <span class="keyword">if</span> (res.code === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$router.push(<span class="string">'/homepage'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="GitHub仓库地址"><a href="#GitHub仓库地址" class="headerlink" title="GitHub仓库地址"></a>GitHub仓库地址</h2><blockquote>
+<p><a href="https://github.com/huangyisan/simulator_jwt_auth.git" target="_blank" rel="noopener">https://github.com/huangyisan/simulator_jwt_auth.git</a></p>
+</blockquote>
+<p>refer</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/70275218" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/70275218</a></p>
+<p><a href="https://segmentfault.com/a/1190000010312468" target="_blank" rel="noopener">https://segmentfault.com/a/1190000010312468</a></p>
+<p><a href="https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example" target="_blank" rel="noopener">https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example</a></p>
+<p><a href="https://juejin.im/post/5ce3e9146fb9a07eba2c1258" target="_blank" rel="noopener">https://juejin.im/post/5ce3e9146fb9a07eba2c1258</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+        <tag>vue</tag>
+        <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Django Model Relationship</title>
     <url>/2019/11/04/Django_Model_Relationship/</url>
     <content><![CDATA[<p><em>好久没写了，这次用阴阳师来举例子。</em></p>
@@ -124,61 +179,6 @@
       </tags>
   </entry>
   <entry>
-    <title>JWT认证的实现</title>
-    <url>/2020/02/29/JWT%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h2 id="什么是JWT，以及原理"><a href="#什么是JWT，以及原理" class="headerlink" title="什么是JWT，以及原理"></a>什么是JWT，以及原理</h2><p>网上有大把解释JWT认证原理的，直接看refer部分。</p>
-<h2 id="JWT认证"><a href="#JWT认证" class="headerlink" title="JWT认证"></a>JWT认证</h2><ol>
-<li>当用户登陆的时候，后端根据部分字段进行签名，然后将签名得到的数据返回给用户。</li>
-<li>用户下一次请求数据的时候，在请求头的authentication字段携带token。</li>
-<li>服务端收到token后进行解密，前两段用私钥签名的结果跟第三段对比，看是否一致，如果一致，则判定当前用户合法，反之则非法。</li>
-<li>JWT的token为三段，前两段用base64编码，可以解开，第一段是描述认证方式和算法，第二段就是具体的一些信息，第三段为服务端私钥根据前两段内容进行的签名，也就是加密部分。</li>
-</ol>
-<h2 id="JWT后端部分代码"><a href="#JWT后端部分代码" class="headerlink" title="JWT后端部分代码"></a>JWT后端部分代码</h2><ol>
-<li><p>后端使用python写，求快，直接用的sanic库，以下为主要代码，只求结果正确。</p>
-</li>
-<li><p>主要逻辑：</p>
-<ol>
-<li>登录认证通过，则后端根据username以及一些基本信息生成token，然后返回给前端</li>
-</ol>
-</li>
-</ol>
-   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br><span class="line">    token = jwt.encode(payload, <span class="string">'today'</span>, headers=jwt_headers, algorithm=<span class="string">'HS256'</span>).decode()</span><br><span class="line">		<span class="comment"># 若用户名和密码为admin， 则认为认证通过</span></span><br><span class="line">    <span class="keyword">if</span> username == <span class="string">'admin'</span> <span class="keyword">and</span> password == <span class="string">'admin'</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">200</span>, <span class="string">'info'</span>: <span class="string">'authSuccess'</span>,<span class="string">'access_token'</span>: token, <span class="string">'account_id'</span>: username&#125;)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'authFaildd'</span>&#125;)</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>其他但凡和后端存在数据交互的，则进行token的认证，将该方法作为装饰器。</li>
-</ol>
-<pre><code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'执行check'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(request)</span>:</span></span><br><span class="line">        print(<span class="string">'执行wrapper'</span>)</span><br><span class="line">        jwt_headers = &#123;</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"HS256"</span>,</span><br><span class="line">            <span class="string">"typ"</span>: <span class="string">"JWT"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        token = request.headers.get(<span class="string">'authorization'</span>)</span><br><span class="line">        <span class="keyword">if</span> token:</span><br><span class="line">            token = token.split(<span class="string">' '</span>)[<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                payload = jwt.decode(token, <span class="string">'today'</span>, audience=<span class="string">'yisan.com'</span>, headers=jwt_headers, algorithms=[<span class="string">'HS256'</span>])</span><br><span class="line">                <span class="keyword">if</span> payload:</span><br><span class="line">                    <span class="keyword">return</span> func(request)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                print(e)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 具体要请求的接口数据</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">405</span>, <span class="string">'info'</span>: <span class="string">'函数没有返回值'</span>&#125;)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
-</code></pre><h2 id="JWT前端部分代码"><a href="#JWT前端部分代码" class="headerlink" title="JWT前端部分代码"></a>JWT前端部分代码</h2><ol>
-<li><p>主要使用axios的响应拦截器，对返回json数据的code值进行判断。</p>
-</li>
-<li><p>主要逻辑</p>
-<ol>
-<li><p>axios相应拦截器</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">instance.interceptors.response.use(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> code = res.data.code</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">document</span>.location)</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">  <span class="comment">// 后端返回401, 且当前uri不是/login, 则跳转到login页面</span></span><br><span class="line">  <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname !== <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'登陆失败或失效'</span>)</span><br><span class="line">    sessionStorage.removeItem(<span class="string">'token'</span>)</span><br><span class="line">    router.push(<span class="string">'/login'</span>)</span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">   <span class="comment">// 后端返回401， 且当前uri是/login, 则不跳转，防止死循环</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname === <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="comment">// console.log('不跳转了')</span></span><br><span class="line">    <span class="comment">// return false</span></span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>/login页面，在created阶段，发送token验证请求，如果当前为登陆状态，则跳转至/homepage</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">created() &#123;</span><br><span class="line">  <span class="keyword">this</span>.token = sessionStorage.getItem(<span class="string">'token'</span>)</span><br><span class="line">  tokenCheck(<span class="keyword">this</span>.token).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">    <span class="keyword">if</span> (res.code === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$router.push(<span class="string">'/homepage'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="GitHub仓库地址"><a href="#GitHub仓库地址" class="headerlink" title="GitHub仓库地址"></a>GitHub仓库地址</h2><blockquote>
-<p><a href="https://github.com/huangyisan/simulator_jwt_auth.git" target="_blank" rel="noopener">https://github.com/huangyisan/simulator_jwt_auth.git</a></p>
-</blockquote>
-<p>refer</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/70275218" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/70275218</a></p>
-<p><a href="https://segmentfault.com/a/1190000010312468" target="_blank" rel="noopener">https://segmentfault.com/a/1190000010312468</a></p>
-<p><a href="https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example" target="_blank" rel="noopener">https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example</a></p>
-<p><a href="https://juejin.im/post/5ce3e9146fb9a07eba2c1258" target="_blank" rel="noopener">https://juejin.im/post/5ce3e9146fb9a07eba2c1258</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-        <tag>vue</tag>
-        <tag>js</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>LeetCode 只出现一次的数字</title>
     <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
@@ -192,29 +192,6 @@
 <li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
 </ol>
 <h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 实现strStr()</title>
-    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
-<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
-<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
-<p>refer</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
-</blockquote>
-]]></content>
       <categories>
         <category>leetcode</category>
       </categories>
@@ -238,6 +215,29 @@
 <p>refer:</p>
 <blockquote>
 <p><a href="https://leetcode-cn.com/problems/length-of-last-word/submissions/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/submissions/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 实现strStr()</title>
+    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
+<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
+<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
 </blockquote>
 ]]></content>
       <categories>
@@ -769,55 +769,6 @@
       </tags>
   </entry>
   <entry>
-    <title>centos7网卡改名</title>
-    <url>/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/</url>
-    <content><![CDATA[<p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
-<p>先说udev服务，然后再看问题产生的原因。</p>
-<h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure></p>
-<p>在centos7中为system-udevd进程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><p>udev的作用是：<br><code>man udev</code><br>receives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.<br>当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。</p>
-</li>
-<li><p>udev rules文件存在位置：</p>
-</li>
-</ul>
-<ol>
-<li>system rules directory: /usr/lib/udev/rules.d</li>
-<li>volatile runtime directory: /run/udev/rules.d</li>
-<li>local administration directory: /etc/udev/rules.d</li>
-</ol>
-<ul>
-<li>udev读取文件规则：</li>
-</ul>
-<ol>
-<li>读取这些目录下以.rules为后缀的文件。</li>
-<li>文件先后顺序和其所在目录无关，和文件的名称顺序有关。</li>
-<li>若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr</li>
-</ol>
-<ul>
-<li>udev进行网卡重命名<blockquote>
-<p><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a></p>
-</blockquote>
-</li>
-</ul>
-<p><strong>优先查询的是<code>/usr/lib/udev/rules.d/60-net.rules</code>配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
-<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现<code>/usr/lib/udev/rules.d/60-net.rules</code>文件内已经存在了bond1的配置，而bond0的配置写到了<code>/etc/udev/rules.d/70-persistent-net.rules</code>里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
-<p>其实centos7已经不用<code>70-persistent-net.rules</code>这个文件了，在centos6中，删除了<code>70-persistent-net.rules</code>文件，他会通过<code>/lib/udev/write_net_rules</code>文件来生成，但centos7已经不存在该文件了，centos7是使用<code>/lib/udev/rename_device</code>文件来生成<code>/usr/lib/udev/rules.d/60-net.rules</code>。</p>
-<h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/sbin/ip link set eth1 down</span><br><span class="line">/sbin/ip link set eth1 name eth123</span><br><span class="line">/sbin/ip link set eth123 up</span><br></pre></td></tr></table></figure>
-<p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
-<p>最后修改ifcfg-xxx里面的NAME和DEVICE字段值为eth123。</p>
-<p>重启网卡即可。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://www.freedesktop.org/software/systemd/man/udev.html#" target="_blank" rel="noopener">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>bash fork: retry: Resource temporarily unavailable</title>
     <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
     <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
@@ -869,6 +820,55 @@
 <p>cgroup 进程数限制</p>
 <blockquote>
 <p><a href="https://segmentfault.com/a/1190000007468509" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007468509</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos7网卡改名</title>
+    <url>/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/</url>
+    <content><![CDATA[<p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
+<p>先说udev服务，然后再看问题产生的原因。</p>
+<h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure></p>
+<p>在centos7中为system-udevd进程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>udev的作用是：<br><code>man udev</code><br>receives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.<br>当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。</p>
+</li>
+<li><p>udev rules文件存在位置：</p>
+</li>
+</ul>
+<ol>
+<li>system rules directory: /usr/lib/udev/rules.d</li>
+<li>volatile runtime directory: /run/udev/rules.d</li>
+<li>local administration directory: /etc/udev/rules.d</li>
+</ol>
+<ul>
+<li>udev读取文件规则：</li>
+</ul>
+<ol>
+<li>读取这些目录下以.rules为后缀的文件。</li>
+<li>文件先后顺序和其所在目录无关，和文件的名称顺序有关。</li>
+<li>若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr</li>
+</ol>
+<ul>
+<li>udev进行网卡重命名<blockquote>
+<p><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a></p>
+</blockquote>
+</li>
+</ul>
+<p><strong>优先查询的是<code>/usr/lib/udev/rules.d/60-net.rules</code>配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
+<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现<code>/usr/lib/udev/rules.d/60-net.rules</code>文件内已经存在了bond1的配置，而bond0的配置写到了<code>/etc/udev/rules.d/70-persistent-net.rules</code>里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
+<p>其实centos7已经不用<code>70-persistent-net.rules</code>这个文件了，在centos6中，删除了<code>70-persistent-net.rules</code>文件，他会通过<code>/lib/udev/write_net_rules</code>文件来生成，但centos7已经不存在该文件了，centos7是使用<code>/lib/udev/rename_device</code>文件来生成<code>/usr/lib/udev/rules.d/60-net.rules</code>。</p>
+<h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/sbin/ip link set eth1 down</span><br><span class="line">/sbin/ip link set eth1 name eth123</span><br><span class="line">/sbin/ip link set eth123 up</span><br></pre></td></tr></table></figure>
+<p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
+<p>最后修改ifcfg-xxx里面的NAME和DEVICE字段值为eth123。</p>
+<p>重启网卡即可。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://www.freedesktop.org/software/systemd/man/udev.html#" target="_blank" rel="noopener">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
 </blockquote>
 ]]></content>
       <tags>
@@ -936,6 +936,53 @@
       </tags>
   </entry>
   <entry>
+    <title>concourse食用指北03-HelmChart构建</title>
+    <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9703-HelmChart%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>根据仓库的helm chart，自动构建Chart，并且推送到Chart仓库</li>
+</ol>
+<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><ol>
+<li>没有合适的resource，需要自己通过脚本实现。</li>
+<li>需要自己构建helm的镜像，用于chart的推送。</li>
+</ol>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>首先构建用于helm打包chart的基础镜像</li>
+<li>编写打包脚本</li>
+<li>配合脚本镜像chart打包，并上传至chart仓库</li>
+</ol>
+<h3 id="helm基础镜像dockerfile部分内容"><a href="#helm基础镜像dockerfile部分内容" class="headerlink" title="helm基础镜像dockerfile部分内容"></a>helm基础镜像dockerfile部分内容</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line">COPY helm /usr/local/bin/helm</span><br><span class="line">RUN chmod +x /usr/local/bin/helm</span><br><span class="line">RUN helm plugin install https://github.com/chartmuseum/helm-push</span><br><span class="line">RUN helm repo add --username=xxx --password='yyy' harbor https:/hubname.com/chartrepo/yourreponame</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>将helm二进制文件添加到镜像中。</li>
+<li>安装helm-push插件，用于构建中push chart。</li>
+<li>添加helm源。</li>
+</ol>
+<h3 id="chart打包推送脚本部分内容"><a href="#chart打包推送脚本部分内容" class="headerlink" title="chart打包推送脚本部分内容"></a>chart打包推送脚本部分内容</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line">chart_name=`cat $1/Chart.yaml | grep -E "^name"| awk '&#123;print $NF&#125;'`</span><br><span class="line">chart_version=`cat $1/Chart.yaml | grep -E "^version"| awk '&#123;print $NF&#125;'`</span><br><span class="line">helm package $1</span><br><span class="line">repo_name=`helm repo list | grep -E "$&#123;Harbor_Url&#125;" | awk '&#123;print $1&#125;'`</span><br><span class="line">helm push $&#123;package_info&#125; $&#123;repo_name&#125;</span><br><span class="line">***</span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>chart的名称以及version是从Chart.yaml文件中获取。</li>
+<li>打包后推送至当前helm镜像中的chart仓库中。</li>
+</ol>
+<h3 id="推送chart-pipeline部分配置"><a href="#推送chart-pipeline部分配置" class="headerlink" title="推送chart pipeline部分配置"></a>推送chart pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/xxx/harbor-script.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">- name:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/helmchart/mysql.git</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">upload-chart</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - task:</span> <span class="string">upload-helm</span></span><br><span class="line"><span class="attr">      config:</span></span><br><span class="line"><span class="attr">        platform:</span> <span class="string">linux</span></span><br><span class="line"><span class="attr">        image_resource:</span></span><br><span class="line"><span class="attr">          type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">          source:</span> </span><br><span class="line"><span class="attr">            repository:</span> <span class="string">((repository.harbor.url))/helm-box</span></span><br><span class="line"><span class="attr">            username:</span> <span class="string">((repository.harbor.username))</span></span><br><span class="line"><span class="attr">            password:</span> <span class="string">((repository.harbor.password))</span></span><br><span class="line"><span class="attr">            tag:</span> <span class="string">v1.3</span></span><br><span class="line"><span class="attr">        inputs:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">        run:</span></span><br><span class="line"><span class="attr">          user:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">          path:</span> <span class="string">/bin/sh</span></span><br><span class="line"><span class="attr">          args:</span> <span class="string">["harbor-script/Upload-Chart.sh","mysql"]</span></span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>将harbor-script以及chart-template两个resource获取到。</li>
+<li>将上述两个资源作为inputs提供给helm-box使用。</li>
+<li>在helm-box中执行Upload-Chart.sh脚本，传入待打包的路径名。</li>
+</ol>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
+<li>上述功能，可以自定义编写成自定义的resource，这样传入的变量可以进行更好的控制。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>concourse食用指北02-镜像构建</title>
     <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9702-%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
@@ -983,43 +1030,17 @@
       </tags>
   </entry>
   <entry>
-    <title>concourse食用指北03-HelmChart构建</title>
-    <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9703-HelmChart%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
-<li>根据仓库的helm chart，自动构建Chart，并且推送到Chart仓库</li>
-</ol>
-<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><ol>
-<li>没有合适的resource，需要自己通过脚本实现。</li>
-<li>需要自己构建helm的镜像，用于chart的推送。</li>
-</ol>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
-<li>首先构建用于helm打包chart的基础镜像</li>
-<li>编写打包脚本</li>
-<li>配合脚本镜像chart打包，并上传至chart仓库</li>
-</ol>
-<h3 id="helm基础镜像dockerfile部分内容"><a href="#helm基础镜像dockerfile部分内容" class="headerlink" title="helm基础镜像dockerfile部分内容"></a>helm基础镜像dockerfile部分内容</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line">COPY helm /usr/local/bin/helm</span><br><span class="line">RUN chmod +x /usr/local/bin/helm</span><br><span class="line">RUN helm plugin install https://github.com/chartmuseum/helm-push</span><br><span class="line">RUN helm repo add --username=xxx --password='yyy' harbor https:/hubname.com/chartrepo/yourreponame</span><br></pre></td></tr></table></figure>
-<p><strong>简单说明</strong></p>
-<ol>
-<li>将helm二进制文件添加到镜像中。</li>
-<li>安装helm-push插件，用于构建中push chart。</li>
-<li>添加helm源。</li>
-</ol>
-<h3 id="chart打包推送脚本部分内容"><a href="#chart打包推送脚本部分内容" class="headerlink" title="chart打包推送脚本部分内容"></a>chart打包推送脚本部分内容</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line">chart_name=`cat $1/Chart.yaml | grep -E "^name"| awk '&#123;print $NF&#125;'`</span><br><span class="line">chart_version=`cat $1/Chart.yaml | grep -E "^version"| awk '&#123;print $NF&#125;'`</span><br><span class="line">helm package $1</span><br><span class="line">repo_name=`helm repo list | grep -E "$&#123;Harbor_Url&#125;" | awk '&#123;print $1&#125;'`</span><br><span class="line">helm push $&#123;package_info&#125; $&#123;repo_name&#125;</span><br><span class="line">***</span><br></pre></td></tr></table></figure>
-<p><strong>简单说明</strong></p>
-<ol>
-<li>chart的名称以及version是从Chart.yaml文件中获取。</li>
-<li>打包后推送至当前helm镜像中的chart仓库中。</li>
-</ol>
-<h3 id="推送chart-pipeline部分配置"><a href="#推送chart-pipeline部分配置" class="headerlink" title="推送chart pipeline部分配置"></a>推送chart pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/xxx/harbor-script.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"></span><br><span class="line"><span class="attr">- name:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/helmchart/mysql.git</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">upload-chart</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - task:</span> <span class="string">upload-helm</span></span><br><span class="line"><span class="attr">      config:</span></span><br><span class="line"><span class="attr">        platform:</span> <span class="string">linux</span></span><br><span class="line"><span class="attr">        image_resource:</span></span><br><span class="line"><span class="attr">          type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">          source:</span> </span><br><span class="line"><span class="attr">            repository:</span> <span class="string">((repository.harbor.url))/helm-box</span></span><br><span class="line"><span class="attr">            username:</span> <span class="string">((repository.harbor.username))</span></span><br><span class="line"><span class="attr">            password:</span> <span class="string">((repository.harbor.password))</span></span><br><span class="line"><span class="attr">            tag:</span> <span class="string">v1.3</span></span><br><span class="line"><span class="attr">        inputs:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">harbor-script</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">chart-template</span></span><br><span class="line"><span class="attr">        run:</span></span><br><span class="line"><span class="attr">          user:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">          path:</span> <span class="string">/bin/sh</span></span><br><span class="line"><span class="attr">          args:</span> <span class="string">["harbor-script/Upload-Chart.sh","mysql"]</span></span><br></pre></td></tr></table></figure>
-<p><strong>简单说明</strong></p>
-<ol>
-<li>将harbor-script以及chart-template两个resource获取到。</li>
-<li>将上述两个资源作为inputs提供给helm-box使用。</li>
-<li>在helm-box中执行Upload-Chart.sh脚本，传入待打包的路径名。</li>
-</ol>
-<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
-<li>上述功能，可以自定义编写成自定义的resource，这样传入的变量可以进行更好的控制。</li>
-</ol>
+    <title>concourse食用指北05-一些优化和技巧</title>
+    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
+<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
+<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
+<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
+<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
+<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
+<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
+<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
+<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
 ]]></content>
       <categories>
         <category>application</category>
@@ -1098,27 +1119,6 @@
 <li>官方介绍: <a href="https://concourse-ci.org/implementing-resource-types.html" target="_blank" rel="noopener">https://concourse-ci.org/implementing-resource-types.html</a></li>
 <li><a href="https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39" target="_blank" rel="noopener">https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39</a></li>
 </ol>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>concourse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>concourse食用指北05-一些优化和技巧</title>
-    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
-    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
-<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
-<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
-<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
-<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
-<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
-<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
-<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
-<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
 ]]></content>
       <categories>
         <category>application</category>
@@ -1404,6 +1404,72 @@
       </tags>
   </entry>
   <entry>
+    <title>git clean/rm/reset/revert/checkout用法和区别</title>
+    <url>/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="git的工作区和暂存区"><a href="#git的工作区和暂存区" class="headerlink" title="git的工作区和暂存区"></a>git的工作区和暂存区</h2><p>先说下这两个概念：<br><strong>工作区</strong>，就是你git仓库的目录，你进行修改文件的区域。<br><strong>暂存区</strong>，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为<strong>暂存区</strong>。</p>
+<p>工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:</p>
+<ol>
+<li>修改代码文件   </li>
+<li><code>git add 修改后的代码文件</code>   <strong>此刻的行为将该代码文件从工作区添加到了暂存区</strong></li>
+<li><code>git commit -m &#39;commit 内容&#39;</code>  <strong>此刻的行为把暂存区的内容提交到了本地分支上</strong></li>
+</ol>
+<p>最后的<code>git push</code>操作只是一个将本地分支推送到远端的行为，所以先不考虑进去，只考前面三点。</p>
+<p>查看工作区和暂存区常用的命令为<code>git status</code></p>
+<p>一般常见的是如下三种情况：</p>
+<ol>
+<li><p>在工作区<strong>新建</strong>了文件或目录，但还未将这些文件或目录<code>git add</code>提交到暂存区。这些文件或目录被标记为<strong>untracked files</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ touch foo bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line">	foo</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对修改后的文件进行了<code>git add</code>操作，将这些文件提交到了暂存区，但未执行<code>git commit -m &#39;xxx&#39;</code>，未提交到本地分支。此时文件属于<code>Changes to be committed</code>状态</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对已经<code>git add</code>操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行<code>git add</code>，此时文件属于<code>Changes not staged for commit</code>状态</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>已经commit到本地分支的文件，且该文件在工作区没被修改之前，其不会在git status中出现。</p>
+</li>
+</ol>
+<h2 id="git-checkout-–-file"><a href="#git-checkout-–-file" class="headerlink" title="git checkout – file"></a>git checkout – file</h2><p>两种情况</p>
+<ol>
+<li>若被checkout的文件在暂存区，但工作区修改了，也就是上面的<strong>第三种</strong>情况，此时执行该命令，被checkout的文件变成和暂存区一样的状态和内容。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;first line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>将foo文件写入’first line’内容后，用<code>git add foo</code>，提交到了暂存区，未commit情况下，再写入新内容’new line’,若想还原到暂存区状态，则使用命令<code>git checkout -- foo</code></p>
+<ol start="2">
+<li>被修改文件不在暂存区，此时使用<code>git checkout -- file</code>命令，则该文件和当前版本仓库中原先的文件一致。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>干净的工作区，修改了foo文件，然后进行checkout操作之后，foo文件还原成了仓库中该文件原先的状态和内容。</p>
+<h2 id="git-clean"><a href="#git-clean" class="headerlink" title="git clean"></a>git clean</h2><p>git clean 的对象为<strong>untracked files</strong>，也就是在工作区<strong>新建</strong>，但还未执行<code>git add</code>命令提交到暂存区的文件或目录。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ touch new1 new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ mkdir &#123;tmp1,tmp2&#125;</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new1 new2 tmp1 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -n</span><br><span class="line">Would remove new1</span><br><span class="line">Would remove new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f new1</span><br><span class="line">Removing new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df tmp1</span><br><span class="line">Removing tmp1/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new2 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f</span><br><span class="line">Removing new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df</span><br><span class="line">Removing tmp2/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br></pre></td></tr></table></figure></p>
+<p><code>git clean -n</code>，干跑模式，可以列出哪些文件会被清除，但不会列出哪些目录会被清除。<br><code>git clean -f</code>，若指定文件，则该文件被清除，若不指定文件，则所有未被提交到暂存区的文件都被清除。<br><code>git clean -df</code>，若指定目录，则该目录被清除，若不指定目录，则所有未被提交到暂存区的目录都被清除。</p>
+<h2 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h2><p><code>git rm</code>等价于<code>rm xxx &amp;&amp; git add .</code>。<br>如果一个文件是被rm删除，则可以使用<code>git checkout -- file</code>将文件还原回来，而如果是用<code>git rm</code>删除，则该文件不可以被<code>git checkout -- file</code>。当然，如果是rm文件，然后git add操作，也是不能被<code>git checkout -- file</code>还原回来的。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ rm foo</span><br><span class="line">remove foo? y</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git rm foo</span><br><span class="line">rm &apos;foo&apos;</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">error: pathspec &apos;foo&apos; did not match any file(s) known to git.</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br></pre></td></tr></table></figure></p>
+<p>foo文件起先被rm删除，并未提交到暂存区，所以是可以被checkout还原，后来执行了git rm，所以当使用checkout还原的时候就报错了。</p>
+<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>三种模式</p>
+<ol>
+<li>–mixed 默认方式，将暂存区内容清空，回退到工作区，并且保留工作区的修改内容。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset HEAD</span><br><span class="line">Unstaged changes after reset:</span><br><span class="line">M	foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
+<p>暂存区被清空，工作区的更变被保留下来，foo文件存在new line这行内容。</p>
+<ol start="2">
+<li>–soft  暂存区内容，工作区内容都被保留，HEAD指向指定的commit号，该commit号原先的文件若有变动，则直接被add到暂存区。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">e5ca64a (HEAD -&gt; master) 1</span><br><span class="line">0ba0aa5 1</span><br><span class="line">ebaa828 1</span><br><span class="line">a2f32c5 1</span><br><span class="line">8f89d40 update</span><br><span class="line">be60bed 1</span><br><span class="line">bb51c34 .</span><br><span class="line">df8f824 update</span><br><span class="line">4dbd952 update</span><br><span class="line">9e683fb 1</span><br><span class="line">79dfad8 1</span><br><span class="line">3e58cef add 1</span><br><span class="line">94e5bf4 remove</span><br><span class="line">02aadbb ok</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset --soft 8f89d40</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	deleted:    bar</span><br><span class="line">	new file:   foo</span><br></pre></td></tr></table></figure>
+<p>将foo的改动add到暂存区后，使用<code>git reset --soft 8f89d40</code>，8f89d40这个commit号原先是存在bar这个文件，且foo文件不存在，因为reset之前的内容和之后的比较出现了差异，则这些差异被add到了新的暂存区中。</p>
+<ol start="3">
+<li>–hard  HEAD重置到指定commit号，且清空暂存区，工作区的内容和该commit号版本仓库的内容一致。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git reset --hard HEAD</span><br><span class="line">HEAD is now at 14d3892 1</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
+<p>暂存区被清空，工作区内容成了当前commit号版本仓库的内容，也就是没修改之前的内容，foo文件不存在new line行。<br><strong>但若工作区存在Untracked files，则这些Untracked files会携带进入到指定的commit号版本仓库的工作区中，所以要恢复到和某个commit号完全一致，还需要git clean -f清空Untracked files。</strong></p>
+<p><strong>git reset会将HEAD指向的分支指向reset对应的commit，而git checkout是HEAD直接指向对应的commit。</strong><br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg" alt></p>
+<h2 id="git-revert"><a href="#git-revert" class="headerlink" title="git revert"></a>git revert</h2><p>仅将某个commit号提交分支的内容撤销，且将此次撤销作为一个新的提交。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">145af31 (HEAD -&gt; master) add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git revert c11842d</span><br><span class="line">[master 19e736c] Revert &quot;add bar&quot;</span><br><span class="line"> 1 file changed, 0 insertions(+), 0 deletions(-)</span><br><span class="line"> delete mode 100644 bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">19e736c (HEAD -&gt; master) Revert &quot;add bar&quot;</span><br><span class="line">145af31 add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br></pre></td></tr></table></figure>
+<p>c11842d是将bar文件提交到了分支，当执行<code>git revert c11842d</code>,则撤销了提交bar文件到分支，所以执行完后，bar文件不见了，但foo文件依旧存在，所以revert只影响了被撤销的commit的变更内容，而且看git log，多了一个新的commit提交号19e736c。</p>
+]]></content>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git rebase操作</title>
     <url>/2019/03/26/git-rebase%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h2 id="同一分支-不同文件-无冲突情况"><a href="#同一分支-不同文件-无冲突情况" class="headerlink" title="同一分支 不同文件 无冲突情况"></a>同一分支 不同文件 无冲突情况</h2><ol>
@@ -1530,72 +1596,6 @@
 ]]></content>
       <tags>
         <tag>linux</tag>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git clean/rm/reset/revert/checkout用法和区别</title>
-    <url>/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h2 id="git的工作区和暂存区"><a href="#git的工作区和暂存区" class="headerlink" title="git的工作区和暂存区"></a>git的工作区和暂存区</h2><p>先说下这两个概念：<br><strong>工作区</strong>，就是你git仓库的目录，你进行修改文件的区域。<br><strong>暂存区</strong>，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为<strong>暂存区</strong>。</p>
-<p>工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:</p>
-<ol>
-<li>修改代码文件   </li>
-<li><code>git add 修改后的代码文件</code>   <strong>此刻的行为将该代码文件从工作区添加到了暂存区</strong></li>
-<li><code>git commit -m &#39;commit 内容&#39;</code>  <strong>此刻的行为把暂存区的内容提交到了本地分支上</strong></li>
-</ol>
-<p>最后的<code>git push</code>操作只是一个将本地分支推送到远端的行为，所以先不考虑进去，只考前面三点。</p>
-<p>查看工作区和暂存区常用的命令为<code>git status</code></p>
-<p>一般常见的是如下三种情况：</p>
-<ol>
-<li><p>在工作区<strong>新建</strong>了文件或目录，但还未将这些文件或目录<code>git add</code>提交到暂存区。这些文件或目录被标记为<strong>untracked files</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ touch foo bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line">	foo</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对修改后的文件进行了<code>git add</code>操作，将这些文件提交到了暂存区，但未执行<code>git commit -m &#39;xxx&#39;</code>，未提交到本地分支。此时文件属于<code>Changes to be committed</code>状态</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对已经<code>git add</code>操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行<code>git add</code>，此时文件属于<code>Changes not staged for commit</code>状态</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>已经commit到本地分支的文件，且该文件在工作区没被修改之前，其不会在git status中出现。</p>
-</li>
-</ol>
-<h2 id="git-checkout-–-file"><a href="#git-checkout-–-file" class="headerlink" title="git checkout – file"></a>git checkout – file</h2><p>两种情况</p>
-<ol>
-<li>若被checkout的文件在暂存区，但工作区修改了，也就是上面的<strong>第三种</strong>情况，此时执行该命令，被checkout的文件变成和暂存区一样的状态和内容。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;first line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>将foo文件写入’first line’内容后，用<code>git add foo</code>，提交到了暂存区，未commit情况下，再写入新内容’new line’,若想还原到暂存区状态，则使用命令<code>git checkout -- foo</code></p>
-<ol start="2">
-<li>被修改文件不在暂存区，此时使用<code>git checkout -- file</code>命令，则该文件和当前版本仓库中原先的文件一致。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>干净的工作区，修改了foo文件，然后进行checkout操作之后，foo文件还原成了仓库中该文件原先的状态和内容。</p>
-<h2 id="git-clean"><a href="#git-clean" class="headerlink" title="git clean"></a>git clean</h2><p>git clean 的对象为<strong>untracked files</strong>，也就是在工作区<strong>新建</strong>，但还未执行<code>git add</code>命令提交到暂存区的文件或目录。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ touch new1 new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ mkdir &#123;tmp1,tmp2&#125;</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new1 new2 tmp1 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -n</span><br><span class="line">Would remove new1</span><br><span class="line">Would remove new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f new1</span><br><span class="line">Removing new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df tmp1</span><br><span class="line">Removing tmp1/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new2 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f</span><br><span class="line">Removing new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df</span><br><span class="line">Removing tmp2/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br></pre></td></tr></table></figure></p>
-<p><code>git clean -n</code>，干跑模式，可以列出哪些文件会被清除，但不会列出哪些目录会被清除。<br><code>git clean -f</code>，若指定文件，则该文件被清除，若不指定文件，则所有未被提交到暂存区的文件都被清除。<br><code>git clean -df</code>，若指定目录，则该目录被清除，若不指定目录，则所有未被提交到暂存区的目录都被清除。</p>
-<h2 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h2><p><code>git rm</code>等价于<code>rm xxx &amp;&amp; git add .</code>。<br>如果一个文件是被rm删除，则可以使用<code>git checkout -- file</code>将文件还原回来，而如果是用<code>git rm</code>删除，则该文件不可以被<code>git checkout -- file</code>。当然，如果是rm文件，然后git add操作，也是不能被<code>git checkout -- file</code>还原回来的。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ rm foo</span><br><span class="line">remove foo? y</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git rm foo</span><br><span class="line">rm &apos;foo&apos;</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">error: pathspec &apos;foo&apos; did not match any file(s) known to git.</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br></pre></td></tr></table></figure></p>
-<p>foo文件起先被rm删除，并未提交到暂存区，所以是可以被checkout还原，后来执行了git rm，所以当使用checkout还原的时候就报错了。</p>
-<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>三种模式</p>
-<ol>
-<li>–mixed 默认方式，将暂存区内容清空，回退到工作区，并且保留工作区的修改内容。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset HEAD</span><br><span class="line">Unstaged changes after reset:</span><br><span class="line">M	foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
-<p>暂存区被清空，工作区的更变被保留下来，foo文件存在new line这行内容。</p>
-<ol start="2">
-<li>–soft  暂存区内容，工作区内容都被保留，HEAD指向指定的commit号，该commit号原先的文件若有变动，则直接被add到暂存区。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">e5ca64a (HEAD -&gt; master) 1</span><br><span class="line">0ba0aa5 1</span><br><span class="line">ebaa828 1</span><br><span class="line">a2f32c5 1</span><br><span class="line">8f89d40 update</span><br><span class="line">be60bed 1</span><br><span class="line">bb51c34 .</span><br><span class="line">df8f824 update</span><br><span class="line">4dbd952 update</span><br><span class="line">9e683fb 1</span><br><span class="line">79dfad8 1</span><br><span class="line">3e58cef add 1</span><br><span class="line">94e5bf4 remove</span><br><span class="line">02aadbb ok</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset --soft 8f89d40</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	deleted:    bar</span><br><span class="line">	new file:   foo</span><br></pre></td></tr></table></figure>
-<p>将foo的改动add到暂存区后，使用<code>git reset --soft 8f89d40</code>，8f89d40这个commit号原先是存在bar这个文件，且foo文件不存在，因为reset之前的内容和之后的比较出现了差异，则这些差异被add到了新的暂存区中。</p>
-<ol start="3">
-<li>–hard  HEAD重置到指定commit号，且清空暂存区，工作区的内容和该commit号版本仓库的内容一致。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git reset --hard HEAD</span><br><span class="line">HEAD is now at 14d3892 1</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-<p>暂存区被清空，工作区内容成了当前commit号版本仓库的内容，也就是没修改之前的内容，foo文件不存在new line行。<br><strong>但若工作区存在Untracked files，则这些Untracked files会携带进入到指定的commit号版本仓库的工作区中，所以要恢复到和某个commit号完全一致，还需要git clean -f清空Untracked files。</strong></p>
-<p><strong>git reset会将HEAD指向的分支指向reset对应的commit，而git checkout是HEAD直接指向对应的commit。</strong><br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg" alt></p>
-<h2 id="git-revert"><a href="#git-revert" class="headerlink" title="git revert"></a>git revert</h2><p>仅将某个commit号提交分支的内容撤销，且将此次撤销作为一个新的提交。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">145af31 (HEAD -&gt; master) add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git revert c11842d</span><br><span class="line">[master 19e736c] Revert &quot;add bar&quot;</span><br><span class="line"> 1 file changed, 0 insertions(+), 0 deletions(-)</span><br><span class="line"> delete mode 100644 bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">19e736c (HEAD -&gt; master) Revert &quot;add bar&quot;</span><br><span class="line">145af31 add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br></pre></td></tr></table></figure>
-<p>c11842d是将bar文件提交到了分支，当执行<code>git revert c11842d</code>,则撤销了提交bar文件到分支，所以执行完后，bar文件不见了，但foo文件依旧存在，所以revert只影响了被撤销的commit的变更内容，而且看git log，多了一个新的commit提交号19e736c。</p>
-]]></content>
-      <tags>
         <tag>git</tag>
       </tags>
   </entry>
@@ -1785,6 +1785,25 @@
       </tags>
   </entry>
   <entry>
+    <title>is和==比较区别</title>
+    <url>/2019/01/17/is%E5%92%8C==%E6%AF%94%E8%BE%83%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="is"><a href="#is" class="headerlink" title="is"></a>is</h2><p>** is比较的对象为内存地址</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<h2 id><a href="#" class="headerlink" title="=="></a>==</h2><p>** ==比较的对象是值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a == b</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<h2 id="关于int类型的缓存"><a href="#关于int类型的缓存" class="headerlink" title="关于int类型的缓存"></a>关于int类型的缓存</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = 1</span><br><span class="line">&gt;&gt;&gt; b = 1</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a = 999</span><br><span class="line">&gt;&gt;&gt; b = 999</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285517520</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285517584</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>上述当ab都等于1的时候，两者指向的内存地址一致，但当ab赋值了999后，两者指向的内存地址不一致。</p>
+<h2 id="产生的原因"><a href="#产生的原因" class="headerlink" title="产生的原因"></a>产生的原因</h2><p><strong>python对于int类型进行缓存，当int属于[-5, 256]范围的时候，会被缓存，倘若在这个区间进行赋值，则指向的内存地址都是一致的。</strong></p>
+<p>这个产生的原因比较复杂，<strong>倘若a和b都赋值在同一行，则两者is比较也是True</strong>，具体可以看refer。</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python" target="_blank" rel="noopener">https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Helm的简单使用</title>
     <url>/2020/06/21/helm%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h1 id="HELM基本介绍"><a href="#HELM基本介绍" class="headerlink" title="HELM基本介绍"></a>HELM基本介绍</h1><p>helm是一个可以让k8s上的应用服务进行简便安装，方便管理的工具。可以理解对yum/apt等包管理工具，只不过他是k8s特有的。</p>
@@ -1875,63 +1894,6 @@
       </tags>
   </entry>
   <entry>
-    <title>is和==比较区别</title>
-    <url>/2019/01/17/is%E5%92%8C==%E6%AF%94%E8%BE%83%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h2 id="is"><a href="#is" class="headerlink" title="is"></a>is</h2><p>** is比较的对象为内存地址</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<h2 id><a href="#" class="headerlink" title="=="></a>==</h2><p>** ==比较的对象是值</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a == b</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<h2 id="关于int类型的缓存"><a href="#关于int类型的缓存" class="headerlink" title="关于int类型的缓存"></a>关于int类型的缓存</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = 1</span><br><span class="line">&gt;&gt;&gt; b = 1</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a = 999</span><br><span class="line">&gt;&gt;&gt; b = 999</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285517520</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285517584</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>上述当ab都等于1的时候，两者指向的内存地址一致，但当ab赋值了999后，两者指向的内存地址不一致。</p>
-<h2 id="产生的原因"><a href="#产生的原因" class="headerlink" title="产生的原因"></a>产生的原因</h2><p><strong>python对于int类型进行缓存，当int属于[-5, 256]范围的时候，会被缓存，倘若在这个区间进行赋值，则指向的内存地址都是一致的。</strong></p>
-<p>这个产生的原因比较复杂，<strong>倘若a和b都赋值在同一行，则两者is比较也是True</strong>，具体可以看refer。</p>
-<blockquote>
-<p><a href="https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python" target="_blank" rel="noopener">https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>k8s配置多集群接入</title>
-    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
-<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
-<ul>
-<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
-</li>
-<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
-</li>
-<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
-</li>
-</ul>
-<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
-<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
-<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
-<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
-<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
-<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
-<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
-<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
-<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
-<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>k8s拉取私有镜像</title>
     <url>/2020/08/06/k8s%E6%8B%89%E5%8F%96%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F/</url>
     <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><h2 id="生产遇到的问题"><a href="#生产遇到的问题" class="headerlink" title="生产遇到的问题"></a>生产遇到的问题</h2><p>k8s环境在一个阿里账号下，但阿里镜像仓库在另外的一个阿里账号下。</p>
@@ -1975,6 +1937,44 @@
 <p>refer:</p>
 <blockquote>
 <p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>k8s配置多集群接入</title>
+    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
+<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
+<ul>
+<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
+</li>
+<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
+</li>
+<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
+</li>
+</ul>
+<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
+<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
+<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
+<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
+<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
+<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
+<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
+<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
+<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
 </blockquote>
 ]]></content>
       <categories>
@@ -2194,6 +2194,29 @@
       </tags>
   </entry>
   <entry>
+    <title>setdefault方法传入函数</title>
+    <url>/2019/02/01/setdefault%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="setdefault-方法"><a href="#setdefault-方法" class="headerlink" title="setdefault()方法"></a>setdefault()方法</h2><p>myvalue = dict_a.setdefault(a,b)</p>
+<p>从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。</p>
+<p>于是用了setdefault()方法，代码大致如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
+<p>因为func_api()函数会请求线上，调用接口。</p>
+<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
+<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
+<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
+<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
+<p>这样就避免了重复调用func的问题。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sed的一些操作</title>
     <url>/2019/02/27/sed%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h2 id="原始文件redis-conf内容："><a href="#原始文件redis-conf内容：" class="headerlink" title="原始文件redis.conf内容："></a>原始文件redis.conf内容：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key =&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type =&gt; &quot;list&quot;</span><br><span class="line">    codec =&gt; &quot;json&quot;</span><br><span class="line">    type =&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags =&gt; [&quot;logstashdemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2232,23 +2255,34 @@
       </tags>
   </entry>
   <entry>
-    <title>setdefault方法传入函数</title>
-    <url>/2019/02/01/setdefault%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="setdefault-方法"><a href="#setdefault-方法" class="headerlink" title="setdefault()方法"></a>setdefault()方法</h2><p>myvalue = dict_a.setdefault(a,b)</p>
-<p>从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。</p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。</p>
-<p>于是用了setdefault()方法，代码大致如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
-<p>因为func_api()函数会请求线上，调用接口。</p>
-<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
-<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
-<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
-<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
-<p>这样就避免了重复调用func的问题。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
+    <title>split函数</title>
+    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
+<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
+<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
+<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
+<p>然后手工验证了下两者的情况：</p>
+<ul>
+<li><p>split(“ “)的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>split()的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查了下split()的用法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
+<ol>
+<li>以任何whitespace字符串作为分隔符。</li>
+<li>除所有的empty string。</li>
+</ol>
+<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
+</blockquote>
 ]]></content>
       <tags>
         <tag>python3</tag>
@@ -2282,40 +2316,6 @@
 <p>refer:</p>
 <blockquote>
 <p><a href="http://python.jobbole.com/85025/" target="_blank" rel="noopener">http://python.jobbole.com/85025/</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>split函数</title>
-    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
-<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
-<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
-<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
-<p>然后手工验证了下两者的情况：</p>
-<ul>
-<li><p>split(“ “)的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>split()的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查了下split()的用法</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
-<ol>
-<li>以任何whitespace字符串作为分隔符。</li>
-<li>除所有的empty string。</li>
-</ol>
-<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
 </blockquote>
 ]]></content>
       <tags>
@@ -2976,6 +2976,30 @@
       </tags>
   </entry>
   <entry>
+    <title>磁盘无法挂载</title>
+    <url>/2019/01/18/%E7%A3%81%E7%9B%98%E6%97%A0%E6%B3%95%E6%8C%82%E8%BD%BD/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
+<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
+<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
+<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
+<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
+<p>尝试了下，的确成功了。</p>
+<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
+<p>Bug ID: 1566088</p>
+<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>未配置中间证书CA引起的安卓端无法通过https建联加载图片案例</title>
     <url>/2019/01/06/%E6%9C%AA%E9%85%8D%E7%BD%AE%E4%B8%AD%E9%97%B4%E8%AF%81%E4%B9%A6CA%E5%BC%95%E8%B5%B7%E7%9A%84%E5%AE%89%E5%8D%93%E7%AB%AF%E6%97%A0%E6%B3%95%E9%80%9A%E8%BF%87https%E5%BB%BA%E8%81%94%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87%E6%A1%88%E4%BE%8B/</url>
     <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>安卓同事称代码调试访问test-material.aaa.tv/xxx/xxxx.png等图片资源的时候报错，报错信息类似如下：</p>
@@ -3029,27 +3053,33 @@
       </tags>
   </entry>
   <entry>
-    <title>磁盘无法挂载</title>
-    <url>/2019/01/18/%E7%A3%81%E7%9B%98%E6%97%A0%E6%B3%95%E6%8C%82%E8%BD%BD/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
-<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
-<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
-<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
-<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
-<p>尝试了下，的确成功了。</p>
-<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
-<p>Bug ID: 1566088</p>
-<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
-<p>refer:</p>
-<blockquote>
-<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
-</blockquote>
+    <title>稀疏数组(go语言实现)</title>
+    <url>/2020/06/08/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="稀疏数组使用场景"><a href="#稀疏数组使用场景" class="headerlink" title="稀疏数组使用场景"></a>稀疏数组使用场景</h2><p>当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来<strong>压缩保存</strong>该二维数组。</p>
+<h2 id="稀疏数组处理方法"><a href="#稀疏数组处理方法" class="headerlink" title="稀疏数组处理方法"></a>稀疏数组处理方法</h2><ol>
+<li>稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。</li>
+<li>稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。</li>
+</ol>
+<h2 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1gfknynjddkj21120hcq4m.jpg" alt="稀疏数组.png"></p>
+<ol>
+<li>原二维数组看做棋盘，白子为1，黑子为2。</li>
+<li>稀疏数组第一行表示了”棋盘大小”为<strong>7*7</strong>，值为0，该值只是用于甄别其他有效值。</li>
+<li>稀疏数组第二行至第四行表示了”棋盘”内白子黑子的分布，顺序为从上到下，从左到右。</li>
+<li>可以将行和列看为x轴和y轴。</li>
+</ol>
+<h3 id="二维数组矩阵用稀疏数组表示-go语言思路"><a href="#二维数组矩阵用稀疏数组表示-go语言思路" class="headerlink" title="二维数组矩阵用稀疏数组表示(go语言思路)"></a>二维数组矩阵用稀疏数组表示(go语言思路)</h3><ol>
+<li>每一个棋子有三个属性，<strong>x轴坐标</strong>，<strong>y轴坐标</strong>，<strong>颜色</strong>。一个棋子的属性可以用结构体来表示。</li>
+<li>稀疏数组由于存在长度不确定性，所以使用切片的方式来表示。</li>
+<li>稀疏数组的第一个元素围棋盘布局。</li>
+</ol>
+<h3 id="go代码对二维数组压缩保存为稀疏数组"><a href="#go代码对二维数组压缩保存为稀疏数组" class="headerlink" title="go代码对二维数组压缩保存为稀疏数组"></a>go代码对二维数组压缩保存为稀疏数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义一个7*7的二维数组, 将黑子白子进行赋值.</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line">	chessMap[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">2</span>] = <span class="number">2</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">4</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">5</span>][<span class="number">3</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 打印原始数据</span></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d\t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Printf(<span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 用稀疏数组表示</span></span><br><span class="line">	<span class="comment">/* 每一个棋子都有三个属性</span></span><br><span class="line"><span class="comment">		1. x轴位置</span></span><br><span class="line"><span class="comment">		2. y轴位置</span></span><br><span class="line"><span class="comment">		3. 棋子颜色</span></span><br><span class="line"><span class="comment">		这三个属性可以使用结构体来表示</span></span><br><span class="line"><span class="comment">		然后将结构体依次append进数组中, 就可以作为一个稀疏数组了.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子属性的结构体</span></span><br><span class="line">	 <span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">	 	axisX <span class="keyword">int</span></span><br><span class="line">	 	axisY <span class="keyword">int</span></span><br><span class="line">	 	value <span class="keyword">int</span></span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子结构体的切片</span></span><br><span class="line">	 <span class="keyword">var</span> chessSparseMap []chess</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// chessSparseMap稀疏数组第一行定义x,y和value</span></span><br><span class="line">	 firstLine := chess&#123;</span><br><span class="line">	 	axisX: <span class="number">7</span>,</span><br><span class="line">	 	axisY: <span class="number">7</span>,</span><br><span class="line">	 	value: <span class="number">0</span>,</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 chessSparseMap = <span class="built_in">append</span>(chessSparseMap, firstLine)</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 对原始数据进行遍历, 然后将获取到有数值内容的值,存储到chess结构体中, 并且将该结构体append到chessSparseMap里面.</span></span><br><span class="line">	<span class="keyword">for</span> k,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> k2,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			<span class="keyword">if</span> v2 != <span class="number">0</span> &#123;</span><br><span class="line">				tmpChess := chess&#123;</span><br><span class="line">					axisX:k,</span><br><span class="line">					axisY:k2,</span><br><span class="line">					value:v2,</span><br><span class="line">				&#125;</span><br><span class="line">				chessSparseMap = <span class="built_in">append</span>(chessSparseMap, tmpChess)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"稀疏数组为"</span>)</span><br><span class="line">	fmt.Println(chessSparseMap)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line">稀疏数组为</span><br><span class="line">[&#123;<span class="number">7</span> <span class="number">7</span> <span class="number">0</span>&#125; &#123;<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>&#125; &#123;<span class="number">2</span> <span class="number">2</span> <span class="number">2</span>&#125; &#123;<span class="number">2</span> <span class="number">4</span> <span class="number">1</span>&#125; &#123;<span class="number">5</span> <span class="number">3</span> <span class="number">2</span>&#125;]</span><br></pre></td></tr></table></figure>
+<h3 id="稀疏数组还原为二维数组"><a href="#稀疏数组还原为二维数组" class="headerlink" title="稀疏数组还原为二维数组"></a>稀疏数组还原为二维数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"strings"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义单个棋子的属性, x, y, value</span></span><br><span class="line">	<span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">		axisX <span class="keyword">int</span></span><br><span class="line">		axisY <span class="keyword">int</span></span><br><span class="line">		value <span class="keyword">int</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义一个7*7数组</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 读取sparseMap文件</span></span><br><span class="line">	file, err := os.Open(<span class="string">"./learn-go/数据结构/1.稀疏数组/sparseMap"</span>)</span><br><span class="line">	<span class="keyword">defer</span> file.Close()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"打开异常"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	reader := bufio.NewReader(file)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		content, err := reader.ReadString(<span class="string">'\n'</span>)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"内容读取完毕"</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		contentSlice := strings.Split(content,<span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">		axisX, err := strconv.Atoi(contentSlice[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisX转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		axisY, err := strconv.Atoi(contentSlice[<span class="number">1</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisY转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// strings.Split(contentSlice[2], "\r\n")[0] value结尾存在\n, 通过Split方法去除\r\n</span></span><br><span class="line">		value, err := strconv.Atoi(strings.Split(contentSlice[<span class="number">2</span>], <span class="string">"\r\n"</span>)[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"value转换出错"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> value != <span class="number">0</span> &#123;</span><br><span class="line">			<span class="comment">// axisX为x轴, axisY为y轴, value为棋子, 1 白子, 2 黑子</span></span><br><span class="line">			chessMap[axisX][axisY] = value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _, v2 :=<span class="keyword">range</span> v&#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d \t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><strong>sparseMap文件内容</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">7 7 0</span><br><span class="line">1 1 1</span><br><span class="line">2 2 2</span><br><span class="line">2 4 1</span><br><span class="line">5 3 2</span><br></pre></td></tr></table></figure>
 ]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
       <tags>
-        <tag>linux</tag>
+        <tag>go</tag>
+        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -3091,36 +3121,6 @@
       </categories>
       <tags>
         <tag>django</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>稀疏数组(go语言实现)</title>
-    <url>/2020/06/08/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="稀疏数组使用场景"><a href="#稀疏数组使用场景" class="headerlink" title="稀疏数组使用场景"></a>稀疏数组使用场景</h2><p>当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来<strong>压缩保存</strong>该二维数组。</p>
-<h2 id="稀疏数组处理方法"><a href="#稀疏数组处理方法" class="headerlink" title="稀疏数组处理方法"></a>稀疏数组处理方法</h2><ol>
-<li>稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。</li>
-<li>稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。</li>
-</ol>
-<h2 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1gfknynjddkj21120hcq4m.jpg" alt="稀疏数组.png"></p>
-<ol>
-<li>原二维数组看做棋盘，白子为1，黑子为2。</li>
-<li>稀疏数组第一行表示了”棋盘大小”为<strong>7*7</strong>，值为0，该值只是用于甄别其他有效值。</li>
-<li>稀疏数组第二行至第四行表示了”棋盘”内白子黑子的分布，顺序为从上到下，从左到右。</li>
-<li>可以将行和列看为x轴和y轴。</li>
-</ol>
-<h3 id="二维数组矩阵用稀疏数组表示-go语言思路"><a href="#二维数组矩阵用稀疏数组表示-go语言思路" class="headerlink" title="二维数组矩阵用稀疏数组表示(go语言思路)"></a>二维数组矩阵用稀疏数组表示(go语言思路)</h3><ol>
-<li>每一个棋子有三个属性，<strong>x轴坐标</strong>，<strong>y轴坐标</strong>，<strong>颜色</strong>。一个棋子的属性可以用结构体来表示。</li>
-<li>稀疏数组由于存在长度不确定性，所以使用切片的方式来表示。</li>
-<li>稀疏数组的第一个元素围棋盘布局。</li>
-</ol>
-<h3 id="go代码对二维数组压缩保存为稀疏数组"><a href="#go代码对二维数组压缩保存为稀疏数组" class="headerlink" title="go代码对二维数组压缩保存为稀疏数组"></a>go代码对二维数组压缩保存为稀疏数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义一个7*7的二维数组, 将黑子白子进行赋值.</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line">	chessMap[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">2</span>] = <span class="number">2</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">4</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">5</span>][<span class="number">3</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 打印原始数据</span></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d\t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Printf(<span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 用稀疏数组表示</span></span><br><span class="line">	<span class="comment">/* 每一个棋子都有三个属性</span></span><br><span class="line"><span class="comment">		1. x轴位置</span></span><br><span class="line"><span class="comment">		2. y轴位置</span></span><br><span class="line"><span class="comment">		3. 棋子颜色</span></span><br><span class="line"><span class="comment">		这三个属性可以使用结构体来表示</span></span><br><span class="line"><span class="comment">		然后将结构体依次append进数组中, 就可以作为一个稀疏数组了.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子属性的结构体</span></span><br><span class="line">	 <span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">	 	axisX <span class="keyword">int</span></span><br><span class="line">	 	axisY <span class="keyword">int</span></span><br><span class="line">	 	value <span class="keyword">int</span></span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子结构体的切片</span></span><br><span class="line">	 <span class="keyword">var</span> chessSparseMap []chess</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// chessSparseMap稀疏数组第一行定义x,y和value</span></span><br><span class="line">	 firstLine := chess&#123;</span><br><span class="line">	 	axisX: <span class="number">7</span>,</span><br><span class="line">	 	axisY: <span class="number">7</span>,</span><br><span class="line">	 	value: <span class="number">0</span>,</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 chessSparseMap = <span class="built_in">append</span>(chessSparseMap, firstLine)</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 对原始数据进行遍历, 然后将获取到有数值内容的值,存储到chess结构体中, 并且将该结构体append到chessSparseMap里面.</span></span><br><span class="line">	<span class="keyword">for</span> k,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> k2,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			<span class="keyword">if</span> v2 != <span class="number">0</span> &#123;</span><br><span class="line">				tmpChess := chess&#123;</span><br><span class="line">					axisX:k,</span><br><span class="line">					axisY:k2,</span><br><span class="line">					value:v2,</span><br><span class="line">				&#125;</span><br><span class="line">				chessSparseMap = <span class="built_in">append</span>(chessSparseMap, tmpChess)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"稀疏数组为"</span>)</span><br><span class="line">	fmt.Println(chessSparseMap)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line">稀疏数组为</span><br><span class="line">[&#123;<span class="number">7</span> <span class="number">7</span> <span class="number">0</span>&#125; &#123;<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>&#125; &#123;<span class="number">2</span> <span class="number">2</span> <span class="number">2</span>&#125; &#123;<span class="number">2</span> <span class="number">4</span> <span class="number">1</span>&#125; &#123;<span class="number">5</span> <span class="number">3</span> <span class="number">2</span>&#125;]</span><br></pre></td></tr></table></figure>
-<h3 id="稀疏数组还原为二维数组"><a href="#稀疏数组还原为二维数组" class="headerlink" title="稀疏数组还原为二维数组"></a>稀疏数组还原为二维数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"strings"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义单个棋子的属性, x, y, value</span></span><br><span class="line">	<span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">		axisX <span class="keyword">int</span></span><br><span class="line">		axisY <span class="keyword">int</span></span><br><span class="line">		value <span class="keyword">int</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义一个7*7数组</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 读取sparseMap文件</span></span><br><span class="line">	file, err := os.Open(<span class="string">"./learn-go/数据结构/1.稀疏数组/sparseMap"</span>)</span><br><span class="line">	<span class="keyword">defer</span> file.Close()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"打开异常"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	reader := bufio.NewReader(file)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		content, err := reader.ReadString(<span class="string">'\n'</span>)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"内容读取完毕"</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		contentSlice := strings.Split(content,<span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">		axisX, err := strconv.Atoi(contentSlice[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisX转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		axisY, err := strconv.Atoi(contentSlice[<span class="number">1</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisY转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// strings.Split(contentSlice[2], "\r\n")[0] value结尾存在\n, 通过Split方法去除\r\n</span></span><br><span class="line">		value, err := strconv.Atoi(strings.Split(contentSlice[<span class="number">2</span>], <span class="string">"\r\n"</span>)[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"value转换出错"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> value != <span class="number">0</span> &#123;</span><br><span class="line">			<span class="comment">// axisX为x轴, axisY为y轴, value为棋子, 1 白子, 2 黑子</span></span><br><span class="line">			chessMap[axisX][axisY] = value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _, v2 :=<span class="keyword">range</span> v&#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d \t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p><strong>sparseMap文件内容</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">7 7 0</span><br><span class="line">1 1 1</span><br><span class="line">2 2 2</span><br><span class="line">2 4 1</span><br><span class="line">5 3 2</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>go</tag>
-        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -3299,6 +3299,39 @@
       </tags>
   </entry>
   <entry>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mysql字符集字符序</title>
     <url>/2019/01/10/mysql%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AD%97%E7%AC%A6%E5%BA%8F/</url>
     <content><![CDATA[<p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
@@ -3422,39 +3455,6 @@
       <tags>
         <tag>linux</tag>
         <tag>cpu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
 </search>
