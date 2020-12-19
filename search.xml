@@ -1894,129 +1894,94 @@
       </tags>
   </entry>
   <entry>
-    <title>linux平均负载</title>
-    <url>/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/</url>
-    <content><![CDATA[<h2 id="linux平负载定义"><a href="#linux平负载定义" class="headerlink" title="linux平负载定义"></a>linux平负载定义</h2><ol>
-<li>单位时间内，处于<strong>运行或者准备运行(R)</strong>，以及<strong>不可中断睡眠进程(D)</strong>数量的平均值(指数平滑法)。</li>
-<li>和cpu使用率没有直接关系。</li>
-<li>负载上升，可能是cpu使用率过高，也可能是磁盘io问题。</li>
-</ol>
-<h2 id="平均负载算法"><a href="#平均负载算法" class="headerlink" title="平均负载算法"></a>平均负载算法</h2><p>其算法为<code>指数平滑法</code>，内核因为不可以直接做浮点运算，而选择<strong>定点运算</strong>的方式来计算指数平滑法。</p>
-<p>指数平滑法公式：</p>
-<ol>
-<li><p>linux 2.6.18内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α)，[0 &lt; α &lt; 1]</p>
+    <title>k8s拉取私有镜像</title>
+    <url>/2020/08/06/k8s%E6%8B%89%E5%8F%96%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><h2 id="生产遇到的问题"><a href="#生产遇到的问题" class="headerlink" title="生产遇到的问题"></a>生产遇到的问题</h2><p>k8s环境在一个阿里账号下，但阿里镜像仓库在另外的一个阿里账号下。</p>
+<p>在k8s环境中部署服务的时候，发现镜像拉取失败，使用<code>kubectl describe pod xxx</code>在event字段发现如下报错：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type     Reason     Age                From                Message</span><br><span class="line">  ----     ------     ----               ----                -------</span><br><span class="line">  Normal   Scheduled  &lt;unknown&gt;          default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ErrImagePull</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Failed to pull image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": rpc error: code = Unknown desc = failed to pull and unpack image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": failed to resolve reference "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ImagePullBackOff</span><br></pre></td></tr></table></figure>
+<p>报错信息表明了镜像不存在，或者需要认证后才能拉取。</p>
+<p>然后上阿里云控制台检查了下，发现仓库是私有类型，当时改成了公有类型，的确可以拉取镜像了。</p>
+<p><strong>但是如果镜像是根据公司业务定制化，包含了公司敏感信息，那么此时就不适合作为公有类型了</strong>。</p>
+<h2 id="两种方法解决拉取私有镜像的问题"><a href="#两种方法解决拉取私有镜像的问题" class="headerlink" title="两种方法解决拉取私有镜像的问题"></a>两种方法解决拉取私有镜像的问题</h2><h3 id="方法一：通过Docker-credentials创建K8S-Secret资源"><a href="#方法一：通过Docker-credentials创建K8S-Secret资源" class="headerlink" title="方法一：通过Docker credentials创建K8S Secret资源"></a>方法一：通过Docker credentials创建K8S Secret资源</h3><ol>
+<li><p>使用docker login ${registry-addr}。</p>
 </li>
-<li><p>linux 3.12内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α) + z，[0 &lt; α &lt; 1]    <em>3.12内核增加了修正值z。</em></p>
+<li><p>输入用户名和密码。</p>
+</li>
+<li><p>认证通过后docker会把认证信息以明文的方式默认存放到<code>/root/.docker/config.json</code>文件内。<strong>该文件存放了所有认证通过的镜像仓库，并且使用base64编码了用户名和密码，所以如果要查看用户名和密码，只需要base64 decode即可。</strong></p>
+</li>
+<li><p>使用一下命令就可以在k8s的secret资源中添加一条记录了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic $&#123;secret-name&#125; \</span><br><span class="line">    --from-file=.dockerconfigjson=&lt;path/to/.docker/config.json&gt; \</span><br><span class="line">    --type=kubernetes.io/dockerconfigjson</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sup>-5/(60<em>m)</em></sup><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
-<p>参考文档:</p>
+<h2 id="方法二：使用命令行的方式添加K8S-Secret资源"><a href="#方法二：使用命令行的方式添加K8S-Secret资源" class="headerlink" title="方法二：使用命令行的方式添加K8S Secret资源"></a>方法二：使用命令行的方式添加K8S Secret资源</h2><ol>
+<li><p>使用如下命令就可以在k8s的secret资源中添加一条记录了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret docker-registry regcred --docker-server=&lt;your-registry-server&gt; --docker-username=&lt;your-name&gt; --docker-password=&lt;your-pword&gt; --docker-email=&lt;your-email&gt;</span><br></pre></td></tr></table></figure>
+<p>其中your-email可以任意填写</p>
+</li>
+</ol>
+<h2 id="验证镜像拉取"><a href="#验证镜像拉取" class="headerlink" title="验证镜像拉取"></a>验证镜像拉取</h2><ol>
+<li><p>修改yaml文件，添加imagePullSecrets字段，使用name: ${secret-name}来指定使用哪个secret资源。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    env: test</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest</span><br><span class="line">    imagePullPolicy: Always</span><br><span class="line">  imagePullSecrets:</span><br><span class="line">  - name: ali-hys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除pod后重新部署，查看event字段发现已经可以正常拉取了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type    Reason     Age        From                Message</span><br><span class="line">  ----    ------     ----       ----                -------</span><br><span class="line">  Normal  Scheduled  &lt;unknown&gt;  default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Normal  Pulling    6s         kubelet, k3s-node2  Pulling image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Pulled     6s         kubelet, k3s-node2  Successfully pulled image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Created    6s         kubelet, k3s-node2  Created container nginx</span><br><span class="line">  Normal  Started    5s         kubelet, k3s-node2  Started container nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="查看secret资源"><a href="#查看secret资源" class="headerlink" title="查看secret资源"></a>查看secret资源</h2><ol>
+<li><p>kubectl get secret -n \&lt;namespace></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@test ~/k8s] # kubectl get secret</span><br><span class="line">NAME                                 TYPE                                  DATA   AGE</span><br><span class="line">default-token-jktlx                  kubernetes.io/service-account-token   3      48d</span><br><span class="line">my-release-ingress-nginx-admission   Opaque                                3      26h</span><br><span class="line">ali-hys                              kubernetes.io/dockerconfigjson        1      55m</span><br><span class="line">ali-json                             kubernetes.io/dockerconfigjson        1      31m</span><br><span class="line">You have new mail in /var/spool/mail/root</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>通过get指定的secret名称，-o yaml导出，其实也可以看到base64编码后的信息，只要decode就能看到明文</strong></p>
+</li>
+</ol>
+<p>refer:</p>
 <blockquote>
-<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
-</blockquote>
-<h2 id="multi-core-vs-multi-processor"><a href="#multi-core-vs-multi-processor" class="headerlink" title="multi-core vs multi-processor"></a>multi-core vs multi-processor</h2><ol>
-<li><p>load关注机器有多少个processor</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">此公式包含超线程数。</span><br><span class="line">[root@leanote ~]# cat /proc/cpuinfo | grep &quot;processor&quot; | wc -l</span><br><span class="line">1</span><br><span class="line">[root@leanote ~]#</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>core可以理解为核心数，也就是cpu核心总数，而processor理解为逻辑cpu个数，而非真实cpu个数，这个逻辑cpu个数等于top后按1查看到的结果。</p>
-</li>
-</ol>
-<h2 id="linux查看cpu信息"><a href="#linux查看cpu信息" class="headerlink" title="linux查看cpu信息"></a>linux查看cpu信息</h2><p>总核数 = 物理CPU个数 X 每颗物理CPU的核数<br>总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数</p>
-<p>查看物理CPU个数<br>cat /proc/cpuinfo| grep “physical id”| sort| uniq| wc -l</p>
-<p>查看每个物理CPU中core的个数(即核数)<br>cat /proc/cpuinfo| grep “cpu cores”| uniq</p>
-<p>查看逻辑CPU的个数<br>cat /proc/cpuinfo| grep “processor”| wc -l</p>
-<p>refer</p>
-<blockquote>
-<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
+<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
-        <tag>linux</tag>
-        <tag>cpu</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
-    <title>mysql字符集字符序</title>
-    <url>/2019/01/10/mysql%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AD%97%E7%AC%A6%E5%BA%8F/</url>
-    <content><![CDATA[<p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
-<p>MariaDB version 10.1.36</p>
-<p><strong>数据库分字符集(character)和字符序(collation)</strong></p>
+    <title>k8s配置多集群接入</title>
+    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
+<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
 <ul>
-<li>character定义了字符以及字符的编码。</li>
-<li>collation定义了字符的比较规则。</li>
+<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
+</li>
+<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
+</li>
+<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
+</li>
 </ul>
-<p><strong>有四个地方涉及到字符集和字符序</strong></p>
-<ul>
-<li>服务器端(server level)</li>
-<li>数据库(database level)</li>
-<li>表(table level)</li>
-<li>char varchar text类型的字段(column level)</li>
-</ul>
-<p><strong>如果都未进行指定，采用何种character和collation，则默认情况为character=latin1, collation=latin1_swedish_ci</strong></p>
-<h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2><ol>
-<li><p>查看当前支持的字符集<code>SHOW charsets</code>，Default collation字段告知了，该字符集所用的默认字符序。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW charset;</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| Charset  | Description                 | Default collation   | Maxlen |</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| big5     | Big5 Traditional Chinese    | big5_chinese_ci     |      2 |</span><br><span class="line">| dec8     | DEC West European           | dec8_swedish_ci     |      1 |</span><br><span class="line">| cp850    | DOS West European           | cp850_general_ci    |      1 |</span><br><span class="line">| hp8      | HP West European            | hp8_english_ci      |      1 |</span><br><span class="line">| koi8r    | KOI8-R Relcom Russian       | koi8r_general_ci    |      1 |</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看server level当前的字符集<code>SHOW VARIABLES LIKE &quot;character_set_server&quot;</code>，查看server level当前的字符序<code>SHOW VARIABLES LIKE &quot;collation_server&quot;</code></p>
-</li>
-<li><p>修改server level字符集的方法:</p>
-</li>
+<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
+<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
+<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
+<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
+<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
+<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
 </ol>
-<ul>
-<li>修改配置文件</li>
-<li>编译的时候</li>
-<li>set 全局变量命令。但这种情况重启会失效。</li>
-</ul>
-<ol start="2">
-<li>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符集，则默认的字符序为该字符集所对应的默认字符序。</li>
-</ol>
-<h2 id="字符序"><a href="#字符序" class="headerlink" title="字符序"></a>字符序</h2><ol>
-<li>查看当前支持的字符序<code>SHOW collation</code>, Default字段存在Yes的，表示该字符集默认的default值。比如latin1默认的字符序为latin1_swedish_ci</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW collation;</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| Collation                | Charset  | Id  | Default | Compiled | Sortlen |</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| big5_chinese_ci          | big5     |   1 | Yes     | Yes      |       1 |</span><br><span class="line">| big5_bin                 | big5     |  84 |         | Yes      |       1 |</span><br><span class="line">| dec8_swedish_ci          | dec8     |   3 | Yes     | Yes      |       1 |</span><br><span class="line">| dec8_bin                 | dec8     |  69 |         | Yes      |       1 |</span><br><span class="line">| cp850_general_ci         | cp850    |   4 | Yes     | Yes      |       1 |</span><br><span class="line">| cp850_bin                | cp850    |  80 |         | Yes      |       1 |</span><br><span class="line">| hp8_english_ci           | hp8      |   6 | Yes     | Yes      |       1 |</span><br><span class="line">| hp8_bin                  | hp8      |  72 |         | Yes      |       1 |</span><br><span class="line">| koi8r_general_ci         | koi8r    |   7 | Yes     | Yes      |       1 |</span><br><span class="line">| koi8r_bin                | koi8r    |  74 |         | Yes      |       1 |</span><br><span class="line">| latin1_german1_ci        | latin1   |   5 |         | Yes      |       1 |</span><br><span class="line">| latin1_swedish_ci        | latin1   |   8 | Yes     | Yes      |       1 |</span><br><span class="line">| latin1_danish_ci         | latin1   |  15 |         | Yes      |       1 |</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li><p>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符序，则默认的字符集为该字符序所对应的字符集。</p>
-</li>
-<li><p>字符序表示的含义</p>
-</li>
-</ol>
-<ul>
-<li>一般来说分为三段，也存在一段或者两段的情况，常见的三段如<code>utf8mb4_general_ci</code>,两段的如<code>utf8mb4_bin</code>(<strong>这类情况，其实只存在第一段和第三段，第二段不存在</strong>)</li>
-<li>第一段代表字符集。</li>
-<li>第二段代表语言(chinese,swedish),也有general这种通用的，或者unicode类型。</li>
-<li>第三段代表是否敏感，是否为bin。</li>
-</ul>
-<ol start="4">
-<li>对于第三段的解释<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">_ai	Accent insensitive</span><br><span class="line">_as	Accent sensitive</span><br><span class="line">_ci	Case insensitive</span><br><span class="line">_cs	case-sensitive</span><br><span class="line">_bin	Binary</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ul>
-<li>Accent是否为sensitive表现为，如果为sensitive，则比较a和á是不同的，如果为insensitive则a和á比较为相同。</li>
-<li>Case insensitive为大小写不敏感，case-sensitive为大小写敏感。</li>
-</ul>
-<h2 id="字符集和字符序的继承顺序"><a href="#字符集和字符序的继承顺序" class="headerlink" title="字符集和字符序的继承顺序"></a>字符集和字符序的继承顺序</h2><ol>
-<li>数据库服务，建库，建表，建字段，倘若其中有指定character和collation，则<code>字段</code>继承<code>表</code>，<code>表</code>继承<code>库</code>，<code>库</code>继承<code>数据库服务</code>。比如建库指定了字符集为utf8，那么该库下面的表如果不指定字符集，则表的字符集也为utf8，char、varchar、text的字段字符集也是utf8。</li>
-<li><strong>有个例外，如果修改了表， 那么该表下面的字段的字符集和字符序也会变成表的字符集和字符序。</strong></li>
-</ol>
-<h2 id="修改查看字符集命令："><a href="#修改查看字符集命令：" class="headerlink" title="修改查看字符集命令："></a>修改查看字符集命令：</h2><ul>
-<li><p>修改运行环境：</p>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SET character_set_server = utf8mb4</span><br><span class="line">set character_set_connection = utf8mb4</span><br><span class="line">set character_set_database = utf8mb4</span><br><span class="line">set character_set_results = utf8mb4</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改库:</p>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER DATABASE dbname CHARACTER SET utf8mb4 COLLATE  utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句 </span><br><span class="line">show create database dbname;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li>修改表:  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. dir varchar(255) -&gt; varchar(191)  mysql5.6的版本需要修改。不保证所有版本都需要修改。</span><br><span class="line">ALTER TABLE dir_stats MODIFY dir VARCHAR(191);</span><br><span class="line">2. 修改字段类型utf8mb4</span><br><span class="line">alter table tablename convert to character set utf8mb4 collate utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句</span><br><span class="line">SHOW FULL COLUMNS FROM dbname.tablename;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
+<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
+<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
+<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
 <p>refer:</p>
 <blockquote>
-<p><a href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html" target="_blank" rel="noopener">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations" target="_blank" rel="noopener">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a><br><a href="https://dev.mysql.com/doc/refman/8.0/en/charset-database.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/charset-database.html</a><br><a href="http://zarez.net/?p=719" target="_blank" rel="noopener">http://zarez.net/?p=719</a></p>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
-        <tag>mysql</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -2468,80 +2433,6 @@
       </tags>
   </entry>
   <entry>
-    <title>二叉树种类和遍历</title>
-    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
-<ol>
-<li>rooted binary tree<ul>
-<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
-</ul>
-</li>
-<li>full binary tree<ul>
-<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
-</ul>
-</li>
-<li>complete binary tree<ul>
-<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
-</ul>
-</li>
-<li>perfect binary tree<ul>
-<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
-</ul>
-</li>
-<li>infinite complete binary tree<ul>
-<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
-<li>我的理解就是无穷尽的rooted binray tree</li>
-</ul>
-</li>
-<li>balanced binary tree<ul>
-<li>左右子树高度差不超过1</li>
-<li>且左右子树各自均为平衡二叉树</li>
-</ul>
-</li>
-<li>degenerate tree<ul>
-<li>每个节点只包含一个子节点。</li>
-</ul>
-</li>
-</ol>
-<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
-<ul>
-<li>指先访问根，然后访问子树的遍历方式。</li>
-<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
-<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
-<ul>
-<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
-<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
-<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
-<ul>
-<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
-<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
-</ul>
-<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
-<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
-<ul>
-<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
-<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
-</ul>
-<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
-<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
-<p>refer</p>
-<blockquote>
-<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-        <tag>algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>从无法加载JAVA_HOME说起</title>
     <url>/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/</url>
     <content><![CDATA[<p>这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在/etc/profile里面是添加了JAVA_HOME。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@ccc bin]# sudo ./catalina.sh start</span><br><span class="line">Neither the JAVA_HOME nor the JRE_HOME environment variable is defined</span><br><span class="line">At least one of these environment variable is needed to run this program</span><br><span class="line">[root@ccc bin]# tail -n 5 /etc/profile</span><br><span class="line"></span><br><span class="line">export JAVA_HOME=/tool/jdk1.8.0_144</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">export JAVA_HOME CLASSPATH PATH</span><br></pre></td></tr></table></figure></p>
@@ -2788,6 +2679,87 @@
       <tags>
         <tag>go</tag>
         <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用正确的姿势动态修改小程序样式</title>
+    <url>/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="我的小程序菜单栏点击延迟很大"><a href="#我的小程序菜单栏点击延迟很大" class="headerlink" title="我的小程序菜单栏点击延迟很大"></a>我的小程序菜单栏点击延迟很大</h2><ol>
+<li>小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。</li>
+<li>微信开发工具的模拟界面点击没有任何的延迟感。</li>
+<li>点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。</li>
+</ol>
+<h2 id="排查思路"><a href="#排查思路" class="headerlink" title="排查思路"></a>排查思路</h2><ol>
+<li><p>使用微信开发工具的”Audits”进行体验评分，体验分挺高的，但我自己的体验还是很差啊。</p>
+</li>
+<li><p>翻阅网上资料，修改样式也就差不多那么几种方式，我也是这样写的，感觉没毛病呀。</p>
+</li>
+<li><p>最小化配置，删减了所有其他相关组件，就留下了一个菜单，关联的样式也全部删掉，真机测试，还是有延迟。</p>
+</li>
+<li><p>怀疑是自己手机的问题，于是我用了下饿了么的小程序，大受打击，同时也让朋友真机测了下，也说有延迟感觉。</p>
+</li>
+<li><p>难道是uni-app框架的锅？行吧，我用小程序原生代码写了个菜单，点击发现的确比uniapp流畅点，但还是没有饿了么小程序那个菜单来的顺滑。</p>
+</li>
+<li><p>wdnmd，网上搜来搜去，说卡的基本上是组件过多，图片过多导致，跟我这个不太一样。</p>
+</li>
+<li><p>就这么过去了将近3天，一直没有头绪。让我更加在意的是饿了么为什么能那么流畅？</p>
+</li>
+</ol>
+<h2 id="uni-app原代码"><a href="#uni-app原代码" class="headerlink" title="uni-app原代码"></a>uni-app原代码</h2><h3 id="template部分代码"><a href="#template部分代码" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;block v-for=&apos;(item,index) in foodsInfo&apos; :key=&apos;item.category&apos;&gt;</span><br><span class="line">	&lt;view class=&apos;side-left-item&apos; @click=&quot;itemClick(index)&quot; :class=&quot;&#123;active: index === currentIndex&#125;&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;/text&gt;</span><br><span class="line">	&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="JS部分代码"><a href="#JS部分代码" class="headerlink" title="JS部分代码"></a>JS部分代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">data() &#123;</span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		currentIndex: <span class="number">0</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">	itemClick(index) &#123;</span><br><span class="line">		<span class="keyword">this</span>.currentIndex = index</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="小程序原生代码"><a href="#小程序原生代码" class="headerlink" title="小程序原生代码"></a>小程序原生代码</h2><h3 id="视图层部分代码"><a href="#视图层部分代码" class="headerlink" title="视图层部分代码"></a>视图层部分代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;block wx:for=&quot;&#123;&#123;leftData&#125;&#125;&quot; wx:for-item=&quot;lcai&quot; wx:key=&quot;index&quot;&gt;</span><br><span class="line">&lt;view bindtap=&quot;btnClick&quot; data-index=&quot;&#123;&#123;index&#125;&#125;&quot; class=&quot;inner &#123;&#123;currentIndex == index? &apos;active&apos; : &apos;&apos;&#125;&#125;&quot;&gt;&#123;&#123;lcai.name&#125;&#125;&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="逻辑层部分代码"><a href="#逻辑层部分代码" class="headerlink" title="逻辑层部分代码"></a>逻辑层部分代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    currentIndex: <span class="number">0</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  btnClick: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> index = e.currentTarget.dataset.index;</span><br><span class="line">    <span class="built_in">console</span>.log(index)</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      currentIndex: index</span><br><span class="line">    &#125;) </span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="原代码的实现方式"><a href="#原代码的实现方式" class="headerlink" title="原代码的实现方式"></a>原代码的实现方式</h3><ol>
+<li>跟网上说的基本上一致，绑定点击事件，通过判断当前元素的index和currentIndex是否相等，返回true或者false来动态添加active样式(color:red; background-color: gray;)。</li>
+<li>看着没有任何的问题，在pc端也是这么写的。</li>
+</ol>
+<h2 id="直到我看到了这篇文章"><a href="#直到我看到了这篇文章" class="headerlink" title="直到我看到了这篇文章"></a>直到我看到了这篇文章</h2><ul>
+<li><p>植树节晚上洗完澡一直在考虑这个问题，没有头绪，谷歌搜了下通用类的小程序优化思路。看到了如下这篇文章，才恍然大悟。</p>
+</li>
+<li><blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/82741561" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82741561</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="为什么会慢？"><a href="#为什么会慢？" class="headerlink" title="为什么会慢？"></a>为什么会慢？</h3><ul>
+<li>小程序的视图层(wxml)和逻辑层(js)是独立分开的。这样视图层不能运行js代码，逻辑层的js代码也不能修改视图层的dom</li>
+<li>当数据更新以及事件系统只能靠线程间通讯，但跨线程通信的成本极高，一些频繁通讯的场景，触摸、滚动等。</li>
+<li>一个点击行为，需要经过视图层、Native、逻辑层三者之间2个完整来回的通信，通信的耗时开销较大，用户的交互就会出现延时卡顿的情况。</li>
+<li>for循环对数据格式修改，也会造成逻辑层和视图层频繁通讯。</li>
+</ul>
+<h3 id="wxs的出现"><a href="#wxs的出现" class="headerlink" title="wxs的出现"></a>wxs的出现</h3><ul>
+<li>wxs是一种被限制了的js，他可以运行在视图层。<strong>换句话说wxs和视图层的交互不需要经过Native层</strong>。</li>
+<li>他是不可以操作dom的，因为小程序的视图层和逻辑层的分开就是为了不想用js直接操作dom。</li>
+<li>wxs无法直接修改业务数据，只能对当前组件的class和style处理，或者数据进行格式化。</li>
+<li>如果要修改业务逻辑数据，则需要用callMethod方法。</li>
+</ul>
+<h3 id="wxs适合的场景"><a href="#wxs适合的场景" class="headerlink" title="wxs适合的场景"></a>wxs适合的场景</h3><ul>
+<li>用户交互频繁、仅需改动组件样式（比如布局位置），无需改动数据内容的场景，比如侧滑菜单、索引列表、滚动渐变等 - 数据格式处理，比如文本、日期格式化，或者国际化。</li>
+</ul>
+<h2 id="修改后的uni-app代码"><a href="#修改后的uni-app代码" class="headerlink" title="修改后的uni-app代码"></a>修改后的uni-app代码</h2><h3 id="template部分代码-1"><a href="#template部分代码-1" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;block v-for=&apos;(item,index) in foodsInfo&apos; :key=&apos;index&apos;&gt;</span><br><span class="line">  &lt;!-- 绑定多个class的方式，用数组，变量不需要加&#123;&#123;&#125;&#125;     点击事件绑定wxs中export的clickwxs--&gt;</span><br><span class="line">	&lt;view :data-index=&quot;index&quot; :class=&apos;[&quot;side-left-item&quot;, &quot;inner_&quot; + index]&apos; @click=&quot;clickwxs.tapName&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;/text&gt;</span><br><span class="line">	&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="WXS部分代码"><a href="#WXS部分代码" class="headerlink" title="WXS部分代码"></a>WXS部分代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//该代码和上面template代码为同一个文件下。</span></span><br><span class="line"><span class="comment">//命名为clickwxs</span></span><br><span class="line">&lt;script <span class="built_in">module</span>=<span class="string">"clickwxs"</span> lang=<span class="string">"wxs"</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ins</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(event))</span><br><span class="line">  <span class="keyword">var</span> owner = ins.selectAllComponents(<span class="string">'.side-left-item'</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 移除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">'active'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'.inner'</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">var</span> instance = ins.selectComponent(<span class="string">'.inner_'</span> + event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(instance)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">'active'</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="修改后的微信小程序原生代码"><a href="#修改后的微信小程序原生代码" class="headerlink" title="修改后的微信小程序原生代码"></a>修改后的微信小程序原生代码</h2><h3 id="视图层代码"><a href="#视图层代码" class="headerlink" title="视图层代码"></a>视图层代码</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入wxs--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wxs</span> <span class="attr">module</span>=<span class="string">"wxs"</span> <span class="attr">src</span>=<span class="string">"./index.wxs"</span>&gt;</span><span class="tag">&lt;/<span class="name">wxs</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scroll-view</span> <span class="attr">scroll-y</span>=<span class="string">"true"</span> <span class="attr">class</span>=<span class="string">"scroll"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;leftData&#125;&#125;"</span> <span class="attr">wx:for-item</span>=<span class="string">"lcai"</span> <span class="attr">wx:key</span>=<span class="string">"index"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">bindtap</span>=<span class="string">"&#123;&#123;wxs.tapName&#125;&#125;"</span> <span class="attr">data-index</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">class</span>=<span class="string">"inner inner_&#123;&#123;index&#125;&#125;"</span>&gt;</span>&#123;&#123;lcai.name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scroll-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="wxs代码"><a href="#wxs代码" class="headerlink" title="wxs代码"></a>wxs代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ownerInstance</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 获取所有class="inner"的组件</span></span><br><span class="line">  <span class="keyword">var</span> owner = ownerInstance.selectAllComponents(<span class="string">'.inner'</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 清除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">'active'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'.inner_'</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> instance = ownerInstance.selectComponent(<span class="string">'.inner_'</span> + event.currentTarget.dataset.index)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">'active'</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><strong>修改完后，无论是uni-app框架的小程序，还是小程序原生的写法，点击延迟感不再有。</strong></p>
+<h2 id="两份代码github地址"><a href="#两份代码github地址" class="headerlink" title="两份代码github地址"></a>两份代码github地址</h2><ol>
+<li><blockquote>
+<p><a href="https://github.com/huangyisan/fooods" target="_blank" rel="noopener">https://github.com/huangyisan/fooods</a>  leftbuttom分支</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><a href="https://github.com/huangyisan/ori-fooods" target="_blank" rel="noopener">https://github.com/huangyisan/ori-fooods</a></p>
+</blockquote>
+</li>
+</ol>
+<p>refer</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/82741561" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82741561</a></p>
+<p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html</a></p>
+<p><a href="https://www.cnblogs.com/murenziwei/p/11233505.html" target="_blank" rel="noopener">https://www.cnblogs.com/murenziwei/p/11233505.html</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>小程序</tag>
       </tags>
   </entry>
   <entry>
@@ -3253,175 +3225,203 @@
       </tags>
   </entry>
   <entry>
-    <title>用正确的姿势动态修改小程序样式</title>
-    <url>/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="我的小程序菜单栏点击延迟很大"><a href="#我的小程序菜单栏点击延迟很大" class="headerlink" title="我的小程序菜单栏点击延迟很大"></a>我的小程序菜单栏点击延迟很大</h2><ol>
-<li>小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。</li>
-<li>微信开发工具的模拟界面点击没有任何的延迟感。</li>
-<li>点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。</li>
+    <title>mysql字符集字符序</title>
+    <url>/2019/01/10/mysql%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AD%97%E7%AC%A6%E5%BA%8F/</url>
+    <content><![CDATA[<p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
+<p>MariaDB version 10.1.36</p>
+<p><strong>数据库分字符集(character)和字符序(collation)</strong></p>
+<ul>
+<li>character定义了字符以及字符的编码。</li>
+<li>collation定义了字符的比较规则。</li>
+</ul>
+<p><strong>有四个地方涉及到字符集和字符序</strong></p>
+<ul>
+<li>服务器端(server level)</li>
+<li>数据库(database level)</li>
+<li>表(table level)</li>
+<li>char varchar text类型的字段(column level)</li>
+</ul>
+<p><strong>如果都未进行指定，采用何种character和collation，则默认情况为character=latin1, collation=latin1_swedish_ci</strong></p>
+<h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2><ol>
+<li><p>查看当前支持的字符集<code>SHOW charsets</code>，Default collation字段告知了，该字符集所用的默认字符序。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW charset;</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| Charset  | Description                 | Default collation   | Maxlen |</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| big5     | Big5 Traditional Chinese    | big5_chinese_ci     |      2 |</span><br><span class="line">| dec8     | DEC West European           | dec8_swedish_ci     |      1 |</span><br><span class="line">| cp850    | DOS West European           | cp850_general_ci    |      1 |</span><br><span class="line">| hp8      | HP West European            | hp8_english_ci      |      1 |</span><br><span class="line">| koi8r    | KOI8-R Relcom Russian       | koi8r_general_ci    |      1 |</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看server level当前的字符集<code>SHOW VARIABLES LIKE &quot;character_set_server&quot;</code>，查看server level当前的字符序<code>SHOW VARIABLES LIKE &quot;collation_server&quot;</code></p>
+</li>
+<li><p>修改server level字符集的方法:</p>
+</li>
 </ol>
-<h2 id="排查思路"><a href="#排查思路" class="headerlink" title="排查思路"></a>排查思路</h2><ol>
-<li><p>使用微信开发工具的”Audits”进行体验评分，体验分挺高的，但我自己的体验还是很差啊。</p>
+<ul>
+<li>修改配置文件</li>
+<li>编译的时候</li>
+<li>set 全局变量命令。但这种情况重启会失效。</li>
+</ul>
+<ol start="2">
+<li>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符集，则默认的字符序为该字符集所对应的默认字符序。</li>
+</ol>
+<h2 id="字符序"><a href="#字符序" class="headerlink" title="字符序"></a>字符序</h2><ol>
+<li>查看当前支持的字符序<code>SHOW collation</code>, Default字段存在Yes的，表示该字符集默认的default值。比如latin1默认的字符序为latin1_swedish_ci</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; SHOW collation;</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| Collation                | Charset  | Id  | Default | Compiled | Sortlen |</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| big5_chinese_ci          | big5     |   1 | Yes     | Yes      |       1 |</span><br><span class="line">| big5_bin                 | big5     |  84 |         | Yes      |       1 |</span><br><span class="line">| dec8_swedish_ci          | dec8     |   3 | Yes     | Yes      |       1 |</span><br><span class="line">| dec8_bin                 | dec8     |  69 |         | Yes      |       1 |</span><br><span class="line">| cp850_general_ci         | cp850    |   4 | Yes     | Yes      |       1 |</span><br><span class="line">| cp850_bin                | cp850    |  80 |         | Yes      |       1 |</span><br><span class="line">| hp8_english_ci           | hp8      |   6 | Yes     | Yes      |       1 |</span><br><span class="line">| hp8_bin                  | hp8      |  72 |         | Yes      |       1 |</span><br><span class="line">| koi8r_general_ci         | koi8r    |   7 | Yes     | Yes      |       1 |</span><br><span class="line">| koi8r_bin                | koi8r    |  74 |         | Yes      |       1 |</span><br><span class="line">| latin1_german1_ci        | latin1   |   5 |         | Yes      |       1 |</span><br><span class="line">| latin1_swedish_ci        | latin1   |   8 | Yes     | Yes      |       1 |</span><br><span class="line">| latin1_danish_ci         | latin1   |  15 |         | Yes      |       1 |</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符序，则默认的字符集为该字符序所对应的字符集。</p>
 </li>
-<li><p>翻阅网上资料，修改样式也就差不多那么几种方式，我也是这样写的，感觉没毛病呀。</p>
-</li>
-<li><p>最小化配置，删减了所有其他相关组件，就留下了一个菜单，关联的样式也全部删掉，真机测试，还是有延迟。</p>
-</li>
-<li><p>怀疑是自己手机的问题，于是我用了下饿了么的小程序，大受打击，同时也让朋友真机测了下，也说有延迟感觉。</p>
-</li>
-<li><p>难道是uni-app框架的锅？行吧，我用小程序原生代码写了个菜单，点击发现的确比uniapp流畅点，但还是没有饿了么小程序那个菜单来的顺滑。</p>
-</li>
-<li><p>wdnmd，网上搜来搜去，说卡的基本上是组件过多，图片过多导致，跟我这个不太一样。</p>
-</li>
-<li><p>就这么过去了将近3天，一直没有头绪。让我更加在意的是饿了么为什么能那么流畅？</p>
+<li><p>字符序表示的含义</p>
 </li>
 </ol>
-<h2 id="uni-app原代码"><a href="#uni-app原代码" class="headerlink" title="uni-app原代码"></a>uni-app原代码</h2><h3 id="template部分代码"><a href="#template部分代码" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;block v-for=&apos;(item,index) in foodsInfo&apos; :key=&apos;item.category&apos;&gt;</span><br><span class="line">	&lt;view class=&apos;side-left-item&apos; @click=&quot;itemClick(index)&quot; :class=&quot;&#123;active: index === currentIndex&#125;&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;/text&gt;</span><br><span class="line">	&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="JS部分代码"><a href="#JS部分代码" class="headerlink" title="JS部分代码"></a>JS部分代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">data() &#123;</span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		currentIndex: <span class="number">0</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">	itemClick(index) &#123;</span><br><span class="line">		<span class="keyword">this</span>.currentIndex = index</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="小程序原生代码"><a href="#小程序原生代码" class="headerlink" title="小程序原生代码"></a>小程序原生代码</h2><h3 id="视图层部分代码"><a href="#视图层部分代码" class="headerlink" title="视图层部分代码"></a>视图层部分代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;block wx:for=&quot;&#123;&#123;leftData&#125;&#125;&quot; wx:for-item=&quot;lcai&quot; wx:key=&quot;index&quot;&gt;</span><br><span class="line">&lt;view bindtap=&quot;btnClick&quot; data-index=&quot;&#123;&#123;index&#125;&#125;&quot; class=&quot;inner &#123;&#123;currentIndex == index? &apos;active&apos; : &apos;&apos;&#125;&#125;&quot;&gt;&#123;&#123;lcai.name&#125;&#125;&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="逻辑层部分代码"><a href="#逻辑层部分代码" class="headerlink" title="逻辑层部分代码"></a>逻辑层部分代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    currentIndex: <span class="number">0</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  btnClick: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> index = e.currentTarget.dataset.index;</span><br><span class="line">    <span class="built_in">console</span>.log(index)</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      currentIndex: index</span><br><span class="line">    &#125;) </span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="原代码的实现方式"><a href="#原代码的实现方式" class="headerlink" title="原代码的实现方式"></a>原代码的实现方式</h3><ol>
-<li>跟网上说的基本上一致，绑定点击事件，通过判断当前元素的index和currentIndex是否相等，返回true或者false来动态添加active样式(color:red; background-color: gray;)。</li>
-<li>看着没有任何的问题，在pc端也是这么写的。</li>
-</ol>
-<h2 id="直到我看到了这篇文章"><a href="#直到我看到了这篇文章" class="headerlink" title="直到我看到了这篇文章"></a>直到我看到了这篇文章</h2><ul>
-<li><p>植树节晚上洗完澡一直在考虑这个问题，没有头绪，谷歌搜了下通用类的小程序优化思路。看到了如下这篇文章，才恍然大悟。</p>
+<ul>
+<li>一般来说分为三段，也存在一段或者两段的情况，常见的三段如<code>utf8mb4_general_ci</code>,两段的如<code>utf8mb4_bin</code>(<strong>这类情况，其实只存在第一段和第三段，第二段不存在</strong>)</li>
+<li>第一段代表字符集。</li>
+<li>第二段代表语言(chinese,swedish),也有general这种通用的，或者unicode类型。</li>
+<li>第三段代表是否敏感，是否为bin。</li>
+</ul>
+<ol start="4">
+<li>对于第三段的解释<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">_ai	Accent insensitive</span><br><span class="line">_as	Accent sensitive</span><br><span class="line">_ci	Case insensitive</span><br><span class="line">_cs	case-sensitive</span><br><span class="line">_bin	Binary</span><br></pre></td></tr></table></figure>
 </li>
-<li><blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/82741561" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82741561</a></p>
+</ol>
+<ul>
+<li>Accent是否为sensitive表现为，如果为sensitive，则比较a和á是不同的，如果为insensitive则a和á比较为相同。</li>
+<li>Case insensitive为大小写不敏感，case-sensitive为大小写敏感。</li>
+</ul>
+<h2 id="字符集和字符序的继承顺序"><a href="#字符集和字符序的继承顺序" class="headerlink" title="字符集和字符序的继承顺序"></a>字符集和字符序的继承顺序</h2><ol>
+<li>数据库服务，建库，建表，建字段，倘若其中有指定character和collation，则<code>字段</code>继承<code>表</code>，<code>表</code>继承<code>库</code>，<code>库</code>继承<code>数据库服务</code>。比如建库指定了字符集为utf8，那么该库下面的表如果不指定字符集，则表的字符集也为utf8，char、varchar、text的字段字符集也是utf8。</li>
+<li><strong>有个例外，如果修改了表， 那么该表下面的字段的字符集和字符序也会变成表的字符集和字符序。</strong></li>
+</ol>
+<h2 id="修改查看字符集命令："><a href="#修改查看字符集命令：" class="headerlink" title="修改查看字符集命令："></a>修改查看字符集命令：</h2><ul>
+<li><p>修改运行环境：</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SET character_set_server = utf8mb4</span><br><span class="line">set character_set_connection = utf8mb4</span><br><span class="line">set character_set_database = utf8mb4</span><br><span class="line">set character_set_results = utf8mb4</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改库:</p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER DATABASE dbname CHARACTER SET utf8mb4 COLLATE  utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句 </span><br><span class="line">show create database dbname;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>修改表:  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. dir varchar(255) -&gt; varchar(191)  mysql5.6的版本需要修改。不保证所有版本都需要修改。</span><br><span class="line">ALTER TABLE dir_stats MODIFY dir VARCHAR(191);</span><br><span class="line">2. 修改字段类型utf8mb4</span><br><span class="line">alter table tablename convert to character set utf8mb4 collate utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句</span><br><span class="line">SHOW FULL COLUMNS FROM dbname.tablename;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html" target="_blank" rel="noopener">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations" target="_blank" rel="noopener">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a><br><a href="https://dev.mysql.com/doc/refman/8.0/en/charset-database.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/charset-database.html</a><br><a href="http://zarez.net/?p=719" target="_blank" rel="noopener">http://zarez.net/?p=719</a></p>
 </blockquote>
+]]></content>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二叉树种类和遍历</title>
+    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
+    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
+<ol>
+<li>rooted binary tree<ul>
+<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
+</ul>
 </li>
+<li>full binary tree<ul>
+<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
 </ul>
-<h3 id="为什么会慢？"><a href="#为什么会慢？" class="headerlink" title="为什么会慢？"></a>为什么会慢？</h3><ul>
-<li>小程序的视图层(wxml)和逻辑层(js)是独立分开的。这样视图层不能运行js代码，逻辑层的js代码也不能修改视图层的dom</li>
-<li>当数据更新以及事件系统只能靠线程间通讯，但跨线程通信的成本极高，一些频繁通讯的场景，触摸、滚动等。</li>
-<li>一个点击行为，需要经过视图层、Native、逻辑层三者之间2个完整来回的通信，通信的耗时开销较大，用户的交互就会出现延时卡顿的情况。</li>
-<li>for循环对数据格式修改，也会造成逻辑层和视图层频繁通讯。</li>
-</ul>
-<h3 id="wxs的出现"><a href="#wxs的出现" class="headerlink" title="wxs的出现"></a>wxs的出现</h3><ul>
-<li>wxs是一种被限制了的js，他可以运行在视图层。<strong>换句话说wxs和视图层的交互不需要经过Native层</strong>。</li>
-<li>他是不可以操作dom的，因为小程序的视图层和逻辑层的分开就是为了不想用js直接操作dom。</li>
-<li>wxs无法直接修改业务数据，只能对当前组件的class和style处理，或者数据进行格式化。</li>
-<li>如果要修改业务逻辑数据，则需要用callMethod方法。</li>
-</ul>
-<h3 id="wxs适合的场景"><a href="#wxs适合的场景" class="headerlink" title="wxs适合的场景"></a>wxs适合的场景</h3><ul>
-<li>用户交互频繁、仅需改动组件样式（比如布局位置），无需改动数据内容的场景，比如侧滑菜单、索引列表、滚动渐变等 - 数据格式处理，比如文本、日期格式化，或者国际化。</li>
-</ul>
-<h2 id="修改后的uni-app代码"><a href="#修改后的uni-app代码" class="headerlink" title="修改后的uni-app代码"></a>修改后的uni-app代码</h2><h3 id="template部分代码-1"><a href="#template部分代码-1" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;block v-for=&apos;(item,index) in foodsInfo&apos; :key=&apos;index&apos;&gt;</span><br><span class="line">  &lt;!-- 绑定多个class的方式，用数组，变量不需要加&#123;&#123;&#125;&#125;     点击事件绑定wxs中export的clickwxs--&gt;</span><br><span class="line">	&lt;view :data-index=&quot;index&quot; :class=&apos;[&quot;side-left-item&quot;, &quot;inner_&quot; + index]&apos; @click=&quot;clickwxs.tapName&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;/text&gt;</span><br><span class="line">	&lt;/view&gt;</span><br><span class="line">&lt;/block&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="WXS部分代码"><a href="#WXS部分代码" class="headerlink" title="WXS部分代码"></a>WXS部分代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//该代码和上面template代码为同一个文件下。</span></span><br><span class="line"><span class="comment">//命名为clickwxs</span></span><br><span class="line">&lt;script <span class="built_in">module</span>=<span class="string">"clickwxs"</span> lang=<span class="string">"wxs"</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ins</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(event))</span><br><span class="line">  <span class="keyword">var</span> owner = ins.selectAllComponents(<span class="string">'.side-left-item'</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 移除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">'active'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'.inner'</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">var</span> instance = ins.selectComponent(<span class="string">'.inner_'</span> + event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(instance)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">'active'</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="修改后的微信小程序原生代码"><a href="#修改后的微信小程序原生代码" class="headerlink" title="修改后的微信小程序原生代码"></a>修改后的微信小程序原生代码</h2><h3 id="视图层代码"><a href="#视图层代码" class="headerlink" title="视图层代码"></a>视图层代码</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入wxs--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wxs</span> <span class="attr">module</span>=<span class="string">"wxs"</span> <span class="attr">src</span>=<span class="string">"./index.wxs"</span>&gt;</span><span class="tag">&lt;/<span class="name">wxs</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scroll-view</span> <span class="attr">scroll-y</span>=<span class="string">"true"</span> <span class="attr">class</span>=<span class="string">"scroll"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;leftData&#125;&#125;"</span> <span class="attr">wx:for-item</span>=<span class="string">"lcai"</span> <span class="attr">wx:key</span>=<span class="string">"index"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">bindtap</span>=<span class="string">"&#123;&#123;wxs.tapName&#125;&#125;"</span> <span class="attr">data-index</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">class</span>=<span class="string">"inner inner_&#123;&#123;index&#125;&#125;"</span>&gt;</span>&#123;&#123;lcai.name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scroll-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="wxs代码"><a href="#wxs代码" class="headerlink" title="wxs代码"></a>wxs代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ownerInstance</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 获取所有class="inner"的组件</span></span><br><span class="line">  <span class="keyword">var</span> owner = ownerInstance.selectAllComponents(<span class="string">'.inner'</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 清除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">'active'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'.inner_'</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> instance = ownerInstance.selectComponent(<span class="string">'.inner_'</span> + event.currentTarget.dataset.index)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">'active'</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><strong>修改完后，无论是uni-app框架的小程序，还是小程序原生的写法，点击延迟感不再有。</strong></p>
-<h2 id="两份代码github地址"><a href="#两份代码github地址" class="headerlink" title="两份代码github地址"></a>两份代码github地址</h2><ol>
-<li><blockquote>
-<p><a href="https://github.com/huangyisan/fooods" target="_blank" rel="noopener">https://github.com/huangyisan/fooods</a>  leftbuttom分支</p>
-</blockquote>
 </li>
-<li><blockquote>
-<p><a href="https://github.com/huangyisan/ori-fooods" target="_blank" rel="noopener">https://github.com/huangyisan/ori-fooods</a></p>
-</blockquote>
+<li>complete binary tree<ul>
+<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
+</ul>
+</li>
+<li>perfect binary tree<ul>
+<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
+</ul>
+</li>
+<li>infinite complete binary tree<ul>
+<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
+<li>我的理解就是无穷尽的rooted binray tree</li>
+</ul>
+</li>
+<li>balanced binary tree<ul>
+<li>左右子树高度差不超过1</li>
+<li>且左右子树各自均为平衡二叉树</li>
+</ul>
+</li>
+<li>degenerate tree<ul>
+<li>每个节点只包含一个子节点。</li>
+</ul>
 </li>
 </ol>
+<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
+<ul>
+<li>指先访问根，然后访问子树的遍历方式。</li>
+<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
+<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
+<ul>
+<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
+<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
+<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
+<ul>
+<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
+<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
+</ul>
+<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
+<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
+<ul>
+<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
+<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
+</ul>
+<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
+<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
 <p>refer</p>
 <blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/82741561" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82741561</a></p>
-<p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html</a></p>
-<p><a href="https://www.cnblogs.com/murenziwei/p/11233505.html" target="_blank" rel="noopener">https://www.cnblogs.com/murenziwei/p/11233505.html</a></p>
+<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
 </blockquote>
 ]]></content>
       <tags>
-        <tag>小程序</tag>
+        <tag>python3</tag>
+        <tag>algorithm</tag>
       </tags>
   </entry>
   <entry>
-    <title>k8s配置多集群接入</title>
-    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
-<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
-<ul>
-<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
-</li>
-<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
-</li>
-<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
-</li>
-</ul>
-<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
-<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
-<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
-<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
-<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
-<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
+    <title>linux平均负载</title>
+    <url>/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/</url>
+    <content><![CDATA[<h2 id="linux平负载定义"><a href="#linux平负载定义" class="headerlink" title="linux平负载定义"></a>linux平负载定义</h2><ol>
+<li>单位时间内，处于<strong>运行或者准备运行(R)</strong>，以及<strong>不可中断睡眠进程(D)</strong>数量的平均值(指数平滑法)。</li>
+<li>和cpu使用率没有直接关系。</li>
+<li>负载上升，可能是cpu使用率过高，也可能是磁盘io问题。</li>
 </ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
-<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
-<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
-<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
-<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
-<p>refer:</p>
+<h2 id="平均负载算法"><a href="#平均负载算法" class="headerlink" title="平均负载算法"></a>平均负载算法</h2><p>其算法为<code>指数平滑法</code>，内核因为不可以直接做浮点运算，而选择<strong>定点运算</strong>的方式来计算指数平滑法。</p>
+<p>指数平滑法公式：</p>
+<ol>
+<li><p>linux 2.6.18内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α)，[0 &lt; α &lt; 1]</p>
+</li>
+<li><p>linux 3.12内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α) + z，[0 &lt; α &lt; 1]    <em>3.12内核增加了修正值z。</em></p>
+</li>
+</ol>
+<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sup>-5/(60<em>m)</em></sup><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
+<p>参考文档:</p>
 <blockquote>
-<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
+<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
+</blockquote>
+<h2 id="multi-core-vs-multi-processor"><a href="#multi-core-vs-multi-processor" class="headerlink" title="multi-core vs multi-processor"></a>multi-core vs multi-processor</h2><ol>
+<li><p>load关注机器有多少个processor</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">此公式包含超线程数。</span><br><span class="line">[root@leanote ~]# cat /proc/cpuinfo | grep &quot;processor&quot; | wc -l</span><br><span class="line">1</span><br><span class="line">[root@leanote ~]#</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>core可以理解为核心数，也就是cpu核心总数，而processor理解为逻辑cpu个数，而非真实cpu个数，这个逻辑cpu个数等于top后按1查看到的结果。</p>
+</li>
+</ol>
+<h2 id="linux查看cpu信息"><a href="#linux查看cpu信息" class="headerlink" title="linux查看cpu信息"></a>linux查看cpu信息</h2><p>总核数 = 物理CPU个数 X 每颗物理CPU的核数<br>总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数</p>
+<p>查看物理CPU个数<br>cat /proc/cpuinfo| grep “physical id”| sort| uniq| wc -l</p>
+<p>查看每个物理CPU中core的个数(即核数)<br>cat /proc/cpuinfo| grep “cpu cores”| uniq</p>
+<p>查看逻辑CPU的个数<br>cat /proc/cpuinfo| grep “processor”| wc -l</p>
+<p>refer</p>
+<blockquote>
+<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
 </blockquote>
 ]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
       <tags>
-        <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>k8s拉取私有镜像</title>
-    <url>/2020/08/06/k8s%E6%8B%89%E5%8F%96%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><h2 id="生产遇到的问题"><a href="#生产遇到的问题" class="headerlink" title="生产遇到的问题"></a>生产遇到的问题</h2><p>k8s环境在一个阿里账号下，但阿里镜像仓库在另外的一个阿里账号下。</p>
-<p>在k8s环境中部署服务的时候，发现镜像拉取失败，使用<code>kubectl describe pod xxx</code>在event字段发现如下报错：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type     Reason     Age                From                Message</span><br><span class="line">  ----     ------     ----               ----                -------</span><br><span class="line">  Normal   Scheduled  &lt;unknown&gt;          default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ErrImagePull</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Failed to pull image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": rpc error: code = Unknown desc = failed to pull and unpack image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": failed to resolve reference "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ImagePullBackOff</span><br></pre></td></tr></table></figure>
-<p>报错信息表明了镜像不存在，或者需要认证后才能拉取。</p>
-<p>然后上阿里云控制台检查了下，发现仓库是私有类型，当时改成了公有类型，的确可以拉取镜像了。</p>
-<p><strong>但是如果镜像是根据公司业务定制化，包含了公司敏感信息，那么此时就不适合作为公有类型了</strong>。</p>
-<h2 id="两种方法解决拉取私有镜像的问题"><a href="#两种方法解决拉取私有镜像的问题" class="headerlink" title="两种方法解决拉取私有镜像的问题"></a>两种方法解决拉取私有镜像的问题</h2><h3 id="方法一：通过Docker-credentials创建K8S-Secret资源"><a href="#方法一：通过Docker-credentials创建K8S-Secret资源" class="headerlink" title="方法一：通过Docker credentials创建K8S Secret资源"></a>方法一：通过Docker credentials创建K8S Secret资源</h3><ol>
-<li><p>使用docker login ${registry-addr}。</p>
-</li>
-<li><p>输入用户名和密码。</p>
-</li>
-<li><p>认证通过后docker会把认证信息以明文的方式默认存放到<code>/root/.docker/config.json</code>文件内。<strong>该文件存放了所有认证通过的镜像仓库，并且使用base64编码了用户名和密码，所以如果要查看用户名和密码，只需要base64 decode即可。</strong></p>
-</li>
-<li><p>使用一下命令就可以在k8s的secret资源中添加一条记录了。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic $&#123;secret-name&#125; \</span><br><span class="line">    --from-file=.dockerconfigjson=&lt;path/to/.docker/config.json&gt; \</span><br><span class="line">    --type=kubernetes.io/dockerconfigjson</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="方法二：使用命令行的方式添加K8S-Secret资源"><a href="#方法二：使用命令行的方式添加K8S-Secret资源" class="headerlink" title="方法二：使用命令行的方式添加K8S Secret资源"></a>方法二：使用命令行的方式添加K8S Secret资源</h2><ol>
-<li><p>使用如下命令就可以在k8s的secret资源中添加一条记录了。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret docker-registry regcred --docker-server=&lt;your-registry-server&gt; --docker-username=&lt;your-name&gt; --docker-password=&lt;your-pword&gt; --docker-email=&lt;your-email&gt;</span><br></pre></td></tr></table></figure>
-<p>其中your-email可以任意填写</p>
-</li>
-</ol>
-<h2 id="验证镜像拉取"><a href="#验证镜像拉取" class="headerlink" title="验证镜像拉取"></a>验证镜像拉取</h2><ol>
-<li><p>修改yaml文件，添加imagePullSecrets字段，使用name: ${secret-name}来指定使用哪个secret资源。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    env: test</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest</span><br><span class="line">    imagePullPolicy: Always</span><br><span class="line">  imagePullSecrets:</span><br><span class="line">  - name: ali-hys</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除pod后重新部署，查看event字段发现已经可以正常拉取了。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type    Reason     Age        From                Message</span><br><span class="line">  ----    ------     ----       ----                -------</span><br><span class="line">  Normal  Scheduled  &lt;unknown&gt;  default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Normal  Pulling    6s         kubelet, k3s-node2  Pulling image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Pulled     6s         kubelet, k3s-node2  Successfully pulled image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Created    6s         kubelet, k3s-node2  Created container nginx</span><br><span class="line">  Normal  Started    5s         kubelet, k3s-node2  Started container nginx</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="查看secret资源"><a href="#查看secret资源" class="headerlink" title="查看secret资源"></a>查看secret资源</h2><ol>
-<li><p>kubectl get secret -n \&lt;namespace></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@test ~/k8s] # kubectl get secret</span><br><span class="line">NAME                                 TYPE                                  DATA   AGE</span><br><span class="line">default-token-jktlx                  kubernetes.io/service-account-token   3      48d</span><br><span class="line">my-release-ingress-nginx-admission   Opaque                                3      26h</span><br><span class="line">ali-hys                              kubernetes.io/dockerconfigjson        1      55m</span><br><span class="line">ali-json                             kubernetes.io/dockerconfigjson        1      31m</span><br><span class="line">You have new mail in /var/spool/mail/root</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>通过get指定的secret名称，-o yaml导出，其实也可以看到base64编码后的信息，只要decode就能看到明文</strong></p>
-</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
+        <tag>linux</tag>
+        <tag>cpu</tag>
       </tags>
   </entry>
   <entry>
