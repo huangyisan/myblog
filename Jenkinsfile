@@ -30,7 +30,7 @@ pipeline {
         stage('Build hexo') {
             steps {
                 dir('hexo-branch') {
-                    sh '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && npm clean cache && npm install && hexo clean && hexo g'
+                    sh '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && npm install && hexo clean && hexo g'
                 }
             }
         }
