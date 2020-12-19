@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="问题代码12345678910111213package mainimport &quot;fmt&quot;func main() &amp;#123;    chanStr := make(chan int)    chanStr &amp;lt;-1    a := &amp;lt;- chanStr    fmt.Println(a)&amp;#125;  创建一个无缓存channel chanStr 往chanStr放入int类型1 从c">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-19T13:58:04.241Z">
+<meta property="og:updated_time" content="2020-12-19T15:03:01.946Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go无缓存channel出现deadlock">
 <meta name="twitter:description" content="问题代码12345678910111213package mainimport &quot;fmt&quot;func main() &amp;#123;    chanStr := make(chan int)    chanStr &amp;lt;-1    a := &amp;lt;- chanStr    fmt.Println(a)&amp;#125;  创建一个无缓存channel chanStr 往chanStr放入int类型1 从c">
@@ -395,11 +395,14 @@
 <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br><span class="line"></span><br><span class="line">goroutine <span class="number">1</span> [<span class="keyword">chan</span> send]:</span><br><span class="line">main.main()</span><br></pre></td></tr></table></figure>
 <h2 id="产生报错的原因"><a href="#产生报错的原因" class="headerlink" title="产生报错的原因"></a>产生报错的原因</h2><p><a href="https://golang.org/doc/effective_go.html#channels" target="_blank" rel="noopener">官方</a>在这边说明了：</p>
 <ol>
-<li>Receivers always block until there is data to receive. (直到)</li>
-<li>If the channel is unbuffered, the sender blocks until the receiver has received the value.</li>
-<li>If the channel has a buffer, the sender blocks only until the value has been copied to the buffer.</li>
-<li>if the buffer is full, this means waiting until some receiver has retrieved a value.</li>
+<li>Receivers always block until there is data to receive. (直到channel内存在数据，消费端才会解除block状态)</li>
+<li>If the channel is unbuffered, the sender blocks until the receiver has received the value.(如果是无buff的channel，直到消费者消费了数据，发送者才会解除block状态)</li>
+<li>If the channel has a buffer, the sender blocks only until the value has been copied to the buffer.(如果是有buff的channel，那么在发送者发送数据到channel之前是block状态)</li>
+<li>if the buffer is full, this means waiting until some receiver has retrieved a value.(如果buff满了，则当消费者消费数据之前，会一直等待)</li>
 </ol>
+<p>产生的问题是第二点，main本身就是个goroutine，所以执行到<code>chanStr &lt;-1</code>因为没有对应的消费者消费数据，所以被block，下面的代码也就无法执行，导致deadlock错误。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>将<code>a := &lt;- chanStr</code>单独作为一个goroutine，这样就存在两个goroutine，一个main，还有一个是匿名函数，接受者和发送者在不同goroutine上，就不会出现deadlock了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	chanStr := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		chanStr &lt;- <span class="number">1</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	a := &lt;- chanStr</span><br><span class="line">	fmt.Println(a)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -657,7 +660,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题代码"><span class="nav-number">1.</span> <span class="nav-text">问题代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产生报错的原因"><span class="nav-number">2.</span> <span class="nav-text">产生报错的原因</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题代码"><span class="nav-number">1.</span> <span class="nav-text">问题代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产生报错的原因"><span class="nav-number">2.</span> <span class="nav-text">产生报错的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">3.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
             
 
           </div>
