@@ -89,7 +89,7 @@ pipeline {
         <tr>
             <div>
                 <p>本邮件由系统自动发出，无需回复</p>
-                <p>小主，您好！以下为${PROJECT_NAME }项目构建信息</p>
+                <p>小主，您好！以下为${PROJECT_NAME}项目构建信息</p>
                 <p>
                     <font color="#CC0000">构建结果 - ${BUILD_STATUS}</font>
                 </p>
@@ -122,7 +122,7 @@ pipeline {
                 $FAILED_TESTS<br />
 
                 <h4>
-                    <font color="#0B610B">最近提交(#$SVN_REVISION)</font>
+                    <font color="#0B610B">最近提交(#$GIT_COMMIT)</font>
                 </h4>
                 <hr size="2" width="100%" />
                 <ul>
