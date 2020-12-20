@@ -179,27 +179,6 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode 只出现一次的数字</title>
-    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
-<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
-<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
-<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
-</ol>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>LeetCode 实现strStr()</title>
     <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
@@ -240,6 +219,27 @@
 <p><a href="https://leetcode-cn.com/problems/length-of-last-word/submissions/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/submissions/</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 只出现一次的数字</title>
+    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
+<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
+<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
+<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+</ol>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>leetcode</category>
       </categories>
@@ -1030,6 +1030,27 @@
       </tags>
   </entry>
   <entry>
+    <title>concourse食用指北05-一些优化和技巧</title>
+    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
+<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
+<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
+<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
+<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
+<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
+<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
+<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
+<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>concourse食用指北04-编写一个自定义resource</title>
     <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9704-%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89resource/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
@@ -1108,24 +1129,49 @@
       </tags>
   </entry>
   <entry>
-    <title>concourse食用指北05-一些优化和技巧</title>
-    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
-    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
-<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
-<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
-<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
-<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
-<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
-<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
-<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
-<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
+    <title>css居中-水平方向</title>
+    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
+    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
+<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
+<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
+<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
+</ul>
+<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
+<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
+<li>如果不给width属性，则宽度填满父级元素空间。</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
+<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<ul>
+<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+
+<p>ref:</p>
+<blockquote>
+<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
+</blockquote>
 ]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
       <tags>
-        <tag>linux</tag>
-        <tag>concourse</tag>
+        <tag>css</tag>
+        <tag>html</tag>
       </tags>
   </entry>
   <entry>
@@ -1205,52 +1251,6 @@
 </ol>
 <iframe height="265" style="width: 100%;" scrolling="no" title="Center Block with Unknown Height with Flexbox" src="https://codepen.io/huangyisan/embed/eYNKEbw?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/eYNKEbw" target="_blank" rel="noopener">Center Block with Unknown Height with Flexbox</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
 
-
-
-
-
-<p>ref:</p>
-<blockquote>
-<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>css</tag>
-        <tag>html</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>css居中-水平方向</title>
-    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
-    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
-<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
-<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
-<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
-</ul>
-<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
-<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
-<li>如果不给width属性，则宽度填满父级元素空间。</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
-<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<ul>
-<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
 
 
 
@@ -1401,72 +1401,6 @@
 ]]></content>
       <tags>
         <tag>c</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git clean/rm/reset/revert/checkout用法和区别</title>
-    <url>/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h2 id="git的工作区和暂存区"><a href="#git的工作区和暂存区" class="headerlink" title="git的工作区和暂存区"></a>git的工作区和暂存区</h2><p>先说下这两个概念：<br><strong>工作区</strong>，就是你git仓库的目录，你进行修改文件的区域。<br><strong>暂存区</strong>，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为<strong>暂存区</strong>。</p>
-<p>工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:</p>
-<ol>
-<li>修改代码文件   </li>
-<li><code>git add 修改后的代码文件</code>   <strong>此刻的行为将该代码文件从工作区添加到了暂存区</strong></li>
-<li><code>git commit -m &#39;commit 内容&#39;</code>  <strong>此刻的行为把暂存区的内容提交到了本地分支上</strong></li>
-</ol>
-<p>最后的<code>git push</code>操作只是一个将本地分支推送到远端的行为，所以先不考虑进去，只考前面三点。</p>
-<p>查看工作区和暂存区常用的命令为<code>git status</code></p>
-<p>一般常见的是如下三种情况：</p>
-<ol>
-<li><p>在工作区<strong>新建</strong>了文件或目录，但还未将这些文件或目录<code>git add</code>提交到暂存区。这些文件或目录被标记为<strong>untracked files</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ touch foo bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line">	foo</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对修改后的文件进行了<code>git add</code>操作，将这些文件提交到了暂存区，但未执行<code>git commit -m &#39;xxx&#39;</code>，未提交到本地分支。此时文件属于<code>Changes to be committed</code>状态</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对已经<code>git add</code>操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行<code>git add</code>，此时文件属于<code>Changes not staged for commit</code>状态</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>已经commit到本地分支的文件，且该文件在工作区没被修改之前，其不会在git status中出现。</p>
-</li>
-</ol>
-<h2 id="git-checkout-–-file"><a href="#git-checkout-–-file" class="headerlink" title="git checkout – file"></a>git checkout – file</h2><p>两种情况</p>
-<ol>
-<li>若被checkout的文件在暂存区，但工作区修改了，也就是上面的<strong>第三种</strong>情况，此时执行该命令，被checkout的文件变成和暂存区一样的状态和内容。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;first line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>将foo文件写入’first line’内容后，用<code>git add foo</code>，提交到了暂存区，未commit情况下，再写入新内容’new line’,若想还原到暂存区状态，则使用命令<code>git checkout -- foo</code></p>
-<ol start="2">
-<li>被修改文件不在暂存区，此时使用<code>git checkout -- file</code>命令，则该文件和当前版本仓库中原先的文件一致。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>干净的工作区，修改了foo文件，然后进行checkout操作之后，foo文件还原成了仓库中该文件原先的状态和内容。</p>
-<h2 id="git-clean"><a href="#git-clean" class="headerlink" title="git clean"></a>git clean</h2><p>git clean 的对象为<strong>untracked files</strong>，也就是在工作区<strong>新建</strong>，但还未执行<code>git add</code>命令提交到暂存区的文件或目录。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ touch new1 new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ mkdir &#123;tmp1,tmp2&#125;</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new1 new2 tmp1 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -n</span><br><span class="line">Would remove new1</span><br><span class="line">Would remove new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f new1</span><br><span class="line">Removing new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df tmp1</span><br><span class="line">Removing tmp1/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new2 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f</span><br><span class="line">Removing new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df</span><br><span class="line">Removing tmp2/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br></pre></td></tr></table></figure></p>
-<p><code>git clean -n</code>，干跑模式，可以列出哪些文件会被清除，但不会列出哪些目录会被清除。<br><code>git clean -f</code>，若指定文件，则该文件被清除，若不指定文件，则所有未被提交到暂存区的文件都被清除。<br><code>git clean -df</code>，若指定目录，则该目录被清除，若不指定目录，则所有未被提交到暂存区的目录都被清除。</p>
-<h2 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h2><p><code>git rm</code>等价于<code>rm xxx &amp;&amp; git add .</code>。<br>如果一个文件是被rm删除，则可以使用<code>git checkout -- file</code>将文件还原回来，而如果是用<code>git rm</code>删除，则该文件不可以被<code>git checkout -- file</code>。当然，如果是rm文件，然后git add操作，也是不能被<code>git checkout -- file</code>还原回来的。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ rm foo</span><br><span class="line">remove foo? y</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git rm foo</span><br><span class="line">rm &apos;foo&apos;</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">error: pathspec &apos;foo&apos; did not match any file(s) known to git.</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br></pre></td></tr></table></figure></p>
-<p>foo文件起先被rm删除，并未提交到暂存区，所以是可以被checkout还原，后来执行了git rm，所以当使用checkout还原的时候就报错了。</p>
-<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>三种模式</p>
-<ol>
-<li>–mixed 默认方式，将暂存区内容清空，回退到工作区，并且保留工作区的修改内容。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset HEAD</span><br><span class="line">Unstaged changes after reset:</span><br><span class="line">M	foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
-<p>暂存区被清空，工作区的更变被保留下来，foo文件存在new line这行内容。</p>
-<ol start="2">
-<li>–soft  暂存区内容，工作区内容都被保留，HEAD指向指定的commit号，该commit号原先的文件若有变动，则直接被add到暂存区。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">e5ca64a (HEAD -&gt; master) 1</span><br><span class="line">0ba0aa5 1</span><br><span class="line">ebaa828 1</span><br><span class="line">a2f32c5 1</span><br><span class="line">8f89d40 update</span><br><span class="line">be60bed 1</span><br><span class="line">bb51c34 .</span><br><span class="line">df8f824 update</span><br><span class="line">4dbd952 update</span><br><span class="line">9e683fb 1</span><br><span class="line">79dfad8 1</span><br><span class="line">3e58cef add 1</span><br><span class="line">94e5bf4 remove</span><br><span class="line">02aadbb ok</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset --soft 8f89d40</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	deleted:    bar</span><br><span class="line">	new file:   foo</span><br></pre></td></tr></table></figure>
-<p>将foo的改动add到暂存区后，使用<code>git reset --soft 8f89d40</code>，8f89d40这个commit号原先是存在bar这个文件，且foo文件不存在，因为reset之前的内容和之后的比较出现了差异，则这些差异被add到了新的暂存区中。</p>
-<ol start="3">
-<li>–hard  HEAD重置到指定commit号，且清空暂存区，工作区的内容和该commit号版本仓库的内容一致。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git reset --hard HEAD</span><br><span class="line">HEAD is now at 14d3892 1</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
-<p>暂存区被清空，工作区内容成了当前commit号版本仓库的内容，也就是没修改之前的内容，foo文件不存在new line行。<br><strong>但若工作区存在Untracked files，则这些Untracked files会携带进入到指定的commit号版本仓库的工作区中，所以要恢复到和某个commit号完全一致，还需要git clean -f清空Untracked files。</strong></p>
-<p><strong>git reset会将HEAD指向的分支指向reset对应的commit，而git checkout是HEAD直接指向对应的commit。</strong><br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg" alt></p>
-<h2 id="git-revert"><a href="#git-revert" class="headerlink" title="git revert"></a>git revert</h2><p>仅将某个commit号提交分支的内容撤销，且将此次撤销作为一个新的提交。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">145af31 (HEAD -&gt; master) add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git revert c11842d</span><br><span class="line">[master 19e736c] Revert &quot;add bar&quot;</span><br><span class="line"> 1 file changed, 0 insertions(+), 0 deletions(-)</span><br><span class="line"> delete mode 100644 bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">19e736c (HEAD -&gt; master) Revert &quot;add bar&quot;</span><br><span class="line">145af31 add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br></pre></td></tr></table></figure>
-<p>c11842d是将bar文件提交到了分支，当执行<code>git revert c11842d</code>,则撤销了提交bar文件到分支，所以执行完后，bar文件不见了，但foo文件依旧存在，所以revert只影响了被撤销的commit的变更内容，而且看git log，多了一个新的commit提交号19e736c。</p>
-]]></content>
-      <tags>
-        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -1668,6 +1602,72 @@
 ]]></content>
       <tags>
         <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git clean/rm/reset/revert/checkout用法和区别</title>
+    <url>/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="git的工作区和暂存区"><a href="#git的工作区和暂存区" class="headerlink" title="git的工作区和暂存区"></a>git的工作区和暂存区</h2><p>先说下这两个概念：<br><strong>工作区</strong>，就是你git仓库的目录，你进行修改文件的区域。<br><strong>暂存区</strong>，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为<strong>暂存区</strong>。</p>
+<p>工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:</p>
+<ol>
+<li>修改代码文件   </li>
+<li><code>git add 修改后的代码文件</code>   <strong>此刻的行为将该代码文件从工作区添加到了暂存区</strong></li>
+<li><code>git commit -m &#39;commit 内容&#39;</code>  <strong>此刻的行为把暂存区的内容提交到了本地分支上</strong></li>
+</ol>
+<p>最后的<code>git push</code>操作只是一个将本地分支推送到远端的行为，所以先不考虑进去，只考前面三点。</p>
+<p>查看工作区和暂存区常用的命令为<code>git status</code></p>
+<p>一般常见的是如下三种情况：</p>
+<ol>
+<li><p>在工作区<strong>新建</strong>了文件或目录，但还未将这些文件或目录<code>git add</code>提交到暂存区。这些文件或目录被标记为<strong>untracked files</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ touch foo bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line">	foo</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对修改后的文件进行了<code>git add</code>操作，将这些文件提交到了暂存区，但未执行<code>git commit -m &#39;xxx&#39;</code>，未提交到本地分支。此时文件属于<code>Changes to be committed</code>状态</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对已经<code>git add</code>操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行<code>git add</code>，此时文件属于<code>Changes not staged for commit</code>状态</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>已经commit到本地分支的文件，且该文件在工作区没被修改之前，其不会在git status中出现。</p>
+</li>
+</ol>
+<h2 id="git-checkout-–-file"><a href="#git-checkout-–-file" class="headerlink" title="git checkout – file"></a>git checkout – file</h2><p>两种情况</p>
+<ol>
+<li>若被checkout的文件在暂存区，但工作区修改了，也就是上面的<strong>第三种</strong>情况，此时执行该命令，被checkout的文件变成和暂存区一样的状态和内容。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;first line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>将foo文件写入’first line’内容后，用<code>git add foo</code>，提交到了暂存区，未commit情况下，再写入新内容’new line’,若想还原到暂存区状态，则使用命令<code>git checkout -- foo</code></p>
+<ol start="2">
+<li>被修改文件不在暂存区，此时使用<code>git checkout -- file</code>命令，则该文件和当前版本仓库中原先的文件一致。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>干净的工作区，修改了foo文件，然后进行checkout操作之后，foo文件还原成了仓库中该文件原先的状态和内容。</p>
+<h2 id="git-clean"><a href="#git-clean" class="headerlink" title="git clean"></a>git clean</h2><p>git clean 的对象为<strong>untracked files</strong>，也就是在工作区<strong>新建</strong>，但还未执行<code>git add</code>命令提交到暂存区的文件或目录。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ touch new1 new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ mkdir &#123;tmp1,tmp2&#125;</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new1 new2 tmp1 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -n</span><br><span class="line">Would remove new1</span><br><span class="line">Would remove new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f new1</span><br><span class="line">Removing new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df tmp1</span><br><span class="line">Removing tmp1/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new2 tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -f</span><br><span class="line">Removing new2</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  tmp2</span><br><span class="line">huangyisan:~/Desktop/github/test $ git clean -df</span><br><span class="line">Removing tmp2/</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br></pre></td></tr></table></figure></p>
+<p><code>git clean -n</code>，干跑模式，可以列出哪些文件会被清除，但不会列出哪些目录会被清除。<br><code>git clean -f</code>，若指定文件，则该文件被清除，若不指定文件，则所有未被提交到暂存区的文件都被清除。<br><code>git clean -df</code>，若指定目录，则该目录被清除，若不指定目录，则所有未被提交到暂存区的目录都被清除。</p>
+<h2 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h2><p><code>git rm</code>等价于<code>rm xxx &amp;&amp; git add .</code>。<br>如果一个文件是被rm删除，则可以使用<code>git checkout -- file</code>将文件还原回来，而如果是用<code>git rm</code>删除，则该文件不可以被<code>git checkout -- file</code>。当然，如果是rm文件，然后git add操作，也是不能被<code>git checkout -- file</code>还原回来的。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ rm foo</span><br><span class="line">remove foo? y</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git rm foo</span><br><span class="line">rm &apos;foo&apos;</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout foo</span><br><span class="line">error: pathspec &apos;foo&apos; did not match any file(s) known to git.</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar</span><br></pre></td></tr></table></figure></p>
+<p>foo文件起先被rm删除，并未提交到暂存区，所以是可以被checkout还原，后来执行了git rm，所以当使用checkout还原的时候就报错了。</p>
+<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>三种模式</p>
+<ol>
+<li>–mixed 默认方式，将暂存区内容清空，回退到工作区，并且保留工作区的修改内容。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset HEAD</span><br><span class="line">Unstaged changes after reset:</span><br><span class="line">M	foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
+<p>暂存区被清空，工作区的更变被保留下来，foo文件存在new line这行内容。</p>
+<ol start="2">
+<li>–soft  暂存区内容，工作区内容都被保留，HEAD指向指定的commit号，该commit号原先的文件若有变动，则直接被add到暂存区。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ echo &apos;new line&apos; &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">e5ca64a (HEAD -&gt; master) 1</span><br><span class="line">0ba0aa5 1</span><br><span class="line">ebaa828 1</span><br><span class="line">a2f32c5 1</span><br><span class="line">8f89d40 update</span><br><span class="line">be60bed 1</span><br><span class="line">bb51c34 .</span><br><span class="line">df8f824 update</span><br><span class="line">4dbd952 update</span><br><span class="line">9e683fb 1</span><br><span class="line">79dfad8 1</span><br><span class="line">3e58cef add 1</span><br><span class="line">94e5bf4 remove</span><br><span class="line">02aadbb ok</span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset --soft 8f89d40</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">new line</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	deleted:    bar</span><br><span class="line">	new file:   foo</span><br></pre></td></tr></table></figure>
+<p>将foo的改动add到暂存区后，使用<code>git reset --soft 8f89d40</code>，8f89d40这个commit号原先是存在bar这个文件，且foo文件不存在，因为reset之前的内容和之后的比较出现了差异，则这些差异被add到了新的暂存区中。</p>
+<ol start="3">
+<li>–hard  HEAD重置到指定commit号，且清空暂存区，工作区的内容和该commit号版本仓库的内容一致。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git reset --hard HEAD</span><br><span class="line">HEAD is now at 14d3892 1</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
+<p>暂存区被清空，工作区内容成了当前commit号版本仓库的内容，也就是没修改之前的内容，foo文件不存在new line行。<br><strong>但若工作区存在Untracked files，则这些Untracked files会携带进入到指定的commit号版本仓库的工作区中，所以要恢复到和某个commit号完全一致，还需要git clean -f清空Untracked files。</strong></p>
+<p><strong>git reset会将HEAD指向的分支指向reset对应的commit，而git checkout是HEAD直接指向对应的commit。</strong><br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg" alt></p>
+<h2 id="git-revert"><a href="#git-revert" class="headerlink" title="git revert"></a>git revert</h2><p>仅将某个commit号提交分支的内容撤销，且将此次撤销作为一个新的提交。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">145af31 (HEAD -&gt; master) add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar  foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git revert c11842d</span><br><span class="line">[master 19e736c] Revert &quot;add bar&quot;</span><br><span class="line"> 1 file changed, 0 insertions(+), 0 deletions(-)</span><br><span class="line"> delete mode 100644 bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">foo  new  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git log --oneline</span><br><span class="line">19e736c (HEAD -&gt; master) Revert &quot;add bar&quot;</span><br><span class="line">145af31 add new</span><br><span class="line">edf54e3 add foo</span><br><span class="line">c11842d add bar</span><br><span class="line">5f4b280 remove all</span><br></pre></td></tr></table></figure>
+<p>c11842d是将bar文件提交到了分支，当执行<code>git revert c11842d</code>,则撤销了提交bar文件到分支，所以执行完后，bar文件不见了，但foo文件依旧存在，所以revert只影响了被撤销的commit的变更内容，而且看git log，多了一个新的commit提交号19e736c。</p>
+]]></content>
+      <tags>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -1897,6 +1897,44 @@
       </tags>
   </entry>
   <entry>
+    <title>k8s配置多集群接入</title>
+    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
+<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
+<ul>
+<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
+</li>
+<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
+</li>
+<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
+</li>
+</ul>
+<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
+<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
+<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
+<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
+<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
+<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
+<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
+<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
+<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>k8s拉取私有镜像</title>
     <url>/2020/08/06/k8s%E6%8B%89%E5%8F%96%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F/</url>
     <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><h2 id="生产遇到的问题"><a href="#生产遇到的问题" class="headerlink" title="生产遇到的问题"></a>生产遇到的问题</h2><p>k8s环境在一个阿里账号下，但阿里镜像仓库在另外的一个阿里账号下。</p>
@@ -1950,41 +1988,36 @@
       </tags>
   </entry>
   <entry>
-    <title>k8s配置多集群接入</title>
-    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
-<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
-<ul>
-<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
-</li>
-<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
-</li>
-<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
-</li>
-</ul>
-<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
-<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
-<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
-<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
-<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
-<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
 </ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
-<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
-<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
-<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
-<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
 <p>refer:</p>
 <blockquote>
-<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
 </blockquote>
 ]]></content>
       <categories>
-        <category>application</category>
+        <category>system</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2013,6 +2046,76 @@
 ]]></content>
       <tags>
         <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>prometheus曲线救国添加hostname</title>
+    <url>/2019/03/07/prometheus%E6%B7%BB%E5%8A%A0hostname/</url>
+    <content><![CDATA[<h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><ol>
+<li>prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。</li>
+<li>只看ip，无法知道该机器的用户。</li>
+<li>grafana展现的时候，能根据hostname进行选择，展现机器数据。</li>
+</ol>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li>node_exporter中启用textfile采集的方式。</li>
+<li>在textfile目录下，写入hostname。</li>
+<li>通过表达式获取hostname。</li>
+</ol>
+<h2 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h2><ol>
+<li>如何做到hostname的更变。</li>
+<li>表达式hostname只和写入的metric有关，如何关联到不存在hostname的metric中。</li>
+</ol>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
+<li><p>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ExecStartPre=/opt/scripts/gethostname.sh</span><br><span class="line"></span><br><span class="line"># cat /opt/scripts/gethostname.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role=\&quot;`/usr/bin/hostname`\&quot;&#125; 0&quot; &gt; /app/local/node_exporter/collect/hostname.prom</span><br><span class="line">echo 1 &gt; /dev/null</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># HELP machine_role Metric read from /app/local/node_exporter/collect/hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role=&quot;postfix01&quot;&#125; 0</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>其label是role，value是postfix01，也就是hostname</p>
+<p>prometheus中执行执行<code>machine_role</code>,可以得到element为：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;ShangHai-SJ-L3-LC-Flume-01&quot;,service=&quot;L3&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这边有role和instance这个两个label，其中role为hostname的label，而instance则作为连接点的label。</p>
+<p>在grafana中的变量配置中就可以根据machine_role，先获取role，作为$hostname的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;service=&quot;$job&quot;&#125;,role)</span><br></pre></td></tr></table></figure></p>
+<p>然后再根据$hostname，来获取instance,作为$node的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;role=&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure></p>
+<p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance=~&quot;$node&quot;, mode=&apos;system&apos;&#125;) by (cpu))</span><br></pre></td></tr></table></figure></p>
+<h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
+<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg" alt></p>
+</li>
+<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg" alt></p>
+</li>
+<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg" alt></p>
+</li>
+</ul>
+<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><ul>
+<li>如果是通过dns方式发现，则是可以把hostname变成元label的。</li>
+<li>通过consul发现，则可以在consul客户端上报hostname，也可以把hostname变成元label。</li>
+</ul>
+<h2 id="待解决问题第二点解决方法"><a href="#待解决问题第二点解决方法" class="headerlink" title="待解决问题第二点解决方法"></a>待解决问题第二点解决方法</h2><p><strong>promSQL可以使用on ignore group_left group_right配合来把hostname拼凑进去。</strong></p>
+<p>machine_role查询得到的结果:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  0</span><br></pre></td></tr></table></figure>
+<p>up查询得到的结果:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
+<p>machine_role里面的role标签包含了主机名，但up没有，此时通过将两个方法结合在一起。<br>使用on方法，<em>可以理解为mysql的两表查询join</em> 两者的有共同的instance,job,service,ip标签</p>
+<p>不一定要全部都选择，但选择的多则相互匹配更加精确，<code>on(instance,job,service,ip)</code></p>
+<p>使用group_left或者group_right标记”多”的标签,这边多出来的标签是role，所以为<code>group_left(role)</code></p>
+<p>表达式架构为:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;vector expr&gt; &lt;bin-op&gt; on(&lt;label list&gt;) group_left(&lt;label list&gt;) &lt;vector expr&gt;</span><br></pre></td></tr></table></figure>
+<p><bin-op>指加减乘除余幂</bin-op></p>
+<p>所以将up和machine_role拼凑和可以写为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role</span><br><span class="line">&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
+<p>如果用group_right，则把up和machine_role反一下即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role + on(instance, job,ip,service) group_right(role) up</span><br></pre></td></tr></table></figure>
+<p>此时得到的结果包含了role，如果作为告警，由于up为1表示正常，machine_role设置的是0，两者相加，若为0，则表示机器down。<br>告警表达式可以写成:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role == 0</span><br></pre></td></tr></table></figure>
+<p>此时如果告警，则会包含role这个标签，就可以传递给alertmanager，获取到role了。</p>
+<p>refer</p>
+<blockquote>
+<p><a href="https://www.robustperception.io/how-to-have-labels-for-machine-roles" target="_blank" rel="noopener">https://www.robustperception.io/how-to-have-labels-for-machine-roles</a><br><a href="https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2" target="_blank" rel="noopener">https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>prometheus</tag>
       </tags>
   </entry>
   <entry>
@@ -2091,76 +2194,6 @@
 ]]></content>
       <tags>
         <tag>css</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>prometheus曲线救国添加hostname</title>
-    <url>/2019/03/07/prometheus%E6%B7%BB%E5%8A%A0hostname/</url>
-    <content><![CDATA[<h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><ol>
-<li>prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。</li>
-<li>只看ip，无法知道该机器的用户。</li>
-<li>grafana展现的时候，能根据hostname进行选择，展现机器数据。</li>
-</ol>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
-<li>node_exporter中启用textfile采集的方式。</li>
-<li>在textfile目录下，写入hostname。</li>
-<li>通过表达式获取hostname。</li>
-</ol>
-<h2 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h2><ol>
-<li>如何做到hostname的更变。</li>
-<li>表达式hostname只和写入的metric有关，如何关联到不存在hostname的metric中。</li>
-</ol>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
-<li><p>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ExecStartPre=/opt/scripts/gethostname.sh</span><br><span class="line"></span><br><span class="line"># cat /opt/scripts/gethostname.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role=\&quot;`/usr/bin/hostname`\&quot;&#125; 0&quot; &gt; /app/local/node_exporter/collect/hostname.prom</span><br><span class="line">echo 1 &gt; /dev/null</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># HELP machine_role Metric read from /app/local/node_exporter/collect/hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role=&quot;postfix01&quot;&#125; 0</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>其label是role，value是postfix01，也就是hostname</p>
-<p>prometheus中执行执行<code>machine_role</code>,可以得到element为：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;ShangHai-SJ-L3-LC-Flume-01&quot;,service=&quot;L3&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这边有role和instance这个两个label，其中role为hostname的label，而instance则作为连接点的label。</p>
-<p>在grafana中的变量配置中就可以根据machine_role，先获取role，作为$hostname的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;service=&quot;$job&quot;&#125;,role)</span><br></pre></td></tr></table></figure></p>
-<p>然后再根据$hostname，来获取instance,作为$node的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;role=&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure></p>
-<p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance=~&quot;$node&quot;, mode=&apos;system&apos;&#125;) by (cpu))</span><br></pre></td></tr></table></figure></p>
-<h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
-<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg" alt></p>
-</li>
-<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg" alt></p>
-</li>
-<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg" alt></p>
-</li>
-</ul>
-<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><ul>
-<li>如果是通过dns方式发现，则是可以把hostname变成元label的。</li>
-<li>通过consul发现，则可以在consul客户端上报hostname，也可以把hostname变成元label。</li>
-</ul>
-<h2 id="待解决问题第二点解决方法"><a href="#待解决问题第二点解决方法" class="headerlink" title="待解决问题第二点解决方法"></a>待解决问题第二点解决方法</h2><p><strong>promSQL可以使用on ignore group_left group_right配合来把hostname拼凑进去。</strong></p>
-<p>machine_role查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  0</span><br></pre></td></tr></table></figure>
-<p>up查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>machine_role里面的role标签包含了主机名，但up没有，此时通过将两个方法结合在一起。<br>使用on方法，<em>可以理解为mysql的两表查询join</em> 两者的有共同的instance,job,service,ip标签</p>
-<p>不一定要全部都选择，但选择的多则相互匹配更加精确，<code>on(instance,job,service,ip)</code></p>
-<p>使用group_left或者group_right标记”多”的标签,这边多出来的标签是role，所以为<code>group_left(role)</code></p>
-<p>表达式架构为:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;vector expr&gt; &lt;bin-op&gt; on(&lt;label list&gt;) group_left(&lt;label list&gt;) &lt;vector expr&gt;</span><br></pre></td></tr></table></figure>
-<p><bin-op>指加减乘除余幂</bin-op></p>
-<p>所以将up和machine_role拼凑和可以写为</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role</span><br><span class="line">&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>如果用group_right，则把up和machine_role反一下即可</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role + on(instance, job,ip,service) group_right(role) up</span><br></pre></td></tr></table></figure>
-<p>此时得到的结果包含了role，如果作为告警，由于up为1表示正常，machine_role设置的是0，两者相加，若为0，则表示机器down。<br>告警表达式可以写成:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role == 0</span><br></pre></td></tr></table></figure>
-<p>此时如果告警，则会包含role这个标签，就可以传递给alertmanager，获取到role了。</p>
-<p>refer</p>
-<blockquote>
-<p><a href="https://www.robustperception.io/how-to-have-labels-for-machine-roles" target="_blank" rel="noopener">https://www.robustperception.io/how-to-have-labels-for-machine-roles</a><br><a href="https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2" target="_blank" rel="noopener">https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>prometheus</tag>
       </tags>
   </entry>
   <entry>
@@ -2326,6 +2359,80 @@
       </tags>
   </entry>
   <entry>
+    <title>二叉树种类和遍历</title>
+    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
+    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
+<ol>
+<li>rooted binary tree<ul>
+<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
+</ul>
+</li>
+<li>full binary tree<ul>
+<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
+</ul>
+</li>
+<li>complete binary tree<ul>
+<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
+</ul>
+</li>
+<li>perfect binary tree<ul>
+<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
+</ul>
+</li>
+<li>infinite complete binary tree<ul>
+<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
+<li>我的理解就是无穷尽的rooted binray tree</li>
+</ul>
+</li>
+<li>balanced binary tree<ul>
+<li>左右子树高度差不超过1</li>
+<li>且左右子树各自均为平衡二叉树</li>
+</ul>
+</li>
+<li>degenerate tree<ul>
+<li>每个节点只包含一个子节点。</li>
+</ul>
+</li>
+</ol>
+<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
+<ul>
+<li>指先访问根，然后访问子树的遍历方式。</li>
+<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
+<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
+<ul>
+<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
+<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
+<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
+<ul>
+<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
+<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
+</ul>
+<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
+<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
+<ul>
+<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
+<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
+</ul>
+<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
+<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
+<p>refer</p>
+<blockquote>
+<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+        <tag>algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>tcp_max_syn_backlog和net.core.somaxconn</title>
     <url>/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/</url>
     <content><![CDATA[<p><strong>kernel 3.10.0-693.2.2.el7.x86_64</strong></p>
@@ -2436,77 +2543,49 @@
       </tags>
   </entry>
   <entry>
-    <title>二叉树种类和遍历</title>
-    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
-<ol>
-<li>rooted binary tree<ul>
-<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
-</ul>
-</li>
-<li>full binary tree<ul>
-<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
-</ul>
-</li>
-<li>complete binary tree<ul>
-<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
-</ul>
-</li>
-<li>perfect binary tree<ul>
-<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
-</ul>
-</li>
-<li>infinite complete binary tree<ul>
-<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
-<li>我的理解就是无穷尽的rooted binray tree</li>
-</ul>
-</li>
-<li>balanced binary tree<ul>
-<li>左右子树高度差不超过1</li>
-<li>且左右子树各自均为平衡二叉树</li>
-</ul>
-</li>
-<li>degenerate tree<ul>
-<li>每个节点只包含一个子节点。</li>
-</ul>
-</li>
+    <title>做一个不专业的jenkins回滚</title>
+    <url>/2019/04/11/%E5%81%9A%E4%B8%80%E4%B8%AA%E4%B8%8D%E4%B8%93%E4%B8%9A%E7%9A%84jenkins%E5%9B%9E%E6%BB%9A/</url>
+    <content><![CDATA[<h2 id="war包回滚思路"><a href="#war包回滚思路" class="headerlink" title="war包回滚思路"></a>war包回滚思路</h2><h3 id="发布期间"><a href="#发布期间" class="headerlink" title="发布期间"></a>发布期间</h3><ol>
+<li>对正在提供服务的war包在<em>同目录</em>下，重命名为xxx.warbak</li>
+<li>并且对该war归档到指定目录</li>
 </ol>
-<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
-<ul>
-<li>指先访问根，然后访问子树的遍历方式。</li>
-<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
-<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
-<ul>
-<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
-<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
-<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
-<ul>
-<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
-<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
-</ul>
-<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
-<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
-<ul>
-<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
-<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
-</ul>
-<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
-<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
-<p>refer</p>
+<h3 id="回滚期间"><a href="#回滚期间" class="headerlink" title="回滚期间"></a>回滚期间</h3><ol>
+<li>将同目录下war的备份文件还原成xxx.war</li>
+</ol>
+<h2 id="用到的组件如下"><a href="#用到的组件如下" class="headerlink" title="用到的组件如下:"></a>用到的组件如下:</h2><ol>
+<li>Customized Build Message Plugin（build后可以看到备注等自动传入的信息）</li>
+<li>Build With Parameters  (build的时候选填参数)</li>
+<li>Git Parameter Plug-In (选择分支，tag等)</li>
+<li>Publish Over SSH  (通过ssh方式发包)</li>
+</ol>
+<h2 id="配置介绍"><a href="#配置介绍" class="headerlink" title="配置介绍"></a>配置介绍</h2><ol>
+<li>每个publish over ssh的对象都存在两种情况，发布(deploy)和回滚(rollback)，所以需要对一个机器创建两个状态。</li>
+<li>根据build的时候传入的参数，deploy还是rollback，选择对应的行为。</li>
+</ol>
+<h2 id="配置截图"><a href="#配置截图" class="headerlink" title="配置截图"></a>配置截图</h2><p><strong>图小新开一个浏览器页面看</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg" alt></p>
+<h2 id="部分代码"><a href="#部分代码" class="headerlink" title="部分代码:"></a>部分代码:</h2><ol>
+<li>部署</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[ -d &quot;/opt/$&#123;tomcat_dir&#125;/war&quot; ] &amp;&amp; echo &apos;back dir is exist&apos; || mkdir -p /opt/$&#123;tomcat_dir&#125;/war;</span><br><span class="line">cp /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.war /opt/$&#123;tomcat_dir&#125;/war/$&#123;tomcat_war&#125;.war_`date +&quot;%Y%m%d-%H%M&quot;` || echo &apos;not exist war&apos;;</span><br><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;war,warbak&#125; || echo &apos;not exist war&apos;;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>回滚</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;warbak,war&#125; || echo &apos;not exist war&apos;;</span><br><span class="line">/opt/$&#123;tomcat_dir&#125;/bin/catalina.sh start;</span><br></pre></td></tr></table></figure>
+<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ol>
+<li>由于采用的是maven项目，所以不论发布还是回滚都是会进行war包的build，其实在回滚的时候是不需要进行war包的build的。</li>
+</ol>
+<p>refer:</p>
 <blockquote>
-<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
+<p><a href="http://www.eryajf.net/1404.html" target="_blank" rel="noopener">http://www.eryajf.net/1404.html</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
-        <tag>python3</tag>
-        <tag>algorithm</tag>
+        <tag>cicd</tag>
+        <tag>jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -2578,52 +2657,6 @@
       </categories>
       <tags>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>做一个不专业的jenkins回滚</title>
-    <url>/2019/04/11/%E5%81%9A%E4%B8%80%E4%B8%AA%E4%B8%8D%E4%B8%93%E4%B8%9A%E7%9A%84jenkins%E5%9B%9E%E6%BB%9A/</url>
-    <content><![CDATA[<h2 id="war包回滚思路"><a href="#war包回滚思路" class="headerlink" title="war包回滚思路"></a>war包回滚思路</h2><h3 id="发布期间"><a href="#发布期间" class="headerlink" title="发布期间"></a>发布期间</h3><ol>
-<li>对正在提供服务的war包在<em>同目录</em>下，重命名为xxx.warbak</li>
-<li>并且对该war归档到指定目录</li>
-</ol>
-<h3 id="回滚期间"><a href="#回滚期间" class="headerlink" title="回滚期间"></a>回滚期间</h3><ol>
-<li>将同目录下war的备份文件还原成xxx.war</li>
-</ol>
-<h2 id="用到的组件如下"><a href="#用到的组件如下" class="headerlink" title="用到的组件如下:"></a>用到的组件如下:</h2><ol>
-<li>Customized Build Message Plugin（build后可以看到备注等自动传入的信息）</li>
-<li>Build With Parameters  (build的时候选填参数)</li>
-<li>Git Parameter Plug-In (选择分支，tag等)</li>
-<li>Publish Over SSH  (通过ssh方式发包)</li>
-</ol>
-<h2 id="配置介绍"><a href="#配置介绍" class="headerlink" title="配置介绍"></a>配置介绍</h2><ol>
-<li>每个publish over ssh的对象都存在两种情况，发布(deploy)和回滚(rollback)，所以需要对一个机器创建两个状态。</li>
-<li>根据build的时候传入的参数，deploy还是rollback，选择对应的行为。</li>
-</ol>
-<h2 id="配置截图"><a href="#配置截图" class="headerlink" title="配置截图"></a>配置截图</h2><p><strong>图小新开一个浏览器页面看</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg" alt></p>
-<h2 id="部分代码"><a href="#部分代码" class="headerlink" title="部分代码:"></a>部分代码:</h2><ol>
-<li>部署</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[ -d &quot;/opt/$&#123;tomcat_dir&#125;/war&quot; ] &amp;&amp; echo &apos;back dir is exist&apos; || mkdir -p /opt/$&#123;tomcat_dir&#125;/war;</span><br><span class="line">cp /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.war /opt/$&#123;tomcat_dir&#125;/war/$&#123;tomcat_war&#125;.war_`date +&quot;%Y%m%d-%H%M&quot;` || echo &apos;not exist war&apos;;</span><br><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;war,warbak&#125; || echo &apos;not exist war&apos;;</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>回滚</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &apos;&#123;print $2&#125;&apos; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;warbak,war&#125; || echo &apos;not exist war&apos;;</span><br><span class="line">/opt/$&#123;tomcat_dir&#125;/bin/catalina.sh start;</span><br></pre></td></tr></table></figure>
-<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ol>
-<li>由于采用的是maven项目，所以不论发布还是回滚都是会进行war包的build，其实在回滚的时候是不需要进行war包的build的。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="http://www.eryajf.net/1404.html" target="_blank" rel="noopener">http://www.eryajf.net/1404.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>cicd</tag>
-        <tag>jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -2738,6 +2771,48 @@
 <h2 id="有些东西迟早还是要还的。。。"><a href="#有些东西迟早还是要还的。。。" class="headerlink" title="有些东西迟早还是要还的。。。"></a>有些东西迟早还是要还的。。。</h2>]]></content>
       <tags>
         <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux平均负载</title>
+    <url>/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/</url>
+    <content><![CDATA[<h2 id="linux平负载定义"><a href="#linux平负载定义" class="headerlink" title="linux平负载定义"></a>linux平负载定义</h2><ol>
+<li>单位时间内，处于<strong>运行或者准备运行(R)</strong>，以及<strong>不可中断睡眠进程(D)</strong>数量的平均值(指数平滑法)。</li>
+<li>和cpu使用率没有直接关系。</li>
+<li>负载上升，可能是cpu使用率过高，也可能是磁盘io问题。</li>
+</ol>
+<h2 id="平均负载算法"><a href="#平均负载算法" class="headerlink" title="平均负载算法"></a>平均负载算法</h2><p>其算法为<code>指数平滑法</code>，内核因为不可以直接做浮点运算，而选择<strong>定点运算</strong>的方式来计算指数平滑法。</p>
+<p>指数平滑法公式：</p>
+<ol>
+<li><p>linux 2.6.18内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α)，[0 &lt; α &lt; 1]</p>
+</li>
+<li><p>linux 3.12内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α) + z，[0 &lt; α &lt; 1]    <em>3.12内核增加了修正值z。</em></p>
+</li>
+</ol>
+<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sup>-5/(60<em>m)</em></sup><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
+<p>参考文档:</p>
+<blockquote>
+<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
+</blockquote>
+<h2 id="multi-core-vs-multi-processor"><a href="#multi-core-vs-multi-processor" class="headerlink" title="multi-core vs multi-processor"></a>multi-core vs multi-processor</h2><ol>
+<li><p>load关注机器有多少个processor</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">此公式包含超线程数。</span><br><span class="line">[root@leanote ~]# cat /proc/cpuinfo | grep &quot;processor&quot; | wc -l</span><br><span class="line">1</span><br><span class="line">[root@leanote ~]#</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>core可以理解为核心数，也就是cpu核心总数，而processor理解为逻辑cpu个数，而非真实cpu个数，这个逻辑cpu个数等于top后按1查看到的结果。</p>
+</li>
+</ol>
+<h2 id="linux查看cpu信息"><a href="#linux查看cpu信息" class="headerlink" title="linux查看cpu信息"></a>linux查看cpu信息</h2><p>总核数 = 物理CPU个数 X 每颗物理CPU的核数<br>总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数</p>
+<p>查看物理CPU个数<br>cat /proc/cpuinfo| grep “physical id”| sort| uniq| wc -l</p>
+<p>查看每个物理CPU中core的个数(即核数)<br>cat /proc/cpuinfo| grep “cpu cores”| uniq</p>
+<p>查看逻辑CPU的个数<br>cat /proc/cpuinfo| grep “processor”| wc -l</p>
+<p>refer</p>
+<blockquote>
+<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>cpu</tag>
       </tags>
   </entry>
   <entry>
@@ -2979,6 +3054,30 @@
       </tags>
   </entry>
   <entry>
+    <title>磁盘无法挂载</title>
+    <url>/2019/01/18/%E7%A3%81%E7%9B%98%E6%97%A0%E6%B3%95%E6%8C%82%E8%BD%BD/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
+<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
+<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
+<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
+<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
+<p>尝试了下，的确成功了。</p>
+<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
+<p>Bug ID: 1566088</p>
+<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>未配置中间证书CA引起的安卓端无法通过https建联加载图片案例</title>
     <url>/2019/01/06/%E6%9C%AA%E9%85%8D%E7%BD%AE%E4%B8%AD%E9%97%B4%E8%AF%81%E4%B9%A6CA%E5%BC%95%E8%B5%B7%E7%9A%84%E5%AE%89%E5%8D%93%E7%AB%AF%E6%97%A0%E6%B3%95%E9%80%9A%E8%BF%87https%E5%BB%BA%E8%81%94%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87%E6%A1%88%E4%BE%8B/</url>
     <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>安卓同事称代码调试访问test-material.aaa.tv/xxx/xxxx.png等图片资源的时候报错，报错信息类似如下：</p>
@@ -3027,30 +3126,6 @@
 <h2 id="安卓文档对于缺失中间证书的描述"><a href="#安卓文档对于缺失中间证书的描述" class="headerlink" title="安卓文档对于缺失中间证书的描述:"></a>安卓文档对于缺失中间证书的描述:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">有趣的是，在大多数桌面浏览器中访问此服务器不会引发完全未知的 CA 或自签署服务器证书所引发的类似错误。这是因为大多数桌面浏览器都会将可信的中间 CA 缓存一段时间。当浏览器从某个网站访问和了解中间 CA 后，下次它就不需要将中间 CA 添加在证书链中。</span><br><span class="line"></span><br><span class="line">有些网站会专门为提供资源的辅助网络服务器这样做。例如，他们可能让具有完整证书链的服务器提供主 HTML 页面，让不包含 CA 的服务器提供图像、CSS 或 JavaScript 等资源，以节省带宽。遗憾的是，这些服务器有时候可能会提供您正在尝试从 Android 应用调用的网络服务，这一点让人难以接受。</span><br><span class="line"></span><br><span class="line">可以通过两种方法解决此问题：</span><br><span class="line"></span><br><span class="line">配置服务器以便在服务器链中添加中间 CA。大多数 CA 都可以提供有关如何为所有常用网络服务器执行此操作的文档。如果您需要网站至少通过 Android 4.2 使用默认 Android 浏览器，那么这是唯一的方法。</span><br><span class="line">或者，像对待其他任何未知 CA 一样对待中间 CA，并创建一个 TrustManager 以直接信任它，如前面的两部分中所述。</span><br></pre></td></tr></table></figure>
 <h2 id="查看证书到期时间："><a href="#查看证书到期时间：" class="headerlink" title="查看证书到期时间："></a>查看证书到期时间：</h2><p>openssl s_client -connect <a href="http://www.icoinbay.com:443" target="_blank" rel="noopener">www.icoinbay.com:443</a> -servername <a href="http://www.icoinbay.com" target="_blank" rel="noopener">www.icoinbay.com</a> 2&gt;/dev/null |openssl x509 -noout -dates </p>
 ]]></content>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>磁盘无法挂载</title>
-    <url>/2019/01/18/%E7%A3%81%E7%9B%98%E6%97%A0%E6%B3%95%E6%8C%82%E8%BD%BD/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
-<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
-<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
-<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
-<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
-<p>尝试了下，的确成功了。</p>
-<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
-<p>Bug ID: 1566088</p>
-<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
-<p>refer:</p>
-<blockquote>
-<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -3302,39 +3377,6 @@
       </tags>
   </entry>
   <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>mysql字符集字符序</title>
     <url>/2019/01/10/mysql%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AD%97%E7%AC%A6%E5%BA%8F/</url>
     <content><![CDATA[<p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
@@ -3416,48 +3458,6 @@
 ]]></content>
       <tags>
         <tag>mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>linux平均负载</title>
-    <url>/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/</url>
-    <content><![CDATA[<h2 id="linux平负载定义"><a href="#linux平负载定义" class="headerlink" title="linux平负载定义"></a>linux平负载定义</h2><ol>
-<li>单位时间内，处于<strong>运行或者准备运行(R)</strong>，以及<strong>不可中断睡眠进程(D)</strong>数量的平均值(指数平滑法)。</li>
-<li>和cpu使用率没有直接关系。</li>
-<li>负载上升，可能是cpu使用率过高，也可能是磁盘io问题。</li>
-</ol>
-<h2 id="平均负载算法"><a href="#平均负载算法" class="headerlink" title="平均负载算法"></a>平均负载算法</h2><p>其算法为<code>指数平滑法</code>，内核因为不可以直接做浮点运算，而选择<strong>定点运算</strong>的方式来计算指数平滑法。</p>
-<p>指数平滑法公式：</p>
-<ol>
-<li><p>linux 2.6.18内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α)，[0 &lt; α &lt; 1]</p>
-</li>
-<li><p>linux 3.12内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α) + z，[0 &lt; α &lt; 1]    <em>3.12内核增加了修正值z。</em></p>
-</li>
-</ol>
-<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sup>-5/(60<em>m)</em></sup><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
-<p>参考文档:</p>
-<blockquote>
-<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
-</blockquote>
-<h2 id="multi-core-vs-multi-processor"><a href="#multi-core-vs-multi-processor" class="headerlink" title="multi-core vs multi-processor"></a>multi-core vs multi-processor</h2><ol>
-<li><p>load关注机器有多少个processor</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">此公式包含超线程数。</span><br><span class="line">[root@leanote ~]# cat /proc/cpuinfo | grep &quot;processor&quot; | wc -l</span><br><span class="line">1</span><br><span class="line">[root@leanote ~]#</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>core可以理解为核心数，也就是cpu核心总数，而processor理解为逻辑cpu个数，而非真实cpu个数，这个逻辑cpu个数等于top后按1查看到的结果。</p>
-</li>
-</ol>
-<h2 id="linux查看cpu信息"><a href="#linux查看cpu信息" class="headerlink" title="linux查看cpu信息"></a>linux查看cpu信息</h2><p>总核数 = 物理CPU个数 X 每颗物理CPU的核数<br>总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数</p>
-<p>查看物理CPU个数<br>cat /proc/cpuinfo| grep “physical id”| sort| uniq| wc -l</p>
-<p>查看每个物理CPU中core的个数(即核数)<br>cat /proc/cpuinfo| grep “cpu cores”| uniq</p>
-<p>查看逻辑CPU的个数<br>cat /proc/cpuinfo| grep “processor”| wc -l</p>
-<p>refer</p>
-<blockquote>
-<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>linux</tag>
-        <tag>cpu</tag>
       </tags>
   </entry>
 </search>
