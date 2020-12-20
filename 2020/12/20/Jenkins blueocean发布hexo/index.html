@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="jenkins,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原因之前一直用travis-ci做hexo的发布，但是从两个月之前开始，不知道为什么提交了代码后，travis-ci虽然触发了，但一直卡pending状态，一直不进行构建。导致需要在本机构建hexo，然后推送到master分支，前几篇关于concourse的就是手动构建hexo目录结构进行发布的。 实在不能忍了，前几天阿里云买了台2c4g的机器，准备自己弄个jenkins，做构建发布。 因为之前公">
+<meta name="keywords" content="jenkins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins blueocean发布hexo">
+<meta property="og:url" content="https://kirakirazone.com/2020/12/20/Jenkins blueocean发布hexo/index.html">
+<meta property="og:site_name" content="Kirakirazone">
+<meta property="og:description" content="原因之前一直用travis-ci做hexo的发布，但是从两个月之前开始，不知道为什么提交了代码后，travis-ci虽然触发了，但一直卡pending状态，一直不进行构建。导致需要在本机构建hexo，然后推送到master分支，前几篇关于concourse的就是手动构建hexo目录结构进行发布的。 实在不能忍了，前几天阿里云买了台2c4g的机器，准备自己弄个jenkins，做构建发布。 因为之前公">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://image.kirakirazone.com/image/jenkins_blueocean_build.png">
+<meta property="og:updated_time" content="2020-12-20T13:55:42.462Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jenkins blueocean发布hexo">
+<meta name="twitter:description" content="原因之前一直用travis-ci做hexo的发布，但是从两个月之前开始，不知道为什么提交了代码后，travis-ci虽然触发了，但一直卡pending状态，一直不进行构建。导致需要在本机构建hexo，然后推送到master分支，前几篇关于concourse的就是手动构建hexo目录结构进行发布的。 实在不能忍了，前几天阿里云买了台2c4g的机器，准备自己弄个jenkins，做构建发布。 因为之前公">
+<meta name="twitter:image" content="https://image.kirakirazone.com/image/jenkins_blueocean_build.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kirakirazone.com/2020/12/20/Jenkins blueocean发布hexo/">
+
+
+
+
+
+  <title>Jenkins blueocean发布hexo | Kirakirazone</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kirakirazone</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2020/12/20/Jenkins blueocean发布hexo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kirakirazone">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jenkins blueocean发布hexo</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-20T22:15:56+08:00">
+                2020-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/application/" itemprop="url" rel="index">
+                    <span itemprop="name">application</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/12/20/Jenkins blueocean发布hexo/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/12/20/Jenkins blueocean发布hexo/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>之前一直用travis-ci做hexo的发布，但是从两个月之前开始，不知道为什么提交了代码后，travis-ci虽然触发了，但一直卡pending状态，一直不进行构建。导致需要在本机构建hexo，然后推送到master分支，前几篇关于concourse的就是手动构建hexo目录结构进行发布的。</p>
+<p>实在不能忍了，前几天阿里云买了台2c4g的机器，准备自己弄个jenkins，做构建发布。</p>
+<p>因为之前公司也简单接触过jenkins，不过那会都是页面点点点，这次准备写pipeline进行构建。</p>
+<p>我也是才知道，jenkins有个blue ocean的界面，专门用来弄pipeline。而且也是只要将pipeline文件(默认为Jenkinsfile,可以在构建项目的Build Configuration里面修改)放置于仓库根目录，便可以使用Jenkinsfile定义的pipeline进行构建了。我最早那会接触的gitlab和travis-ci也是这么个流程。这样的话就可以在代码仓库直接维护pipeline了。</p>
+<p>此次编写的pipeline为<strong>Declarative Pipeline</strong></p>
+<h2 id="发布流程"><a href="#发布流程" class="headerlink" title="发布流程"></a>发布流程</h2><p>发布流程还是参照之前travis-ci编写的流程，只不过这次改成用jenkins去实现了。</p>
+<ol>
+<li>拉取hexo分支和master分支</li>
+<li>在hexo分支进行hexo目录构建</li>
+<li>将master分支的.git目录整个复制到hexo分支下的public目录中</li>
+<li>将public中的文件强推至master分支，完成发布</li>
+</ol>
+<h2 id="其他功能"><a href="#其他功能" class="headerlink" title="其他功能"></a>其他功能</h2><ol>
+<li>触发式构建</li>
+<li>邮件通知</li>
+</ol>
+<h2 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h2><h3 id="前期步骤"><a href="#前期步骤" class="headerlink" title="前期步骤"></a>前期步骤</h3><ol>
+<li>准备插件，总之要用什么就装什么插件，blueocean是必备的，Extended E-mail Notification也得准备，pipeline会用Extended E-mail Notification方式发送。</li>
+<li>在github准备<code>Personal access tokens</code>注意权限，用于blueocean对仓库的操作。且在jenkins设置里面配置Github服务器。(网上教程一大把)</li>
+<li>准备一个邮箱，并设置其能够使用脚本的方式发邮件，比如qq的是开启IMAP独立token。(一开始我用的阿里邮箱，实在没找到在哪里，听说用163的也可以。)由于ECS是阿里云的，所以25端口无法使用，qq的话得走587 smtp端口。</li>
+<li>根据邮箱信息配置好Extended E-mail Notification里面的内容，<code>SMTP server</code>,<code>SMTP Port</code>主要是这两部分。</li>
+<li>jenkins设置里面的Jenkins Location，配置好发送邮箱的地址。</li>
+<li>在github上需要构建的repo仓库中配置好webhook，用于提交后出发回调给jenkins，jenkins webhook地址一般为”jenkins服务器地址/github-webhook”。</li>
+<li>根据blueocean的引导，选择要构建的github项目。</li>
+</ol>
+<h3 id="编写Jenkinsfile"><a href="#编写Jenkinsfile" class="headerlink" title="编写Jenkinsfile"></a>编写Jenkinsfile</h3><ol>
+<li>将需要构建的branch追加该Jenkinsfile</li>
+<li>内容如下</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent &#123;</span><br><span class="line">        label <span class="string">'master'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        <span class="comment">// 并行拉取hexo和master分支</span></span><br><span class="line">        stage(<span class="string">'Parellel get repo'</span>) &#123;</span><br><span class="line">            parallel &#123;</span><br><span class="line">                stage(<span class="string">'Fetch hexo barnch'</span>) &#123;</span><br><span class="line">                    environment &#123;</span><br><span class="line">                        NVM_DIR = <span class="string">"/var/lib/jenkins/.nvm"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    steps &#123;</span><br><span class="line">                        <span class="comment">// 指定工作目录为hexo-branch, 并将hexo分支拉取到hexo-branch目录，如果没有这个目录则创建。</span></span><br><span class="line">                        dir(<span class="string">'hexo-branch'</span>) &#123;</span><br><span class="line">                            <span class="comment">// credentialsId在jenkins配置的credential manager中可以找到，也就是之前配置的Personal access tokens对应的id</span></span><br><span class="line">                            git branch: <span class="string">'hexo'</span>, credentialsId: <span class="string">'0cc091e1-b69f-4e1d-b8c6-b7a9df25e438'</span>, url: <span class="string">'https://github.com/huangyisan/myblog.git'</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">                stage(<span class="string">'Fetch master branch'</span>) &#123;</span><br><span class="line">                    steps&#123;</span><br><span class="line">                        dir(<span class="string">'master-branch'</span>) &#123;</span><br><span class="line">                            git branch: <span class="string">'master'</span>, credentialsId: <span class="string">'0cc091e1-b69f-4e1d-b8c6-b7a9df25e438'</span>, url: <span class="string">'https://github.com/huangyisan/myblog.git'</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        stage(<span class="string">'Build hexo'</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                dir(<span class="string">'hexo-branch'</span>) &#123;</span><br><span class="line">                    <span class="comment">// 因为我用的是nvm管理的node，所以得提前在linux的jenkins用户下安装nvm，这边是引入环境，并且构建hexo</span></span><br><span class="line">                    sh <span class="string">'[ -s "$NVM_DIR/nvm.sh" ] &amp;&amp; . "$NVM_DIR/nvm.sh" &amp;&amp; npm install &amp;&amp; hexo clean &amp;&amp; hexo g'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        stage(<span class="string">'cp master .git to hexo-branch/public'</span>)&#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                <span class="comment">// 指定工作目录为master-branch，并且将.git文件cp到hexo-branch下的public中</span></span><br><span class="line">                dir(<span class="string">'master-branch'</span>) &#123;</span><br><span class="line">                    sh <span class="string">'cp -a ./.git ../hexo-branch/public'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        stage(<span class="string">'set git user info'</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                dir(<span class="string">'hexo-branch'</span>) &#123;</span><br><span class="line">                    <span class="comment">// 设定提交代码人的信息</span></span><br><span class="line">                    sh <span class="string">'cd ./public &amp;&amp; git config user.name  "huangyisan" &amp;&amp; git config user.email "anonymousyisan@gmail.com"'</span> </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        stage (<span class="string">'git add &amp;&amp; commit'</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                dir(<span class="string">'hexo-branch'</span>) &#123;</span><br><span class="line">                    <span class="comment">// Git commit信息</span></span><br><span class="line">                    sh <span class="string">'cd ./public &amp;&amp; git add . &amp;&amp; git commit -m "Jenkins CI Auto Builder at `date +"%Y-%m-%d %H:%M"`" '</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        stage (<span class="string">'Push public to Master branch'</span>) &#123;</span><br><span class="line">            environment &#123;</span><br><span class="line">                <span class="comment">// 定义了一个变量GH_REF</span></span><br><span class="line">                GH_REF=<span class="string">"github.com/huangyisan/myblog.git"</span></span><br><span class="line">            &#125;</span><br><span class="line">            steps &#123;</span><br><span class="line">                dir(<span class="string">'hexo-branch'</span>) &#123;</span><br><span class="line">                    <span class="comment">// 从credential manager中获取id为'e5d2d117-b5ab-4dc5-9e07-a5e96bfb6e31'的密钥，赋值给TOKEN</span></span><br><span class="line">                    withCredentials([string(credentialsId: <span class="string">'e5d2d117-b5ab-4dc5-9e07-a5e96bfb6e31'</span>, variable: <span class="string">'TOKEN'</span>)]) &#123;</span><br><span class="line">                        <span class="comment">// 进入public目录后，强推master分支</span></span><br><span class="line">                        sh <span class="string">'cd public &amp;&amp; git push --force --quiet "https://$&#123;TOKEN&#125;@$&#123;GH_REF&#125;" master:master'</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// post为构建结束后的操作</span></span><br><span class="line">    post &#123;</span><br><span class="line">        <span class="comment">// always表示无论构建结构是成功还是失败，亦或其他都执行</span></span><br><span class="line">        always &#123;</span><br><span class="line">            dir(<span class="string">'hexo-branch'</span>) &#123;</span><br><span class="line">                script &#123;</span><br><span class="line">                    <span class="comment">// 获取commit id号, 设定邮件的类型，发送方，主题，内容等</span></span><br><span class="line">                    def COMMIT_ID = <span class="string">""</span></span><br><span class="line">                    COMMIT_ID = sh(returnStdout: <span class="keyword">true</span>, script:<span class="string">'git log --pretty=format:"%h" -1'</span>)</span><br><span class="line">                    </span><br><span class="line">                    def mimeType = <span class="string">'text/html'</span></span><br><span class="line"></span><br><span class="line">                    def to = <span class="string">'anonymousyisan@gmail.com'</span></span><br><span class="line"></span><br><span class="line">                    def subject = <span class="string">'【构建通知】$PROJECT_NAME - '</span> + <span class="string">"$&#123;COMMIT_ID&#125;"</span> +  <span class="string">' - Build # $BUILD_NUMBER - $BUILD_STATUS!'</span></span><br><span class="line"></span><br><span class="line">                    def body = </span><br><span class="line">                    <span class="string">''</span><span class="string">'</span></span><br><span class="line"><span class="string">&lt;html&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;head&gt;</span></span><br><span class="line"><span class="string">    &lt;meta charset="UTF-8"&gt;</span></span><br><span class="line"><span class="string">    &lt;title&gt;$&#123;ENV, var="JOB_NAME"&#125;-第$&#123;BUILD_NUMBER&#125;次构建日志&lt;/title&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;body leftmargin="8" marginwidth="0" topmargin="8" marginheight="4" offset="0"&gt;</span></span><br><span class="line"><span class="string">    &lt;table width="95%" cellpadding="0" cellspacing="0"</span></span><br><span class="line"><span class="string">        style="font-size: 11pt; font-family: Tahoma, Arial, Helvetica, sans-serif"&gt;</span></span><br><span class="line"><span class="string">        &lt;tr&gt;</span></span><br><span class="line"><span class="string">            &lt;div&gt;</span></span><br><span class="line"><span class="string">                &lt;p&gt;本邮件由系统自动发出，无需回复&lt;/p&gt;</span></span><br><span class="line"><span class="string">                &lt;p&gt;小主，您好！以下为$&#123;PROJECT_NAME&#125;项目构建信息&lt;/p&gt;</span></span><br><span class="line"><span class="string">                &lt;p&gt;</span></span><br><span class="line"><span class="string">                    &lt;font color="#CC0000"&gt;构建结果 - $&#123;BUILD_STATUS&#125;&lt;/font&gt;</span></span><br><span class="line"><span class="string">                &lt;/p&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">        &lt;/tr&gt;</span></span><br><span class="line"><span class="string">        &lt;tr&gt;</span></span><br><span class="line"><span class="string">            &lt;td&gt;&lt;br /&gt;</span></span><br><span class="line"><span class="string">                &lt;b&gt;</span></span><br><span class="line"><span class="string">                    &lt;font color="#0B610B"&gt;构建信息&lt;/font&gt;</span></span><br><span class="line"><span class="string">                &lt;/b&gt;</span></span><br><span class="line"><span class="string">                &lt;hr size="2" width="100%" align="center" /&gt;</span></span><br><span class="line"><span class="string">            &lt;/td&gt;</span></span><br><span class="line"><span class="string">        &lt;/tr&gt;</span></span><br><span class="line"><span class="string">        &lt;tr&gt;</span></span><br><span class="line"><span class="string">            &lt;td&gt;</span></span><br><span class="line"><span class="string">                &lt;ul&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;项目名称 ： $&#123;PROJECT_NAME&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;构建编号 ： 第$&#123;BUILD_NUMBER&#125;次构建&lt;/li&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;触发原因： $&#123;CAUSE&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;构建状态： $&#123;BUILD_STATUS&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;构建日志： &lt;a href="$&#123;BUILD_URL&#125;console"&gt;$&#123;BUILD_URL&#125;console&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;构建 Url ： &lt;a href="$&#123;BUILD_URL&#125;"&gt;$&#123;BUILD_URL&#125;&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;工作目录 ： &lt;a href="$&#123;PROJECT_URL&#125;ws"&gt;$&#123;PROJECT_URL&#125;ws&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">                    &lt;li&gt;项目 Url ： &lt;a href="$&#123;PROJECT_URL&#125;"&gt;$&#123;PROJECT_URL&#125;&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">                &lt;/ul&gt;</span></span><br><span class="line"><span class="string">                &lt;h4&gt;</span></span><br><span class="line"><span class="string">                    &lt;font color="#0B610B"&gt;失败用例&lt;/font&gt;</span></span><br><span class="line"><span class="string">                &lt;/h4&gt;</span></span><br><span class="line"><span class="string">                &lt;hr size="2" width="100%" /&gt;</span></span><br><span class="line"><span class="string">                $FAILED_TESTS&lt;br /&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">                &lt;hr size="2" width="100%" /&gt;</span></span><br><span class="line"><span class="string">                &lt;ul&gt;</span></span><br><span class="line"><span class="string">                    $&#123;CHANGES_SINCE_LAST_SUCCESS, reverse=true, format="%c", changesFormat="&lt;li&gt;%d [%a] %m&lt;/li&gt;"&#125;</span></span><br><span class="line"><span class="string">                &lt;/ul&gt;</span></span><br><span class="line"><span class="string">                &lt;p&gt;详细提交: &lt;a href="$&#123;PROJECT_URL&#125;changes"&gt;$&#123;PROJECT_URL&#125;changes&lt;/a&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">            &lt;/td&gt;</span></span><br><span class="line"><span class="string">        &lt;/tr&gt;</span></span><br><span class="line"><span class="string">    &lt;/table&gt;</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br><span class="line"><span class="string">                    '</span><span class="string">''</span></span><br><span class="line">                <span class="comment">// 执行发送邮件函数</span></span><br><span class="line">                emailext(</span><br><span class="line">                    to: to,</span><br><span class="line">                    subject: subject,</span><br><span class="line">                    mimeType: mimeType,</span><br><span class="line">                    body: body</span><br><span class="line">                )</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="提交代码后自动构建"><a href="#提交代码后自动构建" class="headerlink" title="提交代码后自动构建"></a>提交代码后自动构建</h3><ol>
+<li>可以在blueocean的pipeline中点击查看各个构建步骤的详细信息。</li>
+<li>pipeline构建图如下</li>
+</ol>
+<p><img src="https://image.kirakirazone.com/image/jenkins_blueocean_build.png" alt></p>
+<p>refer:<br>多分支构建参考</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/yanggd1987/article/details/106900128/" target="_blank" rel="noopener">https://blog.csdn.net/yanggd1987/article/details/106900128/</a><br><a href="https://plugins.jenkins.io/github/" target="_blank" rel="noopener">https://plugins.jenkins.io/github/</a><br><a href="https://stackoverflow.com/questions/43912510/send-notification-e-mail-to-upstream-committer-in-jenkins-pipeline" target="_blank" rel="noopener">https://stackoverflow.com/questions/43912510/send-notification-e-mail-to-upstream-committer-in-jenkins-pipeline</a><br><a href="https://www.jenkins.io/doc/book/pipeline/syntax/" target="_blank" rel="noopener">https://www.jenkins.io/doc/book/pipeline/syntax/</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://kirakirazone.com/2020/12/20/Jenkins blueocean发布hexo/" title="Jenkins blueocean发布hexo">https://kirakirazone.com/2020/12/20/Jenkins blueocean发布hexo/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/17/go无缓存channel出现deadlock/" rel="next" title="go无缓存channel出现deadlock">
+                <i class="fa fa-chevron-left"></i> go无缓存channel出现deadlock
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Huangyisan</p>
+              <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/huangyisan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:anonymousyisan@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://mynotebook.readthedocs.io/en/latest/" title="readthedocs" target="_blank">readthedocs</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原因"><span class="nav-number">1.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布流程"><span class="nav-number">2.</span> <span class="nav-text">发布流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他功能"><span class="nav-number">3.</span> <span class="nav-text">其他功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体操作"><span class="nav-number">4.</span> <span class="nav-text">具体操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前期步骤"><span class="nav-number">4.1.</span> <span class="nav-text">前期步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写Jenkinsfile"><span class="nav-number">4.2.</span> <span class="nav-text">编写Jenkinsfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交代码后自动构建"><span class="nav-number">4.3.</span> <span class="nav-text">提交代码后自动构建</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+<div class="BbeiAn-info">
+   	浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784" rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://kirakirazone.com/2020/12/20/Jenkins blueocean发布hexo/';
+          this.page.identifier = '2020/12/20/Jenkins blueocean发布hexo/';
+          this.page.title = 'Jenkins blueocean发布hexo';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://kirakirazone.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
