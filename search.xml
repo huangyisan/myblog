@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JWT认证的实现</title>
+    <url>/2020/02/29/JWT%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h2 id="什么是JWT，以及原理"><a href="#什么是JWT，以及原理" class="headerlink" title="什么是JWT，以及原理"></a>什么是JWT，以及原理</h2><p>网上有大把解释JWT认证原理的，直接看refer部分。</p>
+<h2 id="JWT认证"><a href="#JWT认证" class="headerlink" title="JWT认证"></a>JWT认证</h2><ol>
+<li>当用户登陆的时候，后端根据部分字段进行签名，然后将签名得到的数据返回给用户。</li>
+<li>用户下一次请求数据的时候，在请求头的authentication字段携带token。</li>
+<li>服务端收到token后进行解密，前两段用私钥签名的结果跟第三段对比，看是否一致，如果一致，则判定当前用户合法，反之则非法。</li>
+<li>JWT的token为三段，前两段用base64编码，可以解开，第一段是描述认证方式和算法，第二段就是具体的一些信息，第三段为服务端私钥根据前两段内容进行的签名，也就是加密部分。</li>
+</ol>
+<h2 id="JWT后端部分代码"><a href="#JWT后端部分代码" class="headerlink" title="JWT后端部分代码"></a>JWT后端部分代码</h2><ol>
+<li><p>后端使用python写，求快，直接用的sanic库，以下为主要代码，只求结果正确。</p>
+</li>
+<li><p>主要逻辑：</p>
+<ol>
+<li>登录认证通过，则后端根据username以及一些基本信息生成token，然后返回给前端</li>
+</ol>
+</li>
+</ol>
+   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br><span class="line">    token = jwt.encode(payload, <span class="string">'today'</span>, headers=jwt_headers, algorithm=<span class="string">'HS256'</span>).decode()</span><br><span class="line">		<span class="comment"># 若用户名和密码为admin， 则认为认证通过</span></span><br><span class="line">    <span class="keyword">if</span> username == <span class="string">'admin'</span> <span class="keyword">and</span> password == <span class="string">'admin'</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">200</span>, <span class="string">'info'</span>: <span class="string">'authSuccess'</span>,<span class="string">'access_token'</span>: token, <span class="string">'account_id'</span>: username&#125;)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'authFaildd'</span>&#125;)</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>其他但凡和后端存在数据交互的，则进行token的认证，将该方法作为装饰器。</li>
+</ol>
+<pre><code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'执行check'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(request)</span>:</span></span><br><span class="line">        print(<span class="string">'执行wrapper'</span>)</span><br><span class="line">        jwt_headers = &#123;</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"HS256"</span>,</span><br><span class="line">            <span class="string">"typ"</span>: <span class="string">"JWT"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        token = request.headers.get(<span class="string">'authorization'</span>)</span><br><span class="line">        <span class="keyword">if</span> token:</span><br><span class="line">            token = token.split(<span class="string">' '</span>)[<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                payload = jwt.decode(token, <span class="string">'today'</span>, audience=<span class="string">'yisan.com'</span>, headers=jwt_headers, algorithms=[<span class="string">'HS256'</span>])</span><br><span class="line">                <span class="keyword">if</span> payload:</span><br><span class="line">                    <span class="keyword">return</span> func(request)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                print(e)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 具体要请求的接口数据</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">405</span>, <span class="string">'info'</span>: <span class="string">'函数没有返回值'</span>&#125;)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+</code></pre><h2 id="JWT前端部分代码"><a href="#JWT前端部分代码" class="headerlink" title="JWT前端部分代码"></a>JWT前端部分代码</h2><ol>
+<li><p>主要使用axios的响应拦截器，对返回json数据的code值进行判断。</p>
+</li>
+<li><p>主要逻辑</p>
+<ol>
+<li><p>axios相应拦截器</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">instance.interceptors.response.use(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> code = res.data.code</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">document</span>.location)</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">  <span class="comment">// 后端返回401, 且当前uri不是/login, 则跳转到login页面</span></span><br><span class="line">  <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname !== <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'登陆失败或失效'</span>)</span><br><span class="line">    sessionStorage.removeItem(<span class="string">'token'</span>)</span><br><span class="line">    router.push(<span class="string">'/login'</span>)</span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">   <span class="comment">// 后端返回401， 且当前uri是/login, 则不跳转，防止死循环</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname === <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="comment">// console.log('不跳转了')</span></span><br><span class="line">    <span class="comment">// return false</span></span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>/login页面，在created阶段，发送token验证请求，如果当前为登陆状态，则跳转至/homepage</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">created() &#123;</span><br><span class="line">  <span class="keyword">this</span>.token = sessionStorage.getItem(<span class="string">'token'</span>)</span><br><span class="line">  tokenCheck(<span class="keyword">this</span>.token).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">    <span class="keyword">if</span> (res.code === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$router.push(<span class="string">'/homepage'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="GitHub仓库地址"><a href="#GitHub仓库地址" class="headerlink" title="GitHub仓库地址"></a>GitHub仓库地址</h2><blockquote>
+<p><a href="https://github.com/huangyisan/simulator_jwt_auth.git" target="_blank" rel="noopener">https://github.com/huangyisan/simulator_jwt_auth.git</a></p>
+</blockquote>
+<p>refer</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/70275218" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/70275218</a></p>
+<p><a href="https://segmentfault.com/a/1190000010312468" target="_blank" rel="noopener">https://segmentfault.com/a/1190000010312468</a></p>
+<p><a href="https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example" target="_blank" rel="noopener">https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example</a></p>
+<p><a href="https://juejin.im/post/5ce3e9146fb9a07eba2c1258" target="_blank" rel="noopener">https://juejin.im/post/5ce3e9146fb9a07eba2c1258</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+        <tag>vue</tag>
+        <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Django Model Relationship</title>
     <url>/2019/11/04/Django_Model_Relationship/</url>
     <content><![CDATA[<p><em>好久没写了，这次用阴阳师来举例子。</em></p>
@@ -124,61 +179,6 @@
       </tags>
   </entry>
   <entry>
-    <title>JWT认证的实现</title>
-    <url>/2020/02/29/JWT%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h2 id="什么是JWT，以及原理"><a href="#什么是JWT，以及原理" class="headerlink" title="什么是JWT，以及原理"></a>什么是JWT，以及原理</h2><p>网上有大把解释JWT认证原理的，直接看refer部分。</p>
-<h2 id="JWT认证"><a href="#JWT认证" class="headerlink" title="JWT认证"></a>JWT认证</h2><ol>
-<li>当用户登陆的时候，后端根据部分字段进行签名，然后将签名得到的数据返回给用户。</li>
-<li>用户下一次请求数据的时候，在请求头的authentication字段携带token。</li>
-<li>服务端收到token后进行解密，前两段用私钥签名的结果跟第三段对比，看是否一致，如果一致，则判定当前用户合法，反之则非法。</li>
-<li>JWT的token为三段，前两段用base64编码，可以解开，第一段是描述认证方式和算法，第二段就是具体的一些信息，第三段为服务端私钥根据前两段内容进行的签名，也就是加密部分。</li>
-</ol>
-<h2 id="JWT后端部分代码"><a href="#JWT后端部分代码" class="headerlink" title="JWT后端部分代码"></a>JWT后端部分代码</h2><ol>
-<li><p>后端使用python写，求快，直接用的sanic库，以下为主要代码，只求结果正确。</p>
-</li>
-<li><p>主要逻辑：</p>
-<ol>
-<li>登录认证通过，则后端根据username以及一些基本信息生成token，然后返回给前端</li>
-</ol>
-</li>
-</ol>
-   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br><span class="line">    token = jwt.encode(payload, <span class="string">'today'</span>, headers=jwt_headers, algorithm=<span class="string">'HS256'</span>).decode()</span><br><span class="line">		<span class="comment"># 若用户名和密码为admin， 则认为认证通过</span></span><br><span class="line">    <span class="keyword">if</span> username == <span class="string">'admin'</span> <span class="keyword">and</span> password == <span class="string">'admin'</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">200</span>, <span class="string">'info'</span>: <span class="string">'authSuccess'</span>,<span class="string">'access_token'</span>: token, <span class="string">'account_id'</span>: username&#125;)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'authFaildd'</span>&#125;)</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>其他但凡和后端存在数据交互的，则进行token的认证，将该方法作为装饰器。</li>
-</ol>
-<pre><code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">'执行check'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(request)</span>:</span></span><br><span class="line">        print(<span class="string">'执行wrapper'</span>)</span><br><span class="line">        jwt_headers = &#123;</span><br><span class="line">            <span class="string">"alg"</span>: <span class="string">"HS256"</span>,</span><br><span class="line">            <span class="string">"typ"</span>: <span class="string">"JWT"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        token = request.headers.get(<span class="string">'authorization'</span>)</span><br><span class="line">        <span class="keyword">if</span> token:</span><br><span class="line">            token = token.split(<span class="string">' '</span>)[<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                payload = jwt.decode(token, <span class="string">'today'</span>, audience=<span class="string">'yisan.com'</span>, headers=jwt_headers, algorithms=[<span class="string">'HS256'</span>])</span><br><span class="line">                <span class="keyword">if</span> payload:</span><br><span class="line">                    <span class="keyword">return</span> func(request)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                print(e)</span><br><span class="line">                <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">401</span>, <span class="string">'info'</span>: <span class="string">'checkFailed'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 具体要请求的接口数据</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json(&#123;<span class="string">'code'</span>: <span class="number">405</span>, <span class="string">'info'</span>: <span class="string">'函数没有返回值'</span>&#125;)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
-</code></pre><h2 id="JWT前端部分代码"><a href="#JWT前端部分代码" class="headerlink" title="JWT前端部分代码"></a>JWT前端部分代码</h2><ol>
-<li><p>主要使用axios的响应拦截器，对返回json数据的code值进行判断。</p>
-</li>
-<li><p>主要逻辑</p>
-<ol>
-<li><p>axios相应拦截器</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">instance.interceptors.response.use(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> code = res.data.code</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">document</span>.location)</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">  <span class="comment">// 后端返回401, 且当前uri不是/login, 则跳转到login页面</span></span><br><span class="line">  <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname !== <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'登陆失败或失效'</span>)</span><br><span class="line">    sessionStorage.removeItem(<span class="string">'token'</span>)</span><br><span class="line">    router.push(<span class="string">'/login'</span>)</span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">   <span class="comment">// 后端返回401， 且当前uri是/login, 则不跳转，防止死循环</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (code === <span class="number">401</span> &amp;&amp; <span class="built_in">document</span>.location.pathname === <span class="string">'/login'</span>) &#123;</span><br><span class="line">    <span class="comment">// console.log('不跳转了')</span></span><br><span class="line">    <span class="comment">// return false</span></span><br><span class="line">    <span class="keyword">return</span> res.data</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>/login页面，在created阶段，发送token验证请求，如果当前为登陆状态，则跳转至/homepage</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">created() &#123;</span><br><span class="line">  <span class="keyword">this</span>.token = sessionStorage.getItem(<span class="string">'token'</span>)</span><br><span class="line">  tokenCheck(<span class="keyword">this</span>.token).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">    <span class="keyword">if</span> (res.code === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$router.push(<span class="string">'/homepage'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="GitHub仓库地址"><a href="#GitHub仓库地址" class="headerlink" title="GitHub仓库地址"></a>GitHub仓库地址</h2><blockquote>
-<p><a href="https://github.com/huangyisan/simulator_jwt_auth.git" target="_blank" rel="noopener">https://github.com/huangyisan/simulator_jwt_auth.git</a></p>
-</blockquote>
-<p>refer</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/70275218" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/70275218</a></p>
-<p><a href="https://segmentfault.com/a/1190000010312468" target="_blank" rel="noopener">https://segmentfault.com/a/1190000010312468</a></p>
-<p><a href="https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example" target="_blank" rel="noopener">https://jasonwatmore.com/post/2018/07/06/vue-vuex-jwt-authentication-tutorial-example</a></p>
-<p><a href="https://juejin.im/post/5ce3e9146fb9a07eba2c1258" target="_blank" rel="noopener">https://juejin.im/post/5ce3e9146fb9a07eba2c1258</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-        <tag>vue</tag>
-        <tag>js</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>LeetCode 只出现一次的数字</title>
     <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
@@ -192,29 +192,6 @@
 <li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
 </ol>
 <h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 实现strStr()</title>
-    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
-<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
-<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
-<p>refer</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
-</blockquote>
-]]></content>
       <categories>
         <category>leetcode</category>
       </categories>
@@ -261,6 +238,29 @@
 ]]></content>
       <tags>
         <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 实现strStr()</title>
+    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
+<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
+<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
       </tags>
   </entry>
   <entry>
@@ -455,6 +455,29 @@
       </categories>
       <tags>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>True or False</title>
+    <url>/2018/12/18/True-or-False/</url>
+    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
+<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
+<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
+<blockquote>
+<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
+</blockquote>
+<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
@@ -746,87 +769,6 @@
       </tags>
   </entry>
   <entry>
-    <title>True or False</title>
-    <url>/2018/12/18/True-or-False/</url>
-    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
-<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
-<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
-<blockquote>
-<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
-</blockquote>
-<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>bash fork: retry: Resource temporarily unavailable</title>
-    <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
-    <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
-<p>排查经过：</p>
-<ol>
-<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
-<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
-<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
-</ol>
-<p>这下懵圈了</p>
-<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
-<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
-<p>最后是找到了这篇文章：</p>
-<blockquote>
-<p><a href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable" target="_blank" rel="noopener">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
-</blockquote>
-<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
-<ul>
-<li>这个文件的数量改动后立马生效，不需要重启</li>
-<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
-</ul>
-<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>在centos7上</p>
-<ul>
-<li>获取当前进程数：<code>cat /sys/fs/cgroup/pids/pids.current</code>   类似使用<code>ps -ef | wc -l</code></li>
-<li>获取当前<strong>线程数和进程数</strong>总和：<code>wc -l /sys/fs/cgroup/pids/tasks</code>  类似使用<code>ps -eLf | wc -l</code></li>
-</ul>
-<p>centos7上也是可以实现pid.max：<br>只需要在/sys/fs/cgroup/pids/下创建以为目录，则该目录中就会自动创建pid.max：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# pwd</span><br><span class="line">/sys/fs/cgroup/pids/test</span><br><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br></pre></td></tr></table></figure></p>
-<p>对当前shell交互进程限制</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br><span class="line">[root@leanote test]# cat cgroup.procs </span><br><span class="line">[root@leanote test]# echo $$</span><br><span class="line">14514</span><br><span class="line">[root@leanote test]# echo 14514 &gt; cgroup.procs </span><br><span class="line">[root@leanote test]# echo 1 &gt; pids.max </span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: Resource temporarily unavailable</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: retry: No child processes</span><br></pre></td></tr></table></figure>
-<ul>
-<li>给pid.max输入1后，直接就出<code>-bash: fork: retry: No child processes</code>报错了。</li>
-<li>pid.max只会对cgroup.procs中存在的进程进行pid.max限制。</li>
-<li>当进程消失后,cgroup.procs中的进程号也会自动消失。</li>
-</ul>
-<p>在上一级不存在pid.max是因为对整个系统没必要做限制。<br>Ubuntu系统上<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code>这个其实是对用户编号为0的用户进行了pid.max的限制。</p>
-<p>refer:</p>
-<p>知乎上看到有个小伙伴也遇到这个问题了</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
-</blockquote>
-<p>fork的文档</p>
-<blockquote>
-<p><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
-</blockquote>
-<p>cgroup介绍</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007241437" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007241437</a><br><a href="https://mccxj.github.io/blog/20171230_os-thread-limit.html" target="_blank" rel="noopener">https://mccxj.github.io/blog/20171230_os-thread-limit.html</a></p>
-</blockquote>
-<p>cgroup 进程数限制</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007468509" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007468509</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>centos7网卡改名</title>
     <url>/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/</url>
     <content><![CDATA[<p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
@@ -936,6 +878,64 @@
       </tags>
   </entry>
   <entry>
+    <title>bash fork: retry: Resource temporarily unavailable</title>
+    <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
+    <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
+<p>排查经过：</p>
+<ol>
+<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
+<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
+<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
+</ol>
+<p>这下懵圈了</p>
+<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
+<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
+<p>最后是找到了这篇文章：</p>
+<blockquote>
+<p><a href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable" target="_blank" rel="noopener">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
+</blockquote>
+<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
+<ul>
+<li>这个文件的数量改动后立马生效，不需要重启</li>
+<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
+</ul>
+<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>在centos7上</p>
+<ul>
+<li>获取当前进程数：<code>cat /sys/fs/cgroup/pids/pids.current</code>   类似使用<code>ps -ef | wc -l</code></li>
+<li>获取当前<strong>线程数和进程数</strong>总和：<code>wc -l /sys/fs/cgroup/pids/tasks</code>  类似使用<code>ps -eLf | wc -l</code></li>
+</ul>
+<p>centos7上也是可以实现pid.max：<br>只需要在/sys/fs/cgroup/pids/下创建以为目录，则该目录中就会自动创建pid.max：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# pwd</span><br><span class="line">/sys/fs/cgroup/pids/test</span><br><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br></pre></td></tr></table></figure></p>
+<p>对当前shell交互进程限制</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br><span class="line">[root@leanote test]# cat cgroup.procs </span><br><span class="line">[root@leanote test]# echo $$</span><br><span class="line">14514</span><br><span class="line">[root@leanote test]# echo 14514 &gt; cgroup.procs </span><br><span class="line">[root@leanote test]# echo 1 &gt; pids.max </span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: Resource temporarily unavailable</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: retry: No child processes</span><br></pre></td></tr></table></figure>
+<ul>
+<li>给pid.max输入1后，直接就出<code>-bash: fork: retry: No child processes</code>报错了。</li>
+<li>pid.max只会对cgroup.procs中存在的进程进行pid.max限制。</li>
+<li>当进程消失后,cgroup.procs中的进程号也会自动消失。</li>
+</ul>
+<p>在上一级不存在pid.max是因为对整个系统没必要做限制。<br>Ubuntu系统上<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code>这个其实是对用户编号为0的用户进行了pid.max的限制。</p>
+<p>refer:</p>
+<p>知乎上看到有个小伙伴也遇到这个问题了</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
+</blockquote>
+<p>fork的文档</p>
+<blockquote>
+<p><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
+</blockquote>
+<p>cgroup介绍</p>
+<blockquote>
+<p><a href="https://segmentfault.com/a/1190000007241437" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007241437</a><br><a href="https://mccxj.github.io/blog/20171230_os-thread-limit.html" target="_blank" rel="noopener">https://mccxj.github.io/blog/20171230_os-thread-limit.html</a></p>
+</blockquote>
+<p>cgroup 进程数限制</p>
+<blockquote>
+<p><a href="https://segmentfault.com/a/1190000007468509" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007468509</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>concourse食用指北02-镜像构建</title>
     <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9702-%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
@@ -1030,6 +1030,27 @@
       </tags>
   </entry>
   <entry>
+    <title>concourse食用指北05-一些优化和技巧</title>
+    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
+<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
+<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
+<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
+<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
+<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
+<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
+<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
+<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>concourse食用指北04-编写一个自定义resource</title>
     <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9704-%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%AE%9A%E4%B9%89resource/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
@@ -1098,27 +1119,6 @@
 <li>官方介绍: <a href="https://concourse-ci.org/implementing-resource-types.html" target="_blank" rel="noopener">https://concourse-ci.org/implementing-resource-types.html</a></li>
 <li><a href="https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39" target="_blank" rel="noopener">https://medium.com/devops-dudes/writing-a-custom-concourse-resource-overview-1ed6d2983e39</a></li>
 </ol>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>concourse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>concourse食用指北05-一些优化和技巧</title>
-    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
-    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
-<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
-<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
-<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
-<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
-<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
-<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
-<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
-<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
 ]]></content>
       <categories>
         <category>application</category>
@@ -1317,6 +1317,33 @@
       </tags>
   </entry>
   <entry>
+    <title>getchar()存储类型</title>
+    <url>/2018/12/20/getchar-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h2 id="getchar-返回类型声明为int类型"><a href="#getchar-返回类型声明为int类型" class="headerlink" title="getchar()返回类型声明为int类型"></a>getchar()返回类型声明为int类型</h2><p>getchar()函数从文本流读入下一个输入字符，并且作为结果返回。</p>
+<p>一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c != EOF) &#123;</span><br><span class="line">        putchar(c);</span><br><span class="line">        c = getchar();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>起先没搞明白为什么对c的声明是int类型，而不是char类型。</p>
+<p>后来查阅资料得知，char类型的声明，会根据不同的编译器，或者不同的架构平台，可能成为unsigned char或者是signed char类型。</p>
+<p>如果是unsigned char类型，<strong>占8位，一个字节，其范围为0000 0000 ~ 1111 1111，即0 ~ 255</strong>，那么无法存储EOF这个结束符，<strong>EOF可以理解为数值-1(C89, C99, C11并没有给EOF定义一个具体的值，只是说EOF是一个负值常量)</strong>。</p>
+<p>而当被作为signed char类型，虽然其取值范围为-128 ~ +127，虽然能够存储EOF这个结束符，看似正常，但在linux的环境，会混淆char 255和EOF，导致输入数据的截断。</p>
+<p>在linux平台运行以下程序</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    char c;</span><br><span class="line">    printf(&quot;Enter characters : &quot;);</span><br><span class="line">    while((c= getchar()) != EOF)&#123;</span><br><span class="line">      putchar(c);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果可以发现\0377后面部分没有被打印。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos ~]# gcc test.c &amp;&amp; echo -e &apos;Hello world\0377And some more&apos; | ./a.out</span><br><span class="line">Enter characters : Hello world[root@VM_31_91_centos ~]#</span><br></pre></td></tr></table></figure>
+<p><strong>getchar()和putchar()初始返回的值都为int类型。</strong><br><strong>对于getchar()函数返回值的声明使用int类型</strong></p>
+<h2 id="打印出EOF的值"><a href="#打印出EOF的值" class="headerlink" title="打印出EOF的值"></a>打印出EOF的值</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    </span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c == EOF) &#123;</span><br><span class="line">        </span><br><span class="line">        printf(&quot;this is the value of EOF:%d&quot;,c);</span><br><span class="line">        c = getchar();</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行程序，按<strong>CTRL+D发送EOF</strong>，查看得到的数值为-1。</p>
+<ul>
+<li>refer<blockquote>
+<p><a href="https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int" target="_blank" rel="noopener">https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int</a><br><a href="https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc" target="_blank" rel="noopener">https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc</a><br><a href="https://stackoverflow.com/questions/7119470/int-c-getchar" target="_blank" rel="noopener">https://stackoverflow.com/questions/7119470/int-c-getchar</a><br>The C Programming Language - By Kernighan and Ritchie</p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>c语言基本数字类型</title>
     <url>/2019/01/06/c%E8%AF%AD%E8%A8%80%E5%9F%BA%E6%9C%AC%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<h2 id="基本数字类型"><a href="#基本数字类型" class="headerlink" title="基本数字类型"></a>基本数字类型</h2><h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><ul>
@@ -1370,33 +1397,6 @@
 <li>float _Imaginary</li>
 <li>double _Imaginary</li>
 <li>long double _Imaginary</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>c</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>getchar()存储类型</title>
-    <url>/2018/12/20/getchar-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<h2 id="getchar-返回类型声明为int类型"><a href="#getchar-返回类型声明为int类型" class="headerlink" title="getchar()返回类型声明为int类型"></a>getchar()返回类型声明为int类型</h2><p>getchar()函数从文本流读入下一个输入字符，并且作为结果返回。</p>
-<p>一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c != EOF) &#123;</span><br><span class="line">        putchar(c);</span><br><span class="line">        c = getchar();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>起先没搞明白为什么对c的声明是int类型，而不是char类型。</p>
-<p>后来查阅资料得知，char类型的声明，会根据不同的编译器，或者不同的架构平台，可能成为unsigned char或者是signed char类型。</p>
-<p>如果是unsigned char类型，<strong>占8位，一个字节，其范围为0000 0000 ~ 1111 1111，即0 ~ 255</strong>，那么无法存储EOF这个结束符，<strong>EOF可以理解为数值-1(C89, C99, C11并没有给EOF定义一个具体的值，只是说EOF是一个负值常量)</strong>。</p>
-<p>而当被作为signed char类型，虽然其取值范围为-128 ~ +127，虽然能够存储EOF这个结束符，看似正常，但在linux的环境，会混淆char 255和EOF，导致输入数据的截断。</p>
-<p>在linux平台运行以下程序</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    char c;</span><br><span class="line">    printf(&quot;Enter characters : &quot;);</span><br><span class="line">    while((c= getchar()) != EOF)&#123;</span><br><span class="line">      putchar(c);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果可以发现\0377后面部分没有被打印。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos ~]# gcc test.c &amp;&amp; echo -e &apos;Hello world\0377And some more&apos; | ./a.out</span><br><span class="line">Enter characters : Hello world[root@VM_31_91_centos ~]#</span><br></pre></td></tr></table></figure>
-<p><strong>getchar()和putchar()初始返回的值都为int类型。</strong><br><strong>对于getchar()函数返回值的声明使用int类型</strong></p>
-<h2 id="打印出EOF的值"><a href="#打印出EOF的值" class="headerlink" title="打印出EOF的值"></a>打印出EOF的值</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int c;</span><br><span class="line">    </span><br><span class="line">    c = getchar();</span><br><span class="line">    while (c == EOF) &#123;</span><br><span class="line">        </span><br><span class="line">        printf(&quot;this is the value of EOF:%d&quot;,c);</span><br><span class="line">        c = getchar();</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行程序，按<strong>CTRL+D发送EOF</strong>，查看得到的数值为-1。</p>
-<ul>
-<li>refer<blockquote>
-<p><a href="https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int" target="_blank" rel="noopener">https://stackoverflow.com/questions/18013167/why-must-the-variable-used-to-hold-getchars-return-value-be-declared-as-int</a><br><a href="https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc" target="_blank" rel="noopener">https://stackoverflow.com/questions/35356322/difference-between-int-and-char-in-getchar-fgetc-and-putchar-fputc</a><br><a href="https://stackoverflow.com/questions/7119470/int-c-getchar" target="_blank" rel="noopener">https://stackoverflow.com/questions/7119470/int-c-getchar</a><br>The C Programming Language - By Kernighan and Ritchie</p>
-</blockquote>
-</li>
 </ul>
 ]]></content>
       <tags>
@@ -1788,6 +1788,25 @@
       </tags>
   </entry>
   <entry>
+    <title>is和==比较区别</title>
+    <url>/2019/01/17/is%E5%92%8C==%E6%AF%94%E8%BE%83%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="is"><a href="#is" class="headerlink" title="is"></a>is</h2><p>** is比较的对象为内存地址</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<h2 id><a href="#" class="headerlink" title="=="></a>==</h2><p>** ==比较的对象是值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a == b</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<h2 id="关于int类型的缓存"><a href="#关于int类型的缓存" class="headerlink" title="关于int类型的缓存"></a>关于int类型的缓存</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = 1</span><br><span class="line">&gt;&gt;&gt; b = 1</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a = 999</span><br><span class="line">&gt;&gt;&gt; b = 999</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285517520</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285517584</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>上述当ab都等于1的时候，两者指向的内存地址一致，但当ab赋值了999后，两者指向的内存地址不一致。</p>
+<h2 id="产生的原因"><a href="#产生的原因" class="headerlink" title="产生的原因"></a>产生的原因</h2><p><strong>python对于int类型进行缓存，当int属于[-5, 256]范围的时候，会被缓存，倘若在这个区间进行赋值，则指向的内存地址都是一致的。</strong></p>
+<p>这个产生的原因比较复杂，<strong>倘若a和b都赋值在同一行，则两者is比较也是True</strong>，具体可以看refer。</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python" target="_blank" rel="noopener">https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Helm的简单使用</title>
     <url>/2020/06/21/helm%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h1 id="HELM基本介绍"><a href="#HELM基本介绍" class="headerlink" title="HELM基本介绍"></a>HELM基本介绍</h1><p>helm是一个可以让k8s上的应用服务进行简便安装，方便管理的工具。可以理解对yum/apt等包管理工具，只不过他是k8s特有的。</p>
@@ -1875,25 +1894,6 @@
       <tags>
         <tag>k8s</tag>
         <tag>helm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>is和==比较区别</title>
-    <url>/2019/01/17/is%E5%92%8C==%E6%AF%94%E8%BE%83%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h2 id="is"><a href="#is" class="headerlink" title="is"></a>is</h2><p>** is比较的对象为内存地址</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<h2 id><a href="#" class="headerlink" title="=="></a>==</h2><p>** ==比较的对象是值</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b = a[:]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285741320</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285738696</span><br><span class="line">&gt;&gt;&gt; a == b</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<h2 id="关于int类型的缓存"><a href="#关于int类型的缓存" class="headerlink" title="关于int类型的缓存"></a>关于int类型的缓存</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = 1</span><br><span class="line">&gt;&gt;&gt; b = 1</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9322464</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a = 999</span><br><span class="line">&gt;&gt;&gt; b = 999</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140379285517520</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140379285517584</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>上述当ab都等于1的时候，两者指向的内存地址一致，但当ab赋值了999后，两者指向的内存地址不一致。</p>
-<h2 id="产生的原因"><a href="#产生的原因" class="headerlink" title="产生的原因"></a>产生的原因</h2><p><strong>python对于int类型进行缓存，当int属于[-5, 256]范围的时候，会被缓存，倘若在这个区间进行赋值，则指向的内存地址都是一致的。</strong></p>
-<p>这个产生的原因比较复杂，<strong>倘若a和b都赋值在同一行，则两者is比较也是True</strong>，具体可以看refer。</p>
-<blockquote>
-<p><a href="https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python" target="_blank" rel="noopener">https://stackoverflow.com/questions/15171695/whats-with-the-integer-cache-inside-python</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,6 +2016,76 @@
       </tags>
   </entry>
   <entry>
+    <title>prometheus曲线救国添加hostname</title>
+    <url>/2019/03/07/prometheus%E6%B7%BB%E5%8A%A0hostname/</url>
+    <content><![CDATA[<h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><ol>
+<li>prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。</li>
+<li>只看ip，无法知道该机器的用户。</li>
+<li>grafana展现的时候，能根据hostname进行选择，展现机器数据。</li>
+</ol>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li>node_exporter中启用textfile采集的方式。</li>
+<li>在textfile目录下，写入hostname。</li>
+<li>通过表达式获取hostname。</li>
+</ol>
+<h2 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h2><ol>
+<li>如何做到hostname的更变。</li>
+<li>表达式hostname只和写入的metric有关，如何关联到不存在hostname的metric中。</li>
+</ol>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
+<li><p>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ExecStartPre=/opt/scripts/gethostname.sh</span><br><span class="line"></span><br><span class="line"># cat /opt/scripts/gethostname.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role=\&quot;`/usr/bin/hostname`\&quot;&#125; 0&quot; &gt; /app/local/node_exporter/collect/hostname.prom</span><br><span class="line">echo 1 &gt; /dev/null</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># HELP machine_role Metric read from /app/local/node_exporter/collect/hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role=&quot;postfix01&quot;&#125; 0</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>其label是role，value是postfix01，也就是hostname</p>
+<p>prometheus中执行执行<code>machine_role</code>,可以得到element为：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;ShangHai-SJ-L3-LC-Flume-01&quot;,service=&quot;L3&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这边有role和instance这个两个label，其中role为hostname的label，而instance则作为连接点的label。</p>
+<p>在grafana中的变量配置中就可以根据machine_role，先获取role，作为$hostname的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;service=&quot;$job&quot;&#125;,role)</span><br></pre></td></tr></table></figure></p>
+<p>然后再根据$hostname，来获取instance,作为$node的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;role=&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure></p>
+<p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance=~&quot;$node&quot;, mode=&apos;system&apos;&#125;) by (cpu))</span><br></pre></td></tr></table></figure></p>
+<h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
+<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg" alt></p>
+</li>
+<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg" alt></p>
+</li>
+<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg" alt></p>
+</li>
+</ul>
+<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><ul>
+<li>如果是通过dns方式发现，则是可以把hostname变成元label的。</li>
+<li>通过consul发现，则可以在consul客户端上报hostname，也可以把hostname变成元label。</li>
+</ul>
+<h2 id="待解决问题第二点解决方法"><a href="#待解决问题第二点解决方法" class="headerlink" title="待解决问题第二点解决方法"></a>待解决问题第二点解决方法</h2><p><strong>promSQL可以使用on ignore group_left group_right配合来把hostname拼凑进去。</strong></p>
+<p>machine_role查询得到的结果:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  0</span><br></pre></td></tr></table></figure>
+<p>up查询得到的结果:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
+<p>machine_role里面的role标签包含了主机名，但up没有，此时通过将两个方法结合在一起。<br>使用on方法，<em>可以理解为mysql的两表查询join</em> 两者的有共同的instance,job,service,ip标签</p>
+<p>不一定要全部都选择，但选择的多则相互匹配更加精确，<code>on(instance,job,service,ip)</code></p>
+<p>使用group_left或者group_right标记”多”的标签,这边多出来的标签是role，所以为<code>group_left(role)</code></p>
+<p>表达式架构为:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;vector expr&gt; &lt;bin-op&gt; on(&lt;label list&gt;) group_left(&lt;label list&gt;) &lt;vector expr&gt;</span><br></pre></td></tr></table></figure>
+<p><bin-op>指加减乘除余幂</bin-op></p>
+<p>所以将up和machine_role拼凑和可以写为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role</span><br><span class="line">&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
+<p>如果用group_right，则把up和machine_role反一下即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role + on(instance, job,ip,service) group_right(role) up</span><br></pre></td></tr></table></figure>
+<p>此时得到的结果包含了role，如果作为告警，由于up为1表示正常，machine_role设置的是0，两者相加，若为0，则表示机器down。<br>告警表达式可以写成:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role == 0</span><br></pre></td></tr></table></figure>
+<p>此时如果告警，则会包含role这个标签，就可以传递给alertmanager，获取到role了。</p>
+<p>refer</p>
+<blockquote>
+<p><a href="https://www.robustperception.io/how-to-have-labels-for-machine-roles" target="_blank" rel="noopener">https://www.robustperception.io/how-to-have-labels-for-machine-roles</a><br><a href="https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2" target="_blank" rel="noopener">https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>prometheus</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>position属性relative和absolute</title>
     <url>/2019/03/06/position%E5%B1%9E%E6%80%A7relative%E5%92%8Cabsolute/</url>
     <content><![CDATA[<p>我还记得那个调整了3个多小时才把确认按钮移动到table右边的夜晚。以至于前端给我的错觉就是，我写出我的思路，但它却不这么去展现。。mmp..<br>至此拾起来，从把relative和absolute两个属性搞清楚开始。</p>
@@ -2091,76 +2161,6 @@
 ]]></content>
       <tags>
         <tag>css</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>prometheus曲线救国添加hostname</title>
-    <url>/2019/03/07/prometheus%E6%B7%BB%E5%8A%A0hostname/</url>
-    <content><![CDATA[<h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><ol>
-<li>prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。</li>
-<li>只看ip，无法知道该机器的用户。</li>
-<li>grafana展现的时候，能根据hostname进行选择，展现机器数据。</li>
-</ol>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
-<li>node_exporter中启用textfile采集的方式。</li>
-<li>在textfile目录下，写入hostname。</li>
-<li>通过表达式获取hostname。</li>
-</ol>
-<h2 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h2><ol>
-<li>如何做到hostname的更变。</li>
-<li>表达式hostname只和写入的metric有关，如何关联到不存在hostname的metric中。</li>
-</ol>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
-<li><p>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ExecStartPre=/opt/scripts/gethostname.sh</span><br><span class="line"></span><br><span class="line"># cat /opt/scripts/gethostname.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role=\&quot;`/usr/bin/hostname`\&quot;&#125; 0&quot; &gt; /app/local/node_exporter/collect/hostname.prom</span><br><span class="line">echo 1 &gt; /dev/null</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># HELP machine_role Metric read from /app/local/node_exporter/collect/hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role=&quot;postfix01&quot;&#125; 0</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>其label是role，value是postfix01，也就是hostname</p>
-<p>prometheus中执行执行<code>machine_role</code>,可以得到element为：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;ShangHai-SJ-L3-LC-Flume-01&quot;,service=&quot;L3&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这边有role和instance这个两个label，其中role为hostname的label，而instance则作为连接点的label。</p>
-<p>在grafana中的变量配置中就可以根据machine_role，先获取role，作为$hostname的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;service=&quot;$job&quot;&#125;,role)</span><br></pre></td></tr></table></figure></p>
-<p>然后再根据$hostname，来获取instance,作为$node的值<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">label_values(machine_role&#123;role=&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure></p>
-<p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance=~&quot;$node&quot;, mode=&apos;system&apos;&#125;) by (cpu))</span><br></pre></td></tr></table></figure></p>
-<h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
-<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg" alt></p>
-</li>
-<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg" alt></p>
-</li>
-<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg" alt></p>
-</li>
-</ul>
-<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><ul>
-<li>如果是通过dns方式发现，则是可以把hostname变成元label的。</li>
-<li>通过consul发现，则可以在consul客户端上报hostname，也可以把hostname变成元label。</li>
-</ul>
-<h2 id="待解决问题第二点解决方法"><a href="#待解决问题第二点解决方法" class="headerlink" title="待解决问题第二点解决方法"></a>待解决问题第二点解决方法</h2><p><strong>promSQL可以使用on ignore group_left group_right配合来把hostname拼凑进去。</strong></p>
-<p>machine_role查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  0</span><br></pre></td></tr></table></figure>
-<p>up查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>machine_role里面的role标签包含了主机名，但up没有，此时通过将两个方法结合在一起。<br>使用on方法，<em>可以理解为mysql的两表查询join</em> 两者的有共同的instance,job,service,ip标签</p>
-<p>不一定要全部都选择，但选择的多则相互匹配更加精确，<code>on(instance,job,service,ip)</code></p>
-<p>使用group_left或者group_right标记”多”的标签,这边多出来的标签是role，所以为<code>group_left(role)</code></p>
-<p>表达式架构为:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;vector expr&gt; &lt;bin-op&gt; on(&lt;label list&gt;) group_left(&lt;label list&gt;) &lt;vector expr&gt;</span><br></pre></td></tr></table></figure>
-<p><bin-op>指加减乘除余幂</bin-op></p>
-<p>所以将up和machine_role拼凑和可以写为</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role</span><br><span class="line">&#123;instance=&quot;10.1.11.1:9100&quot;,ip=&quot;10.1.11.1&quot;,job=&quot;L3&quot;,role=&quot;zabbix&quot;,service=&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>如果用group_right，则把up和machine_role反一下即可</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">machine_role + on(instance, job,ip,service) group_right(role) up</span><br></pre></td></tr></table></figure>
-<p>此时得到的结果包含了role，如果作为告警，由于up为1表示正常，machine_role设置的是0，两者相加，若为0，则表示机器down。<br>告警表达式可以写成:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role == 0</span><br></pre></td></tr></table></figure>
-<p>此时如果告警，则会包含role这个标签，就可以传递给alertmanager，获取到role了。</p>
-<p>refer</p>
-<blockquote>
-<p><a href="https://www.robustperception.io/how-to-have-labels-for-machine-roles" target="_blank" rel="noopener">https://www.robustperception.io/how-to-have-labels-for-machine-roles</a><br><a href="https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2" target="_blank" rel="noopener">https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>prometheus</tag>
       </tags>
   </entry>
   <entry>
@@ -2323,116 +2323,6 @@
 ]]></content>
       <tags>
         <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tcp_max_syn_backlog和net.core.somaxconn</title>
-    <url>/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/</url>
-    <content><![CDATA[<p><strong>kernel 3.10.0-693.2.2.el7.x86_64</strong></p>
-<h2 id="两个队列"><a href="#两个队列" class="headerlink" title="两个队列"></a>两个队列</h2><p>tcp的建联存在两种状态</p>
-<ol>
-<li>incomplete connection queue  未建联的队列</li>
-<li>completed connection queue   已建联的队列</li>
-</ol>
-<ul>
-<li><p>未建联的队列</p>
-<ul>
-<li>客户端发出syn请求，并且已经达到服务端，服务端返回syn+ack,等待对端响应ack时候的队列。</li>
-<li>这些套接口处于SYN_RCVD状态。</li>
-</ul>
-</li>
-<li><p>已建联的队列</p>
-<ul>
-<li>客户端发送建联请求，并且已经和服务端完成了三次握手，但此时这个socket还未被程序使用。(如何拿出来使用，则需要调用accept()函数)</li>
-<li>这些套接口处于ESTABLISHED状态。</li>
-</ul>
-</li>
-</ul>
-<h2 id="listen-和accept-函数"><a href="#listen-和accept-函数" class="headerlink" title="listen()和accept()函数"></a>listen()和accept()函数</h2><p>三次握手图</p>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g02g8ez0asj20uz0en0te.jpg" alt></p>
-<p>一段python服务端网络编程代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line"></span><br><span class="line">s = socket.socket()</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">while True:</span><br><span class="line">    c, addr = s.accept()</span><br><span class="line">    print(&quot;conn addr : &quot;, addr)</span><br><span class="line">    c.send(&quot;hello word&quot;)</span><br><span class="line">    c.close()</span><br></pre></td></tr></table></figure>
-<p>上述代码listen()和accept()解释如下</p>
-<h1 id="listen-函数"><a href="#listen-函数" class="headerlink" title="listen()函数"></a>listen()函数</h1><p>listen()函数的主要作用就是将套接字(sockfd)变成被动的连接监听套接字(被动等待客户端的连接)。</p>
-<h1 id="accept-函数"><a href="#accept-函数" class="headerlink" title="accept()函数"></a>accept()函数</h1><p>从处于 completed connection queue状态的连接队列头部取出一个已经完成的连接，如这个队列没有已经完成的连接，accept()函数就会阻塞，直到取出队列中已完成的用户连接为止。</p>
-<p><strong>如果程序不调用accept()函数，那么连接socket一直滞留在completed connection queue队列里面，进而未被程序消费使用。</strong></p>
-<p>比如如下代码:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket()</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
-<h2 id="somaxconn"><a href="#somaxconn" class="headerlink" title="somaxconn"></a>somaxconn</h2><p>The behavior of the backlog argument on TCP sockets changed with Linux 2.2. Now it specifies the queue length for <strong>completely established</strong> sockets waiting to be accepted, instead of the number of incomplete connection requests. </p>
-<p>If the backlog argument is greater than the value in /proc/sys/net/core/somaxconn, then it is silently truncated to that value; the default value in this file is 128. In kernels before 2.4.25, this limit was a hard coded value, SOMAXCONN, with the value 128.</p>
-<ol>
-<li>somaxconn用来指定系统定义的建联队列的长度(ESTAB状态的连接数量)。</li>
-<li>若程序中定义的listen函数的backlog大于系统定义的，则以系统定义为准。</li>
-</ol>
-<h3 id="代码实践-somaxconn"><a href="#代码实践-somaxconn" class="headerlink" title="代码实践 somaxconn"></a>代码实践 somaxconn</h3><p>python的一个不含accept()的服务端代码，这样可以让socket滞留在completed connection queue队列里面。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 2</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
-<p>查看下系统somaxconn的值：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl -a | grep somaxconn</span><br><span class="line">net.core.somaxconn = 128</span><br></pre></td></tr></table></figure></p>
-<p>启动进程，<strong>先不使用客户端进行连接</strong>，使用ss查看进程pid。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anpl | egrep &quot;10187|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      5         *:12345                 *:*                   users:((&quot;python3&quot;,pid=10187,fd=3))</span><br></pre></td></tr></table></figure>
-<p>这里涉及到Recv-Q和Send-Q两个字段，这两个字段的含义和前面state字段为何种状态密不可分，解释如下</p>
-<ul>
-<li><p>Recv-Q</p>
-<ul>
-<li>Established: The count of bytes not copied by the user program connected to this socket.(套接字缓冲还没有被应用程序取走的字节数)</li>
-<li>Listening: Since Kernel 2.6.18 this column contains the current syn backlog. (当前syn backlog为backlog+1)</li>
-</ul>
-</li>
-<li><p>Send-Q</p>
-<ul>
-<li>Established: The count of bytes <strong>not acknowledged</strong> by the remote host.(没有被远端确认的字节数)</li>
-<li>Listening: Since Kernel 2.6.18 this column contains the maximum size of the syn backlog.</li>
-</ul>
-</li>
-</ul>
-<p><strong>Send-Q 对应的值是5，这个值也就是代码中listen()中BACKLOG的值。</strong></p>
-<p>此时如果调整BACKLOG至256，重新启动进程，然后用ss查看信息：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 256</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      128       *:12345                 *:*                   users:((&quot;python3&quot;,pid=19593,fd=3))</span><br></pre></td></tr></table></figure>
-<p>Send-Q被系统somaxcon限制为128，调整系统somaxcon的值后，重启进程，然后ss继续观察</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.core.somaxconn=65522</span><br><span class="line">net.core.somaxconn = 65522</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      256       *:12345                 *:*                   users:((&quot;python3&quot;,pid=19839,fd=3))</span><br></pre></td></tr></table></figure>
-<p>变成了程序代码里定义的BACKLOG值了。</p>
-<p><strong>让客户端进行建联</strong></p>
-<p>客户端代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line">host = &apos;122.152.220.151&apos;</span><br><span class="line">port = 12345</span><br><span class="line">sockets=[]</span><br><span class="line">while True:</span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect((host, port))</span><br><span class="line">    sockets.append(s)</span><br><span class="line">    time.sleep(10)</span><br></pre></td></tr></table></figure>
-<p><strong>代码中BACKLOG修改为2</strong></p>
-<p>使用ss观察服务端</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     3      2         *:12345                 *:*                   users:((&quot;python3&quot;,pid=20361,fd=3))</span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35986              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36012              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              89.248.167.131:56380              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35994              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36002              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35972              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35952              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35960</span><br></pre></td></tr></table></figure>
-<p><strong>建联3个后(ESTAB),其他请求一直处于SYN-RECV状态。</strong></p>
-<p>Recv-Q为3，表示当前syn backlog为3 ,backlog+1的结果(2+1)。</p>
-<p>当BACKLOG满的时候，抓包情况：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# tcpdump -i any port 12345 -nnn &gt; 111</span><br><span class="line">[root@leanote ~]# cat 111 | grep  37182</span><br><span class="line">16:11:58.519076 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [S], seq 1450185841, win 29200, options [mss 1424,sackOK,TS val 3561765739 ecr 0,nop,wscale 7], length 0</span><br><span class="line">16:11:58.519145 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121876725 ecr 3561765739,nop,wscale 7], length 0</span><br><span class="line">16:11:58.578420 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561765798 ecr 3121876725], length 0</span><br><span class="line">16:11:59.853632 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121878060 ecr 3561765798,nop,wscale 7], length 0</span><br><span class="line">16:11:59.912872 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561767133 ecr 3121876725], length 0</span><br><span class="line">16:12:02.053621 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121880260 ecr 3561767133,nop,wscale 7], length 0</span><br><span class="line">16:12:02.112871 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561769333 ecr 3121876725], length 0</span><br><span class="line">16:12:06.253625 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121884460 ecr 3561769333,nop,wscale 7], length 0</span><br><span class="line">16:12:06.312908 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561773533 ecr 3121876725], length 0</span><br><span class="line">16:12:14.253636 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121892460 ecr 3561773533,nop,wscale 7], length 0</span><br><span class="line">16:12:14.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561781533 ecr 3121876725], length 0</span><br><span class="line">16:12:30.253631 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121908460 ecr 3561781533,nop,wscale 7], length 0</span><br><span class="line">16:12:30.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561797533 ecr 3121876725], length 0</span><br></pre></td></tr></table></figure></p>
-<p>对客户端一直发送syn+ack包。([S.]  S表示syn，.表示ack)<br>6次后，不再继续发送</p>
-<p>虽然服务端ESTAB状态只有3个，但是对客户端而言，存在多个</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_0_15_centos ~]# netstat -ant | grep 12345</span><br><span class="line">tcp        0      0 172.27.0.15:37326       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37410       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37312       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37242       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37232       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37360       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37266       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37442       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37458       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37468       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37214       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37392       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37282       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37292       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37182       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37174       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37222       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37370       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37400       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37430       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37206       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37418       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37342       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37352       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37252       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37384       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37334       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37274       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37450       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37300       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37192       122.152.220.151:12345   ESTABLISHED</span><br></pre></td></tr></table></figure>
-<p>对于客户端而言，服务端发送了syn+ack已经算是三次握手成功了。</p>
-<h2 id="tcp-max-syn-backlog"><a href="#tcp-max-syn-backlog" class="headerlink" title="tcp_max_syn_backlog"></a>tcp_max_syn_backlog</h2><p>The maximum number of queued connection    requests which have still <strong>not received</strong> an acknowledgement from the connecting client. If this number is exceeded, the kernel will begin drop-ping requests.The maximum length of the queue for incomplete sockets can be set using /proc/sys/net/ipv4/tcp_max_syn_backlog. When syncookies are enabled there is no logical maximum length and this setting is ignored</p>
-<ol>
-<li>tcp_max_syn_backlog用来定义未建联的SYN-RECV状态队列长度。</li>
-<li>当启用syncookies功能的时候，tcp_max_syn_backlog的功能将被忽视。</li>
-</ol>
-<p>###代码实践 tcp_max_syn_backlog</p>
-<p>查看下系统tcp_max_syn_backlog的值：<br>[root@leanote ~]# sysctl -a | grep tcp_max_syn_backlog<br>net.ipv4.tcp_max_syn_backlog = 128</p>
-<p>服务端ss查看<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# netstat -ant | grep 12345</span><br><span class="line">tcp        3      0 0.0.0.0:12345           0.0.0.0:*               LISTEN     </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37926     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37894     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37944     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37936     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37908     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37918     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37874     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37864     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37882     ESTABLISHED</span><br></pre></td></tr></table></figure></p>
-<p>输出发现SYN_RECV状态状态很多，<strong>虽然连接处于SYN_RECV</strong>，一段时间后，自动删除，但是通过调整tcp_max_syn_backlog的值可以调整同一时间内SYN_RECV的数量。</p>
-<p>调整成为2个：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_max_syn_backlog=2</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 2</span><br></pre></td></tr></table></figure></p>
-<p>因为当syncookies功能开启的时候，tcp_max_syn_backlog不会发挥作用，所以syncookies也得暂停：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.tcp_syncookies = 0</span><br></pre></td></tr></table></figure></p>
-<p>客户端服务端重启，然后ss查看状态：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -ant | grep 12345</span><br><span class="line">LISTEN     3      2            *:12345                    *:*                  </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38456              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38470              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38398              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38280              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38264              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38272</span><br></pre></td></tr></table></figure></p>
-<p>这个syn_backlog设定的是2，但观察SYN-RECV最多出现3个。可能也是syn_backlog+1。待考证。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# netstat -s | grep drop</span><br><span class="line">    20 dropped because of missing route</span><br><span class="line">    19 ICMP packets dropped because they were out-of-window</span><br><span class="line">    92307 SYNs to LISTEN sockets dropped</span><br><span class="line">    </span><br><span class="line">[root@leanote ~]# dmesg  | tail -n 10</span><br><span class="line">[3124021.575444] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124025.583391] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124033.599301] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124049.647044] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124111.900356] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124112.902233] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124114.908171] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124118.916112] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124126.924020] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124142.955770] TCP: drop open request from 118.24.105.81/38996</span><br></pre></td></tr></table></figure>
-<p>服务器开始丢弃syn包，以及丢弃从客户端发送来的新连接。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>tcp_max_syn_backlog用来定义未建联的SYN-RECV状态队列长度。但当启用syncookies功能的时候失效。</li>
-<li>somaxconn会限制listen()函数中BACKLOG的值。</li>
-</ul>
-<p><strong>somaxconn在高并发下需要调整，默认128绝逼不够用。</strong></p>
-<p>refer</p>
-<blockquote>
-<p><a href="https://www.jianshu.com/p/30b861cac826" target="_blank" rel="noopener">https://www.jianshu.com/p/30b861cac826</a><br><a href="https://www.jianshu.com/p/7fde92785056" target="_blank" rel="noopener">https://www.jianshu.com/p/7fde92785056</a><br><a href="https://linux.die.net/man/2/listen" target="_blank" rel="noopener">https://linux.die.net/man/2/listen</a><br><a href="http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7" target="_blank" rel="noopener">http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7</a><br><a href="http://zake7749.github.io/2015/03/17/SocketProgramming/" target="_blank" rel="noopener">http://zake7749.github.io/2015/03/17/SocketProgramming/</a><br><a href="http://man7.org/linux/man-pages/man2/accept.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/accept.2.html</a><br><a href="https://blog.csdn.net/tennysonsky/article/details/45621341" target="_blank" rel="noopener">https://blog.csdn.net/tennysonsky/article/details/45621341</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>linux</tag>
-        <tag>network</tag>
       </tags>
   </entry>
   <entry>
@@ -2699,6 +2589,116 @@
       </tags>
   </entry>
   <entry>
+    <title>tcp_max_syn_backlog和net.core.somaxconn</title>
+    <url>/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/</url>
+    <content><![CDATA[<p><strong>kernel 3.10.0-693.2.2.el7.x86_64</strong></p>
+<h2 id="两个队列"><a href="#两个队列" class="headerlink" title="两个队列"></a>两个队列</h2><p>tcp的建联存在两种状态</p>
+<ol>
+<li>incomplete connection queue  未建联的队列</li>
+<li>completed connection queue   已建联的队列</li>
+</ol>
+<ul>
+<li><p>未建联的队列</p>
+<ul>
+<li>客户端发出syn请求，并且已经达到服务端，服务端返回syn+ack,等待对端响应ack时候的队列。</li>
+<li>这些套接口处于SYN_RCVD状态。</li>
+</ul>
+</li>
+<li><p>已建联的队列</p>
+<ul>
+<li>客户端发送建联请求，并且已经和服务端完成了三次握手，但此时这个socket还未被程序使用。(如何拿出来使用，则需要调用accept()函数)</li>
+<li>这些套接口处于ESTABLISHED状态。</li>
+</ul>
+</li>
+</ul>
+<h2 id="listen-和accept-函数"><a href="#listen-和accept-函数" class="headerlink" title="listen()和accept()函数"></a>listen()和accept()函数</h2><p>三次握手图</p>
+<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g02g8ez0asj20uz0en0te.jpg" alt></p>
+<p>一段python服务端网络编程代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line"></span><br><span class="line">s = socket.socket()</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">while True:</span><br><span class="line">    c, addr = s.accept()</span><br><span class="line">    print(&quot;conn addr : &quot;, addr)</span><br><span class="line">    c.send(&quot;hello word&quot;)</span><br><span class="line">    c.close()</span><br></pre></td></tr></table></figure>
+<p>上述代码listen()和accept()解释如下</p>
+<h1 id="listen-函数"><a href="#listen-函数" class="headerlink" title="listen()函数"></a>listen()函数</h1><p>listen()函数的主要作用就是将套接字(sockfd)变成被动的连接监听套接字(被动等待客户端的连接)。</p>
+<h1 id="accept-函数"><a href="#accept-函数" class="headerlink" title="accept()函数"></a>accept()函数</h1><p>从处于 completed connection queue状态的连接队列头部取出一个已经完成的连接，如这个队列没有已经完成的连接，accept()函数就会阻塞，直到取出队列中已完成的用户连接为止。</p>
+<p><strong>如果程序不调用accept()函数，那么连接socket一直滞留在completed connection queue队列里面，进而未被程序消费使用。</strong></p>
+<p>比如如下代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket()</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
+<h2 id="somaxconn"><a href="#somaxconn" class="headerlink" title="somaxconn"></a>somaxconn</h2><p>The behavior of the backlog argument on TCP sockets changed with Linux 2.2. Now it specifies the queue length for <strong>completely established</strong> sockets waiting to be accepted, instead of the number of incomplete connection requests. </p>
+<p>If the backlog argument is greater than the value in /proc/sys/net/core/somaxconn, then it is silently truncated to that value; the default value in this file is 128. In kernels before 2.4.25, this limit was a hard coded value, SOMAXCONN, with the value 128.</p>
+<ol>
+<li>somaxconn用来指定系统定义的建联队列的长度(ESTAB状态的连接数量)。</li>
+<li>若程序中定义的listen函数的backlog大于系统定义的，则以系统定义为准。</li>
+</ol>
+<h3 id="代码实践-somaxconn"><a href="#代码实践-somaxconn" class="headerlink" title="代码实践 somaxconn"></a>代码实践 somaxconn</h3><p>python的一个不含accept()的服务端代码，这样可以让socket滞留在completed connection queue队列里面。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 2</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
+<p>查看下系统somaxconn的值：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl -a | grep somaxconn</span><br><span class="line">net.core.somaxconn = 128</span><br></pre></td></tr></table></figure></p>
+<p>启动进程，<strong>先不使用客户端进行连接</strong>，使用ss查看进程pid。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anpl | egrep &quot;10187|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      5         *:12345                 *:*                   users:((&quot;python3&quot;,pid=10187,fd=3))</span><br></pre></td></tr></table></figure>
+<p>这里涉及到Recv-Q和Send-Q两个字段，这两个字段的含义和前面state字段为何种状态密不可分，解释如下</p>
+<ul>
+<li><p>Recv-Q</p>
+<ul>
+<li>Established: The count of bytes not copied by the user program connected to this socket.(套接字缓冲还没有被应用程序取走的字节数)</li>
+<li>Listening: Since Kernel 2.6.18 this column contains the current syn backlog. (当前syn backlog为backlog+1)</li>
+</ul>
+</li>
+<li><p>Send-Q</p>
+<ul>
+<li>Established: The count of bytes <strong>not acknowledged</strong> by the remote host.(没有被远端确认的字节数)</li>
+<li>Listening: Since Kernel 2.6.18 this column contains the maximum size of the syn backlog.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Send-Q 对应的值是5，这个值也就是代码中listen()中BACKLOG的值。</strong></p>
+<p>此时如果调整BACKLOG至256，重新启动进程，然后用ss查看信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 256</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      128       *:12345                 *:*                   users:((&quot;python3&quot;,pid=19593,fd=3))</span><br></pre></td></tr></table></figure>
+<p>Send-Q被系统somaxcon限制为128，调整系统somaxcon的值后，重启进程，然后ss继续观察</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.core.somaxconn=65522</span><br><span class="line">net.core.somaxconn = 65522</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      256       *:12345                 *:*                   users:((&quot;python3&quot;,pid=19839,fd=3))</span><br></pre></td></tr></table></figure>
+<p>变成了程序代码里定义的BACKLOG值了。</p>
+<p><strong>让客户端进行建联</strong></p>
+<p>客户端代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line">host = &apos;122.152.220.151&apos;</span><br><span class="line">port = 12345</span><br><span class="line">sockets=[]</span><br><span class="line">while True:</span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect((host, port))</span><br><span class="line">    sockets.append(s)</span><br><span class="line">    time.sleep(10)</span><br></pre></td></tr></table></figure>
+<p><strong>代码中BACKLOG修改为2</strong></p>
+<p>使用ss观察服务端</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     3      2         *:12345                 *:*                   users:((&quot;python3&quot;,pid=20361,fd=3))</span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35986              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36012              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              89.248.167.131:56380              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35994              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36002              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35972              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35952              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35960</span><br></pre></td></tr></table></figure>
+<p><strong>建联3个后(ESTAB),其他请求一直处于SYN-RECV状态。</strong></p>
+<p>Recv-Q为3，表示当前syn backlog为3 ,backlog+1的结果(2+1)。</p>
+<p>当BACKLOG满的时候，抓包情况：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# tcpdump -i any port 12345 -nnn &gt; 111</span><br><span class="line">[root@leanote ~]# cat 111 | grep  37182</span><br><span class="line">16:11:58.519076 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [S], seq 1450185841, win 29200, options [mss 1424,sackOK,TS val 3561765739 ecr 0,nop,wscale 7], length 0</span><br><span class="line">16:11:58.519145 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121876725 ecr 3561765739,nop,wscale 7], length 0</span><br><span class="line">16:11:58.578420 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561765798 ecr 3121876725], length 0</span><br><span class="line">16:11:59.853632 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121878060 ecr 3561765798,nop,wscale 7], length 0</span><br><span class="line">16:11:59.912872 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561767133 ecr 3121876725], length 0</span><br><span class="line">16:12:02.053621 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121880260 ecr 3561767133,nop,wscale 7], length 0</span><br><span class="line">16:12:02.112871 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561769333 ecr 3121876725], length 0</span><br><span class="line">16:12:06.253625 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121884460 ecr 3561769333,nop,wscale 7], length 0</span><br><span class="line">16:12:06.312908 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561773533 ecr 3121876725], length 0</span><br><span class="line">16:12:14.253636 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121892460 ecr 3561773533,nop,wscale 7], length 0</span><br><span class="line">16:12:14.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561781533 ecr 3121876725], length 0</span><br><span class="line">16:12:30.253631 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121908460 ecr 3561781533,nop,wscale 7], length 0</span><br><span class="line">16:12:30.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561797533 ecr 3121876725], length 0</span><br></pre></td></tr></table></figure></p>
+<p>对客户端一直发送syn+ack包。([S.]  S表示syn，.表示ack)<br>6次后，不再继续发送</p>
+<p>虽然服务端ESTAB状态只有3个，但是对客户端而言，存在多个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_0_15_centos ~]# netstat -ant | grep 12345</span><br><span class="line">tcp        0      0 172.27.0.15:37326       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37410       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37312       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37242       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37232       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37360       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37266       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37442       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37458       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37468       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37214       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37392       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37282       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37292       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37182       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37174       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37222       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37370       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37400       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37430       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37206       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37418       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37342       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37352       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37252       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37384       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37334       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37274       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37450       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37300       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37192       122.152.220.151:12345   ESTABLISHED</span><br></pre></td></tr></table></figure>
+<p>对于客户端而言，服务端发送了syn+ack已经算是三次握手成功了。</p>
+<h2 id="tcp-max-syn-backlog"><a href="#tcp-max-syn-backlog" class="headerlink" title="tcp_max_syn_backlog"></a>tcp_max_syn_backlog</h2><p>The maximum number of queued connection    requests which have still <strong>not received</strong> an acknowledgement from the connecting client. If this number is exceeded, the kernel will begin drop-ping requests.The maximum length of the queue for incomplete sockets can be set using /proc/sys/net/ipv4/tcp_max_syn_backlog. When syncookies are enabled there is no logical maximum length and this setting is ignored</p>
+<ol>
+<li>tcp_max_syn_backlog用来定义未建联的SYN-RECV状态队列长度。</li>
+<li>当启用syncookies功能的时候，tcp_max_syn_backlog的功能将被忽视。</li>
+</ol>
+<p>###代码实践 tcp_max_syn_backlog</p>
+<p>查看下系统tcp_max_syn_backlog的值：<br>[root@leanote ~]# sysctl -a | grep tcp_max_syn_backlog<br>net.ipv4.tcp_max_syn_backlog = 128</p>
+<p>服务端ss查看<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# netstat -ant | grep 12345</span><br><span class="line">tcp        3      0 0.0.0.0:12345           0.0.0.0:*               LISTEN     </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37926     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37894     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37944     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37936     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37908     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37918     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37874     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37864     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37882     ESTABLISHED</span><br></pre></td></tr></table></figure></p>
+<p>输出发现SYN_RECV状态状态很多，<strong>虽然连接处于SYN_RECV</strong>，一段时间后，自动删除，但是通过调整tcp_max_syn_backlog的值可以调整同一时间内SYN_RECV的数量。</p>
+<p>调整成为2个：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_max_syn_backlog=2</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 2</span><br></pre></td></tr></table></figure></p>
+<p>因为当syncookies功能开启的时候，tcp_max_syn_backlog不会发挥作用，所以syncookies也得暂停：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.tcp_syncookies = 0</span><br></pre></td></tr></table></figure></p>
+<p>客户端服务端重启，然后ss查看状态：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# ss -ant | grep 12345</span><br><span class="line">LISTEN     3      2            *:12345                    *:*                  </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38456              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38470              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38398              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38280              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38264              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38272</span><br></pre></td></tr></table></figure></p>
+<p>这个syn_backlog设定的是2，但观察SYN-RECV最多出现3个。可能也是syn_backlog+1。待考证。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote ~]# netstat -s | grep drop</span><br><span class="line">    20 dropped because of missing route</span><br><span class="line">    19 ICMP packets dropped because they were out-of-window</span><br><span class="line">    92307 SYNs to LISTEN sockets dropped</span><br><span class="line">    </span><br><span class="line">[root@leanote ~]# dmesg  | tail -n 10</span><br><span class="line">[3124021.575444] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124025.583391] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124033.599301] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124049.647044] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124111.900356] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124112.902233] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124114.908171] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124118.916112] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124126.924020] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124142.955770] TCP: drop open request from 118.24.105.81/38996</span><br></pre></td></tr></table></figure>
+<p>服务器开始丢弃syn包，以及丢弃从客户端发送来的新连接。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>tcp_max_syn_backlog用来定义未建联的SYN-RECV状态队列长度。但当启用syncookies功能的时候失效。</li>
+<li>somaxconn会限制listen()函数中BACKLOG的值。</li>
+</ul>
+<p><strong>somaxconn在高并发下需要调整，默认128绝逼不够用。</strong></p>
+<p>refer</p>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/30b861cac826" target="_blank" rel="noopener">https://www.jianshu.com/p/30b861cac826</a><br><a href="https://www.jianshu.com/p/7fde92785056" target="_blank" rel="noopener">https://www.jianshu.com/p/7fde92785056</a><br><a href="https://linux.die.net/man/2/listen" target="_blank" rel="noopener">https://linux.die.net/man/2/listen</a><br><a href="http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7" target="_blank" rel="noopener">http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7</a><br><a href="http://zake7749.github.io/2015/03/17/SocketProgramming/" target="_blank" rel="noopener">http://zake7749.github.io/2015/03/17/SocketProgramming/</a><br><a href="http://man7.org/linux/man-pages/man2/accept.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/accept.2.html</a><br><a href="https://blog.csdn.net/tennysonsky/article/details/45621341" target="_blank" rel="noopener">https://blog.csdn.net/tennysonsky/article/details/45621341</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>network</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>原码反码补码以及位运算</title>
     <url>/2020/04/30/%E5%8E%9F%E7%A0%81%E5%8F%8D%E7%A0%81%E8%A1%A5%E7%A0%81%E4%BB%A5%E5%8F%8A%E4%BD%8D%E8%BF%90%E7%AE%97/</url>
     <content><![CDATA[<h2 id="原码、反码、补码"><a href="#原码、反码、补码" class="headerlink" title="原码、反码、补码"></a>原码、反码、补码</h2><p><strong>无符号用原码</strong></p>
@@ -2738,24 +2738,6 @@
 <h2 id="有些东西迟早还是要还的。。。"><a href="#有些东西迟早还是要还的。。。" class="headerlink" title="有些东西迟早还是要还的。。。"></a>有些东西迟早还是要还的。。。</h2>]]></content>
       <tags>
         <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>双向链表实现</title>
-    <url>/2020/06/15/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h2 id="链表基础"><a href="#链表基础" class="headerlink" title="链表基础"></a>链表基础</h2><p><a href="https://kirakirazone.com/2019/02/18/链表基础/">链表基础</a></p>
-<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p><img src="https://image.kirakirazone.com/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg" alt="双向链表.png"></p>
-<ul>
-<li>双向链表可以向前或者向后查找。</li>
-<li>双向链表可以实现自我删除。</li>
-<li>插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</li>
-<li>删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</li>
-</ul>
-<h3 id="go语言实现双向链表"><a href="#go语言实现双向链表" class="headerlink" title="go语言实现双向链表"></a>go语言实现双向链表</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1. 双向链表可以向前或者向后查找。</span></span><br><span class="line"><span class="comment">2. 双向链表可以实现自我删除。</span></span><br><span class="line"><span class="comment">3. 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</span></span><br><span class="line"><span class="comment">4. 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> LanNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	No <span class="keyword">int</span></span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// next指向下一个节点</span></span><br><span class="line">	next *LanNode</span><br><span class="line">	<span class="comment">// pre指向上一个节点</span></span><br><span class="line">	pre  *LanNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newNode</span><span class="params">(no <span class="keyword">int</span>, name <span class="keyword">string</span>)</span> *<span class="title">LanNode</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;LanNode&#123;</span><br><span class="line">		No:no,</span><br><span class="line">		Name:name,</span><br><span class="line">		<span class="comment">// 默认让next指向下一个节点，所以只需要传入no和string即可。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertNode</span><span class="params">(head *LanNode, newNode *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给定一个临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 该临时节点为内存引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="comment">// 如果当前链表为空，则直接插入newNode</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			tmp.next = newNode</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到链表尾部，插入成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 当next的No大于新节点的No，表示可以插入</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No &gt; newNode.No &#123;</span><br><span class="line">			<span class="comment">// 让插入的新节点指向next节点</span></span><br><span class="line">			newNode.next = tmp.next</span><br><span class="line">			<span class="comment">// 新节点的pre指向当前临时的tmp节点()</span></span><br><span class="line">			newNode.pre = tmp</span><br><span class="line">			<span class="comment">// 让tmp下一个节点的pre指向newNode</span></span><br><span class="line">			tmp.next.pre = newNode</span><br><span class="line">			<span class="comment">// 让tmp的next节点指向新节点</span></span><br><span class="line">			tmp.next = newNode</span><br><span class="line"></span><br><span class="line">			fmt.Println(<span class="string">"已经插入到合适位置"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存在相同的情况，则退出</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == newNode.No &#123;</span><br><span class="line">			fmt.Println(<span class="string">"无法插入该节点，已有相同No"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteNode</span><span class="params">(head *LanNode, no <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给tmp一个赋值，作为临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 这个tmp其实是内存的引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"不存在待删除的no"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == no &#123;</span><br><span class="line">			<span class="comment">// 将tmp当前的节点next指向tmp下一个节点的下一个节点。</span></span><br><span class="line">			tmp.next = tmp.next.next</span><br><span class="line">			<span class="comment">// 因为tmp.next.next可能是nil, 那么如果是的话,则nil没有pre, 为nil的时候直接暂停,不需要pre了.</span></span><br><span class="line">			<span class="keyword">if</span> tmp.next != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="comment">// 因为tmp.next已经指向了tmp.next.next, 所以这里的tmp.next已经跳过了被删除的节点. 让tmp的下个节点的pre指向tmp</span></span><br><span class="line">				tmp.next.pre = tmp</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(<span class="string">"删除成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对节点进行遍历</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">listNode</span><span class="params">(head *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从head的next开始遍历，直到nil为止</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> head.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到底部"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"No为%d, Name为%s语言 ==&gt; "</span>,head.next.No, head.next.Name)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		head = head.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义head头，不需要存放任何数据</span></span><br><span class="line">	headNode := &amp;LanNode&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义四个新的节点</span></span><br><span class="line">	nodeC := newNode(<span class="number">1</span>, <span class="string">"C"</span>)</span><br><span class="line">	nodePHP := newNode(<span class="number">2</span>, <span class="string">"PHP"</span>)</span><br><span class="line">	nodeJava := newNode(<span class="number">3</span>, <span class="string">"Java"</span>)</span><br><span class="line">	nodeNodeJs := newNode(<span class="number">4</span>, <span class="string">"NodeJs"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 进行数据插入, 这里乱序插入</span></span><br><span class="line">	insertNode(headNode, nodeC)</span><br><span class="line">	insertNode(headNode, nodeJava)</span><br><span class="line">	insertNode(headNode, nodeNodeJs)</span><br><span class="line">	insertNode(headNode, nodePHP)</span><br><span class="line"></span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除一个数据3</span></span><br><span class="line">	deleteNode(headNode, <span class="number">3</span>)</span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>go</tag>
-        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -2840,6 +2822,24 @@
       </tags>
   </entry>
   <entry>
+    <title>双向链表实现</title>
+    <url>/2020/06/15/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h2 id="链表基础"><a href="#链表基础" class="headerlink" title="链表基础"></a>链表基础</h2><p><a href="https://kirakirazone.com/2019/02/18/链表基础/">链表基础</a></p>
+<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p><img src="https://image.kirakirazone.com/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg" alt="双向链表.png"></p>
+<ul>
+<li>双向链表可以向前或者向后查找。</li>
+<li>双向链表可以实现自我删除。</li>
+<li>插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</li>
+<li>删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</li>
+</ul>
+<h3 id="go语言实现双向链表"><a href="#go语言实现双向链表" class="headerlink" title="go语言实现双向链表"></a>go语言实现双向链表</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1. 双向链表可以向前或者向后查找。</span></span><br><span class="line"><span class="comment">2. 双向链表可以实现自我删除。</span></span><br><span class="line"><span class="comment">3. 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。</span></span><br><span class="line"><span class="comment">4. 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> LanNode <span class="keyword">struct</span> &#123;</span><br><span class="line">	No <span class="keyword">int</span></span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// next指向下一个节点</span></span><br><span class="line">	next *LanNode</span><br><span class="line">	<span class="comment">// pre指向上一个节点</span></span><br><span class="line">	pre  *LanNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newNode</span><span class="params">(no <span class="keyword">int</span>, name <span class="keyword">string</span>)</span> *<span class="title">LanNode</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;LanNode&#123;</span><br><span class="line">		No:no,</span><br><span class="line">		Name:name,</span><br><span class="line">		<span class="comment">// 默认让next指向下一个节点，所以只需要传入no和string即可。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertNode</span><span class="params">(head *LanNode, newNode *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给定一个临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 该临时节点为内存引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="comment">// 如果当前链表为空，则直接插入newNode</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			tmp.next = newNode</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到链表尾部，插入成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 当next的No大于新节点的No，表示可以插入</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No &gt; newNode.No &#123;</span><br><span class="line">			<span class="comment">// 让插入的新节点指向next节点</span></span><br><span class="line">			newNode.next = tmp.next</span><br><span class="line">			<span class="comment">// 新节点的pre指向当前临时的tmp节点()</span></span><br><span class="line">			newNode.pre = tmp</span><br><span class="line">			<span class="comment">// 让tmp下一个节点的pre指向newNode</span></span><br><span class="line">			tmp.next.pre = newNode</span><br><span class="line">			<span class="comment">// 让tmp的next节点指向新节点</span></span><br><span class="line">			tmp.next = newNode</span><br><span class="line"></span><br><span class="line">			fmt.Println(<span class="string">"已经插入到合适位置"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存在相同的情况，则退出</span></span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == newNode.No &#123;</span><br><span class="line">			fmt.Println(<span class="string">"无法插入该节点，已有相同No"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteNode</span><span class="params">(head *LanNode, no <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 给tmp一个赋值，作为临时节点，用来遍历</span></span><br><span class="line">	<span class="comment">// 这个tmp其实是内存的引用</span></span><br><span class="line">	tmp := head</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> tmp.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"不存在待删除的no"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp.next.No == no &#123;</span><br><span class="line">			<span class="comment">// 将tmp当前的节点next指向tmp下一个节点的下一个节点。</span></span><br><span class="line">			tmp.next = tmp.next.next</span><br><span class="line">			<span class="comment">// 因为tmp.next.next可能是nil, 那么如果是的话,则nil没有pre, 为nil的时候直接暂停,不需要pre了.</span></span><br><span class="line">			<span class="keyword">if</span> tmp.next != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="comment">// 因为tmp.next已经指向了tmp.next.next, 所以这里的tmp.next已经跳过了被删除的节点. 让tmp的下个节点的pre指向tmp</span></span><br><span class="line">				tmp.next.pre = tmp</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(<span class="string">"删除成功"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		tmp = tmp.next</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对节点进行遍历</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">listNode</span><span class="params">(head *LanNode)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从head的next开始遍历，直到nil为止</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> head.next == <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"已经遍历到底部"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"No为%d, Name为%s语言 ==&gt; "</span>,head.next.No, head.next.Name)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 步进</span></span><br><span class="line">		head = head.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义head头，不需要存放任何数据</span></span><br><span class="line">	headNode := &amp;LanNode&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义四个新的节点</span></span><br><span class="line">	nodeC := newNode(<span class="number">1</span>, <span class="string">"C"</span>)</span><br><span class="line">	nodePHP := newNode(<span class="number">2</span>, <span class="string">"PHP"</span>)</span><br><span class="line">	nodeJava := newNode(<span class="number">3</span>, <span class="string">"Java"</span>)</span><br><span class="line">	nodeNodeJs := newNode(<span class="number">4</span>, <span class="string">"NodeJs"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 进行数据插入, 这里乱序插入</span></span><br><span class="line">	insertNode(headNode, nodeC)</span><br><span class="line">	insertNode(headNode, nodeJava)</span><br><span class="line">	insertNode(headNode, nodeNodeJs)</span><br><span class="line">	insertNode(headNode, nodePHP)</span><br><span class="line"></span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除一个数据3</span></span><br><span class="line">	deleteNode(headNode, <span class="number">3</span>)</span><br><span class="line">	listNode(headNode)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>go</tag>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>布隆过滤器</title>
     <url>/2019/03/19/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
     <content><![CDATA[<h2 id="判断value是否存在"><a href="#判断value是否存在" class="headerlink" title="判断value是否存在"></a>判断value是否存在</h2><ol>
@@ -2903,6 +2903,22 @@
       </tags>
   </entry>
   <entry>
+    <title>新式类的C3 MRO理解</title>
+    <url>/2018/12/20/%E6%96%B0%E5%BC%8F%E7%B1%BB%E7%9A%84C3-MRO%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<h2 id="新式类"><a href="#新式类" class="headerlink" title="新式类"></a>新式类</h2><p><strong>python2.3以及之后的版本遵循的原则：C3 MRO</strong></p>
+<p>其遵循的原则为：<br><code>一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。</code></p>
+<p>自省方法<code>__mro__</code></p>
+<h2 id="存在共同父类的情况"><a href="#存在共同父类的情况" class="headerlink" title="存在共同父类的情况"></a>存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class D(object): pass</span><br><span class="line">class E(object): pass</span><br><span class="line">class F(object): pass</span><br><span class="line">class B(D, E): pass</span><br><span class="line">class C(D, F): pass</span><br><span class="line">class A(B, C): pass</span><br><span class="line">print(A.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.A&apos;&gt;, &lt;class &apos;__main__.B&apos;&gt;, &lt;class &apos;__main__.C&apos;&gt;, &lt;class &apos;__main__.D&apos;&gt;, &lt;class &apos;__main__.E&apos;&gt;, &lt;class &apos;__main__.F&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
+<p>顺序解释:<br><strong>这边需要注意的是B和C有相同的父类，所以B查询后直接查询的C。</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查询关系</span><br><span class="line">D --&gt; D,object</span><br><span class="line">E --&gt; E,object</span><br><span class="line">F --&gt; F,object</span><br><span class="line"></span><br><span class="line">B --&gt; B, D, E, ...., object</span><br><span class="line">C --&gt; C, D, F, ...., object</span><br><span class="line">A --&gt; A. B, C, ...., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; A, (B, D, E, ..., object), (C,D,F, ..., object)</span><br><span class="line">  B和C存在共同的父类，D，所以B和C是同一级别，查询顺序是A, B, C, 然后D,</span><br><span class="line">  --&gt; A, B, C, D (E, ..., object), (F, ..., object) </span><br><span class="line">  --&gt; A, B, C, D, E, F, object</span><br></pre></td></tr></table></figure>
+<h2 id="不存在共同父类的情况"><a href="#不存在共同父类的情况" class="headerlink" title="不存在共同父类的情况"></a>不存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class g(object): pass</span><br><span class="line">class f(object): pass</span><br><span class="line">class h(object): pass</span><br><span class="line">class i(object): pass</span><br><span class="line">class e(object): pass</span><br><span class="line">class d(h,i): pass</span><br><span class="line">class b(d,e): pass</span><br><span class="line">class c(f,g): pass</span><br><span class="line">class a(b,c): pass</span><br><span class="line">print(a.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.a&apos;&gt;, &lt;class &apos;__main__.b&apos;&gt;, &lt;class &apos;__main__.d&apos;&gt;, &lt;class &apos;__main__.h&apos;&gt;, &lt;class &apos;__main__.i&apos;&gt;, &lt;class &apos;__main__.e&apos;&gt;, &lt;class &apos;__main__.c&apos;&gt;, &lt;class &apos;__main__.f&apos;&gt;, &lt;class &apos;__main__.g&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
+<p>顺序解释：<br><strong>因为b和c不存在相同的父类，所以查询b查不到后直接查询b的父类。</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查询关系：</span><br><span class="line">g --&gt; g, object</span><br><span class="line">f --&gt; f, object</span><br><span class="line">h --&gt; h, object</span><br><span class="line">i --&gt; i, object</span><br><span class="line">e --&gt; e, object</span><br><span class="line"></span><br><span class="line">b --&gt; b, d, e, ..., object</span><br><span class="line">c --&gt; c, f, g, ..., object</span><br><span class="line">d --&gt; d, h, i, ..., object</span><br><span class="line"></span><br><span class="line">a --&gt; a, b, c, ..., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; a, (b, d, e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  将b带入后得到</span><br><span class="line">  --&gt; a, (b, (d, h, i, ..., object), e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  b和c没有共同的父类，所以直接查询了d，d后，查询他的继承，h，因为h最顶了，所以开始依次返回，查询其平级的i，然后折回到b中右边的e,然后再次返回到a中右边的c，然后查询c中的f,发现到顶了，则查询其平级的g，然后依次退出，发现直接查询完了全部，则查询object。</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>快速排序</title>
     <url>/2019/09/03/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
     <content><![CDATA[<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><ol>
@@ -2938,22 +2954,6 @@
       </tags>
   </entry>
   <entry>
-    <title>新式类的C3 MRO理解</title>
-    <url>/2018/12/20/%E6%96%B0%E5%BC%8F%E7%B1%BB%E7%9A%84C3-MRO%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<h2 id="新式类"><a href="#新式类" class="headerlink" title="新式类"></a>新式类</h2><p><strong>python2.3以及之后的版本遵循的原则：C3 MRO</strong></p>
-<p>其遵循的原则为：<br><code>一个类同时继承的类中，如果没有共同父类，则往最左的类的父类查询；如果存在共同父类，则从左到右查询。</code></p>
-<p>自省方法<code>__mro__</code></p>
-<h2 id="存在共同父类的情况"><a href="#存在共同父类的情况" class="headerlink" title="存在共同父类的情况"></a>存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class D(object): pass</span><br><span class="line">class E(object): pass</span><br><span class="line">class F(object): pass</span><br><span class="line">class B(D, E): pass</span><br><span class="line">class C(D, F): pass</span><br><span class="line">class A(B, C): pass</span><br><span class="line">print(A.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.A&apos;&gt;, &lt;class &apos;__main__.B&apos;&gt;, &lt;class &apos;__main__.C&apos;&gt;, &lt;class &apos;__main__.D&apos;&gt;, &lt;class &apos;__main__.E&apos;&gt;, &lt;class &apos;__main__.F&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
-<p>顺序解释:<br><strong>这边需要注意的是B和C有相同的父类，所以B查询后直接查询的C。</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查询关系</span><br><span class="line">D --&gt; D,object</span><br><span class="line">E --&gt; E,object</span><br><span class="line">F --&gt; F,object</span><br><span class="line"></span><br><span class="line">B --&gt; B, D, E, ...., object</span><br><span class="line">C --&gt; C, D, F, ...., object</span><br><span class="line">A --&gt; A. B, C, ...., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; A, (B, D, E, ..., object), (C,D,F, ..., object)</span><br><span class="line">  B和C存在共同的父类，D，所以B和C是同一级别，查询顺序是A, B, C, 然后D,</span><br><span class="line">  --&gt; A, B, C, D (E, ..., object), (F, ..., object) </span><br><span class="line">  --&gt; A, B, C, D, E, F, object</span><br></pre></td></tr></table></figure>
-<h2 id="不存在共同父类的情况"><a href="#不存在共同父类的情况" class="headerlink" title="不存在共同父类的情况"></a>不存在共同父类的情况</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class g(object): pass</span><br><span class="line">class f(object): pass</span><br><span class="line">class h(object): pass</span><br><span class="line">class i(object): pass</span><br><span class="line">class e(object): pass</span><br><span class="line">class d(h,i): pass</span><br><span class="line">class b(d,e): pass</span><br><span class="line">class c(f,g): pass</span><br><span class="line">class a(b,c): pass</span><br><span class="line">print(a.__mro__)</span><br><span class="line"></span><br><span class="line">(&lt;class &apos;__main__.a&apos;&gt;, &lt;class &apos;__main__.b&apos;&gt;, &lt;class &apos;__main__.d&apos;&gt;, &lt;class &apos;__main__.h&apos;&gt;, &lt;class &apos;__main__.i&apos;&gt;, &lt;class &apos;__main__.e&apos;&gt;, &lt;class &apos;__main__.c&apos;&gt;, &lt;class &apos;__main__.f&apos;&gt;, &lt;class &apos;__main__.g&apos;&gt;, &lt;class &apos;object&apos;&gt;)</span><br></pre></td></tr></table></figure>
-<p>顺序解释：<br><strong>因为b和c不存在相同的父类，所以查询b查不到后直接查询b的父类。</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查询关系：</span><br><span class="line">g --&gt; g, object</span><br><span class="line">f --&gt; f, object</span><br><span class="line">h --&gt; h, object</span><br><span class="line">i --&gt; i, object</span><br><span class="line">e --&gt; e, object</span><br><span class="line"></span><br><span class="line">b --&gt; b, d, e, ..., object</span><br><span class="line">c --&gt; c, f, g, ..., object</span><br><span class="line">d --&gt; d, h, i, ..., object</span><br><span class="line"></span><br><span class="line">a --&gt; a, b, c, ..., object</span><br><span class="line">  将B和C带入后得到</span><br><span class="line">  --&gt; a, (b, d, e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  将b带入后得到</span><br><span class="line">  --&gt; a, (b, (d, h, i, ..., object), e, ..., object), (c, f, g, ..., object)</span><br><span class="line">  b和c没有共同的父类，所以直接查询了d，d后，查询他的继承，h，因为h最顶了，所以开始依次返回，查询其平级的i，然后折回到b中右边的e,然后再次返回到a中右边的c，然后查询c中的f,发现到顶了，则查询其平级的g，然后依次退出，发现直接查询完了全部，则查询object。</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>是地址引用还是赋值操作</title>
     <url>/2019/01/17/%E6%98%AF%E5%9C%B0%E5%9D%80%E5%BC%95%E7%94%A8%E8%BF%98%E6%98%AF%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><strong>凡是基本类型，都是赋值。</strong></p>
@@ -2976,6 +2976,30 @@
 ]]></content>
       <tags>
         <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>磁盘无法挂载</title>
+    <url>/2019/01/18/%E7%A3%81%E7%9B%98%E6%97%A0%E6%B3%95%E6%8C%82%E8%BD%BD/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
+<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
+<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
+<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
+<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
+<p>尝试了下，的确成功了。</p>
+<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
+<p>Bug ID: 1566088</p>
+<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3027,30 +3051,6 @@
 <h2 id="安卓文档对于缺失中间证书的描述"><a href="#安卓文档对于缺失中间证书的描述" class="headerlink" title="安卓文档对于缺失中间证书的描述:"></a>安卓文档对于缺失中间证书的描述:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">有趣的是，在大多数桌面浏览器中访问此服务器不会引发完全未知的 CA 或自签署服务器证书所引发的类似错误。这是因为大多数桌面浏览器都会将可信的中间 CA 缓存一段时间。当浏览器从某个网站访问和了解中间 CA 后，下次它就不需要将中间 CA 添加在证书链中。</span><br><span class="line"></span><br><span class="line">有些网站会专门为提供资源的辅助网络服务器这样做。例如，他们可能让具有完整证书链的服务器提供主 HTML 页面，让不包含 CA 的服务器提供图像、CSS 或 JavaScript 等资源，以节省带宽。遗憾的是，这些服务器有时候可能会提供您正在尝试从 Android 应用调用的网络服务，这一点让人难以接受。</span><br><span class="line"></span><br><span class="line">可以通过两种方法解决此问题：</span><br><span class="line"></span><br><span class="line">配置服务器以便在服务器链中添加中间 CA。大多数 CA 都可以提供有关如何为所有常用网络服务器执行此操作的文档。如果您需要网站至少通过 Android 4.2 使用默认 Android 浏览器，那么这是唯一的方法。</span><br><span class="line">或者，像对待其他任何未知 CA 一样对待中间 CA，并创建一个 TrustManager 以直接信任它，如前面的两部分中所述。</span><br></pre></td></tr></table></figure>
 <h2 id="查看证书到期时间："><a href="#查看证书到期时间：" class="headerlink" title="查看证书到期时间："></a>查看证书到期时间：</h2><p>openssl s_client -connect <a href="http://www.icoinbay.com:443" target="_blank" rel="noopener">www.icoinbay.com:443</a> -servername <a href="http://www.icoinbay.com" target="_blank" rel="noopener">www.icoinbay.com</a> 2&gt;/dev/null |openssl x509 -noout -dates </p>
 ]]></content>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>磁盘无法挂载</title>
-    <url>/2019/01/18/%E7%A3%81%E7%9B%98%E6%97%A0%E6%B3%95%E6%8C%82%E8%BD%BD/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>今天一机器的磁盘掉了，机房更换了硬盘。看了下前人都是写在<code>/etc/fstab</code>里面，个人不推荐写这里，写入<code>/etc/rc.local</code>更加好</p>
-<p>然后修改了/etc/fstab，然后mount -a挂载，没报错，df -h没看到挂上去的盘，很奇怪。</p>
-<p>查看了下message日志：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unmounted /mnt/disk4.</span><br><span class="line">Jan 18 14:55:55 SH-HDP1136 systemd: Unit mnt-disk4.mount entered failed state.</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Mounting V5 Filesystem</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 kernel: XFS (sdd): Ending clean mount</span><br><span class="line">Jan 18 14:56:41 SH-HDP1136 systemd: Unit mnt-disk4.mount is bound to inactive unit dev-disk-by\x2duuid-5aad6483\x2de21f\x2d498d\x2d9c8c\x2dfeff9fd5be76.device. Stopping, too.</span><br></pre></td></tr></table></figure></p>
-<p>最后一行谷歌查了下文档，第一篇文档说是用了<code>重启大法</code>。因为服务器比较重要，没考虑重启。</p>
-<p>然后找到第二篇文档，说执行<code>systemctl-reload</code>，然后进行挂载。</p>
-<p>尝试了下，的确成功了。</p>
-<h2 id="诡异的systemctl-reload"><a href="#诡异的systemctl-reload" class="headerlink" title="诡异的systemctl-reload"></a>诡异的systemctl-reload</h2><p>但心里很纳闷，我修改个/etc/fstab和systemctl-reload有半毛钱关系，继续查了下谷歌，发现这是一个redhat7.4的bug。。。。。</p>
-<p>Bug ID: 1566088</p>
-<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
-<p>refer:</p>
-<blockquote>
-<p><a href="http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/" target="_blank" rel="noopener">http://mamchenkov.net/wordpress/2017/11/09/systemd-strikes-again-unit-var-whatever-mount-is-bound-to-inactive-unit/</a><br><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1566088" target="_blank" rel="noopener">https://bugzilla.redhat.com/show_bug.cgi?id=1566088</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -3124,6 +3124,18 @@
       </categories>
       <tags>
         <tag>django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>误删正在输出的tomcat服务日志</title>
+    <url>/2019/04/17/%E8%AF%AF%E5%88%A0%E6%AD%A3%E5%9C%A8%E8%BE%93%E5%87%BA%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<h2 id="误删场景"><a href="#误删场景" class="headerlink" title="误删场景"></a>误删场景</h2><p>今天find写日志切割tomcat日志，需要匹配后缀为log,out,txt，之后忘记写括号,将log和out删除了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/bin/find /opt/*/logs/* ( -name &quot;*.out&quot;  -o -name &quot;*.log&quot; -o -name &quot;*.txt&quot; ) -mtime +30 | xargs -I &#123;&#125; rm -f &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>tomcat不像nginx那样可以reload，其需要整个暂停，然后启动才能重新生成日志文件，但如果重启tomcat，则war包加载需要的时间比较长，且这段时间无法提供服务。</p>
+<h2 id="临时查看的方法"><a href="#临时查看的方法" class="headerlink" title="临时查看的方法"></a>临时查看的方法</h2><p>虽然日志文件被删除，但在tomcat没有关闭之前文件描述符还是存在的，只是软连对象被删除而已。</p>
+]]></content>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3208,18 +3220,6 @@
 <li>应用灵活   tcp只支持单播，udp更加灵活</li>
 <li>不用支持重传的服务  VoIP 用udp</li>
 </ol>
-]]></content>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>误删正在输出的tomcat服务日志</title>
-    <url>/2019/04/17/%E8%AF%AF%E5%88%A0%E6%AD%A3%E5%9C%A8%E8%BE%93%E5%87%BA%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97/</url>
-    <content><![CDATA[<h2 id="误删场景"><a href="#误删场景" class="headerlink" title="误删场景"></a>误删场景</h2><p>今天find写日志切割tomcat日志，需要匹配后缀为log,out,txt，之后忘记写括号,将log和out删除了。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/bin/find /opt/*/logs/* ( -name &quot;*.out&quot;  -o -name &quot;*.log&quot; -o -name &quot;*.txt&quot; ) -mtime +30 | xargs -I &#123;&#125; rm -f &#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>tomcat不像nginx那样可以reload，其需要整个暂停，然后启动才能重新生成日志文件，但如果重启tomcat，则war包加载需要的时间比较长，且这段时间无法提供服务。</p>
-<h2 id="临时查看的方法"><a href="#临时查看的方法" class="headerlink" title="临时查看的方法"></a>临时查看的方法</h2><p>虽然日志文件被删除，但在tomcat没有关闭之前文件描述符还是存在的，只是软连对象被删除而已。</p>
 ]]></content>
       <tags>
         <tag>linux</tag>
@@ -3386,39 +3386,6 @@
       </tags>
   </entry>
   <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>linux平均负载</title>
     <url>/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/</url>
     <content><![CDATA[<h2 id="linux平负载定义"><a href="#linux平负载定义" class="headerlink" title="linux平负载定义"></a>linux平负载定义</h2><ol>
@@ -3458,6 +3425,39 @@
       <tags>
         <tag>linux</tag>
         <tag>cpu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
 </search>
