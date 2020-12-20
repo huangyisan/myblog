@@ -123,9 +123,7 @@ pipeline {
 
                 <h4>
                     <font color="#0B610B">最近提交(#$GIT_COMMIT)</font>
-                    <font color="#0B610B">最近提交${GIT_COMMIT}</font>
-                    <font color="#0B610B">最近提交${ENV, var="GIT_PREVIOUS_COMMIT"}</font>
-                    <font color="#0B610B">最近提交${ENV, var="GIT_COMMIT"}</font>
+                    <font color="#0B610B">最近提交${env.GIT_COMMIT}</font>
                 </h4>
                 <hr size="2" width="100%" />
                 <ul>
