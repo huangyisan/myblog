@@ -124,50 +124,6 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode 只出现一次的数字</title>
-    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
-<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
-<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
-<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
-</ol>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 实现strStr()</title>
-    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
-<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
-<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
-<p>refer</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JWT认证的实现</title>
     <url>/2020/02/29/JWT%E8%AE%A4%E8%AF%81%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h2 id="什么是JWT，以及原理"><a href="#什么是JWT，以及原理" class="headerlink" title="什么是JWT，以及原理"></a>什么是JWT，以及原理</h2><p>网上有大把解释JWT认证原理的，直接看refer部分。</p>
@@ -220,6 +176,50 @@
         <tag>python3</tag>
         <tag>vue</tag>
         <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 只出现一次的数字</title>
+    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
+<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
+<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
+<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+</ol>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 实现strStr()</title>
+    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
+<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
+<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
       </tags>
   </entry>
   <entry>
@@ -455,29 +455,6 @@
       </categories>
       <tags>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>True or False</title>
-    <url>/2018/12/18/True-or-False/</url>
-    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
-<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
-<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
-<blockquote>
-<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
-</blockquote>
-<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
@@ -769,6 +746,78 @@
       </tags>
   </entry>
   <entry>
+    <title>True or False</title>
+    <url>/2018/12/18/True-or-False/</url>
+    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
+<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
+<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
+<blockquote>
+<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
+</blockquote>
+<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos7网卡改名</title>
+    <url>/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/</url>
+    <content><![CDATA[<p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
+<p>先说udev服务，然后再看问题产生的原因。</p>
+<h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure></p>
+<p>在centos7中为system-udevd进程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>udev的作用是：<br><code>man udev</code><br>receives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.<br>当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。</p>
+</li>
+<li><p>udev rules文件存在位置：</p>
+</li>
+</ul>
+<ol>
+<li>system rules directory: /usr/lib/udev/rules.d</li>
+<li>volatile runtime directory: /run/udev/rules.d</li>
+<li>local administration directory: /etc/udev/rules.d</li>
+</ol>
+<ul>
+<li>udev读取文件规则：</li>
+</ul>
+<ol>
+<li>读取这些目录下以.rules为后缀的文件。</li>
+<li>文件先后顺序和其所在目录无关，和文件的名称顺序有关。</li>
+<li>若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr</li>
+</ol>
+<ul>
+<li>udev进行网卡重命名<blockquote>
+<p><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a></p>
+</blockquote>
+</li>
+</ul>
+<p><strong>优先查询的是<code>/usr/lib/udev/rules.d/60-net.rules</code>配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
+<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现<code>/usr/lib/udev/rules.d/60-net.rules</code>文件内已经存在了bond1的配置，而bond0的配置写到了<code>/etc/udev/rules.d/70-persistent-net.rules</code>里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
+<p>其实centos7已经不用<code>70-persistent-net.rules</code>这个文件了，在centos6中，删除了<code>70-persistent-net.rules</code>文件，他会通过<code>/lib/udev/write_net_rules</code>文件来生成，但centos7已经不存在该文件了，centos7是使用<code>/lib/udev/rename_device</code>文件来生成<code>/usr/lib/udev/rules.d/60-net.rules</code>。</p>
+<h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/sbin/ip link set eth1 down</span><br><span class="line">/sbin/ip link set eth1 name eth123</span><br><span class="line">/sbin/ip link set eth123 up</span><br></pre></td></tr></table></figure>
+<p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
+<p>最后修改ifcfg-xxx里面的NAME和DEVICE字段值为eth123。</p>
+<p>重启网卡即可。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://www.freedesktop.org/software/systemd/man/udev.html#" target="_blank" rel="noopener">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>bash fork: retry: Resource temporarily unavailable</title>
     <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
     <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
@@ -884,55 +933,6 @@
       <tags>
         <tag>linux</tag>
         <tag>concourse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>centos7网卡改名</title>
-    <url>/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/</url>
-    <content><![CDATA[<p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
-<p>先说udev服务，然后再看问题产生的原因。</p>
-<h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure></p>
-<p>在centos7中为system-udevd进程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><p>udev的作用是：<br><code>man udev</code><br>receives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.<br>当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。</p>
-</li>
-<li><p>udev rules文件存在位置：</p>
-</li>
-</ul>
-<ol>
-<li>system rules directory: /usr/lib/udev/rules.d</li>
-<li>volatile runtime directory: /run/udev/rules.d</li>
-<li>local administration directory: /etc/udev/rules.d</li>
-</ol>
-<ul>
-<li>udev读取文件规则：</li>
-</ul>
-<ol>
-<li>读取这些目录下以.rules为后缀的文件。</li>
-<li>文件先后顺序和其所在目录无关，和文件的名称顺序有关。</li>
-<li>若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr</li>
-</ol>
-<ul>
-<li>udev进行网卡重命名<blockquote>
-<p><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a></p>
-</blockquote>
-</li>
-</ul>
-<p><strong>优先查询的是<code>/usr/lib/udev/rules.d/60-net.rules</code>配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
-<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现<code>/usr/lib/udev/rules.d/60-net.rules</code>文件内已经存在了bond1的配置，而bond0的配置写到了<code>/etc/udev/rules.d/70-persistent-net.rules</code>里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
-<p>其实centos7已经不用<code>70-persistent-net.rules</code>这个文件了，在centos6中，删除了<code>70-persistent-net.rules</code>文件，他会通过<code>/lib/udev/write_net_rules</code>文件来生成，但centos7已经不存在该文件了，centos7是使用<code>/lib/udev/rename_device</code>文件来生成<code>/usr/lib/udev/rules.d/60-net.rules</code>。</p>
-<h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/sbin/ip link set eth1 down</span><br><span class="line">/sbin/ip link set eth1 name eth123</span><br><span class="line">/sbin/ip link set eth123 up</span><br></pre></td></tr></table></figure>
-<p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
-<p>最后修改ifcfg-xxx里面的NAME和DEVICE字段值为eth123。</p>
-<p>重启网卡即可。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://www.freedesktop.org/software/systemd/man/udev.html#" target="_blank" rel="noopener">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1129,52 +1129,6 @@
       </tags>
   </entry>
   <entry>
-    <title>css居中-水平方向</title>
-    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
-    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
-<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
-<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
-<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
-</ul>
-<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
-<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
-<li>如果不给width属性，则宽度填满父级元素空间。</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
-<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<ul>
-<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-
-<p>ref:</p>
-<blockquote>
-<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>css</tag>
-        <tag>html</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>css居中-垂直方向</title>
     <url>/2020/03/18/css%E5%B1%85%E4%B8%AD-%E5%9E%82%E7%9B%B4%E6%96%B9%E5%90%91/</url>
     <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/14/css居中-水平方向/">查看如何水平居中</a></p>
@@ -1251,6 +1205,52 @@
 </ol>
 <iframe height="265" style="width: 100%;" scrolling="no" title="Center Block with Unknown Height with Flexbox" src="https://codepen.io/huangyisan/embed/eYNKEbw?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/eYNKEbw" target="_blank" rel="noopener">Center Block with Unknown Height with Flexbox</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
 
+
+
+
+
+<p>ref:</p>
+<blockquote>
+<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>css</tag>
+        <tag>html</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>css居中-水平方向</title>
+    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
+    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
+<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
+<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
+<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
+</ul>
+<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
+<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
+<li>如果不给width属性，则宽度填满父级元素空间。</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
+<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<ul>
+<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
 
 
 
@@ -1860,162 +1860,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Helm的简单使用</title>
-    <url>/2020/06/21/helm%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h1 id="HELM基本介绍"><a href="#HELM基本介绍" class="headerlink" title="HELM基本介绍"></a>HELM基本介绍</h1><p>helm是一个可以让k8s上的应用服务进行简便安装，方便管理的工具。可以理解对yum/apt等包管理工具，只不过他是k8s特有的。</p>
-<p>目前helm有v2以及v3版本。v2版本需要客户端和服务端相互配合，服务端成为tiller，而v3的版本则不需要服务端的支持了。对于helm的命令，v2和v3也有许些区别。</p>
-<p>为什么要有helm? 通常我们一个k8s应用服务有pods, depolyment, services，ingress等等若干组件来组成，且部分组件还有相互调用的关系，你可以需要编写很多个yaml文件来处理其中之间的关系。你自己对这些文件了如指掌，但如果进行交付给他人维护，或者要做ci/cd的话，可能就不是很方便了。使用helm，编写chart，或者使用互联网上已经存在的现存chart，通过命令，非常便捷的部署和管理应用服务。</p>
-<p><strong>本篇使用的是v3版本。</strong></p>
-<h1 id="HELM的三个概念"><a href="#HELM的三个概念" class="headerlink" title="HELM的三个概念"></a>HELM的三个概念</h1><ul>
-<li><p><strong>Chart</strong>，chart类似yum list 所看到的包。安装后则在k8s上进行运行。</p>
-</li>
-<li><p><strong>Repository</strong>，则是helm的源，和yum源类似，可以配置多个，但刚安装完毕的helm没有默认源，需要手工配置。</p>
-</li>
-<li><p><strong>Release</strong>，则是安装了chart后，在k8s上运行的服务，称之为release。简单理解就是，某个应用还未部署在k8s上，称之为chart，部署后称之为release。</p>
-</li>
-</ul>
-<h1 id="HELM的使用"><a href="#HELM的使用" class="headerlink" title="HELM的使用"></a>HELM的使用</h1><h3 id="HELM的安装"><a href="#HELM的安装" class="headerlink" title="HELM的安装"></a>HELM的安装</h3><p>常用的三个平台(linux, mac, win)都有对应的二进制包，可以去github下载。<a href="https://github.com/helm/helm" target="_blank" rel="noopener">github地址</a></p>
-<h3 id="配置HELM源"><a href="#配置HELM源" class="headerlink" title="配置HELM源"></a>配置HELM源</h3><p>跟yum类似，但helm一开始是不存在默认的源，需要手工配置。</p>
-<p>配置命令为<code>helm repo add 源名称 源地址</code>。国内可以添加微软的源，谷歌的基本上被墙。</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm repo add google https://kubernetes-charts.storage.googleapis.com/</span><br><span class="line"><span class="string">"google"</span> has been added to your repositories</span><br></pre></td></tr></table></figure>
-<p>可以使用<code>helm repo list</code>查看当前存在的helm repo。 添加完后对repo更新<code>helm repo update</code></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm repo list</span><br><span class="line">NAME            URL</span><br><span class="line">concourse       https://concourse-charts.storage.googleapis.com/</span><br><span class="line">stable          http://mirror.azure.cn/kubernetes/charts/</span><br><span class="line">google          https://kubernetes-charts.storage.googleapis.com/</span><br></pre></td></tr></table></figure>
-<p>查看指定repo内的包(称之为chart), 被列出来的都是源里面的chart，使用命令<code>helm search repo repo名称</code></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm search repo google</span><br><span class="line">NAME                                    CHART VERSION   APP VERSION             DESCRIPTION</span><br><span class="line"></span><br><span class="line">google/acs-engine-autoscaler            <span class="number">2.2</span>.<span class="number">2</span>           <span class="number">2.1</span>.<span class="number">1</span>                   DEPRECATED Scales worker nodes within agent pools</span><br><span class="line">google/aerospike                        <span class="number">0.3</span>.<span class="number">2</span>           v4.<span class="number">5.0</span>.<span class="number">5</span>                A Helm chart <span class="keyword">for</span> Aerospike <span class="keyword">in</span> Kubernetes</span><br><span class="line"></span><br><span class="line">google/airflow                          <span class="number">7.1</span>.<span class="number">5</span>           <span class="number">1.10</span>.<span class="number">10</span>                 Airflow is a platform to programmatically autho...</span><br><span class="line">google/ambassador                       <span class="number">5.3</span>.<span class="number">2</span>           <span class="number">0.86</span>.<span class="number">1</span>                  DEPRECATED A Helm chart <span class="keyword">for</span> Datawire Ambassador</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<h3 id="查看指定的chart"><a href="#查看指定的chart" class="headerlink" title="查看指定的chart"></a>查看指定的chart</h3><p>使用<code>helm search repo chart名称</code>便会列出所有repo中符合的chart。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm search  repo concourse</span><br><span class="line">NAME                    CHART VERSION   APP VERSION     DESCRIPTION</span><br><span class="line">concourse/concourse     11.2.1          6.3.0           Concourse is a simple and scalable CI system.</span><br><span class="line">google/concourse        8.3.7           5.6.0           DEPRECATED Concourse is a simple and scalable C...</span><br><span class="line">stable/concourse        8.3.7           5.6.0           DEPRECATED Concourse is a simple and scalable C...</span><br></pre></td></tr></table></figure>
-<p>查看一个具体的chart信息，使用<code>helm show chart chat名称</code></p>
-<p>比如我查看google/mysql这个chart</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm show chart google/mysql</span><br><span class="line">apiVersion: v1</span><br><span class="line">appVersion: <span class="number">5.7</span>.<span class="number">30</span></span><br><span class="line">description: Fast, reliable, scalable, and easy to use open-source relational database</span><br><span class="line">  system.</span><br><span class="line">home: https://www.mysql.com/</span><br><span class="line">icon: https://www.mysql.com/common/logos/logo-mysql-<span class="number">170</span>x115.png</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<p>查看<strong>更加具体</strong>的chart信息，使用<code>helm show all chart名称</code></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm show  all google/mysql</span><br><span class="line">apiVersion: v1</span><br><span class="line">appVersion: <span class="number">5.7</span>.<span class="number">30</span></span><br><span class="line">description: Fast, reliable, scalable, and easy to use open-source relational database</span><br><span class="line">  system.</span><br><span class="line">home: https://www.mysql.com/</span><br><span class="line">icon: https://www.mysql.com/common/logos/logo-mysql-<span class="number">170</span>x115.png</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<p>查看<strong>全部可用版本</strong>，使用<code>-l</code>或者<code>--versions</code></p>
-<p>例如查看google/mariadb 各种版本。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm search repo google/mariadb --versions</span><br><span class="line">NAME            CHART VERSION   APP VERSION             DESCRIPTION</span><br><span class="line">google/mariadb  7.3.14          10.3.22                 DEPRECATED Fast, reliable, scalable, and easy t...</span><br><span class="line">google/mariadb  7.3.13          10.3.22                 DEPRECATED Fast, reliable, scalable, and easy t...</span><br><span class="line">google/mariadb  7.3.12          10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">google/mariadb  7.3.11          10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">google/mariadb  7.3.10          10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">google/mariadb  7.3.9           10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<h2 id="安装-删除一个Chart"><a href="#安装-删除一个Chart" class="headerlink" title="安装/删除一个Chart"></a>安装/删除一个Chart</h2><p>安装一个chart，使用<code>helm install 在k8s上定义的release名 chart名</code></p>
-<p>这边要注意的是，如果k8s在远程，则需要使用–kubeconfig k8s文件来使用。</p>
-<p><strong>如果要指定某个版本，则可以使用<code>--verison vx.y</code>方式，例如<code>helm install prometheus --version v6.7.4</code></strong></p>
-<p>比如远程安装一个concourse的服务。<em>在上面选择concourse/concourse这个chart安装</em></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">helm install --kubeconfig C:\Users\hysan\Desktop\k3s.yaml my-concourse concourse/concourse</span><br></pre></td></tr></table></figure>
-<p>如果不想自己取名，则可以使用<code>--generate-name</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">helm install --kubeconfig C:\Users\hysan\Desktop\k3s.yaml  concourse/concourse --generate-name`</span><br></pre></td></tr></table></figure>
-<p>使用<code>kubectl get all</code>可以查看k8s是否安装了concourse。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">uangyisan@k3s-master:~$ sudo ./k3s kubectl get all</span><br><span class="line">NAME                                    READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/my-nginx-9b596c8c4-62gm2            1/1     Running   1          22h</span><br><span class="line">pod/my-concourse-worker-1               1/1     Running   0          117s</span><br><span class="line">pod/my-concourse-worker-0               1/1     Running   0          117s</span><br><span class="line">pod/my-concourse-postgresql-0           1/1     Running   0          117s</span><br><span class="line">pod/my-concourse-web-7bb67d8c8c-v26lm   1/1     Running   0          117s</span><br><span class="line"></span><br><span class="line">NAME                                       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE</span><br><span class="line">service/kubernetes                         ClusterIP   10.43.0.1       &lt;none&gt;        443/TCP          3d4h</span><br><span class="line">service/web-proxy                          NodePort    10.43.166.153   &lt;none&gt;        8080:30080/TCP   2d5h</span><br><span class="line">service/my-concourse-postgresql-headless   ClusterIP   None            &lt;none&gt;        5432/TCP         118s</span><br><span class="line">service/my-concourse-worker                ClusterIP   None            &lt;none&gt;        &lt;none&gt;           118s</span><br><span class="line">service/my-concourse-web                   ClusterIP   10.43.184.42    &lt;none&gt;        8080/TCP         118s</span><br><span class="line">service/my-concourse-web-worker-gateway    ClusterIP   10.43.96.157    &lt;none&gt;        2222/TCP         118s</span><br><span class="line">service/my-concourse-postgresql            ClusterIP   10.43.215.201   &lt;none&gt;        5432/TCP         118s</span><br><span class="line"></span><br><span class="line">NAME                               READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.apps/my-nginx           1/1     1            1           22h</span><br><span class="line">deployment.apps/my-concourse-web   1/1     1            1           118s</span><br><span class="line"></span><br><span class="line">NAME                                          DESIRED   CURRENT   READY   AGE</span><br><span class="line">replicaset.apps/my-nginx-9b596c8c4            1         1         1       22h</span><br><span class="line">replicaset.apps/my-concourse-web-7bb67d8c8c   1         1         1       118s</span><br><span class="line"></span><br><span class="line">NAME                                       READY   AGE</span><br><span class="line">statefulset.apps/my-concourse-worker       2/2     118s</span><br><span class="line">statefulset.apps/my-concourse-postgresql   1/1     118s</span><br></pre></td></tr></table></figure>
-<p>使用<code>helm list</code>可以查看当前k8s部署了的chart，也就是列出release。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm list --kubeconfig C:\Users\hysan\Desktop\k3s.yaml</span><br><span class="line">NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART          APP VERSION</span><br><span class="line">my-concourse    default         1               2020-06-21 22:15:46.0507691 +0800 CST   deployed        concourse-11.2.6.3.0</span><br></pre></td></tr></table></figure>
-<p>删除命令也很简单，install修改为uninstall，指定release名称即可。<code>helm uninstall release名称</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm uninstall --kubeconfig C:\Users\hysan\Desktop\k3s.yaml my-concourse</span><br><span class="line">manifest-0</span><br><span class="line"></span><br><span class="line">release "my-concourse" uninstalled</span><br></pre></td></tr></table></figure>
-<h3 id="自定义变量安装"><a href="#自定义变量安装" class="headerlink" title="自定义变量安装"></a>自定义变量安装</h3><ol>
-<li>如果编写过自己的chart，则能知道其其实是由一个个yaml，或其他文件组成。</li>
-<li>自己编写的chart，可以将value抽取出来，放到Values.yaml文件中。那么在安装的时候可以改写变量，或者指定某个变量的值进行安装。</li>
-</ol>
-<h4 id="打印出指定chart的value内容"><a href="#打印出指定chart的value内容" class="headerlink" title="打印出指定chart的value内容"></a>打印出指定chart的value内容</h4><p>其实打印的就是values.yaml文件的内容，使用命令<code>helm show values chart名称</code></p>
-<p>比如查看concourse/concourse这个chart的values</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm  --kubeconfig C:\Users\hysan\Desktop\k3s.yaml  show values concourse/concourse</span><br><span class="line"><span class="meta">#</span># Default values for Concourse Helm Chart.</span><br><span class="line"><span class="meta">#</span># This is a YAML-formatted file.</span><br><span class="line"><span class="meta">#</span># Declare variables to be passed into your templates.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Provide a name in place of `concourse` for `app:` labels</span><br><span class="line"><span class="meta">#</span>#</span><br><span class="line">nameOverride:</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Provide a name to substitute for the full names of resources</span><br><span class="line"><span class="meta">#</span>#</span><br><span class="line">fullnameOverride:</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Concourse image to use in both Web and Worker containers.</span><br><span class="line"><span class="meta">#</span>#</span><br><span class="line">image: concourse/concourse</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<p><strong>我们可以把这个文件定向到一个yaml文件，然后修改里面需要修改的值，在使用-f指定该修改后的yaml文件进行安装。</strong></p>
-<p>进行重定向到一个文件中</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm  --kubeconfig C:\Users\hysan\Desktop\k3s.yaml  show values concourse/concourse &gt; C:\Users\hysan\Desktop\concourse.yml</span><br></pre></td></tr></table></figure>
-<h4 id="覆盖变量进行安装"><a href="#覆盖变量进行安装" class="headerlink" title="覆盖变量进行安装"></a>覆盖变量进行安装</h4><p>使用-f或者–values指定该concourse.yaml进行安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">helm --kubeconfig .\k3s.yaml install -f .\concourse.yml concourse concourse/concourse</span><br></pre></td></tr></table></figure>
-<p><strong>如果只需要修改一个值，嫌导出麻烦，则可以使用–set name=value的方式修改并安装。如果同时存在–set方式和-f指定yaml文件的方式，–set的修改内容会覆盖-f指定的yaml文件内容</strong></p>
-<h3 id="HELM进行更新和回退"><a href="#HELM进行更新和回退" class="headerlink" title="HELM进行更新和回退"></a>HELM进行更新和回退</h3><p>当需要对HELM部署的应用进行更新的时候，先修改yaml文件，然后使用upgrade进行更新。<code>helm upgrade -f .\concourse.yml  release名称 chart名称</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml upgrade -f .\concourse.yml  concourse concourse/concourse</span><br><span class="line">Release "concourse" has been upgraded. Happy Helming!</span><br><span class="line">NAME: concourse</span><br><span class="line">LAST DEPLOYED: Sun Jun 21 22:48:05 2020</span><br><span class="line">NAMESPACE: default</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 2</span><br><span class="line">TEST SUITE: None</span><br><span class="line">NOTES:</span><br><span class="line">* Concourse can be accessed:</span><br></pre></td></tr></table></figure>
-<p>upgrade操作后，可以使用<code>helm get values release名称</code>命令查看更新的value是否更新。</p>
-<p>通过<code>helm list</code>命令可以看到concourse此时的<code>REVISION</code>更新为<strong>2</strong>了。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml list</span><br><span class="line">NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART          APP VERSION</span><br><span class="line">concourse       default         2               2020-06-21 22:48:05.9812653 +0800 CST   deployed        concourse-11.2.6.3.0</span><br></pre></td></tr></table></figure>
-<p>如果要回退到<strong>REVISION 1 时候的状态</strong>，则可以使用rollback命令，<code>helm rollback release名称 回退的版本</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml rollback concourse 1</span><br><span class="line">Rollback was a success! Happy Helming!</span><br></pre></td></tr></table></figure>
-<p><strong>这边回滚了，但千万不要认为REVISION变成了1，当前只是回到了曾经1的状态，但REVISION一直都是递增的，也就是之前的2+1=3。</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml list</span><br><span class="line">NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART          APP VERSION</span><br><span class="line">concourse       default         3               2020-06-21 22:54:03.8030572 +0800 CST   deployed        concourse-11.2.6.3.0</span><br></pre></td></tr></table></figure>
-<h1 id="HELM其他一些命令"><a href="#HELM其他一些命令" class="headerlink" title="HELM其他一些命令"></a>HELM其他一些命令</h1><ul>
-<li><a href="https://helm.sh/docs/helm/helm_get_manifest/" target="_blank" rel="noopener">helm get manifest release名称</a> 用来获取release的mainfest文件</li>
-<li><a href="https://helm.sh/docs/helm/helm_pull/" target="_blank" rel="noopener">helm pull chart名称</a> 下载指定chart，查看其编写文件</li>
-<li>很多命令可以配合<code>--flag</code>内容来做更多的展现，<a href="https://helm.sh/docs/helm/" target="_blank" rel="noopener">更多参考</a></li>
-</ul>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://helm.sh/docs/" target="_blank" rel="noopener">https://helm.sh/docs/</a></p>
-</blockquote>
-<p>Helm的一些缺点</p>
-<blockquote>
-<p><a href="https://winderresearch.com/7-reasons-why-you-shouldnt-use-helm-in-production/#value-proposition" target="_blank" rel="noopener">https://winderresearch.com/7-reasons-why-you-shouldnt-use-helm-in-production/#value-proposition</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>k8s</tag>
-        <tag>helm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>k8s配置多集群接入</title>
-    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
-<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
-<ul>
-<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
-</li>
-<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
-</li>
-<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
-</li>
-</ul>
-<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
-<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
-<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
-<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
-<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
-<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
-<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
-<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
-<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
-<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>nonlocal的用法</title>
-    <url>/2019/02/20/nonlocal%E7%9A%84%E7%94%A8%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p><strong>nonlocal允许对嵌套的函数作用域中的名称进行赋值，并且把这样的名称的作用域查找限制在嵌套的函数内。</strong><br><strong>nonlocal限制查找在嵌套的函数域内，且可以在函数域内进行赋值修改。</strong></p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state = start</span><br><span class="line">    def nested(label):</span><br><span class="line">        print(label,state)</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;)</span><br><span class="line"></span><br><span class="line">执行结果为</span><br><span class="line">spam 0</span><br><span class="line">ham 0</span><br></pre></td></tr></table></figure>
-<p>函数nested中print方法内的state变量引用了上一层tester函数中的state。</p>
-<p>如果仅仅是引用变量，则不会出现问题，若是不使用nonlocal情况下对<code>变量进行赋值操作</code>，则出现报错:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state = start</span><br><span class="line">    def nested(label):</span><br><span class="line">        print(label,state)</span><br><span class="line">        state += 1   # 对state变量进行了赋值操作，在nested函数中并没有单独定义state变量。</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;) </span><br><span class="line"></span><br><span class="line">报错如下：</span><br><span class="line">huangyisan:~/Desktop/Python_project/Mage_edu $ python3 nonlocalfunc.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;nonlocalfunc.py&quot;, line 18, in &lt;module&gt;</span><br><span class="line">    F(&apos;spam&apos;)</span><br><span class="line">  File &quot;nonlocalfunc.py&quot;, line 13, in nested</span><br><span class="line">    print(label,state)</span><br><span class="line">UnboundLocalError: local variable &apos;state&apos; referenced before assignment</span><br></pre></td></tr></table></figure>
-<p><strong>state因为在nested中没有被定义，所以无法被赋值，但可以引用上一层tester函数。</strong></p>
-<p>如果要定义，则需要用nonlocal函数对其进行声明：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state = start</span><br><span class="line">    def nested(label):</span><br><span class="line">        nonlocal state</span><br><span class="line">        print(label,state)</span><br><span class="line">        state += 1</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;)</span><br><span class="line"></span><br><span class="line">执行结果：</span><br><span class="line">spam 0</span><br><span class="line">ham 1</span><br></pre></td></tr></table></figure></p>
-<h2 id="边界情况"><a href="#边界情况" class="headerlink" title="边界情况"></a>边界情况</h2><ol>
-<li>nonlocal对象必须已经在一个嵌套的def作用域中被赋值过，否则会报错。(global则不需要预先对变量进行赋值。)</li>
-</ol>
-<p>报错代码如下：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    def nested(label):</span><br><span class="line">        nonlocal state  # 在nested外层函数，也就是tester函数中并没有对state变量进行赋值。</span><br><span class="line">        state = 1</span><br><span class="line">        print(label,state) </span><br><span class="line">        state += 1</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;)</span><br></pre></td></tr></table></figure></p>
-<p><strong>因为在state被nonlocal处理之前并没有对state进行赋值！</strong></p>
-<ol start="2">
-<li><p>nonlocal只会在嵌套def的作用域内查找，查找范围永远不会出def作用域范围，即便在最外层全局有了定义这个变量，也不会去查找。如果要去全局变量查询，则使用global。</p>
-</li>
-<li><p>nonlocal查询会<code>逐级往上</code>查询，查询到一个<code>立马返回</code>,也就是会<strong>就近查询</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">state = 0</span><br><span class="line">def tester(start):</span><br><span class="line">    state = 1</span><br><span class="line">    def cisco(middle):</span><br><span class="line">        state = 2</span><br><span class="line">        def nested(label):</span><br><span class="line">            nonlocal state</span><br><span class="line">            print(label, state)</span><br><span class="line">        return nested</span><br><span class="line">    return cisco</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(1)(&apos;spam&apos;)</span><br><span class="line"></span><br><span class="line">输出结果为</span><br><span class="line">spam 2</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>因为在cisco这个函数中已经存在了state=2的赋值，所以不会再查询cisco上一层tester中的state。<strong>就近返回了state=2。</strong></p>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>position属性relative和absolute</title>
     <url>/2019/03/06/position%E5%B1%9E%E6%80%A7relative%E5%92%8Cabsolute/</url>
     <content><![CDATA[<p>我还记得那个调整了3个多小时才把确认按钮移动到table右边的夜晚。以至于前端给我的错觉就是，我写出我的思路，但它却不这么去展现。。mmp..<br>至此拾起来，从把relative和absolute两个属性搞清楚开始。</p>
@@ -2235,6 +2079,29 @@
       </tags>
   </entry>
   <entry>
+    <title>setdefault方法传入函数</title>
+    <url>/2019/02/01/setdefault%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="setdefault-方法"><a href="#setdefault-方法" class="headerlink" title="setdefault()方法"></a>setdefault()方法</h2><p>myvalue = dict_a.setdefault(a,b)</p>
+<p>从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。</p>
+<p>于是用了setdefault()方法，代码大致如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
+<p>因为func_api()函数会请求线上，调用接口。</p>
+<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
+<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
+<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
+<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
+<p>这样就避免了重复调用func的问题。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sort函数中key的理解</title>
     <url>/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
@@ -2263,29 +2130,6 @@
 <blockquote>
 <p><a href="http://python.jobbole.com/85025/" target="_blank" rel="noopener">http://python.jobbole.com/85025/</a></p>
 </blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>setdefault方法传入函数</title>
-    <url>/2019/02/01/setdefault%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="setdefault-方法"><a href="#setdefault-方法" class="headerlink" title="setdefault()方法"></a>setdefault()方法</h2><p>myvalue = dict_a.setdefault(a,b)</p>
-<p>从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。</p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。</p>
-<p>于是用了setdefault()方法，代码大致如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dict_a = &#123;&#125;</span><br><span class="line">for i in xxxx:</span><br><span class="line">    myvalue = dict_a.setdefault(a,func_api())</span><br><span class="line">    xxxxx</span><br><span class="line">    xxx</span><br></pre></td></tr></table></figure>
-<p>因为func_api()函数会请求线上，调用接口。</p>
-<p>但是实现的时候，却发现，每次对myvalue赋值的时候，都会调用线上api接口。</p>
-<p>猜测setdefault的逻辑，即便能通过指定的key获取到value，其default行为还是被执行。</p>
-<h2 id="验证猜测"><a href="#验证猜测" class="headerlink" title="验证猜测"></a>验证猜测</h2><p><strong>同时也验证了字典get方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; def b():</span><br><span class="line">...   print(2)</span><br><span class="line">...   return 1</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; a_dict = &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict=&#123;&quot;a&quot;:1&#125;</span><br><span class="line">&gt;&gt;&gt; a_dict.setdefault(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; a_dict.get(&quot;a&quot;,b())</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<p>虽然a_dict字典已经存在”a”:1,但，依旧执行了b()</p>
-<h2 id="处理方法"><a href="#处理方法" class="headerlink" title="处理方法"></a>处理方法</h2><p>先进行get，若返回为None，则进行setdefault</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">groupid = groupid_templateid_dict.get(tmp_groupname)</span><br><span class="line">if groupid:</span><br><span class="line">    pass</span><br><span class="line">else:</span><br><span class="line">    groupid = groupid_templateid_dict.setdefault(tmp_groupname,zhg.get_customer_hostgroups(name=groupname,output_data=output_data))</span><br></pre></td></tr></table></figure>
-<p>这样就避免了重复调用func的问题。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>其实只要把函数作为另外一个函数的参数，那么当调用这个函数的的时候，被传入的函数也会调用。</strong></p>
 ]]></content>
       <tags>
         <tag>python3</tag>
@@ -2323,80 +2167,6 @@
 ]]></content>
       <tags>
         <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>二叉树种类和遍历</title>
-    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
-<ol>
-<li>rooted binary tree<ul>
-<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
-</ul>
-</li>
-<li>full binary tree<ul>
-<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
-</ul>
-</li>
-<li>complete binary tree<ul>
-<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
-</ul>
-</li>
-<li>perfect binary tree<ul>
-<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
-</ul>
-</li>
-<li>infinite complete binary tree<ul>
-<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
-<li>我的理解就是无穷尽的rooted binray tree</li>
-</ul>
-</li>
-<li>balanced binary tree<ul>
-<li>左右子树高度差不超过1</li>
-<li>且左右子树各自均为平衡二叉树</li>
-</ul>
-</li>
-<li>degenerate tree<ul>
-<li>每个节点只包含一个子节点。</li>
-</ul>
-</li>
-</ol>
-<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
-<ul>
-<li>指先访问根，然后访问子树的遍历方式。</li>
-<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
-<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
-<ul>
-<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
-<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
-<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
-<ul>
-<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
-<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
-</ul>
-<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
-<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
-<ul>
-<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
-<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
-</ul>
-<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
-<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
-<p>refer</p>
-<blockquote>
-<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-        <tag>algorithm</tag>
       </tags>
   </entry>
   <entry>
@@ -2507,6 +2277,80 @@
       <tags>
         <tag>linux</tag>
         <tag>network</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二叉树种类和遍历</title>
+    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
+    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
+<ol>
+<li>rooted binary tree<ul>
+<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
+</ul>
+</li>
+<li>full binary tree<ul>
+<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
+</ul>
+</li>
+<li>complete binary tree<ul>
+<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
+</ul>
+</li>
+<li>perfect binary tree<ul>
+<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
+</ul>
+</li>
+<li>infinite complete binary tree<ul>
+<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
+<li>我的理解就是无穷尽的rooted binray tree</li>
+</ul>
+</li>
+<li>balanced binary tree<ul>
+<li>左右子树高度差不超过1</li>
+<li>且左右子树各自均为平衡二叉树</li>
+</ul>
+</li>
+<li>degenerate tree<ul>
+<li>每个节点只包含一个子节点。</li>
+</ul>
+</li>
+</ol>
+<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
+<ul>
+<li>指先访问根，然后访问子树的遍历方式。</li>
+<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
+<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
+<ul>
+<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
+<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
+<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
+<ul>
+<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
+<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
+</ul>
+<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
+<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
+<ul>
+<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
+<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
+</ul>
+<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
+<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
+<p>refer</p>
+<blockquote>
+<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+        <tag>algorithm</tag>
       </tags>
   </entry>
   <entry>
@@ -2759,35 +2603,6 @@
       </tags>
   </entry>
   <entry>
-    <title>布隆过滤器</title>
-    <url>/2019/03/19/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
-    <content><![CDATA[<h2 id="判断value是否存在"><a href="#判断value是否存在" class="headerlink" title="判断value是否存在"></a>判断value是否存在</h2><ol>
-<li>常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。</li>
-<li>布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。</li>
-<li>布隆过滤器对值的判断存在两种情况，<strong>可能存在</strong>和<strong>绝对不存在</strong>。</li>
-</ol>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash function运算，得到的值和n进行取模运算，得到m个位置，把bit array的这些位置置为1，就完成了一次写入。</p>
-<h2 id="举个简单的例子"><a href="#举个简单的例子" class="headerlink" title="举个简单的例子"></a>举个简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg" alt></p>
-<ol>
-<li>需要存入的值为’huangyisan’，bit arrary长度为10。</li>
-<li>存在三个hash方法，分别对huangyisan运算。</li>
-<li>然后对函数执行得到的结果，和长度10取模。</li>
-<li>取模得到的值，在bit arrary中对应位置至于1。</li>
-<li>那么只要bit arrary的3 5 9 位为1，则代表huangyisan这个字符串存在。</li>
-</ol>
-<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><p>布隆过滤器的两个状态，一个为绝对不存在(negative)，还有一个为可能存在(positive)。所以这个可能存在的状态，会使得得到的结果不一定准确。<br>出现这个情况，主要是存入数据比较多，导致bit位重叠，所以单单根据bit位为1判断某个字符串是否存在，只能判断为可能存在。<br>所以在对准确性有一定容忍度的环境，是可以使用布隆选择器的。</p>
-<h2 id="问题最大可能进行避免"><a href="#问题最大可能进行避免" class="headerlink" title="问题最大可能进行避免"></a>问题最大可能进行避免</h2><p>问题肯定能存在，但可以降低产生的概率，此时就要在使用之前对bit arrary长度，hash function数量等因素进行设定。<br>一个可以进行评估设定的站点: <a href="https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2" target="_blank" rel="noopener">https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2</a></p>
-<h2 id="python实现布隆过滤器"><a href="#python实现布隆过滤器" class="headerlink" title="python实现布隆过滤器"></a>python实现布隆过滤器</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">class BloomFilter(object):</span><br><span class="line">    def __init__(self,size):</span><br><span class="line">        self.size = size</span><br><span class="line">        self.arrarylist = [0]*size</span><br><span class="line">        self.hash_func = [hashlib.md5, hashlib.sha1, hashlib.sha224]</span><br><span class="line"></span><br><span class="line">    def add_data(self,data):</span><br><span class="line">        for func in self.hash_func:</span><br><span class="line">            index = int(func(data.encode()).hexdigest(),16) % self.size</span><br><span class="line">            self.arrarylist[index] = 1</span><br><span class="line"></span><br><span class="line">    def is_data_exist(self,data):</span><br><span class="line">        result = 1 #起始位为1，如果为0，则肯定最终结果为0了。</span><br><span class="line">        for func in self.hash_func:</span><br><span class="line">            index = int(func(data.encode()).hexdigest(),16) % self.size</span><br><span class="line">            #三个index对应value，&amp;操作为1，则返回true</span><br><span class="line">            result &amp;= self.arrarylist[index]</span><br><span class="line">        return True if result == 1 else False</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    # 调整bf_size大小，可以改变False positive的值</span><br><span class="line">    bf_size = 1000</span><br><span class="line"></span><br><span class="line">    bloom_filter = BloomFilter(bf_size)</span><br><span class="line"></span><br><span class="line">    arrarylist = []</span><br><span class="line"></span><br><span class="line">    # 添加数值0-99</span><br><span class="line">    for i in range(100):</span><br><span class="line">        bloom_filter.add_data(str(i))</span><br><span class="line">    </span><br><span class="line">    # 对100-999进行is_data_exist方法运算，若返回true，则count+1，计算False positive的值。</span><br><span class="line">    count = 0</span><br><span class="line">    for i in range(100,1000):</span><br><span class="line">        if bloom_filter.is_data_exist(str(i)):</span><br><span class="line">            count+=1</span><br><span class="line"></span><br><span class="line">    print(&apos;False positive is &#123;0:.2f&#125;%&apos;.format(count/len(range(100,1000))*100))</span><br></pre></td></tr></table></figure>
-<p>refer</p>
-<blockquote>
-<p><a href="https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d" target="_blank" rel="noopener">https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d</a><br><a href="https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2" target="_blank" rel="noopener">https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2</a><br><a href="https://zhuanlan.zhihu.com/p/43263751" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/43263751</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>用正确的姿势动态修改小程序样式</title>
     <url>/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h2 id="我的小程序菜单栏点击延迟很大"><a href="#我的小程序菜单栏点击延迟很大" class="headerlink" title="我的小程序菜单栏点击延迟很大"></a>我的小程序菜单栏点击延迟很大</h2><ol>
@@ -2866,6 +2681,35 @@
 ]]></content>
       <tags>
         <tag>小程序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>布隆过滤器</title>
+    <url>/2019/03/19/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="判断value是否存在"><a href="#判断value是否存在" class="headerlink" title="判断value是否存在"></a>判断value是否存在</h2><ol>
+<li>常用判断某个value是否存在特定集合中，一般用hashmap，但hashmap存储量较高。</li>
+<li>布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。</li>
+<li>布隆过滤器对值的判断存在两种情况，<strong>可能存在</strong>和<strong>绝对不存在</strong>。</li>
+</ol>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash function运算，得到的值和n进行取模运算，得到m个位置，把bit array的这些位置置为1，就完成了一次写入。</p>
+<h2 id="举个简单的例子"><a href="#举个简单的例子" class="headerlink" title="举个简单的例子"></a>举个简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg" alt></p>
+<ol>
+<li>需要存入的值为’huangyisan’，bit arrary长度为10。</li>
+<li>存在三个hash方法，分别对huangyisan运算。</li>
+<li>然后对函数执行得到的结果，和长度10取模。</li>
+<li>取模得到的值，在bit arrary中对应位置至于1。</li>
+<li>那么只要bit arrary的3 5 9 位为1，则代表huangyisan这个字符串存在。</li>
+</ol>
+<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><p>布隆过滤器的两个状态，一个为绝对不存在(negative)，还有一个为可能存在(positive)。所以这个可能存在的状态，会使得得到的结果不一定准确。<br>出现这个情况，主要是存入数据比较多，导致bit位重叠，所以单单根据bit位为1判断某个字符串是否存在，只能判断为可能存在。<br>所以在对准确性有一定容忍度的环境，是可以使用布隆选择器的。</p>
+<h2 id="问题最大可能进行避免"><a href="#问题最大可能进行避免" class="headerlink" title="问题最大可能进行避免"></a>问题最大可能进行避免</h2><p>问题肯定能存在，但可以降低产生的概率，此时就要在使用之前对bit arrary长度，hash function数量等因素进行设定。<br>一个可以进行评估设定的站点: <a href="https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2" target="_blank" rel="noopener">https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2</a></p>
+<h2 id="python实现布隆过滤器"><a href="#python实现布隆过滤器" class="headerlink" title="python实现布隆过滤器"></a>python实现布隆过滤器</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">class BloomFilter(object):</span><br><span class="line">    def __init__(self,size):</span><br><span class="line">        self.size = size</span><br><span class="line">        self.arrarylist = [0]*size</span><br><span class="line">        self.hash_func = [hashlib.md5, hashlib.sha1, hashlib.sha224]</span><br><span class="line"></span><br><span class="line">    def add_data(self,data):</span><br><span class="line">        for func in self.hash_func:</span><br><span class="line">            index = int(func(data.encode()).hexdigest(),16) % self.size</span><br><span class="line">            self.arrarylist[index] = 1</span><br><span class="line"></span><br><span class="line">    def is_data_exist(self,data):</span><br><span class="line">        result = 1 #起始位为1，如果为0，则肯定最终结果为0了。</span><br><span class="line">        for func in self.hash_func:</span><br><span class="line">            index = int(func(data.encode()).hexdigest(),16) % self.size</span><br><span class="line">            #三个index对应value，&amp;操作为1，则返回true</span><br><span class="line">            result &amp;= self.arrarylist[index]</span><br><span class="line">        return True if result == 1 else False</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    # 调整bf_size大小，可以改变False positive的值</span><br><span class="line">    bf_size = 1000</span><br><span class="line"></span><br><span class="line">    bloom_filter = BloomFilter(bf_size)</span><br><span class="line"></span><br><span class="line">    arrarylist = []</span><br><span class="line"></span><br><span class="line">    # 添加数值0-99</span><br><span class="line">    for i in range(100):</span><br><span class="line">        bloom_filter.add_data(str(i))</span><br><span class="line">    </span><br><span class="line">    # 对100-999进行is_data_exist方法运算，若返回true，则count+1，计算False positive的值。</span><br><span class="line">    count = 0</span><br><span class="line">    for i in range(100,1000):</span><br><span class="line">        if bloom_filter.is_data_exist(str(i)):</span><br><span class="line">            count+=1</span><br><span class="line"></span><br><span class="line">    print(&apos;False positive is &#123;0:.2f&#125;%&apos;.format(count/len(range(100,1000))*100))</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d" target="_blank" rel="noopener">https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d</a><br><a href="https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2" target="_blank" rel="noopener">https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2</a><br><a href="https://zhuanlan.zhihu.com/p/43263751" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/43263751</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
       </tags>
   </entry>
   <entry>
@@ -3056,6 +2900,36 @@
       </tags>
   </entry>
   <entry>
+    <title>稀疏数组(go语言实现)</title>
+    <url>/2020/06/08/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<h2 id="稀疏数组使用场景"><a href="#稀疏数组使用场景" class="headerlink" title="稀疏数组使用场景"></a>稀疏数组使用场景</h2><p>当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来<strong>压缩保存</strong>该二维数组。</p>
+<h2 id="稀疏数组处理方法"><a href="#稀疏数组处理方法" class="headerlink" title="稀疏数组处理方法"></a>稀疏数组处理方法</h2><ol>
+<li>稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。</li>
+<li>稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。</li>
+</ol>
+<h2 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1gfknynjddkj21120hcq4m.jpg" alt="稀疏数组.png"></p>
+<ol>
+<li>原二维数组看做棋盘，白子为1，黑子为2。</li>
+<li>稀疏数组第一行表示了”棋盘大小”为<strong>7*7</strong>，值为0，该值只是用于甄别其他有效值。</li>
+<li>稀疏数组第二行至第四行表示了”棋盘”内白子黑子的分布，顺序为从上到下，从左到右。</li>
+<li>可以将行和列看为x轴和y轴。</li>
+</ol>
+<h3 id="二维数组矩阵用稀疏数组表示-go语言思路"><a href="#二维数组矩阵用稀疏数组表示-go语言思路" class="headerlink" title="二维数组矩阵用稀疏数组表示(go语言思路)"></a>二维数组矩阵用稀疏数组表示(go语言思路)</h3><ol>
+<li>每一个棋子有三个属性，<strong>x轴坐标</strong>，<strong>y轴坐标</strong>，<strong>颜色</strong>。一个棋子的属性可以用结构体来表示。</li>
+<li>稀疏数组由于存在长度不确定性，所以使用切片的方式来表示。</li>
+<li>稀疏数组的第一个元素围棋盘布局。</li>
+</ol>
+<h3 id="go代码对二维数组压缩保存为稀疏数组"><a href="#go代码对二维数组压缩保存为稀疏数组" class="headerlink" title="go代码对二维数组压缩保存为稀疏数组"></a>go代码对二维数组压缩保存为稀疏数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义一个7*7的二维数组, 将黑子白子进行赋值.</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line">	chessMap[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">2</span>] = <span class="number">2</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">4</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">5</span>][<span class="number">3</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 打印原始数据</span></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d\t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Printf(<span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 用稀疏数组表示</span></span><br><span class="line">	<span class="comment">/* 每一个棋子都有三个属性</span></span><br><span class="line"><span class="comment">		1. x轴位置</span></span><br><span class="line"><span class="comment">		2. y轴位置</span></span><br><span class="line"><span class="comment">		3. 棋子颜色</span></span><br><span class="line"><span class="comment">		这三个属性可以使用结构体来表示</span></span><br><span class="line"><span class="comment">		然后将结构体依次append进数组中, 就可以作为一个稀疏数组了.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子属性的结构体</span></span><br><span class="line">	 <span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">	 	axisX <span class="keyword">int</span></span><br><span class="line">	 	axisY <span class="keyword">int</span></span><br><span class="line">	 	value <span class="keyword">int</span></span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子结构体的切片</span></span><br><span class="line">	 <span class="keyword">var</span> chessSparseMap []chess</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// chessSparseMap稀疏数组第一行定义x,y和value</span></span><br><span class="line">	 firstLine := chess&#123;</span><br><span class="line">	 	axisX: <span class="number">7</span>,</span><br><span class="line">	 	axisY: <span class="number">7</span>,</span><br><span class="line">	 	value: <span class="number">0</span>,</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 chessSparseMap = <span class="built_in">append</span>(chessSparseMap, firstLine)</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 对原始数据进行遍历, 然后将获取到有数值内容的值,存储到chess结构体中, 并且将该结构体append到chessSparseMap里面.</span></span><br><span class="line">	<span class="keyword">for</span> k,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> k2,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			<span class="keyword">if</span> v2 != <span class="number">0</span> &#123;</span><br><span class="line">				tmpChess := chess&#123;</span><br><span class="line">					axisX:k,</span><br><span class="line">					axisY:k2,</span><br><span class="line">					value:v2,</span><br><span class="line">				&#125;</span><br><span class="line">				chessSparseMap = <span class="built_in">append</span>(chessSparseMap, tmpChess)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"稀疏数组为"</span>)</span><br><span class="line">	fmt.Println(chessSparseMap)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line">稀疏数组为</span><br><span class="line">[&#123;<span class="number">7</span> <span class="number">7</span> <span class="number">0</span>&#125; &#123;<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>&#125; &#123;<span class="number">2</span> <span class="number">2</span> <span class="number">2</span>&#125; &#123;<span class="number">2</span> <span class="number">4</span> <span class="number">1</span>&#125; &#123;<span class="number">5</span> <span class="number">3</span> <span class="number">2</span>&#125;]</span><br></pre></td></tr></table></figure>
+<h3 id="稀疏数组还原为二维数组"><a href="#稀疏数组还原为二维数组" class="headerlink" title="稀疏数组还原为二维数组"></a>稀疏数组还原为二维数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"strings"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义单个棋子的属性, x, y, value</span></span><br><span class="line">	<span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">		axisX <span class="keyword">int</span></span><br><span class="line">		axisY <span class="keyword">int</span></span><br><span class="line">		value <span class="keyword">int</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义一个7*7数组</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 读取sparseMap文件</span></span><br><span class="line">	file, err := os.Open(<span class="string">"./learn-go/数据结构/1.稀疏数组/sparseMap"</span>)</span><br><span class="line">	<span class="keyword">defer</span> file.Close()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"打开异常"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	reader := bufio.NewReader(file)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		content, err := reader.ReadString(<span class="string">'\n'</span>)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"内容读取完毕"</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		contentSlice := strings.Split(content,<span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">		axisX, err := strconv.Atoi(contentSlice[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisX转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		axisY, err := strconv.Atoi(contentSlice[<span class="number">1</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisY转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// strings.Split(contentSlice[2], "\r\n")[0] value结尾存在\n, 通过Split方法去除\r\n</span></span><br><span class="line">		value, err := strconv.Atoi(strings.Split(contentSlice[<span class="number">2</span>], <span class="string">"\r\n"</span>)[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"value转换出错"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> value != <span class="number">0</span> &#123;</span><br><span class="line">			<span class="comment">// axisX为x轴, axisY为y轴, value为棋子, 1 白子, 2 黑子</span></span><br><span class="line">			chessMap[axisX][axisY] = value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _, v2 :=<span class="keyword">range</span> v&#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d \t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><strong>sparseMap文件内容</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">7 7 0</span><br><span class="line">1 1 1</span><br><span class="line">2 2 2</span><br><span class="line">2 4 1</span><br><span class="line">5 3 2</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>go</tag>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>编写自定义 django-admin 命令</title>
     <url>/2019/11/07/%E7%BC%96%E5%86%99%E8%87%AA%E5%AE%9A%E4%B9%89django_admin%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p><em>我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。</em></p>
@@ -3094,48 +2968,6 @@
       </categories>
       <tags>
         <tag>django</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>稀疏数组(go语言实现)</title>
-    <url>/2020/06/08/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<h2 id="稀疏数组使用场景"><a href="#稀疏数组使用场景" class="headerlink" title="稀疏数组使用场景"></a>稀疏数组使用场景</h2><p>当一个二维数组的大部分元素为0，或者为相同值时，可以使用稀疏数组来<strong>压缩保存</strong>该二维数组。</p>
-<h2 id="稀疏数组处理方法"><a href="#稀疏数组处理方法" class="headerlink" title="稀疏数组处理方法"></a>稀疏数组处理方法</h2><ol>
-<li>稀疏数组一般n行，3列，第一列表示原先二维数组的行，第二列表示原先二维数组的列，第三列表示值。</li>
-<li>稀疏数组的第一行，一般用来表示原先二维数组的总行数以及总列数，值可以定义一个原先二维数组中不可能产生的值，比如-1,0。</li>
-</ol>
-<h2 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1gfknynjddkj21120hcq4m.jpg" alt="稀疏数组.png"></p>
-<ol>
-<li>原二维数组看做棋盘，白子为1，黑子为2。</li>
-<li>稀疏数组第一行表示了”棋盘大小”为<strong>7*7</strong>，值为0，该值只是用于甄别其他有效值。</li>
-<li>稀疏数组第二行至第四行表示了”棋盘”内白子黑子的分布，顺序为从上到下，从左到右。</li>
-<li>可以将行和列看为x轴和y轴。</li>
-</ol>
-<h3 id="二维数组矩阵用稀疏数组表示-go语言思路"><a href="#二维数组矩阵用稀疏数组表示-go语言思路" class="headerlink" title="二维数组矩阵用稀疏数组表示(go语言思路)"></a>二维数组矩阵用稀疏数组表示(go语言思路)</h3><ol>
-<li>每一个棋子有三个属性，<strong>x轴坐标</strong>，<strong>y轴坐标</strong>，<strong>颜色</strong>。一个棋子的属性可以用结构体来表示。</li>
-<li>稀疏数组由于存在长度不确定性，所以使用切片的方式来表示。</li>
-<li>稀疏数组的第一个元素围棋盘布局。</li>
-</ol>
-<h3 id="go代码对二维数组压缩保存为稀疏数组"><a href="#go代码对二维数组压缩保存为稀疏数组" class="headerlink" title="go代码对二维数组压缩保存为稀疏数组"></a>go代码对二维数组压缩保存为稀疏数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义一个7*7的二维数组, 将黑子白子进行赋值.</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line">	chessMap[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">2</span>] = <span class="number">2</span></span><br><span class="line">	chessMap[<span class="number">2</span>][<span class="number">4</span>] = <span class="number">1</span></span><br><span class="line">	chessMap[<span class="number">5</span>][<span class="number">3</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 打印原始数据</span></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d\t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Printf(<span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 用稀疏数组表示</span></span><br><span class="line">	<span class="comment">/* 每一个棋子都有三个属性</span></span><br><span class="line"><span class="comment">		1. x轴位置</span></span><br><span class="line"><span class="comment">		2. y轴位置</span></span><br><span class="line"><span class="comment">		3. 棋子颜色</span></span><br><span class="line"><span class="comment">		这三个属性可以使用结构体来表示</span></span><br><span class="line"><span class="comment">		然后将结构体依次append进数组中, 就可以作为一个稀疏数组了.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子属性的结构体</span></span><br><span class="line">	 <span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">	 	axisX <span class="keyword">int</span></span><br><span class="line">	 	axisY <span class="keyword">int</span></span><br><span class="line">	 	value <span class="keyword">int</span></span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 定义一个存放棋子结构体的切片</span></span><br><span class="line">	 <span class="keyword">var</span> chessSparseMap []chess</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// chessSparseMap稀疏数组第一行定义x,y和value</span></span><br><span class="line">	 firstLine := chess&#123;</span><br><span class="line">	 	axisX: <span class="number">7</span>,</span><br><span class="line">	 	axisY: <span class="number">7</span>,</span><br><span class="line">	 	value: <span class="number">0</span>,</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	 chessSparseMap = <span class="built_in">append</span>(chessSparseMap, firstLine)</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 对原始数据进行遍历, 然后将获取到有数值内容的值,存储到chess结构体中, 并且将该结构体append到chessSparseMap里面.</span></span><br><span class="line">	<span class="keyword">for</span> k,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> k2,v2 := <span class="keyword">range</span> v &#123;</span><br><span class="line">			<span class="keyword">if</span> v2 != <span class="number">0</span> &#123;</span><br><span class="line">				tmpChess := chess&#123;</span><br><span class="line">					axisX:k,</span><br><span class="line">					axisY:k2,</span><br><span class="line">					value:v2,</span><br><span class="line">				&#125;</span><br><span class="line">				chessSparseMap = <span class="built_in">append</span>(chessSparseMap, tmpChess)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"稀疏数组为"</span>)</span><br><span class="line">	fmt.Println(chessSparseMap)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	</span><br><span class="line">稀疏数组为</span><br><span class="line">[&#123;<span class="number">7</span> <span class="number">7</span> <span class="number">0</span>&#125; &#123;<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>&#125; &#123;<span class="number">2</span> <span class="number">2</span> <span class="number">2</span>&#125; &#123;<span class="number">2</span> <span class="number">4</span> <span class="number">1</span>&#125; &#123;<span class="number">5</span> <span class="number">3</span> <span class="number">2</span>&#125;]</span><br></pre></td></tr></table></figure>
-<h3 id="稀疏数组还原为二维数组"><a href="#稀疏数组还原为二维数组" class="headerlink" title="稀疏数组还原为二维数组"></a>稀疏数组还原为二维数组</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"strings"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义单个棋子的属性, x, y, value</span></span><br><span class="line">	<span class="keyword">type</span> chess <span class="keyword">struct</span> &#123;</span><br><span class="line">		axisX <span class="keyword">int</span></span><br><span class="line">		axisY <span class="keyword">int</span></span><br><span class="line">		value <span class="keyword">int</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义一个7*7数组</span></span><br><span class="line">	<span class="keyword">var</span> chessMap [<span class="number">7</span>][<span class="number">7</span>]<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 读取sparseMap文件</span></span><br><span class="line">	file, err := os.Open(<span class="string">"./learn-go/数据结构/1.稀疏数组/sparseMap"</span>)</span><br><span class="line">	<span class="keyword">defer</span> file.Close()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"打开异常"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	reader := bufio.NewReader(file)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		content, err := reader.ReadString(<span class="string">'\n'</span>)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"内容读取完毕"</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		contentSlice := strings.Split(content,<span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">		axisX, err := strconv.Atoi(contentSlice[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisX转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		axisY, err := strconv.Atoi(contentSlice[<span class="number">1</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"axisY转换出错"</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// strings.Split(contentSlice[2], "\r\n")[0] value结尾存在\n, 通过Split方法去除\r\n</span></span><br><span class="line">		value, err := strconv.Atoi(strings.Split(contentSlice[<span class="number">2</span>], <span class="string">"\r\n"</span>)[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"value转换出错"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> value != <span class="number">0</span> &#123;</span><br><span class="line">			<span class="comment">// axisX为x轴, axisY为y轴, value为棋子, 1 白子, 2 黑子</span></span><br><span class="line">			chessMap[axisX][axisY] = value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _,v := <span class="keyword">range</span> chessMap &#123;</span><br><span class="line">		<span class="keyword">for</span> _, v2 :=<span class="keyword">range</span> v&#123;</span><br><span class="line">			fmt.Printf(<span class="string">"%d \t"</span>,v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">1</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">2</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	</span><br><span class="line"><span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span> 	<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p><strong>sparseMap文件内容</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">7 7 0</span><br><span class="line">1 1 1</span><br><span class="line">2 2 2</span><br><span class="line">2 4 1</span><br><span class="line">5 3 2</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>go</tag>
-        <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>误删正在输出的tomcat服务日志</title>
-    <url>/2019/04/17/%E8%AF%AF%E5%88%A0%E6%AD%A3%E5%9C%A8%E8%BE%93%E5%87%BA%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97/</url>
-    <content><![CDATA[<h2 id="误删场景"><a href="#误删场景" class="headerlink" title="误删场景"></a>误删场景</h2><p>今天find写日志切割tomcat日志，需要匹配后缀为log,out,txt，之后忘记写括号,将log和out删除了。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/bin/find /opt/*/logs/* ( -name &quot;*.out&quot;  -o -name &quot;*.log&quot; -o -name &quot;*.txt&quot; ) -mtime +30 | xargs -I &#123;&#125; rm -f &#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>tomcat不像nginx那样可以reload，其需要整个暂停，然后启动才能重新生成日志文件，但如果重启tomcat，则war包加载需要的时间比较长，且这段时间无法提供服务。</p>
-<h2 id="临时查看的方法"><a href="#临时查看的方法" class="headerlink" title="临时查看的方法"></a>临时查看的方法</h2><p>虽然日志文件被删除，但在tomcat没有关闭之前文件描述符还是存在的，只是软连对象被删除而已。</p>
-]]></content>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3226,6 +3058,18 @@
       </tags>
   </entry>
   <entry>
+    <title>误删正在输出的tomcat服务日志</title>
+    <url>/2019/04/17/%E8%AF%AF%E5%88%A0%E6%AD%A3%E5%9C%A8%E8%BE%93%E5%87%BA%E7%9A%84%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<h2 id="误删场景"><a href="#误删场景" class="headerlink" title="误删场景"></a>误删场景</h2><p>今天find写日志切割tomcat日志，需要匹配后缀为log,out,txt，之后忘记写括号,将log和out删除了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/bin/find /opt/*/logs/* ( -name &quot;*.out&quot;  -o -name &quot;*.log&quot; -o -name &quot;*.txt&quot; ) -mtime +30 | xargs -I &#123;&#125; rm -f &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>tomcat不像nginx那样可以reload，其需要整个暂停，然后启动才能重新生成日志文件，但如果重启tomcat，则war包加载需要的时间比较长，且这段时间无法提供服务。</p>
+<h2 id="临时查看的方法"><a href="#临时查看的方法" class="headerlink" title="临时查看的方法"></a>临时查看的方法</h2><p>虽然日志文件被删除，但在tomcat没有关闭之前文件描述符还是存在的，只是软连对象被删除而已。</p>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>链表基础</title>
     <url>/2019/02/18/%E9%93%BE%E8%A1%A8%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h2 id="链表定义"><a href="#链表定义" class="headerlink" title="链表定义"></a>链表定义</h2><p>链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)</p>
@@ -3299,6 +3143,81 @@
       <tags>
         <tag>go</tag>
         <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux平均负载</title>
+    <url>/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/</url>
+    <content><![CDATA[<h2 id="linux平负载定义"><a href="#linux平负载定义" class="headerlink" title="linux平负载定义"></a>linux平负载定义</h2><ol>
+<li>单位时间内，处于<strong>运行或者准备运行(R)</strong>，以及<strong>不可中断睡眠进程(D)</strong>数量的平均值(指数平滑法)。</li>
+<li>和cpu使用率没有直接关系。</li>
+<li>负载上升，可能是cpu使用率过高，也可能是磁盘io问题。</li>
+</ol>
+<h2 id="平均负载算法"><a href="#平均负载算法" class="headerlink" title="平均负载算法"></a>平均负载算法</h2><p>其算法为<code>指数平滑法</code>，内核因为不可以直接做浮点运算，而选择<strong>定点运算</strong>的方式来计算指数平滑法。</p>
+<p>指数平滑法公式：</p>
+<ol>
+<li><p>linux 2.6.18内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α)，[0 &lt; α &lt; 1]</p>
+</li>
+<li><p>linux 3.12内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α) + z，[0 &lt; α &lt; 1]    <em>3.12内核增加了修正值z。</em></p>
+</li>
+</ol>
+<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sup>-5/(60<em>m)</em></sup><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
+<p>参考文档:</p>
+<blockquote>
+<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
+</blockquote>
+<h2 id="multi-core-vs-multi-processor"><a href="#multi-core-vs-multi-processor" class="headerlink" title="multi-core vs multi-processor"></a>multi-core vs multi-processor</h2><ol>
+<li><p>load关注机器有多少个processor</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">此公式包含超线程数。</span><br><span class="line">[root@leanote ~]# cat /proc/cpuinfo | grep &quot;processor&quot; | wc -l</span><br><span class="line">1</span><br><span class="line">[root@leanote ~]#</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>core可以理解为核心数，也就是cpu核心总数，而processor理解为逻辑cpu个数，而非真实cpu个数，这个逻辑cpu个数等于top后按1查看到的结果。</p>
+</li>
+</ol>
+<h2 id="linux查看cpu信息"><a href="#linux查看cpu信息" class="headerlink" title="linux查看cpu信息"></a>linux查看cpu信息</h2><p>总核数 = 物理CPU个数 X 每颗物理CPU的核数<br>总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数</p>
+<p>查看物理CPU个数<br>cat /proc/cpuinfo| grep “physical id”| sort| uniq| wc -l</p>
+<p>查看每个物理CPU中core的个数(即核数)<br>cat /proc/cpuinfo| grep “cpu cores”| uniq</p>
+<p>查看逻辑CPU的个数<br>cat /proc/cpuinfo| grep “processor”| wc -l</p>
+<p>refer</p>
+<blockquote>
+<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>cpu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3386,78 +3305,159 @@
       </tags>
   </entry>
   <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
+    <title>k8s配置多集群接入</title>
+    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
+<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
+<ul>
+<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
+</li>
+<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
+</li>
+<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
+</li>
+</ul>
+<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
+<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
+<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
+<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
+<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
+<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
 </ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
+<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
+<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
+<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
 <p>refer:</p>
 <blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
 </blockquote>
 ]]></content>
       <categories>
-        <category>system</category>
+        <category>application</category>
       </categories>
       <tags>
-        <tag>linux</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
-    <title>linux平均负载</title>
-    <url>/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/</url>
-    <content><![CDATA[<h2 id="linux平负载定义"><a href="#linux平负载定义" class="headerlink" title="linux平负载定义"></a>linux平负载定义</h2><ol>
-<li>单位时间内，处于<strong>运行或者准备运行(R)</strong>，以及<strong>不可中断睡眠进程(D)</strong>数量的平均值(指数平滑法)。</li>
-<li>和cpu使用率没有直接关系。</li>
-<li>负载上升，可能是cpu使用率过高，也可能是磁盘io问题。</li>
+    <title>nonlocal的用法</title>
+    <url>/2019/02/20/nonlocal%E7%9A%84%E7%94%A8%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p><strong>nonlocal允许对嵌套的函数作用域中的名称进行赋值，并且把这样的名称的作用域查找限制在嵌套的函数内。</strong><br><strong>nonlocal限制查找在嵌套的函数域内，且可以在函数域内进行赋值修改。</strong></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state = start</span><br><span class="line">    def nested(label):</span><br><span class="line">        print(label,state)</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;)</span><br><span class="line"></span><br><span class="line">执行结果为</span><br><span class="line">spam 0</span><br><span class="line">ham 0</span><br></pre></td></tr></table></figure>
+<p>函数nested中print方法内的state变量引用了上一层tester函数中的state。</p>
+<p>如果仅仅是引用变量，则不会出现问题，若是不使用nonlocal情况下对<code>变量进行赋值操作</code>，则出现报错:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state = start</span><br><span class="line">    def nested(label):</span><br><span class="line">        print(label,state)</span><br><span class="line">        state += 1   # 对state变量进行了赋值操作，在nested函数中并没有单独定义state变量。</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;) </span><br><span class="line"></span><br><span class="line">报错如下：</span><br><span class="line">huangyisan:~/Desktop/Python_project/Mage_edu $ python3 nonlocalfunc.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;nonlocalfunc.py&quot;, line 18, in &lt;module&gt;</span><br><span class="line">    F(&apos;spam&apos;)</span><br><span class="line">  File &quot;nonlocalfunc.py&quot;, line 13, in nested</span><br><span class="line">    print(label,state)</span><br><span class="line">UnboundLocalError: local variable &apos;state&apos; referenced before assignment</span><br></pre></td></tr></table></figure>
+<p><strong>state因为在nested中没有被定义，所以无法被赋值，但可以引用上一层tester函数。</strong></p>
+<p>如果要定义，则需要用nonlocal函数对其进行声明：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state = start</span><br><span class="line">    def nested(label):</span><br><span class="line">        nonlocal state</span><br><span class="line">        print(label,state)</span><br><span class="line">        state += 1</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;)</span><br><span class="line"></span><br><span class="line">执行结果：</span><br><span class="line">spam 0</span><br><span class="line">ham 1</span><br></pre></td></tr></table></figure></p>
+<h2 id="边界情况"><a href="#边界情况" class="headerlink" title="边界情况"></a>边界情况</h2><ol>
+<li>nonlocal对象必须已经在一个嵌套的def作用域中被赋值过，否则会报错。(global则不需要预先对变量进行赋值。)</li>
 </ol>
-<h2 id="平均负载算法"><a href="#平均负载算法" class="headerlink" title="平均负载算法"></a>平均负载算法</h2><p>其算法为<code>指数平滑法</code>，内核因为不可以直接做浮点运算，而选择<strong>定点运算</strong>的方式来计算指数平滑法。</p>
-<p>指数平滑法公式：</p>
-<ol>
-<li><p>linux 2.6.18内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α)，[0 &lt; α &lt; 1]</p>
+<p>报错代码如下：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    def nested(label):</span><br><span class="line">        nonlocal state  # 在nested外层函数，也就是tester函数中并没有对state变量进行赋值。</span><br><span class="line">        state = 1</span><br><span class="line">        print(label,state) </span><br><span class="line">        state += 1</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(&apos;spam&apos;)</span><br><span class="line">F(&apos;ham&apos;)</span><br></pre></td></tr></table></figure></p>
+<p><strong>因为在state被nonlocal处理之前并没有对state进行赋值！</strong></p>
+<ol start="2">
+<li><p>nonlocal只会在嵌套def的作用域内查找，查找范围永远不会出def作用域范围，即便在最外层全局有了定义这个变量，也不会去查找。如果要去全局变量查询，则使用global。</p>
 </li>
-<li><p>linux 3.12内核 load<sub>t</sub> = load<sub>t-1</sub> <em> α + n </em> (1 – α) + z，[0 &lt; α &lt; 1]    <em>3.12内核增加了修正值z。</em></p>
-</li>
-</ol>
-<p>load<sub>t</sub>表示当前时刻一段时间内的平滑均值。<br>load<sub>t-1</sub>表示上一时间段的平滑均值。<br>α Linux Kernel要计算的是前1min, 5min, 15min的Load 均值，α需要分别选取。Linux Kernel选取的是: e<sup>-5/(60<em>m)</em></sup><br>5:表示5s，作分子。<br>60:表示60s。<br>m: 表示分钟，1, 5, 15。 60  m作为分母。<br>把m带入到公式计算，分别能计算出0.920044415，0.983471454，0.994459848</p>
-<p>参考文档:</p>
-<blockquote>
-<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
-</blockquote>
-<h2 id="multi-core-vs-multi-processor"><a href="#multi-core-vs-multi-processor" class="headerlink" title="multi-core vs multi-processor"></a>multi-core vs multi-processor</h2><ol>
-<li><p>load关注机器有多少个processor</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">此公式包含超线程数。</span><br><span class="line">[root@leanote ~]# cat /proc/cpuinfo | grep &quot;processor&quot; | wc -l</span><br><span class="line">1</span><br><span class="line">[root@leanote ~]#</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>core可以理解为核心数，也就是cpu核心总数，而processor理解为逻辑cpu个数，而非真实cpu个数，这个逻辑cpu个数等于top后按1查看到的结果。</p>
+<li><p>nonlocal查询会<code>逐级往上</code>查询，查询到一个<code>立马返回</code>,也就是会<strong>就近查询</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">state = 0</span><br><span class="line">def tester(start):</span><br><span class="line">    state = 1</span><br><span class="line">    def cisco(middle):</span><br><span class="line">        state = 2</span><br><span class="line">        def nested(label):</span><br><span class="line">            nonlocal state</span><br><span class="line">            print(label, state)</span><br><span class="line">        return nested</span><br><span class="line">    return cisco</span><br><span class="line"></span><br><span class="line">F=tester(0)</span><br><span class="line">F(1)(&apos;spam&apos;)</span><br><span class="line"></span><br><span class="line">输出结果为</span><br><span class="line">spam 2</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="linux查看cpu信息"><a href="#linux查看cpu信息" class="headerlink" title="linux查看cpu信息"></a>linux查看cpu信息</h2><p>总核数 = 物理CPU个数 X 每颗物理CPU的核数<br>总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数</p>
-<p>查看物理CPU个数<br>cat /proc/cpuinfo| grep “physical id”| sort| uniq| wc -l</p>
-<p>查看每个物理CPU中core的个数(即核数)<br>cat /proc/cpuinfo| grep “cpu cores”| uniq</p>
-<p>查看逻辑CPU的个数<br>cat /proc/cpuinfo| grep “processor”| wc -l</p>
-<p>refer</p>
-<blockquote>
-<p><a href="http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/" target="_blank" rel="noopener">http://brytonlee.github.io/blog/2014/05/07/linux-kernel-load-average-calc/</a></p>
-</blockquote>
+<p>因为在cisco这个函数中已经存在了state=2的赋值，所以不会再查询cisco上一层tester中的state。<strong>就近返回了state=2。</strong></p>
 ]]></content>
       <tags>
-        <tag>linux</tag>
-        <tag>cpu</tag>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Helm的简单使用</title>
+    <url>/2020/06/21/helm%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="HELM基本介绍"><a href="#HELM基本介绍" class="headerlink" title="HELM基本介绍"></a>HELM基本介绍</h1><p>helm是一个可以让k8s上的应用服务进行简便安装，方便管理的工具。可以理解对yum/apt等包管理工具，只不过他是k8s特有的。</p>
+<p>目前helm有v2以及v3版本。v2版本需要客户端和服务端相互配合，服务端成为tiller，而v3的版本则不需要服务端的支持了。对于helm的命令，v2和v3也有许些区别。</p>
+<p>为什么要有helm? 通常我们一个k8s应用服务有pods, depolyment, services，ingress等等若干组件来组成，且部分组件还有相互调用的关系，你可以需要编写很多个yaml文件来处理其中之间的关系。你自己对这些文件了如指掌，但如果进行交付给他人维护，或者要做ci/cd的话，可能就不是很方便了。使用helm，编写chart，或者使用互联网上已经存在的现存chart，通过命令，非常便捷的部署和管理应用服务。</p>
+<p><strong>本篇使用的是v3版本。</strong></p>
+<h1 id="HELM的三个概念"><a href="#HELM的三个概念" class="headerlink" title="HELM的三个概念"></a>HELM的三个概念</h1><ul>
+<li><p><strong>Chart</strong>，chart类似yum list 所看到的包。安装后则在k8s上进行运行。</p>
+</li>
+<li><p><strong>Repository</strong>，则是helm的源，和yum源类似，可以配置多个，但刚安装完毕的helm没有默认源，需要手工配置。</p>
+</li>
+<li><p><strong>Release</strong>，则是安装了chart后，在k8s上运行的服务，称之为release。简单理解就是，某个应用还未部署在k8s上，称之为chart，部署后称之为release。</p>
+</li>
+</ul>
+<h1 id="HELM的使用"><a href="#HELM的使用" class="headerlink" title="HELM的使用"></a>HELM的使用</h1><h3 id="HELM的安装"><a href="#HELM的安装" class="headerlink" title="HELM的安装"></a>HELM的安装</h3><p>常用的三个平台(linux, mac, win)都有对应的二进制包，可以去github下载。<a href="https://github.com/helm/helm" target="_blank" rel="noopener">github地址</a></p>
+<h3 id="配置HELM源"><a href="#配置HELM源" class="headerlink" title="配置HELM源"></a>配置HELM源</h3><p>跟yum类似，但helm一开始是不存在默认的源，需要手工配置。</p>
+<p>配置命令为<code>helm repo add 源名称 源地址</code>。国内可以添加微软的源，谷歌的基本上被墙。</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm repo add google https://kubernetes-charts.storage.googleapis.com/</span><br><span class="line"><span class="string">"google"</span> has been added to your repositories</span><br></pre></td></tr></table></figure>
+<p>可以使用<code>helm repo list</code>查看当前存在的helm repo。 添加完后对repo更新<code>helm repo update</code></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm repo list</span><br><span class="line">NAME            URL</span><br><span class="line">concourse       https://concourse-charts.storage.googleapis.com/</span><br><span class="line">stable          http://mirror.azure.cn/kubernetes/charts/</span><br><span class="line">google          https://kubernetes-charts.storage.googleapis.com/</span><br></pre></td></tr></table></figure>
+<p>查看指定repo内的包(称之为chart), 被列出来的都是源里面的chart，使用命令<code>helm search repo repo名称</code></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm search repo google</span><br><span class="line">NAME                                    CHART VERSION   APP VERSION             DESCRIPTION</span><br><span class="line"></span><br><span class="line">google/acs-engine-autoscaler            <span class="number">2.2</span>.<span class="number">2</span>           <span class="number">2.1</span>.<span class="number">1</span>                   DEPRECATED Scales worker nodes within agent pools</span><br><span class="line">google/aerospike                        <span class="number">0.3</span>.<span class="number">2</span>           v4.<span class="number">5.0</span>.<span class="number">5</span>                A Helm chart <span class="keyword">for</span> Aerospike <span class="keyword">in</span> Kubernetes</span><br><span class="line"></span><br><span class="line">google/airflow                          <span class="number">7.1</span>.<span class="number">5</span>           <span class="number">1.10</span>.<span class="number">10</span>                 Airflow is a platform to programmatically autho...</span><br><span class="line">google/ambassador                       <span class="number">5.3</span>.<span class="number">2</span>           <span class="number">0.86</span>.<span class="number">1</span>                  DEPRECATED A Helm chart <span class="keyword">for</span> Datawire Ambassador</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<h3 id="查看指定的chart"><a href="#查看指定的chart" class="headerlink" title="查看指定的chart"></a>查看指定的chart</h3><p>使用<code>helm search repo chart名称</code>便会列出所有repo中符合的chart。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm search  repo concourse</span><br><span class="line">NAME                    CHART VERSION   APP VERSION     DESCRIPTION</span><br><span class="line">concourse/concourse     11.2.1          6.3.0           Concourse is a simple and scalable CI system.</span><br><span class="line">google/concourse        8.3.7           5.6.0           DEPRECATED Concourse is a simple and scalable C...</span><br><span class="line">stable/concourse        8.3.7           5.6.0           DEPRECATED Concourse is a simple and scalable C...</span><br></pre></td></tr></table></figure>
+<p>查看一个具体的chart信息，使用<code>helm show chart chat名称</code></p>
+<p>比如我查看google/mysql这个chart</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm show chart google/mysql</span><br><span class="line">apiVersion: v1</span><br><span class="line">appVersion: <span class="number">5.7</span>.<span class="number">30</span></span><br><span class="line">description: Fast, reliable, scalable, and easy to use open-source relational database</span><br><span class="line">  system.</span><br><span class="line">home: https://www.mysql.com/</span><br><span class="line">icon: https://www.mysql.com/common/logos/logo-mysql-<span class="number">170</span>x115.png</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<p>查看<strong>更加具体</strong>的chart信息，使用<code>helm show all chart名称</code></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm show  all google/mysql</span><br><span class="line">apiVersion: v1</span><br><span class="line">appVersion: <span class="number">5.7</span>.<span class="number">30</span></span><br><span class="line">description: Fast, reliable, scalable, and easy to use open-source relational database</span><br><span class="line">  system.</span><br><span class="line">home: https://www.mysql.com/</span><br><span class="line">icon: https://www.mysql.com/common/logos/logo-mysql-<span class="number">170</span>x115.png</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<p>查看<strong>全部可用版本</strong>，使用<code>-l</code>或者<code>--versions</code></p>
+<p>例如查看google/mariadb 各种版本。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm search repo google/mariadb --versions</span><br><span class="line">NAME            CHART VERSION   APP VERSION             DESCRIPTION</span><br><span class="line">google/mariadb  7.3.14          10.3.22                 DEPRECATED Fast, reliable, scalable, and easy t...</span><br><span class="line">google/mariadb  7.3.13          10.3.22                 DEPRECATED Fast, reliable, scalable, and easy t...</span><br><span class="line">google/mariadb  7.3.12          10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">google/mariadb  7.3.11          10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">google/mariadb  7.3.10          10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">google/mariadb  7.3.9           10.3.22                 Fast, reliable, scalable, and easy to use open-...</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<h2 id="安装-删除一个Chart"><a href="#安装-删除一个Chart" class="headerlink" title="安装/删除一个Chart"></a>安装/删除一个Chart</h2><p>安装一个chart，使用<code>helm install 在k8s上定义的release名 chart名</code></p>
+<p>这边要注意的是，如果k8s在远程，则需要使用–kubeconfig k8s文件来使用。</p>
+<p><strong>如果要指定某个版本，则可以使用<code>--verison vx.y</code>方式，例如<code>helm install prometheus --version v6.7.4</code></strong></p>
+<p>比如远程安装一个concourse的服务。<em>在上面选择concourse/concourse这个chart安装</em></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">helm install --kubeconfig C:\Users\hysan\Desktop\k3s.yaml my-concourse concourse/concourse</span><br></pre></td></tr></table></figure>
+<p>如果不想自己取名，则可以使用<code>--generate-name</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">helm install --kubeconfig C:\Users\hysan\Desktop\k3s.yaml  concourse/concourse --generate-name`</span><br></pre></td></tr></table></figure>
+<p>使用<code>kubectl get all</code>可以查看k8s是否安装了concourse。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">uangyisan@k3s-master:~$ sudo ./k3s kubectl get all</span><br><span class="line">NAME                                    READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/my-nginx-9b596c8c4-62gm2            1/1     Running   1          22h</span><br><span class="line">pod/my-concourse-worker-1               1/1     Running   0          117s</span><br><span class="line">pod/my-concourse-worker-0               1/1     Running   0          117s</span><br><span class="line">pod/my-concourse-postgresql-0           1/1     Running   0          117s</span><br><span class="line">pod/my-concourse-web-7bb67d8c8c-v26lm   1/1     Running   0          117s</span><br><span class="line"></span><br><span class="line">NAME                                       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE</span><br><span class="line">service/kubernetes                         ClusterIP   10.43.0.1       &lt;none&gt;        443/TCP          3d4h</span><br><span class="line">service/web-proxy                          NodePort    10.43.166.153   &lt;none&gt;        8080:30080/TCP   2d5h</span><br><span class="line">service/my-concourse-postgresql-headless   ClusterIP   None            &lt;none&gt;        5432/TCP         118s</span><br><span class="line">service/my-concourse-worker                ClusterIP   None            &lt;none&gt;        &lt;none&gt;           118s</span><br><span class="line">service/my-concourse-web                   ClusterIP   10.43.184.42    &lt;none&gt;        8080/TCP         118s</span><br><span class="line">service/my-concourse-web-worker-gateway    ClusterIP   10.43.96.157    &lt;none&gt;        2222/TCP         118s</span><br><span class="line">service/my-concourse-postgresql            ClusterIP   10.43.215.201   &lt;none&gt;        5432/TCP         118s</span><br><span class="line"></span><br><span class="line">NAME                               READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.apps/my-nginx           1/1     1            1           22h</span><br><span class="line">deployment.apps/my-concourse-web   1/1     1            1           118s</span><br><span class="line"></span><br><span class="line">NAME                                          DESIRED   CURRENT   READY   AGE</span><br><span class="line">replicaset.apps/my-nginx-9b596c8c4            1         1         1       22h</span><br><span class="line">replicaset.apps/my-concourse-web-7bb67d8c8c   1         1         1       118s</span><br><span class="line"></span><br><span class="line">NAME                                       READY   AGE</span><br><span class="line">statefulset.apps/my-concourse-worker       2/2     118s</span><br><span class="line">statefulset.apps/my-concourse-postgresql   1/1     118s</span><br></pre></td></tr></table></figure>
+<p>使用<code>helm list</code>可以查看当前k8s部署了的chart，也就是列出release。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm list --kubeconfig C:\Users\hysan\Desktop\k3s.yaml</span><br><span class="line">NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART          APP VERSION</span><br><span class="line">my-concourse    default         1               2020-06-21 22:15:46.0507691 +0800 CST   deployed        concourse-11.2.6.3.0</span><br></pre></td></tr></table></figure>
+<p>删除命令也很简单，install修改为uninstall，指定release名称即可。<code>helm uninstall release名称</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm uninstall --kubeconfig C:\Users\hysan\Desktop\k3s.yaml my-concourse</span><br><span class="line">manifest-0</span><br><span class="line"></span><br><span class="line">release "my-concourse" uninstalled</span><br></pre></td></tr></table></figure>
+<h3 id="自定义变量安装"><a href="#自定义变量安装" class="headerlink" title="自定义变量安装"></a>自定义变量安装</h3><ol>
+<li>如果编写过自己的chart，则能知道其其实是由一个个yaml，或其他文件组成。</li>
+<li>自己编写的chart，可以将value抽取出来，放到Values.yaml文件中。那么在安装的时候可以改写变量，或者指定某个变量的值进行安装。</li>
+</ol>
+<h4 id="打印出指定chart的value内容"><a href="#打印出指定chart的value内容" class="headerlink" title="打印出指定chart的value内容"></a>打印出指定chart的value内容</h4><p>其实打印的就是values.yaml文件的内容，使用命令<code>helm show values chart名称</code></p>
+<p>比如查看concourse/concourse这个chart的values</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm  --kubeconfig C:\Users\hysan\Desktop\k3s.yaml  show values concourse/concourse</span><br><span class="line"><span class="meta">#</span># Default values for Concourse Helm Chart.</span><br><span class="line"><span class="meta">#</span># This is a YAML-formatted file.</span><br><span class="line"><span class="meta">#</span># Declare variables to be passed into your templates.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Provide a name in place of `concourse` for `app:` labels</span><br><span class="line"><span class="meta">#</span>#</span><br><span class="line">nameOverride:</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Provide a name to substitute for the full names of resources</span><br><span class="line"><span class="meta">#</span>#</span><br><span class="line">fullnameOverride:</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Concourse image to use in both Web and Worker containers.</span><br><span class="line"><span class="meta">#</span>#</span><br><span class="line">image: concourse/concourse</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<p><strong>我们可以把这个文件定向到一个yaml文件，然后修改里面需要修改的值，在使用-f指定该修改后的yaml文件进行安装。</strong></p>
+<p>进行重定向到一个文件中</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm  --kubeconfig C:\Users\hysan\Desktop\k3s.yaml  show values concourse/concourse &gt; C:\Users\hysan\Desktop\concourse.yml</span><br></pre></td></tr></table></figure>
+<h4 id="覆盖变量进行安装"><a href="#覆盖变量进行安装" class="headerlink" title="覆盖变量进行安装"></a>覆盖变量进行安装</h4><p>使用-f或者–values指定该concourse.yaml进行安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">helm --kubeconfig .\k3s.yaml install -f .\concourse.yml concourse concourse/concourse</span><br></pre></td></tr></table></figure>
+<p><strong>如果只需要修改一个值，嫌导出麻烦，则可以使用–set name=value的方式修改并安装。如果同时存在–set方式和-f指定yaml文件的方式，–set的修改内容会覆盖-f指定的yaml文件内容</strong></p>
+<h3 id="HELM进行更新和回退"><a href="#HELM进行更新和回退" class="headerlink" title="HELM进行更新和回退"></a>HELM进行更新和回退</h3><p>当需要对HELM部署的应用进行更新的时候，先修改yaml文件，然后使用upgrade进行更新。<code>helm upgrade -f .\concourse.yml  release名称 chart名称</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml upgrade -f .\concourse.yml  concourse concourse/concourse</span><br><span class="line">Release "concourse" has been upgraded. Happy Helming!</span><br><span class="line">NAME: concourse</span><br><span class="line">LAST DEPLOYED: Sun Jun 21 22:48:05 2020</span><br><span class="line">NAMESPACE: default</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 2</span><br><span class="line">TEST SUITE: None</span><br><span class="line">NOTES:</span><br><span class="line">* Concourse can be accessed:</span><br></pre></td></tr></table></figure>
+<p>upgrade操作后，可以使用<code>helm get values release名称</code>命令查看更新的value是否更新。</p>
+<p>通过<code>helm list</code>命令可以看到concourse此时的<code>REVISION</code>更新为<strong>2</strong>了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml list</span><br><span class="line">NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART          APP VERSION</span><br><span class="line">concourse       default         2               2020-06-21 22:48:05.9812653 +0800 CST   deployed        concourse-11.2.6.3.0</span><br></pre></td></tr></table></figure>
+<p>如果要回退到<strong>REVISION 1 时候的状态</strong>，则可以使用rollback命令，<code>helm rollback release名称 回退的版本</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml rollback concourse 1</span><br><span class="line">Rollback was a success! Happy Helming!</span><br></pre></td></tr></table></figure>
+<p><strong>这边回滚了，但千万不要认为REVISION变成了1，当前只是回到了曾经1的状态，但REVISION一直都是递增的，也就是之前的2+1=3。</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\Desktop&gt; helm --kubeconfig .\k3s.yaml list</span><br><span class="line">NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART          APP VERSION</span><br><span class="line">concourse       default         3               2020-06-21 22:54:03.8030572 +0800 CST   deployed        concourse-11.2.6.3.0</span><br></pre></td></tr></table></figure>
+<h1 id="HELM其他一些命令"><a href="#HELM其他一些命令" class="headerlink" title="HELM其他一些命令"></a>HELM其他一些命令</h1><ul>
+<li><a href="https://helm.sh/docs/helm/helm_get_manifest/" target="_blank" rel="noopener">helm get manifest release名称</a> 用来获取release的mainfest文件</li>
+<li><a href="https://helm.sh/docs/helm/helm_pull/" target="_blank" rel="noopener">helm pull chart名称</a> 下载指定chart，查看其编写文件</li>
+<li>很多命令可以配合<code>--flag</code>内容来做更多的展现，<a href="https://helm.sh/docs/helm/" target="_blank" rel="noopener">更多参考</a></li>
+</ul>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://helm.sh/docs/" target="_blank" rel="noopener">https://helm.sh/docs/</a></p>
+</blockquote>
+<p>Helm的一些缺点</p>
+<blockquote>
+<p><a href="https://winderresearch.com/7-reasons-why-you-shouldnt-use-helm-in-production/#value-proposition" target="_blank" rel="noopener">https://winderresearch.com/7-reasons-why-you-shouldnt-use-helm-in-production/#value-proposition</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+        <tag>helm</tag>
       </tags>
   </entry>
 </search>
