@@ -74,8 +74,19 @@ pipeline {
     }
     post {
         always {
-            emailext body:
-            '''
+            dir('hexo-branch') {
+                script {
+                    def COMMIT_ID = ""
+                    COMMIT_ID = sh(returnStdout: true, script:'git log --pretty=format:"%h" -1')
+                    
+                    def mimeType = 'text/html'
+
+                    def to = 'anonymousyisan@gmail.com'
+
+                    def subject = '【构建通知】$PROJECT_NAME - $COMMIT_ID - Build # $BUILD_NUMBER - $BUILD_STATUS!'
+
+                    def body = 
+                    '''
 <html>
 
 <head>
@@ -121,10 +132,6 @@ pipeline {
                 <hr size="2" width="100%" />
                 $FAILED_TESTS<br />
 
-                <h4>
-                    <font color="#0B610B">最近提交(#$GIT_COMMIT)</font>
-                    <font color="#0B610B">最近提交${env.GIT_COMMIT}</font>
-                </h4>
                 <hr size="2" width="100%" />
                 <ul>
                     ${CHANGES_SINCE_LAST_SUCCESS, reverse=true, format="%c", changesFormat="<li>%d [%a] %m</li>"}
@@ -136,7 +143,16 @@ pipeline {
 </body>
 
 </html>
-            ''', mimeType: 'text/html', subject: '【构建通知】$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'anonymousyisan@gmail.com'
+                    '''
+
+                emailext(
+                    to: to
+                    subject: subject
+                    mimeType: mimeType
+                    body: body
+                )
+                }
+            }
         }
     }
 }
