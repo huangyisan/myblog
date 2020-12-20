@@ -83,7 +83,7 @@ pipeline {
 
                     def to = 'anonymousyisan@gmail.com'
 
-                    def subject = '【构建通知】$PROJECT_NAME - $COMMIT_ID - Build # $BUILD_NUMBER - $BUILD_STATUS!'
+                    def subject = '【构建通知】$PROJECT_NAME - ' + "${COMMIT_ID}" +  ' - Build # $BUILD_NUMBER - $BUILD_STATUS!'
 
                     def body = 
                     '''
