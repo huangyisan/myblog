@@ -146,9 +146,9 @@ pipeline {
                     '''
 
                 emailext(
-                    to: to
-                    subject: subject
-                    mimeType: mimeType
+                    to: to,
+                    subject: subject,
+                    mimeType: mimeType,
                     body: body
                 )
                 }
