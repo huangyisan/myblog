@@ -179,50 +179,6 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode 只出现一次的数字</title>
-    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
-<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
-<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
-<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
-</ol>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode 实现strStr()</title>
-    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
-<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
-<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
-<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
-<p>refer</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Jenkins blueocean发布hexo</title>
     <url>/2020/12/20/Jenkins%20blueocean%E5%8F%91%E5%B8%83hexo/</url>
     <content><![CDATA[<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>之前一直用travis-ci做hexo的发布，但是从两个月之前开始，不知道为什么提交了代码后，travis-ci虽然触发了，但一直卡pending状态，一直不进行构建。导致需要在本机构建hexo，然后推送到master分支，前几篇关于concourse的就是手动构建hexo目录结构进行发布的。</p>
@@ -276,6 +232,50 @@
       </categories>
       <tags>
         <tag>jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 只出现一次的数字</title>
+    <url>/2019/01/28/LeetCode-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>使用异或的方式，非常巧妙，异或算法为相同为0，不同为1。</li>
+<li><strong>数字A异或数字B两次，则结果为A</strong>。</li>
+<li>利用这个方法，可以找到非空数组里面只出现一次的那个元素。</li>
+<li><strong>0和数字B进行异或，得到的结果为数字B</strong>，基于这点，到最后所有元素异或剩下的结果就是只出现一次的那个元素。</li>
+</ol>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def singleNumber(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        a = 0</span><br><span class="line">        for num in nums:</span><br><span class="line">            a = a ^ num</span><br><span class="line">            print(a)</span><br><span class="line">        return a</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 实现strStr()</title>
+    <url>/2019/01/23/LeetCode-%E5%AE%9E%E7%8E%B0strStr/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>实现 strStr() 函数。</p>
+<p>给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;hello&quot;, needle = &quot;ll&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: haystack = &quot;aaaaa&quot;, needle = &quot;bba&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。</p>
+<p>对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>python非常简单，直接使用find命令就可以查询到指定字符串第一次出现的position。</p>
+<h2 id="解题代码"><a href="#解题代码" class="headerlink" title="解题代码"></a>解题代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def strStr(self, haystack, needle):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type haystack: str</span><br><span class="line">        :type needle: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return haystack.find(needle)</span><br></pre></td></tr></table></figure>
+<p>refer</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/implement-strstr/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-strstr/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
       </tags>
   </entry>
   <entry>
@@ -509,87 +509,6 @@
       <categories>
         <category>application</category>
       </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>True or False</title>
-    <url>/2018/12/18/True-or-False/</url>
-    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
-<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
-<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
-<blockquote>
-<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
-</blockquote>
-<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>bash fork: retry: Resource temporarily unavailable</title>
-    <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
-    <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
-<p>排查经过：</p>
-<ol>
-<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
-<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
-<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
-</ol>
-<p>这下懵圈了</p>
-<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
-<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
-<p>最后是找到了这篇文章：</p>
-<blockquote>
-<p><a href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable" target="_blank" rel="noopener">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
-</blockquote>
-<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
-<ul>
-<li>这个文件的数量改动后立马生效，不需要重启</li>
-<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
-</ul>
-<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>在centos7上</p>
-<ul>
-<li>获取当前进程数：<code>cat /sys/fs/cgroup/pids/pids.current</code>   类似使用<code>ps -ef | wc -l</code></li>
-<li>获取当前<strong>线程数和进程数</strong>总和：<code>wc -l /sys/fs/cgroup/pids/tasks</code>  类似使用<code>ps -eLf | wc -l</code></li>
-</ul>
-<p>centos7上也是可以实现pid.max：<br>只需要在/sys/fs/cgroup/pids/下创建以为目录，则该目录中就会自动创建pid.max：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# pwd</span><br><span class="line">/sys/fs/cgroup/pids/test</span><br><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br></pre></td></tr></table></figure></p>
-<p>对当前shell交互进程限制</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br><span class="line">[root@leanote test]# cat cgroup.procs </span><br><span class="line">[root@leanote test]# echo $$</span><br><span class="line">14514</span><br><span class="line">[root@leanote test]# echo 14514 &gt; cgroup.procs </span><br><span class="line">[root@leanote test]# echo 1 &gt; pids.max </span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: Resource temporarily unavailable</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: retry: No child processes</span><br></pre></td></tr></table></figure>
-<ul>
-<li>给pid.max输入1后，直接就出<code>-bash: fork: retry: No child processes</code>报错了。</li>
-<li>pid.max只会对cgroup.procs中存在的进程进行pid.max限制。</li>
-<li>当进程消失后,cgroup.procs中的进程号也会自动消失。</li>
-</ul>
-<p>在上一级不存在pid.max是因为对整个系统没必要做限制。<br>Ubuntu系统上<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code>这个其实是对用户编号为0的用户进行了pid.max的限制。</p>
-<p>refer:</p>
-<p>知乎上看到有个小伙伴也遇到这个问题了</p>
-<blockquote>
-<p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
-</blockquote>
-<p>fork的文档</p>
-<blockquote>
-<p><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
-</blockquote>
-<p>cgroup介绍</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007241437" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007241437</a><br><a href="https://mccxj.github.io/blog/20171230_os-thread-limit.html" target="_blank" rel="noopener">https://mccxj.github.io/blog/20171230_os-thread-limit.html</a></p>
-</blockquote>
-<p>cgroup 进程数限制</p>
-<blockquote>
-<p><a href="https://segmentfault.com/a/1190000007468509" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007468509</a></p>
-</blockquote>
-]]></content>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -883,6 +802,87 @@
       </tags>
   </entry>
   <entry>
+    <title>True or False</title>
+    <url>/2018/12/18/True-or-False/</url>
+    <content><![CDATA[<h2 id="链式比较"><a href="#链式比较" class="headerlink" title="链式比较"></a>链式比较</h2><p>先来看一段代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 in [1,0] == False</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>起先我认为输出的结果是True，因为 2 in [1,0] 为False，接着False == False 返回的是True。</p>
+<p>后来发现，这个其实是<strong>链式比较(chained comparisons)</strong>，这种比较法，常见的为类似1&lt;2&lt;3这种，能立马反应过来，其实质为 1&lt;2 and 2&lt;3。<br>所以2 in [1,0] == False的本质其实为<strong>(2 in [1,0]) and ([1,0] == False)</strong>，很显然，前面的返回为False，后面的返回也为False，False and False的结果为False，所以最终得到的结果为False。</p>
+<p>如下比较符号进行组合，都为链式比较<br>“&lt;” | “&gt;” | “==” | “&gt;=” | “&lt;=” | “&lt;&gt;” | “!=” | “is” [“not”] | [“not”] “in”</p>
+<blockquote>
+<p><a href="https://docs.python.org/2/reference/expressions.html#comparisons" target="_blank" rel="noopener">https://docs.python.org/2/reference/expressions.html#comparisons</a></p>
+</blockquote>
+<h2 id="空字符串"><a href="#空字符串" class="headerlink" title="空字符串"></a>空字符串</h2><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;&quot; in &quot;abc&quot;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p><strong>空字符串始终被视为任何其他字符串的子字符串</strong>，所以其返回为True。<br><strong>字符串的比较等价于find()方法，x in y 等价于y.find(x) != -1。</strong><br>当find()执行结果为-1的时候，表示x不是y的子字符串，反之，则x为y的子字符串。空字符串的执行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot;abc&quot;.find(&apos;&apos;) != -1</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="https://docs.python.org/3/reference/expressions.html#membership-test-operations" target="_blank" rel="noopener">https://docs.python.org/3/reference/expressions.html#membership-test-operations</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>bash fork: retry: Resource temporarily unavailable</title>
+    <url>/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/</url>
+    <content><![CDATA[<h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
+<p>排查经过：</p>
+<ol>
+<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
+<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
+<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
+</ol>
+<p>这下懵圈了</p>
+<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
+<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
+<p>最后是找到了这篇文章：</p>
+<blockquote>
+<p><a href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable" target="_blank" rel="noopener">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
+</blockquote>
+<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
+<ul>
+<li>这个文件的数量改动后立马生效，不需要重启</li>
+<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
+</ul>
+<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>在centos7上</p>
+<ul>
+<li>获取当前进程数：<code>cat /sys/fs/cgroup/pids/pids.current</code>   类似使用<code>ps -ef | wc -l</code></li>
+<li>获取当前<strong>线程数和进程数</strong>总和：<code>wc -l /sys/fs/cgroup/pids/tasks</code>  类似使用<code>ps -eLf | wc -l</code></li>
+</ul>
+<p>centos7上也是可以实现pid.max：<br>只需要在/sys/fs/cgroup/pids/下创建以为目录，则该目录中就会自动创建pid.max：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# pwd</span><br><span class="line">/sys/fs/cgroup/pids/test</span><br><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br></pre></td></tr></table></figure></p>
+<p>对当前shell交互进程限制</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br><span class="line">[root@leanote test]# cat cgroup.procs </span><br><span class="line">[root@leanote test]# echo $$</span><br><span class="line">14514</span><br><span class="line">[root@leanote test]# echo 14514 &gt; cgroup.procs </span><br><span class="line">[root@leanote test]# echo 1 &gt; pids.max </span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: Resource temporarily unavailable</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: retry: No child processes</span><br></pre></td></tr></table></figure>
+<ul>
+<li>给pid.max输入1后，直接就出<code>-bash: fork: retry: No child processes</code>报错了。</li>
+<li>pid.max只会对cgroup.procs中存在的进程进行pid.max限制。</li>
+<li>当进程消失后,cgroup.procs中的进程号也会自动消失。</li>
+</ul>
+<p>在上一级不存在pid.max是因为对整个系统没必要做限制。<br>Ubuntu系统上<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code>这个其实是对用户编号为0的用户进行了pid.max的限制。</p>
+<p>refer:</p>
+<p>知乎上看到有个小伙伴也遇到这个问题了</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/29192624" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29192624</a></p>
+</blockquote>
+<p>fork的文档</p>
+<blockquote>
+<p><a href="http://man7.org/linux/man-pages/man2/fork.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
+</blockquote>
+<p>cgroup介绍</p>
+<blockquote>
+<p><a href="https://segmentfault.com/a/1190000007241437" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007241437</a><br><a href="https://mccxj.github.io/blog/20171230_os-thread-limit.html" target="_blank" rel="noopener">https://mccxj.github.io/blog/20171230_os-thread-limit.html</a></p>
+</blockquote>
+<p>cgroup 进程数限制</p>
+<blockquote>
+<p><a href="https://segmentfault.com/a/1190000007468509" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007468509</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>centos7网卡改名</title>
     <url>/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/</url>
     <content><![CDATA[<p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
@@ -929,53 +929,6 @@
 ]]></content>
       <tags>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>concourse食用指北02-镜像构建</title>
-    <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9702-%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
-<li>根据仓库的dockerfile，自动构建镜像，并且推送到镜像仓库</li>
-</ol>
-<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
-<li>镜像构建可以使用<a href="https://github.com/concourse/docker-image-resource" target="_blank" rel="noopener">docker-image-resource</a></li>
-</ol>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
-<li>拉取dockerfile代码仓库</li>
-<li>构建镜像</li>
-<li>推送到镜像仓库</li>
-</ol>
-<h3 id="第一版pipeline部分配置"><a href="#第一版pipeline部分配置" class="headerlink" title="第一版pipeline部分配置"></a>第一版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/test.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"><span class="attr">    tag_filter:</span> <span class="string">"v*"</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">- name:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">docker</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="string">((repository.harbor.url))/test-image</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.harbor.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.harbor.password))</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="attr">  serial:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo/.git/ref</span></span><br></pre></td></tr></table></figure>
-<p><strong>简单说明</strong></p>
-<ol>
-<li>定义两个resource，一个为git类型，用于git仓库的操作；另外一个为docker-image类型，用于镜像构建以及镜像仓库的操作。</li>
-<li>jobs的put阶段，表示对dockerfile的构建，以及镜像仓库的推送。</li>
-<li>tag_file用于给定镜像的tag，这边使用.git/ref表示，git仓库用的哪个tag，则将该tag添加给镜像。</li>
-</ol>
-<h3 id="SemVer捕获"><a href="#SemVer捕获" class="headerlink" title="SemVer捕获"></a>SemVer捕获</h3><ol>
-<li>让镜像tag使用Semantic Versioning</li>
-<li>docker的镜像tag采用<a href="https://semver.org/" target="_blank" rel="noopener">SemVer</a>的方式，而代码仓库的tag未必完全遵循了SemVer。</li>
-</ol>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><ol>
-<li>开发协商代码仓库的tag使用规范。</li>
-<li>concourse编写task，用正则的方式捕获tag中SemVer部分。</li>
-<li>镜像构建的时候采用上步骤中捕获到的SemVer。</li>
-</ol>
-<h3 id="第二版pipeline部分配置"><a href="#第二版pipeline部分配置" class="headerlink" title="第二版pipeline部分配置"></a>第二版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line">    <span class="string">***</span></span><br><span class="line"><span class="attr">    - task:</span> <span class="string">get-servmer</span></span><br><span class="line"><span class="attr">      file:</span> <span class="string">concourse-brain/tasks/get-sermver.yaml</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo-tag/tag</span></span><br><span class="line">    <span class="string">***</span></span><br></pre></td></tr></table></figure>
-<p><code>git-repo-tag/tag</code>该文件记录了task执行后捕获到的SemVer</p>
-<p><strong>get-sermver.yaml 部分task配置</strong><br><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">platform:</span> <span class="string">linux</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">run:</span></span><br><span class="line"><span class="attr">  path:</span> <span class="string">/bin/sh</span></span><br><span class="line"><span class="attr">  args:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="bullet">-c</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">|</span></span><br><span class="line"><span class="string">    cd git-repo</span></span><br><span class="line"><span class="string">    last_tag=$(git describe --tags $(git rev-list --tags --max-count=1))</span></span><br><span class="line"><span class="string">    echo $&#123;last_tag&#125; &gt; last_tag</span></span><br><span class="line"><span class="string">    res=$(perl -nle'print $&amp; while m&#123;REGEX&#125;g' last_tag)</span></span><br><span class="line"><span class="string">    if [ ! -n "$res" ] ;then echo $&#123;last_tag&#125; &gt; ../outputs-file/tag; else echo $&#123;res&#125; &gt; ../git-repo-tag/tag ;fi</span></span><br></pre></td></tr></table></figure></p>
-<p>主要是将tag进行正则匹配，写入git-repo-tag/tag，供docker-image resource读取。</p>
-<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
-<li>一般alpine，busybox等镜像没有pcre库，也就是grep无法支持perl模式-P，导致一些正则无法正常匹配。</li>
-<li>安装pcre产生的镜像空间远大于安装perl，可以直接采用perl的方式来解决上述问题。具体语法为<code>perl -nle&#39;print $&amp; while m{REGEX}g&#39; file</code></li>
-</ol>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>concourse</tag>
       </tags>
   </entry>
   <entry>
@@ -1039,6 +992,53 @@
       </tags>
   </entry>
   <entry>
+    <title>concourse食用指北02-镜像构建</title>
+    <url>/2020/10/19/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9702-%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
+<li>根据仓库的dockerfile，自动构建镜像，并且推送到镜像仓库</li>
+</ol>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><ol>
+<li>镜像构建可以使用<a href="https://github.com/concourse/docker-image-resource" target="_blank" rel="noopener">docker-image-resource</a></li>
+</ol>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>拉取dockerfile代码仓库</li>
+<li>构建镜像</li>
+<li>推送到镜像仓库</li>
+</ol>
+<h3 id="第一版pipeline部分配置"><a href="#第一版pipeline部分配置" class="headerlink" title="第一版pipeline部分配置"></a>第一版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">gitlab</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    uri:</span> <span class="string">((repository.gitlab.url))/test.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.gitlab.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.gitlab.password))</span></span><br><span class="line"><span class="attr">    tag_filter:</span> <span class="string">"v*"</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">- name:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">docker-image</span></span><br><span class="line"><span class="attr">  icon:</span> <span class="string">docker</span></span><br><span class="line"><span class="attr">  source:</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="string">((repository.harbor.url))/test-image</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">((repository.harbor.username))</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">((repository.harbor.password))</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="attr">  serial:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line"><span class="attr">    - get:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">      trigger:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo/.git/ref</span></span><br></pre></td></tr></table></figure>
+<p><strong>简单说明</strong></p>
+<ol>
+<li>定义两个resource，一个为git类型，用于git仓库的操作；另外一个为docker-image类型，用于镜像构建以及镜像仓库的操作。</li>
+<li>jobs的put阶段，表示对dockerfile的构建，以及镜像仓库的推送。</li>
+<li>tag_file用于给定镜像的tag，这边使用.git/ref表示，git仓库用的哪个tag，则将该tag添加给镜像。</li>
+</ol>
+<h3 id="SemVer捕获"><a href="#SemVer捕获" class="headerlink" title="SemVer捕获"></a>SemVer捕获</h3><ol>
+<li>让镜像tag使用Semantic Versioning</li>
+<li>docker的镜像tag采用<a href="https://semver.org/" target="_blank" rel="noopener">SemVer</a>的方式，而代码仓库的tag未必完全遵循了SemVer。</li>
+</ol>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><ol>
+<li>开发协商代码仓库的tag使用规范。</li>
+<li>concourse编写task，用正则的方式捕获tag中SemVer部分。</li>
+<li>镜像构建的时候采用上步骤中捕获到的SemVer。</li>
+</ol>
+<h3 id="第二版pipeline部分配置"><a href="#第二版pipeline部分配置" class="headerlink" title="第二版pipeline部分配置"></a>第二版pipeline部分配置</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">publish</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">  plan:</span></span><br><span class="line"><span class="attr">  - do:</span></span><br><span class="line">    <span class="string">***</span></span><br><span class="line"><span class="attr">    - task:</span> <span class="string">get-servmer</span></span><br><span class="line"><span class="attr">      file:</span> <span class="string">concourse-brain/tasks/get-sermver.yaml</span></span><br><span class="line"><span class="attr">    - put:</span> <span class="string">test-image</span></span><br><span class="line"><span class="attr">      params:</span></span><br><span class="line"><span class="attr">        build:</span> <span class="string">git-repo</span></span><br><span class="line"><span class="attr">        tag_file:</span> <span class="string">git-repo-tag/tag</span></span><br><span class="line">    <span class="string">***</span></span><br></pre></td></tr></table></figure>
+<p><code>git-repo-tag/tag</code>该文件记录了task执行后捕获到的SemVer</p>
+<p><strong>get-sermver.yaml 部分task配置</strong><br><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">platform:</span> <span class="string">linux</span></span><br><span class="line"><span class="string">***</span></span><br><span class="line"><span class="attr">run:</span></span><br><span class="line"><span class="attr">  path:</span> <span class="string">/bin/sh</span></span><br><span class="line"><span class="attr">  args:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="bullet">-c</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">|</span></span><br><span class="line"><span class="string">    cd git-repo</span></span><br><span class="line"><span class="string">    last_tag=$(git describe --tags $(git rev-list --tags --max-count=1))</span></span><br><span class="line"><span class="string">    echo $&#123;last_tag&#125; &gt; last_tag</span></span><br><span class="line"><span class="string">    res=$(perl -nle'print $&amp; while m&#123;REGEX&#125;g' last_tag)</span></span><br><span class="line"><span class="string">    if [ ! -n "$res" ] ;then echo $&#123;last_tag&#125; &gt; ../outputs-file/tag; else echo $&#123;res&#125; &gt; ../git-repo-tag/tag ;fi</span></span><br></pre></td></tr></table></figure></p>
+<p>主要是将tag进行正则匹配，写入git-repo-tag/tag，供docker-image resource读取。</p>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
+<li>一般alpine，busybox等镜像没有pcre库，也就是grep无法支持perl模式-P，导致一些正则无法正常匹配。</li>
+<li>安装pcre产生的镜像空间远大于安装perl，可以直接采用perl的方式来解决上述问题。具体语法为<code>perl -nle&#39;print $&amp; while m{REGEX}g&#39; file</code></li>
+</ol>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>concourse</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>concourse食用指北03-HelmChart构建</title>
     <url>/2020/10/20/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9703-HelmChart%E6%9E%84%E5%BB%BA/</url>
     <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
@@ -1076,27 +1076,6 @@
 <h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
 <li>上述功能，可以自定义编写成自定义的resource，这样传入的变量可以进行更好的控制。</li>
 </ol>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>concourse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>concourse食用指北05-一些优化和技巧</title>
-    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
-    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
-<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
-<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
-<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
-<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
-<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
-<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
-<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
-<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
 ]]></content>
       <categories>
         <category>application</category>
@@ -1185,49 +1164,24 @@
       </tags>
   </entry>
   <entry>
-    <title>css居中-水平方向</title>
-    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
-    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
-<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
-<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
-<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
-</ul>
-<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-
-
-<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
-<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
-<li>如果不给width属性，则宽度填满父级元素空间。</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
-<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-<ul>
-<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
-</ul>
-<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
-
-
-
-
-<p>ref:</p>
-<blockquote>
-<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
-</blockquote>
+    <title>concourse食用指北05-一些优化和技巧</title>
+    <url>/2020/10/26/concourse%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8C%9705-%E4%B8%80%E4%BA%9B%E4%BC%98%E5%8C%96%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<h3 id="使用vscode编辑器"><a href="#使用vscode编辑器" class="headerlink" title="使用vscode编辑器"></a>使用vscode编辑器</h3><p>pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只根据官方文档列出来的去编写，可能会因为配置参数的缩进错误，放置层级的错误从而不断的修改，在没有完全上手的阶段，效率会比较底下。</p>
+<p>可以尝试使用vscode，vscode有专门针对concourse pipeline配置的扩展，使用后会自动层级对齐，补全，错误提示等功能，极大提升编写效率。</p>
+<p>直接在”扩展”里面搜索concourse ci pipeline editor, 安装完毕后，对于如下规则的yml文件就会默认启用插件功能。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**/*pipeline*.yml | **/pipeline/*.yml : activates support for editing pipelines</span><br><span class="line">**/tasks/*.yml | **/*task.yml : activates support for editing tasks.</span><br></pre></td></tr></table></figure></p>
+<h3 id="镜像的制作"><a href="#镜像的制作" class="headerlink" title="镜像的制作"></a>镜像的制作</h3><p>因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。</p>
+<h3 id="并行执行任务"><a href="#并行执行任务" class="headerlink" title="并行执行任务"></a>并行执行任务</h3><p>一些例如get获取镜像，代码等独立任务如果可以并行执行，则进行并行执行，这样可以提升效率。而且并行执行的编写也非常简单，只需要将任务定义在parallel同一层级下面即可。</p>
+<h3 id="添加一些重试机制"><a href="#添加一些重试机制" class="headerlink" title="添加一些重试机制"></a>添加一些重试机制</h3><p>拉取镜像也好，推送镜像也好，难免会因为网络的问题导致任务失败，concourse pipeline配置里面可以添加<code>attempt</code>参数，指定重试次数，当失败的时候，则自动进行重试。</p>
+<h3 id="设置超时"><a href="#设置超时" class="headerlink" title="设置超时"></a>设置超时</h3><p>防止一些job因特殊原因一直处于运行状态，比如资源不足从而编译打包镜像变得异常缓慢，此时可以对job设置<code>timeout</code>参数，预估一个大致能完成的时间，超过该时间，则直接job失败。</p>
+<h3 id="相同的task进行抽取"><a href="#相同的task进行抽取" class="headerlink" title="相同的task进行抽取"></a>相同的task进行抽取</h3><p>有些task执行的行为相似，可能只是部分参数不一样，或者<code>input</code>，<code>output</code>不同，那么可以将这样的task单独抽取出来，使用file关键字对task的单独文件进行引入，然后将不一样的部分，使用<code>params</code>配置项上下文定义变量。就可以进行复用了，精简了配置。</p>
+<h3 id="将一些统一的配置进行抽取"><a href="#将一些统一的配置进行抽取" class="headerlink" title="将一些统一的配置进行抽取"></a>将一些统一的配置进行抽取</h3><p>在set-pipeline阶段，可以将一些公共配置参数进行抽取，放到一个独立的文件内，使用<code>var_files</code>配置参数就能实现，比如远端服务器地址，repo的域名等，将这些配置提取的好处是，如果将来有一天进行修改，则不需要对每个pipeline进行修改，只需要修改一个文件即可。</p>
 ]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
       <tags>
-        <tag>css</tag>
-        <tag>html</tag>
+        <tag>linux</tag>
+        <tag>concourse</tag>
       </tags>
   </entry>
   <entry>
@@ -1430,6 +1384,52 @@
 ]]></content>
       <tags>
         <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>css居中-水平方向</title>
+    <url>/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/</url>
+    <content><![CDATA[<p><a href="https://kirakirazone.com/2020/03/18/css居中-垂直方向/">查看如何垂直居中</a></p>
+<h2 id="行级元素-inline-inline-类型-水平居中"><a href="#行级元素-inline-inline-类型-水平居中" class="headerlink" title="行级元素(inline inline-*类型)水平居中"></a>行级元素(inline inline-*类型)水平居中</h2><ul>
+<li>只需要将需要水平居中的行级元素包裹在<strong>父级块级</strong>元素内，对父级元素设置<code>text-align: center;</code>属性即可。</li>
+<li>对<strong>inline, inline-block, inline-table, inline-flex</strong>等属性都适用。</li>
+</ul>
+<p></p><p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements"><br>  <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK" target="_blank" rel="noopener"><br>  Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>)<br>  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span><br></p><p></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<h2 id="一个块级元素水平居中"><a href="#一个块级元素水平居中" class="headerlink" title="一个块级元素水平居中"></a>一个块级元素水平居中</h2><ul>
+<li>给该块级元素width属性，并且设置margin-left和margin-right皆为auto即可。</li>
+<li>如果不给width属性，则宽度填满父级元素空间。</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Single Block Level Element" src="https://codepen.io/huangyisan/embed/yLNKQMv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/yLNKQMv" target="_blank" rel="noopener">Centering Single Block Level Element</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<h2 id="多个块级元素水平居中"><a href="#多个块级元素水平居中" class="headerlink" title="多个块级元素水平居中"></a>多个块级元素水平居中</h2><ul>
+<li><strong>方法一：</strong> 若干块级元素在同一行居中，可以给这些块级元素设定相同的display属性(但并不是每个display的属性都适合水平居中)，比如给定<code>inline-block</code>属性</li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+<ul>
+<li><strong>方法二：</strong>也可以给这些块级元素采用flex布局，也就是给其<strong>父级元素</strong>添加<code>display: flex;</code>，然后再给<code>justify-content: center;</code></li>
+</ul>
+<iframe height="265" style="width: 100%;" scrolling="no" title="Centering Row of Blocks" src="https://codepen.io/huangyisan/embed/qBdoLwj?height=265&theme-id=dark&default-tab=html,result" frameborder="no" allowtransparency="true" allowfullscreen="true"><br>  See the Pen <a href="https://codepen.io/huangyisan/pen/qBdoLwj" target="_blank" rel="noopener">Centering Row of Blocks</a> by huangyisan<br>  (<a href="https://codepen.io/huangyisan" target="_blank" rel="noopener">@huangyisan</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.<br></iframe>
+
+
+
+
+<p>ref:</p>
+<blockquote>
+<p><a href="https://css-tricks.com/centering-css-complete-guide/" target="_blank" rel="noopener">https://css-tricks.com/centering-css-complete-guide/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>css</tag>
+        <tag>html</tag>
       </tags>
   </entry>
   <entry>
@@ -1653,6 +1653,36 @@
       <tags>
         <tag>linux</tag>
         <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go无缓存channel出现deadlock</title>
+    <url>/2020/12/17/go%E6%97%A0%E7%BC%93%E5%AD%98channel%E5%87%BA%E7%8E%B0deadlock/</url>
+    <content><![CDATA[<h2 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h2><figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    chanStr := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">    chanStr &lt;<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    a := &lt;- chanStr</span><br><span class="line">    fmt.Println(a)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>创建一个无缓存channel chanStr</li>
+<li>往chanStr放入int类型1</li>
+<li>从chanStr读取内容至变量a</li>
+<li>打印变量a</li>
+</ol>
+<p>看着没有什么问题，逻辑也很正确，<strong>但结果发生了报错</strong></p>
+<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br><span class="line"></span><br><span class="line">goroutine <span class="number">1</span> [<span class="keyword">chan</span> send]:</span><br><span class="line">main.main()</span><br></pre></td></tr></table></figure>
+<h2 id="产生报错的原因"><a href="#产生报错的原因" class="headerlink" title="产生报错的原因"></a>产生报错的原因</h2><p><a href="https://golang.org/doc/effective_go.html#channels" target="_blank" rel="noopener">官方</a>在这边说明了：</p>
+<ol>
+<li>Receivers always block until there is data to receive. (直到channel内存在数据，消费端才会解除block状态)</li>
+<li>If the channel is unbuffered, the sender blocks until the receiver has received the value.(如果是无buff的channel，直到消费者消费了数据，发送者才会解除block状态)</li>
+<li>If the channel has a buffer, the sender blocks only until the value has been copied to the buffer.(如果是有buff的channel，那么在发送者发送数据到channel之前是block状态)</li>
+<li>if the buffer is full, this means waiting until some receiver has retrieved a value.(如果buff满了，则当消费者消费数据之前，会一直等待)</li>
+</ol>
+<p>产生的问题是第二点，main本身就是个goroutine，所以执行到<code>chanStr &lt;-1</code>因为没有对应的消费者消费数据，所以被block，下面的代码也就无法执行，导致deadlock错误。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>将<code>a := &lt;- chanStr</code>单独作为一个goroutine，这样就存在两个goroutine，一个main，还有一个是匿名函数，接受者和发送者在不同goroutine上，就不会出现deadlock了。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	chanStr := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		chanStr &lt;- <span class="number">1</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	a := &lt;- chanStr</span><br><span class="line">	fmt.Println(a)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>golang</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -1923,6 +1953,59 @@
       </tags>
   </entry>
   <entry>
+    <title>k8s拉取私有镜像</title>
+    <url>/2020/08/06/k8s%E6%8B%89%E5%8F%96%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><h2 id="生产遇到的问题"><a href="#生产遇到的问题" class="headerlink" title="生产遇到的问题"></a>生产遇到的问题</h2><p>k8s环境在一个阿里账号下，但阿里镜像仓库在另外的一个阿里账号下。</p>
+<p>在k8s环境中部署服务的时候，发现镜像拉取失败，使用<code>kubectl describe pod xxx</code>在event字段发现如下报错：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type     Reason     Age                From                Message</span><br><span class="line">  ----     ------     ----               ----                -------</span><br><span class="line">  Normal   Scheduled  &lt;unknown&gt;          default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ErrImagePull</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Failed to pull image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": rpc error: code = Unknown desc = failed to pull and unpack image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": failed to resolve reference "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ImagePullBackOff</span><br></pre></td></tr></table></figure>
+<p>报错信息表明了镜像不存在，或者需要认证后才能拉取。</p>
+<p>然后上阿里云控制台检查了下，发现仓库是私有类型，当时改成了公有类型，的确可以拉取镜像了。</p>
+<p><strong>但是如果镜像是根据公司业务定制化，包含了公司敏感信息，那么此时就不适合作为公有类型了</strong>。</p>
+<h2 id="两种方法解决拉取私有镜像的问题"><a href="#两种方法解决拉取私有镜像的问题" class="headerlink" title="两种方法解决拉取私有镜像的问题"></a>两种方法解决拉取私有镜像的问题</h2><h3 id="方法一：通过Docker-credentials创建K8S-Secret资源"><a href="#方法一：通过Docker-credentials创建K8S-Secret资源" class="headerlink" title="方法一：通过Docker credentials创建K8S Secret资源"></a>方法一：通过Docker credentials创建K8S Secret资源</h3><ol>
+<li><p>使用docker login ${registry-addr}。</p>
+</li>
+<li><p>输入用户名和密码。</p>
+</li>
+<li><p>认证通过后docker会把认证信息以明文的方式默认存放到<code>/root/.docker/config.json</code>文件内。<strong>该文件存放了所有认证通过的镜像仓库，并且使用base64编码了用户名和密码，所以如果要查看用户名和密码，只需要base64 decode即可。</strong></p>
+</li>
+<li><p>使用一下命令就可以在k8s的secret资源中添加一条记录了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic $&#123;secret-name&#125; \</span><br><span class="line">    --from-file=.dockerconfigjson=&lt;path/to/.docker/config.json&gt; \</span><br><span class="line">    --type=kubernetes.io/dockerconfigjson</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="方法二：使用命令行的方式添加K8S-Secret资源"><a href="#方法二：使用命令行的方式添加K8S-Secret资源" class="headerlink" title="方法二：使用命令行的方式添加K8S Secret资源"></a>方法二：使用命令行的方式添加K8S Secret资源</h2><ol>
+<li><p>使用如下命令就可以在k8s的secret资源中添加一条记录了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret docker-registry regcred --docker-server=&lt;your-registry-server&gt; --docker-username=&lt;your-name&gt; --docker-password=&lt;your-pword&gt; --docker-email=&lt;your-email&gt;</span><br></pre></td></tr></table></figure>
+<p>其中your-email可以任意填写</p>
+</li>
+</ol>
+<h2 id="验证镜像拉取"><a href="#验证镜像拉取" class="headerlink" title="验证镜像拉取"></a>验证镜像拉取</h2><ol>
+<li><p>修改yaml文件，添加imagePullSecrets字段，使用name: ${secret-name}来指定使用哪个secret资源。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    env: test</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest</span><br><span class="line">    imagePullPolicy: Always</span><br><span class="line">  imagePullSecrets:</span><br><span class="line">  - name: ali-hys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除pod后重新部署，查看event字段发现已经可以正常拉取了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type    Reason     Age        From                Message</span><br><span class="line">  ----    ------     ----       ----                -------</span><br><span class="line">  Normal  Scheduled  &lt;unknown&gt;  default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Normal  Pulling    6s         kubelet, k3s-node2  Pulling image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Pulled     6s         kubelet, k3s-node2  Successfully pulled image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Created    6s         kubelet, k3s-node2  Created container nginx</span><br><span class="line">  Normal  Started    5s         kubelet, k3s-node2  Started container nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="查看secret资源"><a href="#查看secret资源" class="headerlink" title="查看secret资源"></a>查看secret资源</h2><ol>
+<li><p>kubectl get secret -n \&lt;namespace></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@test ~/k8s] # kubectl get secret</span><br><span class="line">NAME                                 TYPE                                  DATA   AGE</span><br><span class="line">default-token-jktlx                  kubernetes.io/service-account-token   3      48d</span><br><span class="line">my-release-ingress-nginx-admission   Opaque                                3      26h</span><br><span class="line">ali-hys                              kubernetes.io/dockerconfigjson        1      55m</span><br><span class="line">ali-json                             kubernetes.io/dockerconfigjson        1      31m</span><br><span class="line">You have new mail in /var/spool/mail/root</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>通过get指定的secret名称，-o yaml导出，其实也可以看到base64编码后的信息，只要decode就能看到明文</strong></p>
+</li>
+</ol>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mysql字符集字符序</title>
     <url>/2019/01/10/mysql%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AD%97%E7%AC%A6%E5%BA%8F/</url>
     <content><![CDATA[<p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
@@ -2004,59 +2087,6 @@
 ]]></content>
       <tags>
         <tag>mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>k8s拉取私有镜像</title>
-    <url>/2020/08/06/k8s%E6%8B%89%E5%8F%96%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h1 id="部署流程图"><a href="#部署流程图" class="headerlink" title="部署流程图"></a>部署流程图</h1><h2 id="生产遇到的问题"><a href="#生产遇到的问题" class="headerlink" title="生产遇到的问题"></a>生产遇到的问题</h2><p>k8s环境在一个阿里账号下，但阿里镜像仓库在另外的一个阿里账号下。</p>
-<p>在k8s环境中部署服务的时候，发现镜像拉取失败，使用<code>kubectl describe pod xxx</code>在event字段发现如下报错：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type     Reason     Age                From                Message</span><br><span class="line">  ----     ------     ----               ----                -------</span><br><span class="line">  Normal   Scheduled  &lt;unknown&gt;          default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ErrImagePull</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Failed to pull image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": rpc error: code = Unknown desc = failed to pull and unpack image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": failed to resolve reference "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed</span><br><span class="line">  Warning  Failed     59s                kubelet, k3s-node2  Error: ImagePullBackOff</span><br></pre></td></tr></table></figure>
-<p>报错信息表明了镜像不存在，或者需要认证后才能拉取。</p>
-<p>然后上阿里云控制台检查了下，发现仓库是私有类型，当时改成了公有类型，的确可以拉取镜像了。</p>
-<p><strong>但是如果镜像是根据公司业务定制化，包含了公司敏感信息，那么此时就不适合作为公有类型了</strong>。</p>
-<h2 id="两种方法解决拉取私有镜像的问题"><a href="#两种方法解决拉取私有镜像的问题" class="headerlink" title="两种方法解决拉取私有镜像的问题"></a>两种方法解决拉取私有镜像的问题</h2><h3 id="方法一：通过Docker-credentials创建K8S-Secret资源"><a href="#方法一：通过Docker-credentials创建K8S-Secret资源" class="headerlink" title="方法一：通过Docker credentials创建K8S Secret资源"></a>方法一：通过Docker credentials创建K8S Secret资源</h3><ol>
-<li><p>使用docker login ${registry-addr}。</p>
-</li>
-<li><p>输入用户名和密码。</p>
-</li>
-<li><p>认证通过后docker会把认证信息以明文的方式默认存放到<code>/root/.docker/config.json</code>文件内。<strong>该文件存放了所有认证通过的镜像仓库，并且使用base64编码了用户名和密码，所以如果要查看用户名和密码，只需要base64 decode即可。</strong></p>
-</li>
-<li><p>使用一下命令就可以在k8s的secret资源中添加一条记录了。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic $&#123;secret-name&#125; \</span><br><span class="line">    --from-file=.dockerconfigjson=&lt;path/to/.docker/config.json&gt; \</span><br><span class="line">    --type=kubernetes.io/dockerconfigjson</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="方法二：使用命令行的方式添加K8S-Secret资源"><a href="#方法二：使用命令行的方式添加K8S-Secret资源" class="headerlink" title="方法二：使用命令行的方式添加K8S Secret资源"></a>方法二：使用命令行的方式添加K8S Secret资源</h2><ol>
-<li><p>使用如下命令就可以在k8s的secret资源中添加一条记录了。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret docker-registry regcred --docker-server=&lt;your-registry-server&gt; --docker-username=&lt;your-name&gt; --docker-password=&lt;your-pword&gt; --docker-email=&lt;your-email&gt;</span><br></pre></td></tr></table></figure>
-<p>其中your-email可以任意填写</p>
-</li>
-</ol>
-<h2 id="验证镜像拉取"><a href="#验证镜像拉取" class="headerlink" title="验证镜像拉取"></a>验证镜像拉取</h2><ol>
-<li><p>修改yaml文件，添加imagePullSecrets字段，使用name: ${secret-name}来指定使用哪个secret资源。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    env: test</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest</span><br><span class="line">    imagePullPolicy: Always</span><br><span class="line">  imagePullSecrets:</span><br><span class="line">  - name: ali-hys</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除pod后重新部署，查看event字段发现已经可以正常拉取了。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Events:</span><br><span class="line">  Type    Reason     Age        From                Message</span><br><span class="line">  ----    ------     ----       ----                -------</span><br><span class="line">  Normal  Scheduled  &lt;unknown&gt;  default-scheduler   Successfully assigned default/nginx to k3s-node2</span><br><span class="line">  Normal  Pulling    6s         kubelet, k3s-node2  Pulling image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Pulled     6s         kubelet, k3s-node2  Successfully pulled image "registry.cn-shanghai.aliyuncs.com/huangyisan/nginx:latest"</span><br><span class="line">  Normal  Created    6s         kubelet, k3s-node2  Created container nginx</span><br><span class="line">  Normal  Started    5s         kubelet, k3s-node2  Started container nginx</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="查看secret资源"><a href="#查看secret资源" class="headerlink" title="查看secret资源"></a>查看secret资源</h2><ol>
-<li><p>kubectl get secret -n \&lt;namespace></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@test ~/k8s] # kubectl get secret</span><br><span class="line">NAME                                 TYPE                                  DATA   AGE</span><br><span class="line">default-token-jktlx                  kubernetes.io/service-account-token   3      48d</span><br><span class="line">my-release-ingress-nginx-admission   Opaque                                3      26h</span><br><span class="line">ali-hys                              kubernetes.io/dockerconfigjson        1      55m</span><br><span class="line">ali-json                             kubernetes.io/dockerconfigjson        1      31m</span><br><span class="line">You have new mail in /var/spool/mail/root</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>通过get指定的secret名称，-o yaml导出，其实也可以看到base64编码后的信息，只要decode就能看到明文</strong></p>
-</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -2166,39 +2196,6 @@
       </tags>
   </entry>
   <entry>
-    <title>python增删可迭代对象</title>
-    <url>/2019/03/08/python%E5%A2%9E%E5%88%A0%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
-<li>直接迭代对象删除列表中所有的数字4。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in w:</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 4, 5, 6]</span><br></pre></td></tr></table></figure>
-<p>输出结果中，并没有删除所有的数字4。</p>
-<ul>
-<li>使用len()方式删除列表中所有的数字4。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in range(len(w)):</span><br><span class="line">    if w[i] == 4:</span><br><span class="line">        w.remove(w[i])</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">IndexError: list index out of range</span><br></pre></td></tr></table></figure>
-<p>出现<code>IndexError</code>错误。</p>
-<h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><ul>
-<li><p>第一种是因为数组长度变小，迭代时候，指向出现了偏差，使用调试模式就能发现，当删除第一个”4”后，指针指向了第二个4，然后从第二个4开始迭代，此时跳过了第二个4的存在。</p>
-</li>
-<li><p>第二种是因为数组长度变小了，但len()记录的长度没变，所以导致了后面迭代的时候out of index。</p>
-</li>
-</ul>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p><strong>如果能保证迭代的时候的对象不会因为原对象的改变而改变，就可以解决，也就是说对原对象进行copy，而不是引用。</strong></p>
-<p>列举两种处理方法：</p>
-<ol>
-<li><p>使用[:]的方式</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in w[:]:</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用deepcopy的方式</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import copy</span><br><span class="line"></span><br><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line"></span><br><span class="line">for i in copy.deepcopy(w):</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure></li>
-</ol>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>prometheus曲线救国添加hostname</title>
     <url>/2019/03/07/prometheus%E6%B7%BB%E5%8A%A0hostname/</url>
     <content><![CDATA[<h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><ol>
@@ -2269,6 +2266,39 @@
       </tags>
   </entry>
   <entry>
+    <title>python增删可迭代对象</title>
+    <url>/2019/03/08/python%E5%A2%9E%E5%88%A0%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
+<li>直接迭代对象删除列表中所有的数字4。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in w:</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 4, 5, 6]</span><br></pre></td></tr></table></figure>
+<p>输出结果中，并没有删除所有的数字4。</p>
+<ul>
+<li>使用len()方式删除列表中所有的数字4。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in range(len(w)):</span><br><span class="line">    if w[i] == 4:</span><br><span class="line">        w.remove(w[i])</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">IndexError: list index out of range</span><br></pre></td></tr></table></figure>
+<p>出现<code>IndexError</code>错误。</p>
+<h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><ul>
+<li><p>第一种是因为数组长度变小，迭代时候，指向出现了偏差，使用调试模式就能发现，当删除第一个”4”后，指针指向了第二个4，然后从第二个4开始迭代，此时跳过了第二个4的存在。</p>
+</li>
+<li><p>第二种是因为数组长度变小了，但len()记录的长度没变，所以导致了后面迭代的时候out of index。</p>
+</li>
+</ul>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p><strong>如果能保证迭代的时候的对象不会因为原对象的改变而改变，就可以解决，也就是说对原对象进行copy，而不是引用。</strong></p>
+<p>列举两种处理方法：</p>
+<ol>
+<li><p>使用[:]的方式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line">for i in w[:]:</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用deepcopy的方式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import copy</span><br><span class="line"></span><br><span class="line">w = [1,2,3,4,4,5,6]</span><br><span class="line"></span><br><span class="line">for i in copy.deepcopy(w):</span><br><span class="line">    if i == 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sed的一些操作</title>
     <url>/2019/02/27/sed%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h2 id="原始文件redis-conf内容："><a href="#原始文件redis-conf内容：" class="headerlink" title="原始文件redis.conf内容："></a>原始文件redis.conf内容：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key =&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type =&gt; &quot;list&quot;</span><br><span class="line">    codec =&gt; &quot;json&quot;</span><br><span class="line">    type =&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags =&gt; [&quot;logstashdemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2330,40 +2360,6 @@
       </tags>
   </entry>
   <entry>
-    <title>split函数</title>
-    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
-<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
-<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
-<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
-<p>然后手工验证了下两者的情况：</p>
-<ul>
-<li><p>split(“ “)的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>split()的情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查了下split()的用法</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
-<ol>
-<li>以任何whitespace字符串作为分隔符。</li>
-<li>除所有的empty string。</li>
-</ol>
-<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>python3</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>sort函数中key的理解</title>
     <url>/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
@@ -2391,6 +2387,40 @@
 <p>refer:</p>
 <blockquote>
 <p><a href="http://python.jobbole.com/85025/" target="_blank" rel="noopener">http://python.jobbole.com/85025/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>split函数</title>
+    <url>/2018/12/29/split%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
+<p>示例:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure></p>
+<p>写出的其中一种答案是：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist = s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist == []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure></p>
+<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
+<p>然后手工验证了下两者的情况：</p>
+<ul>
+<li><p>split(“ “)的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&apos;&apos;, &apos;a&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>split()的情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&apos;a&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查了下split()的用法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>也就是说，如果sep不填写，那么split()执行两个行为：</strong></p>
+<ol>
+<li>以任何whitespace字符串作为分隔符。</li>
+<li>除所有的empty string。</li>
+</ol>
+<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://leetcode-cn.com/problems/length-of-last-word/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
 </blockquote>
 ]]></content>
       <tags>
@@ -2505,6 +2535,80 @@
       <tags>
         <tag>linux</tag>
         <tag>network</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二叉树种类和遍历</title>
+    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
+    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
+<ol>
+<li>rooted binary tree<ul>
+<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
+</ul>
+</li>
+<li>full binary tree<ul>
+<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
+</ul>
+</li>
+<li>complete binary tree<ul>
+<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
+</ul>
+</li>
+<li>perfect binary tree<ul>
+<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
+</ul>
+</li>
+<li>infinite complete binary tree<ul>
+<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
+<li>我的理解就是无穷尽的rooted binray tree</li>
+</ul>
+</li>
+<li>balanced binary tree<ul>
+<li>左右子树高度差不超过1</li>
+<li>且左右子树各自均为平衡二叉树</li>
+</ul>
+</li>
+<li>degenerate tree<ul>
+<li>每个节点只包含一个子节点。</li>
+</ul>
+</li>
+</ol>
+<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
+<ul>
+<li>指先访问根，然后访问子树的遍历方式。</li>
+<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
+<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
+<ul>
+<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
+<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
+</ul>
+<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
+<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
+<ul>
+<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
+<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
+</ul>
+<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
+<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
+<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
+<ul>
+<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
+<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
+</ul>
+<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
+<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
+<p>refer</p>
+<blockquote>
+<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>python3</tag>
+        <tag>algorithm</tag>
       </tags>
   </entry>
   <entry>
@@ -3300,107 +3404,74 @@
       </tags>
   </entry>
   <entry>
-    <title>二叉树种类和遍历</title>
-    <url>/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
-<ol>
-<li>rooted binary tree<ul>
-<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
-</ul>
-</li>
-<li>full binary tree<ul>
-<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
-</ul>
-</li>
-<li>complete binary tree<ul>
-<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
-</ul>
-</li>
-<li>perfect binary tree<ul>
-<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
-</ul>
-</li>
-<li>infinite complete binary tree<ul>
-<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
-<li>我的理解就是无穷尽的rooted binray tree</li>
-</ul>
-</li>
-<li>balanced binary tree<ul>
-<li>左右子树高度差不超过1</li>
-<li>且左右子树各自均为平衡二叉树</li>
-</ul>
-</li>
-<li>degenerate tree<ul>
-<li>每个节点只包含一个子节点。</li>
-</ul>
-</li>
+    <title>kill -9 不起作用</title>
+    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
+<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
+<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
+<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
+<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
+<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
+<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
+<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
+<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
+<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
+<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
+<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
+<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
+<li>t 表示跟踪状态。比如用gdb调试进程。</li>
+<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
 </ol>
-<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"></p>
-<ul>
-<li>指先访问根，然后访问子树的遍历方式。</li>
-<li>顺序 <code>F, B, A, D, C, E, G, I, H.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node = node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node = node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root = BinTree(&apos;F&apos;)</span><br><span class="line">root.left = BinTree(&apos;B&apos;)</span><br><span class="line">root.right = BinTree(&apos;G&apos;)</span><br><span class="line">root.left.left = BinTree(&apos;A&apos;)</span><br><span class="line">root.left.right = BinTree(&apos;D&apos;)</span><br><span class="line">root.left.right.left = BinTree(&apos;C&apos;)</span><br><span class="line">root.left.right.right = BinTree(&apos;E&apos;)</span><br><span class="line">root.right.right = BinTree(&apos;I&apos;)</span><br><span class="line">root.right.right.left = BinTree(&apos;H&apos;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
-<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"></p>
-<ul>
-<li>指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。</li>
-<li>顺序 <code>A, B, C, D, E, F, G, H, I.</code></li>
-</ul>
-<p>堆栈代码实现:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    node = root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node = node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node = stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node = node.right</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
-<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"></p>
-<ul>
-<li>指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。</li>
-<li>顺序 <code>A, C, E, D, B, H, I, G, F.</code></li>
-</ul>
-<p>堆栈代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 = []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br></pre></td></tr></table></figure></p>
-<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
-<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"></p>
-<ul>
-<li>广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。</li>
-<li>顺序 <code>F, B, G, A, D, I, C, E, H.</code></li>
-</ul>
-<p>队列代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node = myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure></p>
-<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
-<p>refer</p>
+<p>refer:</p>
 <blockquote>
-<p><a href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/" target="_blank" rel="noopener">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86" target="_blank" rel="noopener">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
+<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
 </blockquote>
 ]]></content>
+      <categories>
+        <category>system</category>
+      </categories>
       <tags>
-        <tag>python3</tag>
-        <tag>algorithm</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
-    <title>go无缓存channel出现deadlock</title>
-    <url>/2020/12/17/go%E6%97%A0%E7%BC%93%E5%AD%98channel%E5%87%BA%E7%8E%B0deadlock/</url>
-    <content><![CDATA[<h2 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h2><figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    chanStr := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">    chanStr &lt;<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    a := &lt;- chanStr</span><br><span class="line">    fmt.Println(a)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>创建一个无缓存channel chanStr</li>
-<li>往chanStr放入int类型1</li>
-<li>从chanStr读取内容至变量a</li>
-<li>打印变量a</li>
+    <title>k8s配置多集群接入</title>
+    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
+<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
+<ul>
+<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
+</li>
+<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
+</li>
+<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
+</li>
+</ul>
+<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
+<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
+<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
+<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
+<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
+<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
 </ol>
-<p>看着没有什么问题，逻辑也很正确，<strong>但结果发生了报错</strong></p>
-<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br><span class="line"></span><br><span class="line">goroutine <span class="number">1</span> [<span class="keyword">chan</span> send]:</span><br><span class="line">main.main()</span><br></pre></td></tr></table></figure>
-<h2 id="产生报错的原因"><a href="#产生报错的原因" class="headerlink" title="产生报错的原因"></a>产生报错的原因</h2><p><a href="https://golang.org/doc/effective_go.html#channels" target="_blank" rel="noopener">官方</a>在这边说明了：</p>
-<ol>
-<li>Receivers always block until there is data to receive. (直到channel内存在数据，消费端才会解除block状态)</li>
-<li>If the channel is unbuffered, the sender blocks until the receiver has received the value.(如果是无buff的channel，直到消费者消费了数据，发送者才会解除block状态)</li>
-<li>If the channel has a buffer, the sender blocks only until the value has been copied to the buffer.(如果是有buff的channel，那么在发送者发送数据到channel之前是block状态)</li>
-<li>if the buffer is full, this means waiting until some receiver has retrieved a value.(如果buff满了，则当消费者消费数据之前，会一直等待)</li>
-</ol>
-<p>产生的问题是第二点，main本身就是个goroutine，所以执行到<code>chanStr &lt;-1</code>因为没有对应的消费者消费数据，所以被block，下面的代码也就无法执行，导致deadlock错误。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>将<code>a := &lt;- chanStr</code>单独作为一个goroutine，这样就存在两个goroutine，一个main，还有一个是匿名函数，接受者和发送者在不同goroutine上，就不会出现deadlock了。</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	chanStr := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		chanStr &lt;- <span class="number">1</span></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	a := &lt;- chanStr</span><br><span class="line">	fmt.Println(a)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
+<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
+<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
+<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>golang</category>
+        <category>application</category>
       </categories>
       <tags>
-        <tag>go</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -3443,77 +3514,6 @@
       <tags>
         <tag>linux</tag>
         <tag>cpu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>k8s配置多集群接入</title>
-    <url>/2020/07/24/k8s%E9%85%8D%E7%BD%AE%E5%A4%9A%E9%9B%86%E7%BE%A4%E6%8E%A5%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="情景和思路"><a href="#情景和思路" class="headerlink" title="情景和思路"></a>情景和思路</h1><p>当需要接入多个kubernetes集群的情况，如果使用--kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用<code>kubectl config use-context ${context_name}</code>命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。</p>
-<h1 id="配置文件路径"><a href="#配置文件路径" class="headerlink" title="配置文件路径"></a>配置文件路径</h1><p>配置文件一般名称为<code>config</code>，放置路径为<code>$HOME/.kube/</code>目录下。</p>
-<ul>
-<li><p><strong>cluster</strong>，定义cluster名称，认证信息等。</p>
-</li>
-<li><p><strong>users</strong>，定义users的名称，认证信息等。</p>
-</li>
-<li><p><strong>contexts</strong>，关联了cluster和user的信息。</p>
-</li>
-</ul>
-<h1 id="在原有集群上追加额外集群信息"><a href="#在原有集群上追加额外集群信息" class="headerlink" title="在原有集群上追加额外集群信息"></a>在原有集群上追加额外集群信息</h1><h3 id="原有配置信息"><a href="#原有配置信息" class="headerlink" title="原有配置信息"></a>原有配置信息</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="number">340933575320448663</span><span class="bullet">-c1d785b5c421249d798362081b10830a6</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br></pre></td></tr></table></figure>
-<h3 id="追加第二个集群的信息"><a href="#追加第二个集群的信息" class="headerlink" title="追加第二个集群的信息"></a>追加第二个集群的信息</h3><ol>
-<li>在<code>clusters</code>字段内定义了<code>name</code>字段，区分了两个不同的集群，一个是<code>k3s</code>，一个是<code>kubernetes</code>。</li>
-<li>在<code>users</code>字段内定义了两个user，一个是<code>340933575320448663</code>，一个是<code>default</code>。可以看出第一个user信息使用密钥方式登录；第二个使用用户名和密码登录</li>
-<li>通过<code>contexts</code>字段内可以看到将<code>cluster</code>和<code>name</code>进行了关联，<code>kubernetes</code>集群指定user采用<code>340933575320448663</code>上下文信息；<code>k3s</code>集群指定user使用<code>default</code>的上下文。</li>
-<li>还有一个独立的字段是<code>current-context</code>，表示当前配置文件采用哪个context，下面配置文件是使用的<code>k3s</code>，<strong>那么此时当使用命令<code>kubectl</code>操作集群的时候，是去连接k3s这个集群</strong>。</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">clusters:</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    certificate-authority-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server1.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">- cluster:</span></span><br><span class="line"><span class="attr">    insecure-skip-tls-verify:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">https://server2.com</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">contexts:</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">kubernetes</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">kubernetes</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">- context:</span></span><br><span class="line"><span class="attr">    cluster:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">    user:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">k3s</span> <span class="comment">#切换使用的context_name</span></span><br><span class="line"><span class="attr">current-context:</span> <span class="string">k3s</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Config</span></span><br><span class="line"><span class="attr">preferences:</span> <span class="string">&#123;&#125;</span></span><br><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"340933575320448663"</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    client-certificate-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">    client-key-data:</span> <span class="string">secret_info==</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  user:</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">da25a8668cd6b469df139351c74c9eda</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
-<h2 id="切换成另外一个集群"><a href="#切换成另外一个集群" class="headerlink" title="切换成另外一个集群"></a>切换成另外一个集群</h2><p>使用命令<code>kubectl config use-context ${context_name}</code></p>
-<p>比如当前我的context_name为k3s，要切换成配置中的kubernetes，则使用命令<code>kubectl config use-context kubernetes</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PS C:\Users\hysan\.kube&gt; kubectl config use-context kubernetes</span><br><span class="line">Switched to context "kubernetes".</span><br></pre></td></tr></table></figure>
-<p>此时使用kubectl命令，则连接到了kubernetes这个集群。</p>
-<h2 id="手动命令行进行配置三大件"><a href="#手动命令行进行配置三大件" class="headerlink" title="手动命令行进行配置三大件"></a>手动命令行进行配置三大件</h2><p>查看refer官方文档。</p>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>application</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kill -9 不起作用</title>
-    <url>/2019/02/02/kill-9%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>在公司压测，因为担心磁盘读写影响性能，所以磁盘通过nfs挂载。之后发现挂载内容无法进行读取，于是乎想重新挂载，<code>umount</code>命令下去，提示<code>Device is busy</code>，那就是铁定挂载目录或者文件被进程占用了，随之查询到了进程，打算用kill pid让进程暂停，但发现没有成功，随后用kill -9 pid强制暂停，但发现也没成功，进程pid一直存在，进程也未退出。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>谷歌查询了下，得到了一个准确的回答。原文见refer。</p>
-<p>kill不论发送任何信号，都是异步传递信号，内核传递信号给pid存在非常小的时间，但即便如此小的时间，也是需要进程腾出这么个时间点来接受，并处理，<strong>但如果进程当时处于阻止信号状态，那么发送过去的信号会被队列，等进程不在阻止信号后再传入，并且执行信号。</strong></p>
-<p>通常情况下，进程不会阻止信号，但是如果此时进程调用内核代码(系统调用)，而内核代码是可以阻止信号传入的。当中断系统调用会导致内核中某处形成错误的数据结构，或者内核一些不变量被违反的时候，内核代码会阻塞所有信号传入。<strong>所以，若出现bug或其他异常情况触发了无限期的系统调用阻塞，那么就无法传递kill发送的信号。</strong></p>
-<p>在系统调用中被阻塞的进程，一般称为不可中断进程，通过ps或者top，查看状态为D的进程，一般磁盘读写数据的时候是处于不可中断进程状态。</p>
-<p>一个典型的例子就是nfs挂载的情况，当server没有响应的时候，往往会一直处于不可中断情况。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂停server端和clinet端的nfs进程，重新挂载解决。</p>
-<h2 id="top-ps查看不可中断进程"><a href="#top-ps查看不可中断进程" class="headerlink" title="top ps查看不可中断进程"></a>top ps查看不可中断进程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -eo pid,ppid,stat,pri,uid</span><br></pre></td></tr></table></figure>
-<h2 id="进程状态常见标记符"><a href="#进程状态常见标记符" class="headerlink" title="进程状态常见标记符"></a>进程状态常见标记符</h2><ol>
-<li>R 表示进程正在Cpu的就绪队列中，正在运行或者<strong>正在等待运行。</strong></li>
-<li>D 是disk sleep缩写，也就是不可中断状态睡眠，一般表示进程正在和硬件交互，而交互过程不允许被其他进程或中断打断。</li>
-<li>Z 僵尸进程，实际上进程已经结束，但是父进程没有回收他的资源，比如进程描述符，pid等。</li>
-<li>S 是interruptible sleep缩写，表示可中断状态睡眠，表示进程因为等待某个事件而被挂起，当进程等到事件发生时，他会被唤醒进入R状态。</li>
-<li>I 是idle缩写，也是空闲状态，用在不可中断睡眠的内核线程上。前面的D是表示硬件交互导致的不可中断，但对某些内核线程来说，他们有可能实际上并没有任何负载，这边用Idle为了区分这种情况。<strong>D状态进程会导致平均负载升高，I状态的进程却不会。</strong></li>
-<li>T 表示stopped状态，表示进程处于暂停状态(十字符病毒，一般都先对进程stop，然后排查问题)，发送SIGSTP就可以让进程暂停，再发送SIGCONT信号，则恢复运行。</li>
-<li>t 表示跟踪状态。比如用gdb调试进程。</li>
-<li>X 表示Dead，进程已经消亡，所以在ps或者top里面无法看到。</li>
-</ol>
-<p>refer:</p>
-<blockquote>
-<p><a href="https://cis.temple.edu/~ingargio/cis307/readings/signals.html" target="_blank" rel="noopener">https://cis.temple.edu/~ingargio/cis307/readings/signals.html</a><br><a href="https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work</a><br><a href="https://www.cnblogs.com/my_life/articles/5630903.html" target="_blank" rel="noopener">https://www.cnblogs.com/my_life/articles/5630903.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>system</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
 </search>
