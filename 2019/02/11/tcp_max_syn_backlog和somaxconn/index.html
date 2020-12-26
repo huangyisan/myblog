@@ -1,132 +1,53 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
+<link rel="stylesheet" href="/css/main.css">
 
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="linux,network,">
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="kernel 3.10.0-693.2.2.el7.x86_64 两个队列tcp的建联存在两种状态  incomplete connection queue  未建联的队列 completed connection queue   已建联的队列   未建联的队列  客户端发出syn请求，并且已经达到服务端，服务端返回syn+ack,等待对端响应ack时候的队列。 这些套接口处于SYN_RCVD状态">
-<meta name="keywords" content="linux,network">
+  <meta name="description" content="kernel 3.10.0-693.2.2.el7.x86_64 两个队列tcp的建联存在两种状态  incomplete connection queue  未建联的队列 completed connection queue   已建联的队列   未建联的队列  客户端发出syn请求，并且已经达到服务端，服务端返回syn+ack,等待对端响应ack时候的队列。 这些套接口处于SYN_RCVD状态">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tcp_max_syn_backlog和net.core.somaxconn">
-<meta property="og:url" content="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog和somaxconn/index.html">
+<meta property="og:url" content="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/index.html">
 <meta property="og:site_name" content="Kirakirazone">
 <meta property="og:description" content="kernel 3.10.0-693.2.2.el7.x86_64 两个队列tcp的建联存在两种状态  incomplete connection queue  未建联的队列 completed connection queue   已建联的队列   未建联的队列  客户端发出syn请求，并且已经达到服务端，服务端返回syn+ack,等待对端响应ack时候的队列。 这些套接口处于SYN_RCVD状态">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g02g8ez0asj20uz0en0te.jpg">
-<meta property="og:updated_time" content="2020-12-25T05:41:47.236Z">
+<meta property="article:published_time" content="2019-02-11T05:22:38.000Z">
+<meta property="article:modified_time" content="2020-12-19T13:58:04.241Z">
+<meta property="article:author" content="Huangyisan">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="network">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tcp_max_syn_backlog和net.core.somaxconn">
-<meta name="twitter:description" content="kernel 3.10.0-693.2.2.el7.x86_64 两个队列tcp的建联存在两种状态  incomplete connection queue  未建联的队列 completed connection queue   已建联的队列   未建联的队列  客户端发出syn请求，并且已经达到服务端，服务端返回syn+ack,等待对端响应ack时候的队列。 这些套接口处于SYN_RCVD状态">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g02g8ez0asj20uz0en0te.jpg">
 
+<link rel="canonical" href="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '5.1.4',
-    sidebar: {"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
   };
 </script>
-
-
-
-  <link rel="canonical" href="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog和somaxconn/">
-
-
-
-
 
   <title>tcp_max_syn_backlog和net.core.somaxconn | Kirakirazone</title>
   
@@ -136,232 +57,199 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-right page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Kirakirazone</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Kirakirazone</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            Tags
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
-            
-            Categories
-          </a>
-        </li>
-      
-        
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            Search
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
 </nav>
 
 
 
- </div>
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/huangyisan" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog和somaxconn/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Huangyisan">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="PSN: hys15783167">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kirakirazone">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">tcp_max_syn_backlog和net.core.somaxconn</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          tcp_max_syn_backlog和net.core.somaxconn
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-11T13:22:38+08:00">
-                2019-02-11
-              </time>
-            
+              <span class="post-meta-item-text">Posted on</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <time title="Created: 2019-02-11 13:22:38" itemprop="dateCreated datePublished" datetime="2019-02-11T13:22:38+08:00">2019-02-11</time>
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/2019/02/11/tcp_max_syn_backlog和somaxconn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/11/tcp_max_syn_backlog和somaxconn/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
               </span>
-            
-          
 
           
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/11/tcp_max_syn_backlog和somaxconn/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <p><strong>kernel 3.10.0-693.2.2.el7.x86_64</strong></p>
@@ -385,15 +273,15 @@
 </li>
 </ul>
 <h2 id="listen-和accept-函数"><a href="#listen-和accept-函数" class="headerlink" title="listen()和accept()函数"></a>listen()和accept()函数</h2><p>三次握手图</p>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g02g8ez0asj20uz0en0te.jpg" alt></p>
+<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g02g8ez0asj20uz0en0te.jpg"></p>
 <p>一段python服务端网络编程代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line"></span><br><span class="line">s = socket.socket()</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">while True:</span><br><span class="line">    c, addr = s.accept()</span><br><span class="line">    print(&quot;conn addr : &quot;, addr)</span><br><span class="line">    c.send(&quot;hello word&quot;)</span><br><span class="line">    c.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line"></span><br><span class="line">s &#x3D; socket.socket()</span><br><span class="line">host &#x3D; &quot;0.0.0.0&quot;</span><br><span class="line">port &#x3D; 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG &#x3D; 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">while True:</span><br><span class="line">    c, addr &#x3D; s.accept()</span><br><span class="line">    print(&quot;conn addr : &quot;, addr)</span><br><span class="line">    c.send(&quot;hello word&quot;)</span><br><span class="line">    c.close()</span><br></pre></td></tr></table></figure>
 <p>上述代码listen()和accept()解释如下</p>
 <h1 id="listen-函数"><a href="#listen-函数" class="headerlink" title="listen()函数"></a>listen()函数</h1><p>listen()函数的主要作用就是将套接字(sockfd)变成被动的连接监听套接字(被动等待客户端的连接)。</p>
 <h1 id="accept-函数"><a href="#accept-函数" class="headerlink" title="accept()函数"></a>accept()函数</h1><p>从处于 completed connection queue状态的连接队列头部取出一个已经完成的连接，如这个队列没有已经完成的连接，accept()函数就会阻塞，直到取出队列中已完成的用户连接为止。</p>
 <p><strong>如果程序不调用accept()函数，那么连接socket一直滞留在completed connection queue队列里面，进而未被程序消费使用。</strong></p>
 <p>比如如下代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket()</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s &#x3D; socket.socket()</span><br><span class="line">host &#x3D; &quot;0.0.0.0&quot;</span><br><span class="line">port &#x3D; 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG &#x3D; 5</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&#39;listening&#39;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
 <h2 id="somaxconn"><a href="#somaxconn" class="headerlink" title="somaxconn"></a>somaxconn</h2><p>The behavior of the backlog argument on TCP sockets changed with Linux 2.2. Now it specifies the queue length for <strong>completely established</strong> sockets waiting to be accepted, instead of the number of incomplete connection requests. </p>
 <p>If the backlog argument is greater than the value in /proc/sys/net/core/somaxconn, then it is silently truncated to that value; the default value in this file is 128. In kernels before 2.4.25, this limit was a hard coded value, SOMAXCONN, with the value 128.</p>
 <ol>
@@ -401,10 +289,11 @@
 <li>若程序中定义的listen函数的backlog大于系统定义的，则以系统定义为准。</li>
 </ol>
 <h3 id="代码实践-somaxconn"><a href="#代码实践-somaxconn" class="headerlink" title="代码实践 somaxconn"></a>代码实践 somaxconn</h3><p>python的一个不含accept()的服务端代码，这样可以让socket滞留在completed connection queue队列里面。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 2</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
-<p>查看下系统somaxconn的值：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl -a | grep somaxconn</span><br><span class="line">net.core.somaxconn = 128</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s &#x3D; socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host &#x3D; &quot;0.0.0.0&quot;</span><br><span class="line">port &#x3D; 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG &#x3D; 2</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&#39;listening&#39;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
+<p>查看下系统somaxconn的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl -a | grep somaxconn</span><br><span class="line">net.core.somaxconn &#x3D; 128</span><br></pre></td></tr></table></figure>
 <p>启动进程，<strong>先不使用客户端进行连接</strong>，使用ss查看进程pid。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anpl | egrep &quot;10187|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      5         *:12345                 *:*                   users:((&quot;python3&quot;,pid=10187,fd=3))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anpl | egrep &quot;10187|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      5         *:12345                 *:*                   users:((&quot;python3&quot;,pid&#x3D;10187,fd&#x3D;3))</span><br></pre></td></tr></table></figure>
 <p>这里涉及到Recv-Q和Send-Q两个字段，这两个字段的含义和前面state字段为何种状态密不可分，解释如下</p>
 <ul>
 <li><p>Recv-Q</p>
@@ -422,21 +311,22 @@
 </ul>
 <p><strong>Send-Q 对应的值是5，这个值也就是代码中listen()中BACKLOG的值。</strong></p>
 <p>此时如果调整BACKLOG至256，重新启动进程，然后用ss查看信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host = &quot;0.0.0.0&quot;</span><br><span class="line">port = 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG = 256</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&apos;listening&apos;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      128       *:12345                 *:*                   users:((&quot;python3&quot;,pid=19593,fd=3))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">s &#x3D; socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">host &#x3D; &quot;0.0.0.0&quot;</span><br><span class="line">port &#x3D; 12345</span><br><span class="line">s.bind((host, port))</span><br><span class="line">BACKLOG &#x3D; 256</span><br><span class="line"></span><br><span class="line">s.listen(BACKLOG)</span><br><span class="line">print(&#39;listening&#39;)</span><br><span class="line">time.sleep(3600)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      128       *:12345                 *:*                   users:((&quot;python3&quot;,pid&#x3D;19593,fd&#x3D;3))</span><br></pre></td></tr></table></figure>
 <p>Send-Q被系统somaxcon限制为128，调整系统somaxcon的值后，重启进程，然后ss继续观察</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.core.somaxconn=65522</span><br><span class="line">net.core.somaxconn = 65522</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      256       *:12345                 *:*                   users:((&quot;python3&quot;,pid=19839,fd=3))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.core.somaxconn&#x3D;65522</span><br><span class="line">net.core.somaxconn &#x3D; 65522</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     0      256       *:12345                 *:*                   users:((&quot;python3&quot;,pid&#x3D;19839,fd&#x3D;3))</span><br></pre></td></tr></table></figure>
 <p>变成了程序代码里定义的BACKLOG值了。</p>
 <p><strong>让客户端进行建联</strong></p>
 <p>客户端代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line">host = &apos;122.152.220.151&apos;</span><br><span class="line">port = 12345</span><br><span class="line">sockets=[]</span><br><span class="line">while True:</span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect((host, port))</span><br><span class="line">    sockets.append(s)</span><br><span class="line">    time.sleep(10)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line">host &#x3D; &#39;122.152.220.151&#39;</span><br><span class="line">port &#x3D; 12345</span><br><span class="line">sockets&#x3D;[]</span><br><span class="line">while True:</span><br><span class="line">    s &#x3D; socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect((host, port))</span><br><span class="line">    sockets.append(s)</span><br><span class="line">    time.sleep(10)</span><br></pre></td></tr></table></figure>
 <p><strong>代码中BACKLOG修改为2</strong></p>
 <p>使用ss观察服务端</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     3      2         *:12345                 *:*                   users:((&quot;python3&quot;,pid=20361,fd=3))</span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35986              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36012              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              89.248.167.131:56380              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35994              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36002              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35972              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35952              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35960</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -anp |egrep &quot;12345|Recv-Q&quot;</span><br><span class="line">Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              </span><br><span class="line">tcp    LISTEN     3      2         *:12345                 *:*                   users:((&quot;python3&quot;,pid&#x3D;20361,fd&#x3D;3))</span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35986              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36012              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              89.248.167.131:56380              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:35994              </span><br><span class="line">tcp    SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:36002              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35972              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35952              </span><br><span class="line">tcp    ESTAB      0      0      10.105.31.91:12345              118.24.105.81:35960                          </span><br></pre></td></tr></table></figure>
 <p><strong>建联3个后(ESTAB),其他请求一直处于SYN-RECV状态。</strong></p>
 <p>Recv-Q为3，表示当前syn backlog为3 ,backlog+1的结果(2+1)。</p>
-<p>当BACKLOG满的时候，抓包情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# tcpdump -i any port 12345 -nnn &gt; 111</span><br><span class="line">[root@leanote ~]# cat 111 | grep  37182</span><br><span class="line">16:11:58.519076 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [S], seq 1450185841, win 29200, options [mss 1424,sackOK,TS val 3561765739 ecr 0,nop,wscale 7], length 0</span><br><span class="line">16:11:58.519145 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121876725 ecr 3561765739,nop,wscale 7], length 0</span><br><span class="line">16:11:58.578420 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561765798 ecr 3121876725], length 0</span><br><span class="line">16:11:59.853632 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121878060 ecr 3561765798,nop,wscale 7], length 0</span><br><span class="line">16:11:59.912872 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561767133 ecr 3121876725], length 0</span><br><span class="line">16:12:02.053621 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121880260 ecr 3561767133,nop,wscale 7], length 0</span><br><span class="line">16:12:02.112871 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561769333 ecr 3121876725], length 0</span><br><span class="line">16:12:06.253625 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121884460 ecr 3561769333,nop,wscale 7], length 0</span><br><span class="line">16:12:06.312908 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561773533 ecr 3121876725], length 0</span><br><span class="line">16:12:14.253636 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121892460 ecr 3561773533,nop,wscale 7], length 0</span><br><span class="line">16:12:14.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561781533 ecr 3121876725], length 0</span><br><span class="line">16:12:30.253631 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121908460 ecr 3561781533,nop,wscale 7], length 0</span><br><span class="line">16:12:30.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561797533 ecr 3121876725], length 0</span><br></pre></td></tr></table></figure></p>
+<p>当BACKLOG满的时候，抓包情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# tcpdump -i any port 12345 -nnn &gt; 111</span><br><span class="line">[root@leanote ~]# cat 111 | grep  37182</span><br><span class="line">16:11:58.519076 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [S], seq 1450185841, win 29200, options [mss 1424,sackOK,TS val 3561765739 ecr 0,nop,wscale 7], length 0</span><br><span class="line">16:11:58.519145 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121876725 ecr 3561765739,nop,wscale 7], length 0</span><br><span class="line">16:11:58.578420 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561765798 ecr 3121876725], length 0</span><br><span class="line">16:11:59.853632 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121878060 ecr 3561765798,nop,wscale 7], length 0</span><br><span class="line">16:11:59.912872 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561767133 ecr 3121876725], length 0</span><br><span class="line">16:12:02.053621 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121880260 ecr 3561767133,nop,wscale 7], length 0</span><br><span class="line">16:12:02.112871 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561769333 ecr 3121876725], length 0</span><br><span class="line">16:12:06.253625 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121884460 ecr 3561769333,nop,wscale 7], length 0</span><br><span class="line">16:12:06.312908 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561773533 ecr 3121876725], length 0</span><br><span class="line">16:12:14.253636 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121892460 ecr 3561773533,nop,wscale 7], length 0</span><br><span class="line">16:12:14.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561781533 ecr 3121876725], length 0</span><br><span class="line">16:12:30.253631 IP 10.105.31.91.12345 &gt; 118.24.105.81.37182: Flags [S.], seq 1044766216, ack 1450185842, win 28960, options [mss 1460,sackOK,TS val 3121908460 ecr 3561781533,nop,wscale 7], length 0</span><br><span class="line">16:12:30.312821 IP 118.24.105.81.37182 &gt; 10.105.31.91.12345: Flags [.], ack 1, win 229, options [nop,nop,TS val 3561797533 ecr 3121876725], length 0</span><br></pre></td></tr></table></figure>
 <p>对客户端一直发送syn+ack包。([S.]  S表示syn，.表示ack)<br>6次后，不再继续发送</p>
 <p>虽然服务端ESTAB状态只有3个，但是对客户端而言，存在多个</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_15_centos ~]# netstat -ant | grep 12345</span><br><span class="line">tcp        0      0 172.27.0.15:37326       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37410       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37312       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37242       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37232       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37360       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37266       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37442       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37458       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37468       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37214       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37392       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37282       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37292       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37182       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37174       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37222       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37370       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37400       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37430       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37206       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37418       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37342       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37352       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37252       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37384       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37334       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37274       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37450       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37300       122.152.220.151:12345   ESTABLISHED</span><br><span class="line">tcp        0      0 172.27.0.15:37192       122.152.220.151:12345   ESTABLISHED</span><br></pre></td></tr></table></figure>
@@ -448,13 +338,17 @@
 </ol>
 <p>###代码实践 tcp_max_syn_backlog</p>
 <p>查看下系统tcp_max_syn_backlog的值：<br>[root@leanote ~]# sysctl -a | grep tcp_max_syn_backlog<br>net.ipv4.tcp_max_syn_backlog = 128</p>
-<p>服务端ss查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# netstat -ant | grep 12345</span><br><span class="line">tcp        3      0 0.0.0.0:12345           0.0.0.0:*               LISTEN     </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37926     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37894     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37944     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37936     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37908     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37918     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37874     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37864     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37882     ESTABLISHED</span><br></pre></td></tr></table></figure></p>
+<p>服务端ss查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# netstat -ant | grep 12345</span><br><span class="line">tcp        3      0 0.0.0.0:12345           0.0.0.0:*               LISTEN     </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37926     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37894     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37944     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37936     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37908     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37918     SYN_RECV   </span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37874     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37864     ESTABLISHED</span><br><span class="line">tcp        0      0 10.105.31.91:12345      118.24.105.81:37882     ESTABLISHED</span><br></pre></td></tr></table></figure>
 <p>输出发现SYN_RECV状态状态很多，<strong>虽然连接处于SYN_RECV</strong>，一段时间后，自动删除，但是通过调整tcp_max_syn_backlog的值可以调整同一时间内SYN_RECV的数量。</p>
-<p>调整成为2个：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_max_syn_backlog=2</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 2</span><br></pre></td></tr></table></figure></p>
-<p>因为当syncookies功能开启的时候，tcp_max_syn_backlog不会发挥作用，所以syncookies也得暂停：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.tcp_syncookies = 0</span><br></pre></td></tr></table></figure></p>
-<p>客户端服务端重启，然后ss查看状态：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -ant | grep 12345</span><br><span class="line">LISTEN     3      2            *:12345                    *:*                  </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38456              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38470              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38398              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38280              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38264              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38272</span><br></pre></td></tr></table></figure></p>
+<p>调整成为2个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_max_syn_backlog&#x3D;2</span><br><span class="line">net.ipv4.tcp_max_syn_backlog &#x3D; 2</span><br></pre></td></tr></table></figure>
+<p>因为当syncookies功能开启的时候，tcp_max_syn_backlog不会发挥作用，所以syncookies也得暂停：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sysctl net.ipv4.tcp_syncookies&#x3D;0</span><br><span class="line">net.ipv4.tcp_syncookies &#x3D; 0</span><br></pre></td></tr></table></figure>
+<p>客户端服务端重启，然后ss查看状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# ss -ant | grep 12345</span><br><span class="line">LISTEN     3      2            *:12345                    *:*                  </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38456              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38470              </span><br><span class="line">SYN-RECV   0      0      10.105.31.91:12345              118.24.105.81:38398              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38280              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38264              </span><br><span class="line">ESTAB      0      0      10.105.31.91:12345              118.24.105.81:38272    </span><br></pre></td></tr></table></figure>
 <p>这个syn_backlog设定的是2，但观察SYN-RECV最多出现3个。可能也是syn_backlog+1。待考证。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# netstat -s | grep drop</span><br><span class="line">    20 dropped because of missing route</span><br><span class="line">    19 ICMP packets dropped because they were out-of-window</span><br><span class="line">    92307 SYNs to LISTEN sockets dropped</span><br><span class="line">    </span><br><span class="line">[root@leanote ~]# dmesg  | tail -n 10</span><br><span class="line">[3124021.575444] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124025.583391] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124033.599301] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124049.647044] TCP: drop open request from 118.24.105.81/38910</span><br><span class="line">[3124111.900356] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124112.902233] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124114.908171] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124118.916112] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124126.924020] TCP: drop open request from 118.24.105.81/38996</span><br><span class="line">[3124142.955770] TCP: drop open request from 118.24.105.81/38996</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# netstat -s | grep drop</span><br><span class="line">    20 dropped because of missing route</span><br><span class="line">    19 ICMP packets dropped because they were out-of-window</span><br><span class="line">    92307 SYNs to LISTEN sockets dropped</span><br><span class="line">    </span><br><span class="line">[root@leanote ~]# dmesg  | tail -n 10</span><br><span class="line">[3124021.575444] TCP: drop open request from 118.24.105.81&#x2F;38910</span><br><span class="line">[3124025.583391] TCP: drop open request from 118.24.105.81&#x2F;38910</span><br><span class="line">[3124033.599301] TCP: drop open request from 118.24.105.81&#x2F;38910</span><br><span class="line">[3124049.647044] TCP: drop open request from 118.24.105.81&#x2F;38910</span><br><span class="line">[3124111.900356] TCP: drop open request from 118.24.105.81&#x2F;38996</span><br><span class="line">[3124112.902233] TCP: drop open request from 118.24.105.81&#x2F;38996</span><br><span class="line">[3124114.908171] TCP: drop open request from 118.24.105.81&#x2F;38996</span><br><span class="line">[3124118.916112] TCP: drop open request from 118.24.105.81&#x2F;38996</span><br><span class="line">[3124126.924020] TCP: drop open request from 118.24.105.81&#x2F;38996</span><br><span class="line">[3124142.955770] TCP: drop open request from 118.24.105.81&#x2F;38996</span><br></pre></td></tr></table></figure>
 <p>服务器开始丢弃syn包，以及丢弃从客户端发送来的新连接。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li>tcp_max_syn_backlog用来定义未建联的SYN-RECV状态队列长度。但当启用syncookies功能的时候失效。</li>
@@ -463,346 +357,262 @@
 <p><strong>somaxconn在高并发下需要调整，默认128绝逼不够用。</strong></p>
 <p>refer</p>
 <blockquote>
-<p><a href="https://www.jianshu.com/p/30b861cac826" target="_blank" rel="noopener">https://www.jianshu.com/p/30b861cac826</a><br><a href="https://www.jianshu.com/p/7fde92785056" target="_blank" rel="noopener">https://www.jianshu.com/p/7fde92785056</a><br><a href="https://linux.die.net/man/2/listen" target="_blank" rel="noopener">https://linux.die.net/man/2/listen</a><br><a href="http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7" target="_blank" rel="noopener">http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7</a><br><a href="http://zake7749.github.io/2015/03/17/SocketProgramming/" target="_blank" rel="noopener">http://zake7749.github.io/2015/03/17/SocketProgramming/</a><br><a href="http://man7.org/linux/man-pages/man2/accept.2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/man2/accept.2.html</a><br><a href="https://blog.csdn.net/tennysonsky/article/details/45621341" target="_blank" rel="noopener">https://blog.csdn.net/tennysonsky/article/details/45621341</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/30b861cac826">https://www.jianshu.com/p/30b861cac826</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7fde92785056">https://www.jianshu.com/p/7fde92785056</a><br><a target="_blank" rel="noopener" href="https://linux.die.net/man/2/listen">https://linux.die.net/man/2/listen</a><br><a target="_blank" rel="noopener" href="http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7">http://www.agr.unideb.hu/~agocs/informatics/11_e_unix/unixhelp/unixhelp.ed.ac.uk/CGI/man-cgiaa65.html?tcp+7</a><br><a target="_blank" rel="noopener" href="http://zake7749.github.io/2015/03/17/SocketProgramming/">http://zake7749.github.io/2015/03/17/SocketProgramming/</a><br><a target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man2/accept.2.html">http://man7.org/linux/man-pages/man2/accept.2.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/tennysonsky/article/details/45621341">https://blog.csdn.net/tennysonsky/article/details/45621341</a></p>
 </blockquote>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    
+        <div class="reward-container">
   <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
   </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
         <p>WeChat Pay</p>
       </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangyisan Alipay">
         <p>Alipay</p>
       </div>
-    
-
-    
 
   </div>
 </div>
 
-      </div>
-    
+        
 
-    
-      <div>
-        <ul class="post-copyright">
+<div>
+<ul class="post-copyright">
   <li class="post-copyright-author">
-    <strong>Post author:</strong>
-    Huangyisan
+    <strong>Post author:  </strong>Huangyisan
   </li>
   <li class="post-copyright-link">
-    <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog和somaxconn/" title="tcp_max_syn_backlog和net.core.somaxconn">https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog和somaxconn/</a>
+    <strong>Post link: </strong>
+    <a href="https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/" title="tcp_max_syn_backlog和net.core.somaxconn">https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog和somaxconn/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>Copyright Notice: </strong>
-    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
   </li>
 </ul>
+</div>
 
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/network/" rel="tag"># network</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/05/linux%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD/" rel="prev" title="linux平均负载">
+      <i class="fa fa-chevron-left"></i> linux平均负载
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/" rel="next" title="二叉树种类和遍历">
+      二叉树种类和遍历 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
     
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/linux/" rel="tag"># linux</a>
-          
-            <a href="/tags/network/" rel="tag"># network</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/02/05/linux平均负载/" rel="next" title="linux平均负载">
-                <i class="fa fa-chevron-left"></i> linux平均负载
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/12/二叉树种类和遍历/" rel="prev" title="二叉树种类和遍历">
-                二叉树种类和遍历 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
 
 
           </div>
           
-
-
-          
-
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
     </div>
   </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Huangyisan</p>
-              <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">65</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
-                  <span class="site-state-item-name">categories</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
-                  <span class="site-state-item-name">tags</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-            <div class="links-of-author motion-element">
-                
-                  <span class="links-of-author-item">
-                    <a href="https://github.com/huangyisan" target="_blank" title="GitHub">
-                      
-                        <i class="fa fa-fw fa-github"></i></a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="mailto:anonymousyisan@gmail.com" target="_blank" title="E-Mail">
-                      
-                        <i class="fa fa-fw fa-envelope"></i></a>
-                  </span>
-                
-            </div>
-          
-
-          
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Links
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://mynotebook.readthedocs.io/en/latest/" title="readthedocs" target="_blank">readthedocs</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#两个队列"><span class="nav-number">1.</span> <span class="nav-text">两个队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listen-和accept-函数"><span class="nav-number">2.</span> <span class="nav-text">listen()和accept()函数</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#listen-函数"><span class="nav-number"></span> <span class="nav-text">listen()函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#accept-函数"><span class="nav-number"></span> <span class="nav-text">accept()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#somaxconn"><span class="nav-number">1.</span> <span class="nav-text">somaxconn</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实践-somaxconn"><span class="nav-number">1.1.</span> <span class="nav-text">代码实践 somaxconn</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcp-max-syn-backlog"><span class="nav-number">2.</span> <span class="nav-text">tcp_max_syn_backlog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></li></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-        <div class="back-to-top">
-          <i class="fa fa-arrow-up"></i>
-          
-        </div>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
-
-  
-</div>
-
-
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
-
-
-
-
-<div class="BbeiAn-info">
-   	浙ICP备 -
-    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784" rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
-</div>
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-
-    
-
-  </div>
-
   
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E9%98%9F%E5%88%97"><span class="nav-number">1.</span> <span class="nav-text">两个队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listen-%E5%92%8Caccept-%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">listen()和accept()函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#listen-%E5%87%BD%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">listen()函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#accept-%E5%87%BD%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">accept()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#somaxconn"><span class="nav-number">1.</span> <span class="nav-text">somaxconn</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E8%B7%B5-somaxconn"><span class="nav-number">1.1.</span> <span class="nav-text">代码实践 somaxconn</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcp-max-syn-backlog"><span class="nav-number">2.</span> <span class="nav-text">tcp_max_syn_backlog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Huangyisan</p>
+  <div class="site-description" itemprop="description">PSN: hys15783167</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:anonymousyisan@gmail.com" title="E-Mail → mailto:anonymousyisan@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mynotebook.readthedocs.io/en/latest/" title="https:&#x2F;&#x2F;mynotebook.readthedocs.io&#x2F;en&#x2F;latest&#x2F;" rel="noopener" target="_blank">readthedocs</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+</div>
+
+<div class="BbeiAn-info">
+    浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784"  rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
 
 
 
@@ -813,466 +623,38 @@
 
   
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
 
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog和somaxconn/';
-          this.page.identifier = '2019/02/11/tcp_max_syn_backlog和somaxconn/';
-          this.page.title = 'tcp_max_syn_backlog和net.core.somaxconn';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://kirakirazone.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kirakirazone.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://kirakirazone.com/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/";
+    this.page.identifier = "2019/02/11/tcp_max_syn_backlog和somaxconn/";
+    this.page.title = "tcp_max_syn_backlog和net.core.somaxconn";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
       });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kirakirazone.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
     }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
+  });
+</script>
 
 </body>
 </html>

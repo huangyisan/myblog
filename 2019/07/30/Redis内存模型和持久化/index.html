@@ -1,133 +1,53 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
+<link rel="stylesheet" href="/css/main.css">
 
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="linux,">
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="Redis内存模型Redis内存统计使用info memory进行统计 123456789101112131415161718192021222324252627282930313233343536373839404142127.0.0.1:6379&amp;gt; info memory# Memoryused_memory:853392used_memory_human:833.39Kused_mem">
-<meta name="keywords" content="linux">
+  <meta name="description" content="Redis内存模型Redis内存统计使用info memory进行统计 123456789101112131415161718192021222324252627282930313233343536373839404142127.0.0.1:6379&gt; info memory# Memoryused_memory:853392used_memory_human:833.39Kused_mem">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis内存模型和持久化(搬运)">
-<meta property="og:url" content="https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/index.html">
+<meta property="og:url" content="https://kirakirazone.com/2019/07/30/Redis%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%8C%81%E4%B9%85%E5%8C%96/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="Redis内存模型Redis内存统计使用info memory进行统计 123456789101112131415161718192021222324252627282930313233343536373839404142127.0.0.1:6379&amp;gt; info memory# Memoryused_memory:853392used_memory_human:833.39Kused_mem">
-<meta property="og:locale" content="en">
+<meta property="og:description" content="Redis内存模型Redis内存统计使用info memory进行统计 123456789101112131415161718192021222324252627282930313233343536373839404142127.0.0.1:6379&gt; info memory# Memoryused_memory:853392used_memory_human:833.39Kused_mem">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hsqct4vtj20fe09s0tq.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hu5nkyvkj20aj09laab.jpg">
-<meta property="og:updated_time" content="2020-12-25T05:41:47.232Z">
+<meta property="article:published_time" content="2019-07-30T06:24:07.000Z">
+<meta property="article:modified_time" content="2020-12-19T13:58:04.241Z">
+<meta property="article:author" content="Huangyisan">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis内存模型和持久化(搬运)">
-<meta name="twitter:description" content="Redis内存模型Redis内存统计使用info memory进行统计 123456789101112131415161718192021222324252627282930313233343536373839404142127.0.0.1:6379&amp;gt; info memory# Memoryused_memory:853392used_memory_human:833.39Kused_mem">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hsqct4vtj20fe09s0tq.jpg">
 
+<link rel="canonical" href="https://kirakirazone.com/2019/07/30/Redis%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%8C%81%E4%B9%85%E5%8C%96/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '5.1.4',
-    sidebar: {"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
   };
 </script>
-
-
-
-  <link rel="canonical" href="https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/">
-
-
-
-
 
   <title>Redis内存模型和持久化(搬运) | Kirakirazone</title>
   
@@ -137,246 +57,203 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-right page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Kirakirazone</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Kirakirazone</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            Tags
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
-            
-            Categories
-          </a>
-        </li>
-      
-        
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            Search
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
 </nav>
 
 
 
- </div>
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/huangyisan" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2019/07/30/Redis%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%8C%81%E4%B9%85%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Huangyisan">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="PSN: hys15783167">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kirakirazone">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Redis内存模型和持久化(搬运)</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          Redis内存模型和持久化(搬运)
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T14:24:07+08:00">
-                2019-07-30
-              </time>
-            
+              <span class="post-meta-item-text">Posted on</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/application/" itemprop="url" rel="index">
-                    <span itemprop="name">application</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="Created: 2019-07-30 14:24:07" itemprop="dateCreated datePublished" datetime="2019-07-30T14:24:07+08:00">2019-07-30</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/2019/07/30/Redis内存模型和持久化/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/30/Redis内存模型和持久化/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
               </span>
-            
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/application/" itemprop="url" rel="index"><span itemprop="name">application</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/07/30/Redis%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%8C%81%E4%B9%85%E5%8C%96/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/30/Redis内存模型和持久化/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -384,116 +261,119 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <h1 id="Redis内存模型"><a href="#Redis内存模型" class="headerlink" title="Redis内存模型"></a>Redis内存模型</h1><h2 id="Redis内存统计"><a href="#Redis内存统计" class="headerlink" title="Redis内存统计"></a>Redis内存统计</h2><p>使用<code>info memory</code>进行统计</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info memory</span><br><span class="line"># Memory</span><br><span class="line">used_memory:853392</span><br><span class="line">used_memory_human:833.39K</span><br><span class="line">used_memory_rss:3375104</span><br><span class="line">used_memory_rss_human:3.22M</span><br><span class="line">used_memory_peak:853392</span><br><span class="line">used_memory_peak_human:833.39K</span><br><span class="line">used_memory_peak_perc:100.01%</span><br><span class="line">used_memory_overhead:841150</span><br><span class="line">used_memory_startup:791384</span><br><span class="line">used_memory_dataset:12242</span><br><span class="line">used_memory_dataset_perc:19.74%</span><br><span class="line">allocator_allocated:1396056</span><br><span class="line">allocator_active:1724416</span><br><span class="line">allocator_resident:8605696</span><br><span class="line">total_system_memory:1929056256</span><br><span class="line">total_system_memory_human:1.80G</span><br><span class="line">used_memory_lua:37888</span><br><span class="line">used_memory_lua_human:37.00K</span><br><span class="line">used_memory_scripts:0</span><br><span class="line">used_memory_scripts_human:0B</span><br><span class="line">number_of_cached_scripts:0</span><br><span class="line">maxmemory:0</span><br><span class="line">maxmemory_human:0B</span><br><span class="line">maxmemory_policy:noeviction</span><br><span class="line">allocator_frag_ratio:1.24</span><br><span class="line">allocator_frag_bytes:328360</span><br><span class="line">allocator_rss_ratio:4.99</span><br><span class="line">allocator_rss_bytes:6881280</span><br><span class="line">rss_overhead_ratio:0.39</span><br><span class="line">rss_overhead_bytes:-5230592</span><br><span class="line">mem_fragmentation_ratio:4.15</span><br><span class="line">mem_fragmentation_bytes:2562728</span><br><span class="line">mem_not_counted_for_evict:0</span><br><span class="line">mem_replication_backlog:0</span><br><span class="line">mem_clients_slaves:0</span><br><span class="line">mem_clients_normal:49694</span><br><span class="line">mem_aof_buffer:0</span><br><span class="line">mem_allocator:jemalloc-5.1.0</span><br><span class="line">active_defrag_running:0</span><br><span class="line">lazyfree_pending_objects:0</span><br></pre></td></tr></table></figure>
 <p>几个关键的内存属性字段</p>
 <ol>
-<li><p>used_memory</p>
+<li>used_memory</li>
+</ol>
 <ul>
 <li>Redis分配器分配的内存总量（单位是字节），包括使用的虚拟内存（即swap）。</li>
 </ul>
-</li>
-<li><p>used_memory_rss</p>
+<ol start="2">
+<li>used_memory_rss</li>
+</ol>
 <ul>
 <li>Redis进程占据操作系统的内存（单位是字节），与top及ps命令看到的值是一致的；除了分配器分配的内存之外，used_memory_rss还包括进程运行本身需要的内存、内存碎片等，但是<strong>不包括虚拟内存</strong>。</li>
 </ul>
-</li>
-<li><p>mem_fragmentation_ratio</p>
+<ol start="3">
+<li>mem_fragmentation_ratio</li>
+</ol>
 <ul>
 <li>used_memory_rss / used_memory的比值，该值越大，内存碎片越多，如果该值小于1，则表明使用了虚拟内存swap，需要对redis进行扩容，优化等操作。</li>
 <li>一般来说，mem_fragmentation_ratio在1.03左右是比较健康的状态（对于jemalloc来说）</li>
 </ul>
-</li>
-<li><p>mem_allocator</p>
+<ol start="4">
+<li>mem_allocator</li>
+</ol>
 <ul>
 <li>Redis使用的内存分配器，在编译时指定；可以是 libc 、jemalloc或者tcmalloc，默认是jemalloc。</li>
 </ul>
-</li>
-</ol>
 <h2 id="Redis内存划分"><a href="#Redis内存划分" class="headerlink" title="Redis内存划分"></a>Redis内存划分</h2><p><strong>redis除了内部数据会占用内存之外，也存在其他占用内存的地方。</strong></p>
 <p>Redis的内存占用主要可以划分为以下几个部分</p>
 <ol>
-<li><p>数据(字符串、哈希、列表、集合、有序集合)</p>
+<li>数据(字符串、哈希、列表、集合、有序集合)</li>
+</ol>
 <ul>
 <li>数据为最主要占用内存部分，这部分内存占用<strong>会统计在used_memory中</strong>。</li>
 </ul>
-</li>
-<li><p>进程本身运行需要的内存</p>
+<ol start="2">
+<li>进程本身运行需要的内存</li>
+</ol>
 <ul>
 <li>redis进程本身运行需要内存，入代码，常量池等。因为这部分不是有jemalloc分配，因此<strong>不会统计在used_memory中</strong>。</li>
 <li>子进程，比如AOF，RDB也会占用内存，但<strong>也不会统计在used_memory中</strong></li>
 </ul>
-</li>
-<li><p>缓冲内存</p>
+<ol start="3">
+<li>缓冲内存</li>
+</ol>
 <ul>
 <li>缓冲内存包括客户端缓冲区、复制积压缓冲区、AOF缓冲区等。这部分内存由jemalloc分配，因此<strong>会统计在used_memory中</strong>。</li>
 </ul>
-</li>
-<li><p>内存碎片</p>
+<ol start="4">
+<li>内存碎片</li>
+</ol>
 <ul>
 <li>内存碎片是Redis在分配、回收物理内存过程中产生的。<strong>不会统计在used_memory中</strong>。</li>
 </ul>
-</li>
-</ol>
 <h2 id="Redis数据存储的细节"><a href="#Redis数据存储的细节" class="headerlink" title="Redis数据存储的细节"></a>Redis数据存储的细节</h2><p>直接查看refer内容</p>
 <h1 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h1><h2 id="Redis高可用技术"><a href="#Redis高可用技术" class="headerlink" title="Redis高可用技术"></a>Redis高可用技术</h2><ol>
-<li><p>持久化</p>
+<li>持久化</li>
+</ol>
 <ul>
 <li>持久化是最简单的高可用方法(有时甚至不被归为高可用的手段)，主要作用是数据备份，即将数据存储在硬盘，保证数据不会因进程退出而丢失。</li>
 </ul>
-</li>
-<li><p>复制</p>
+<ol start="2">
+<li>复制</li>
+</ol>
 <ul>
 <li>复制是高可用Redis的基础，哨兵和集群都是在复制基础上实现高可用的。复制主要实现了数据的多机备份，以及对于读操作的负载均衡和简单的故障恢复。</li>
 <li>缺陷：故障恢复无法自动化；写操作无法负载均衡；存储能力受到单机的限制。</li>
 </ul>
-</li>
-<li><p>哨兵</p>
+<ol start="3">
+<li>哨兵</li>
+</ol>
 <ul>
 <li>在复制的基础上，哨兵实现了自动化的故障恢复。</li>
 <li>缺陷：写操作无法负载均衡；存储能力受到单机的限制。</li>
 </ul>
-</li>
-<li><p>集群</p>
+<ol start="4">
+<li>集群</li>
+</ol>
 <ul>
 <li>通过集群，Redis解决了写操作无法负载均衡，以及存储能力受到单机限制的问题，实现了较为完善的高可用方案。</li>
 </ul>
-</li>
-</ol>
 <h2 id="Redis持久化类型"><a href="#Redis持久化类型" class="headerlink" title="Redis持久化类型"></a>Redis持久化类型</h2><ol>
-<li><p>RDB</p>
+<li>RDB</li>
+</ol>
 <ul>
 <li>将数据保存到硬盘</li>
 </ul>
-</li>
-<li><p>AOF</p>
+<ol start="2">
+<li>AOF</li>
+</ol>
 <ul>
 <li>将每次执行的写命令保存到硬盘</li>
 </ul>
-</li>
-</ol>
 <p><strong>由于AOF持久化的实时性更好，即当进程意外退出时丢失的数据更少，因此AOF是目前主流的持久化方式，不过RDB持久化仍然有其用武之地。</strong></p>
 <h2 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h2><p><strong>RDB可以通过手动触发，或者自动触发</strong></p>
 <ol>
-<li><p>手动触发</p>
+<li>手动触发</li>
+</ol>
 <ul>
 <li>在命令行界面执行<code>save</code>命令，或者<code>bgsave</code>命令。</li>
 <li>save命令会阻塞Redis服务器进程，直到RDB文件创建完毕为止，在Redis服务器阻塞期间，服务器不能处理任何命令请求。</li>
 <li>bgsave命令会创建一个子进程，由子进程来负责创建RDB文件，父进程(即Redis主进程)则继续处理请求。</li>
 <li>bgsave命令执行过程中，只有fork子进程时会阻塞服务器，而对于save命令，整个过程都会阻塞服务器，因此save已基本被废弃，线上环境要杜绝save的使用</li>
 </ul>
-</li>
-<li><p>自动触发</p>
+<ol start="2">
+<li>自动触发</li>
+</ol>
 <ul>
 <li>在配置文件中配置<code>save m n</code>，表示在m秒内发生n次变化时会触发bgsave。例如 save 900 1 表示在900秒内，如果redis数据发生了至少1次变化，则执行bgsave。多条save m n命令只要满足其中一条，就会触发。</li>
 <li>在主从复制场景下，如果从节点执行全量复制操作，则主节点会执行bgsave命令，并将rdb文件发送给从节点。</li>
 <li>执行shutdown命令时，自动执行rdb持久化。</li>
 </ul>
-</li>
-</ol>
 <h3 id="save-m-n的实现原理"><a href="#save-m-n的实现原理" class="headerlink" title="save m n的实现原理"></a>save m n的实现原理</h3><ol>
 <li><p>Redis的save m n，是通过serverCron函数、dirty计数器、和lastsave时间戳来实现的。</p>
 </li>
@@ -511,7 +391,7 @@
 <li>dirty &gt;= n</li>
 </ul>
 <h3 id="bgsave执行流程"><a href="#bgsave执行流程" class="headerlink" title="bgsave执行流程"></a>bgsave执行流程</h3><p>bgsave执行流程图</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hsqct4vtj20fe09s0tq.jpg" alt></p>
+<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hsqct4vtj20fe09s0tq.jpg"></p>
 <p>五个步骤</p>
 <ol>
 <li><p>Redis父进程首先判断：当前是否在执行save，或bgsave/bgrewriteaof（直接调用bgrewriteaof命令，该命令的执行与bgsave有些类似，都是fork子进程进行具体的工作，且都只有在fork时阻塞）的子进程，如果在执行则bgsave命令直接返回。bgsave/bgrewriteaof 的子进程不能同时执行，主要是基于性能方面的考虑：两个并发的子进程同时执行大量的磁盘写操作，可能引起严重的性能问题。</p>
@@ -544,31 +424,34 @@
 <p><strong>与RDB相比，AOF的实时性更好，因此已成为主流的持久化方案。</strong></p>
 <h3 id="开启AOF"><a href="#开启AOF" class="headerlink" title="开启AOF"></a>开启AOF</h3><p>配置文件中<code>appendonly yes</code></p>
 <h3 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h3><ol>
-<li>命令追加(append)：将Redis的写命令追加到缓冲区aof_buf。<ul>
+<li>命令追加(append)：将Redis的写命令追加到缓冲区aof_buf。</li>
+</ol>
+<ul>
 <li><strong>Redis先将写命令追加到缓冲区，而不是直接写入文件</strong>，主要是为了避免每次有写命令都直接写入硬盘，导致硬盘IO成为Redis负载的瓶颈。</li>
 </ul>
-</li>
+<ol start="2">
 <li>文件写入(write)和文件同步(sync)：根据不同的同步策略将aof_buf中的内容同步到硬盘。</li>
 <li>文件重写(rewrite)：定期重写AOF文件，达到压缩的目的。</li>
 </ol>
 <h3 id="appendfsync参数"><a href="#appendfsync参数" class="headerlink" title="appendfsync参数"></a>appendfsync参数</h3><p><strong>AOF缓存区的同步文件策略由参数appendfsync控制</strong></p>
 <ol>
-<li><p>always</p>
+<li>always</li>
+</ol>
 <ul>
 <li>命令写入aof_buf后立即调用系统fsync操作同步到AOF文件，fsync完成后线程返回。这种情况下，每次有写命令都要同步到AOF文件，<strong>硬盘IO成为性能瓶颈</strong>。</li>
 </ul>
-</li>
-<li><p>no</p>
+<ol start="2">
+<li>no</li>
+</ol>
 <ul>
 <li>命令写入aof_buf后调用系统write操作，不对AOF文件做fsync同步；同步由操作系统负责，通常同步周期为30秒。这种情况下，文件同步的时间不可控，且缓冲区中堆积的数据会很多，数据安全性无法保证。</li>
 </ul>
-</li>
-<li><p>everysec</p>
+<ol start="3">
+<li>everysec</li>
+</ol>
 <ul>
 <li>命令写入aof_buf后调用系统write操作，write完成后线程返回；fsync同步文件操作由专门的线程每秒调用一次。<strong>everysec是前述两种策略的折中，是性能和数据安全性的平衡，因此是Redis的默认配置，也是我们推荐的配置</strong>。</li>
 </ul>
-</li>
-</ol>
 <h3 id="文件重写-rewrite"><a href="#文件重写-rewrite" class="headerlink" title="文件重写(rewrite)"></a>文件重写(rewrite)</h3><p><strong>文件重写是指定期重写AOF文件，减小AOF文件的体积</strong></p>
 <p><strong>AOF重写是把Redis进程内的数据转化为写命令，同步到新的AOF文件；不会对旧的AOF文件进行任何读取、写入操作</strong></p>
 <p>关于文件重写需要注意的另一点是：对于AOF持久化来说，文件重写虽然是强烈推荐的，但并不是必须的；即使没有文件重写，数据也可以被持久化并在Redis启动的时候导入；因此在一些实现中，会关闭自动的文件重写，然后通过定时任务在每天的某一时刻定时执行。</p>
@@ -577,24 +460,25 @@
 <li><p>过期的数据不再写入文件</p>
 </li>
 <li><p>无效的命令不再写入文件</p>
+</li>
+</ol>
 <ul>
 <li>如有些数据被重复设值(set mykey v1, set mykey v2)、有些数据被删除了(sadd myset v1, del myset)等等</li>
 </ul>
-</li>
-<li><p>多条命令可以合并为一个</p>
+<ol start="3">
+<li>多条命令可以合并为一个</li>
+</ol>
 <ul>
 <li>如sadd myset v1, sadd myset v2, sadd myset v3可以合并为sadd myset v1 v2 v3。</li>
 </ul>
-</li>
-</ol>
 <h4 id="文件重写的触发"><a href="#文件重写的触发" class="headerlink" title="文件重写的触发"></a>文件重写的触发</h4><ol>
-<li><p>手动触发</p>
+<li>手动触发</li>
+</ol>
 <ul>
 <li>直接调用bgrewriteaof命令，该命令的执行与bgsave有些类似：都是fork子进程进行具体的工作，且都只有在fork时阻塞。</li>
 </ul>
-</li>
-<li><p>自动触发<br> <strong>根据auto-aof-rewrite-min-size和auto-aof-rewrite-percentage参数，以及aof_current_size和aof_base_size状态确定触发时机</strong>。</p>
-<ol>
+<ol start="2">
+<li>自动触发<br> <strong>根据auto-aof-rewrite-min-size和auto-aof-rewrite-percentage参数，以及aof_current_size和aof_base_size状态确定触发时机</strong>。<ol>
 <li>auto-aof-rewrite-min-size<ul>
 <li>执行AOF重写时，文件的最小体积，默认值为64MB。</li>
 </ul>
@@ -607,7 +491,7 @@
 </li>
 </ol>
 <p><strong>只有当auto-aof-rewrite-min-size和auto-aof-rewrite-percentage两个参数同时满足时，才会自动触发AOF重写，即bgrewriteaof操作。</strong></p>
-<h4 id="文件重写的流程"><a href="#文件重写的流程" class="headerlink" title="文件重写的流程"></a>文件重写的流程</h4><p>重写流程图<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hu5nkyvkj20aj09laab.jpg" alt></p>
+<h4 id="文件重写的流程"><a href="#文件重写的流程" class="headerlink" title="文件重写的流程"></a>文件重写的流程</h4><p>重写流程图<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3ly1g5hu5nkyvkj20aj09laab.jpg"></p>
 <ol>
 <li>Redis父进程首先判断当前是否存在正在执行 bgsave/bgrewriteaof的子进程，如果存在则bgrewriteaof命令直接返回，如果存在bgsave命令则等bgsave执行完成后再执行。</li>
 <li>父进程执行fork操作创建子进程，这个过程中父进程是阻塞的。</li>
@@ -645,361 +529,278 @@
 </ol>
 <h2 id="方案选择与常见问题"><a href="#方案选择与常见问题" class="headerlink" title="方案选择与常见问题"></a>方案选择与常见问题</h2><h3 id="RDB和AOF的优缺点"><a href="#RDB和AOF的优缺点" class="headerlink" title="RDB和AOF的优缺点"></a>RDB和AOF的优缺点</h3><ol>
 <li><p>RDB持久化</p>
-<ol>
-<li>优点：RDB文件紧凑，体积小，网络传输快，适合全量复制；恢复速度比AOF快很多。当然，与AOF相比，RDB最重要的优点之一是对性能的影响相对较小。</li>
-<li>缺点：RDB文件的致命缺点在于其数据快照的持久化方式决定了必然做不到实时持久化，而在数据越来越重要的今天，数据的大量丢失很多时候是无法接受的，因此AOF持久化成为主流。此外，RDB文件需要满足特定格式，兼容性差（如老版本的Redis不兼容新版本的RDB文件）。</li>
-</ol>
+</li>
+<li><p>优点：RDB文件紧凑，体积小，网络传输快，适合全量复制；恢复速度比AOF快很多。当然，与AOF相比，RDB最重要的优点之一是对性能的影响相对较小。</p>
+</li>
+<li><p>缺点：RDB文件的致命缺点在于其数据快照的持久化方式决定了必然做不到实时持久化，而在数据越来越重要的今天，数据的大量丢失很多时候是无法接受的，因此AOF持久化成为主流。此外，RDB文件需要满足特定格式，兼容性差（如老版本的Redis不兼容新版本的RDB文件）。</p>
 </li>
 <li><p>AOF持久化</p>
-<ol>
-<li>优点：于支持秒级持久化、兼容性好。</li>
-<li>缺点：是文件大、恢复速度慢、对性能影响大。</li>
-</ol>
+</li>
+<li><p>优点：于支持秒级持久化、兼容性好。</p>
+</li>
+<li><p>缺点：是文件大、恢复速度慢、对性能影响大。</p>
 </li>
 </ol>
 <h3 id="策略选择等其他问题参见原文"><a href="#策略选择等其他问题参见原文" class="headerlink" title="策略选择等其他问题参见原文"></a>策略选择等其他问题参见原文</h3><blockquote>
-<p><a href="https://www.cnblogs.com/kismetv/p/9137897.html" target="_blank" rel="noopener">https://www.cnblogs.com/kismetv/p/9137897.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kismetv/p/9137897.html">https://www.cnblogs.com/kismetv/p/9137897.html</a></p>
 </blockquote>
 <p>refer</p>
 <blockquote>
-<p><a href="https://www.cnblogs.com/kismetv/p/8654978.html" target="_blank" rel="noopener">https://www.cnblogs.com/kismetv/p/8654978.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kismetv/p/8654978.html">https://www.cnblogs.com/kismetv/p/8654978.html</a></p>
 </blockquote>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    
+        <div class="reward-container">
   <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
   </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
         <p>WeChat Pay</p>
       </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.png" alt="Huangyisan Alipay">
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangyisan Alipay">
         <p>Alipay</p>
       </div>
-    
-
-    
 
   </div>
 </div>
 
-      </div>
-    
+        
 
-    
-      <div>
-        <ul class="post-copyright">
+<div>
+<ul class="post-copyright">
   <li class="post-copyright-author">
-    <strong>Post author:</strong>
-    Huangyisan
+    <strong>Post author:  </strong>Huangyisan
   </li>
   <li class="post-copyright-link">
-    <strong>Post link:</strong>
-    <a href="https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/" title="Redis内存模型和持久化(搬运)">https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/</a>
+    <strong>Post link: </strong>
+    <a href="https://kirakirazone.com/2019/07/30/Redis%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%8C%81%E4%B9%85%E5%8C%96/" title="Redis内存模型和持久化(搬运)">https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>Copyright Notice: </strong>
-    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
   </li>
 </ul>
+</div>
 
-      </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/07/29/%E7%BD%91%E7%BB%9Ctcp_udp%E5%8D%8F%E8%AE%AE/" rel="prev" title="网络tcp_udp协议">
+      <i class="fa fa-chevron-left"></i> 网络tcp_udp协议
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/30/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" rel="next" title="Redis主从复制(搬运)">
+      Redis主从复制(搬运) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
     
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/linux/" rel="tag"># linux</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/07/29/网络tcp_udp协议/" rel="next" title="网络tcp_udp协议">
-                <i class="fa fa-chevron-left"></i> 网络tcp_udp协议
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/30/Redis主从复制/" rel="prev" title="Redis主从复制(搬运)">
-                Redis主从复制(搬运) <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
 
 
           </div>
           
-
-
-          
-
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
     </div>
   </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Huangyisan</p>
-              <p class="site-description motion-element" itemprop="description">PSN: hys15783167</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">65</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
-                  <span class="site-state-item-name">categories</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
-                  <span class="site-state-item-name">tags</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-            <div class="links-of-author motion-element">
-                
-                  <span class="links-of-author-item">
-                    <a href="https://github.com/huangyisan" target="_blank" title="GitHub">
-                      
-                        <i class="fa fa-fw fa-github"></i></a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="mailto:anonymousyisan@gmail.com" target="_blank" title="E-Mail">
-                      
-                        <i class="fa fa-fw fa-envelope"></i></a>
-                  </span>
-                
-            </div>
-          
-
-          
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Links
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://mynotebook.readthedocs.io/en/latest/" title="readthedocs" target="_blank">readthedocs</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis内存模型"><span class="nav-number">1.</span> <span class="nav-text">Redis内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis内存统计"><span class="nav-number">1.1.</span> <span class="nav-text">Redis内存统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis内存划分"><span class="nav-number">1.2.</span> <span class="nav-text">Redis内存划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis数据存储的细节"><span class="nav-number">1.3.</span> <span class="nav-text">Redis数据存储的细节</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis持久化"><span class="nav-number">2.</span> <span class="nav-text">Redis持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis高可用技术"><span class="nav-number">2.1.</span> <span class="nav-text">Redis高可用技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis持久化类型"><span class="nav-number">2.2.</span> <span class="nav-text">Redis持久化类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB持久化"><span class="nav-number">2.3.</span> <span class="nav-text">RDB持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#save-m-n的实现原理"><span class="nav-number">2.3.1.</span> <span class="nav-text">save m n的实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bgsave执行流程"><span class="nav-number">2.3.2.</span> <span class="nav-text">bgsave执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bgsave加载"><span class="nav-number">2.3.3.</span> <span class="nav-text">bgsave加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB常用配置总结"><span class="nav-number">2.3.4.</span> <span class="nav-text">RDB常用配置总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF持久化"><span class="nav-number">2.4.</span> <span class="nav-text">AOF持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启AOF"><span class="nav-number">2.4.1.</span> <span class="nav-text">开启AOF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行流程"><span class="nav-number">2.4.2.</span> <span class="nav-text">执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appendfsync参数"><span class="nav-number">2.4.3.</span> <span class="nav-text">appendfsync参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件重写-rewrite"><span class="nav-number">2.4.4.</span> <span class="nav-text">文件重写(rewrite)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件重写的触发"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">文件重写的触发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件重写的流程"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">文件重写的流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动时加载"><span class="nav-number">2.4.5.</span> <span class="nav-text">启动时加载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件校验"><span class="nav-number">2.4.5.1.</span> <span class="nav-text">文件校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪客户端"><span class="nav-number">2.4.5.2.</span> <span class="nav-text">伪客户端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF常用配置总结"><span class="nav-number">2.4.6.</span> <span class="nav-text">AOF常用配置总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案选择与常见问题"><span class="nav-number">2.5.</span> <span class="nav-text">方案选择与常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB和AOF的优缺点"><span class="nav-number">2.5.1.</span> <span class="nav-text">RDB和AOF的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#策略选择等其他问题参见原文"><span class="nav-number">2.5.2.</span> <span class="nav-text">策略选择等其他问题参见原文</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-        <div class="back-to-top">
-          <i class="fa fa-arrow-up"></i>
-          
-        </div>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
-
-  
-</div>
-
-
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
-
-
-
-
-<div class="BbeiAn-info">
-   	浙ICP备 -
-    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784" rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
-</div>
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-
-    
-
-  </div>
-
   
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">Redis内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E5%86%85%E5%AD%98%E7%BB%9F%E8%AE%A1"><span class="nav-number">1.1.</span> <span class="nav-text">Redis内存统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E5%86%85%E5%AD%98%E5%88%92%E5%88%86"><span class="nav-number">1.2.</span> <span class="nav-text">Redis内存划分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%9A%84%E7%BB%86%E8%8A%82"><span class="nav-number">1.3.</span> <span class="nav-text">Redis数据存储的细节</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">Redis持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">2.1.</span> <span class="nav-text">Redis高可用技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E6%8C%81%E4%B9%85%E5%8C%96%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">Redis持久化类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">RDB持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#save-m-n%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">2.3.1.</span> <span class="nav-text">save m n的实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bgsave%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.2.</span> <span class="nav-text">bgsave执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bgsave%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.3.3.</span> <span class="nav-text">bgsave加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E6%80%BB%E7%BB%93"><span class="nav-number">2.3.4.</span> <span class="nav-text">RDB常用配置总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">2.4.</span> <span class="nav-text">AOF持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AFAOF"><span class="nav-number">2.4.1.</span> <span class="nav-text">开启AOF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.4.2.</span> <span class="nav-text">执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appendfsync%E5%8F%82%E6%95%B0"><span class="nav-number">2.4.3.</span> <span class="nav-text">appendfsync参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%87%8D%E5%86%99-rewrite"><span class="nav-number">2.4.4.</span> <span class="nav-text">文件重写(rewrite)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%87%8D%E5%86%99%E7%9A%84%E8%A7%A6%E5%8F%91"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">文件重写的触发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%87%8D%E5%86%99%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">文件重写的流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.4.5.</span> <span class="nav-text">启动时加载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.4.5.1.</span> <span class="nav-text">文件校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%AA%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">2.4.5.2.</span> <span class="nav-text">伪客户端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E6%80%BB%E7%BB%93"><span class="nav-number">2.4.6.</span> <span class="nav-text">AOF常用配置总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9%E4%B8%8E%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">方案选择与常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB%E5%92%8CAOF%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.5.1.</span> <span class="nav-text">RDB和AOF的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%96%E7%95%A5%E9%80%89%E6%8B%A9%E7%AD%89%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98%E5%8F%82%E8%A7%81%E5%8E%9F%E6%96%87"><span class="nav-number">2.5.2.</span> <span class="nav-text">策略选择等其他问题参见原文</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Huangyisan</p>
+  <div class="site-description" itemprop="description">PSN: hys15783167</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:anonymousyisan@gmail.com" title="E-Mail → mailto:anonymousyisan@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mynotebook.readthedocs.io/en/latest/" title="https:&#x2F;&#x2F;mynotebook.readthedocs.io&#x2F;en&#x2F;latest&#x2F;" rel="noopener" target="_blank">readthedocs</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+</div>
+
+<div class="BbeiAn-info">
+    浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784"  rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
 
 
 
@@ -1010,466 +811,38 @@
 
   
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
 
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://kirakirazone.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'https://kirakirazone.com/2019/07/30/Redis内存模型和持久化/';
-          this.page.identifier = '2019/07/30/Redis内存模型和持久化/';
-          this.page.title = 'Redis内存模型和持久化(搬运)';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://kirakirazone.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kirakirazone.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://kirakirazone.com/2019/07/30/Redis%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%8C%81%E4%B9%85%E5%8C%96/";
+    this.page.identifier = "2019/07/30/Redis内存模型和持久化/";
+    this.page.title = "Redis内存模型和持久化(搬运)";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
       });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kirakirazone.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
     }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
+  });
+</script>
 
 </body>
 </html>
