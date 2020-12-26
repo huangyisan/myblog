@@ -429,6 +429,22 @@ refer:
       </tags>
   </entry>
   <entry>
+    <title>Promotions in Program C</title>
+    <url>/2019/01/08/Promotions-in-Program-C/</url>
+    <content><![CDATA[<h2 id="scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。"><a href="#scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。" class="headerlink" title="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。"></a>scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%f&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 0.000000</span><br><span class="line">the number is 0.000000</span><br></pre></td></tr></table></figure>
+<p><strong>scanf()函数因为指向的是num的指针,所以不适用float promotions to double</strong></p>
+<p><strong>scanf()若使用double类型，必须写成”%lf”, 而printf()即便指定的是”%f”,也会自行提升成double类型。</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%lf&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 1.000000</span><br><span class="line">the number is 1.000000</span><br></pre></td></tr></table></figure>
+<h2 id="integer-promotions"><a href="#integer-promotions" class="headerlink" title="integer-promotions"></a>integer-promotions</h2><p>refer:</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c">https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c</a><br><a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf">http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf</a> [6.5.2.2 page-71]<br><a href="https://www.geeksforgeeks.org/integer-promotions-in-c/">https://www.geeksforgeeks.org/integer-promotions-in-c/</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python防注入</title>
     <url>/2019/01/30/Python%E9%98%B2%E6%B3%A8%E5%85%A5/</url>
     <content><![CDATA[<h2 id="注入案例："><a href="#注入案例：" class="headerlink" title="注入案例："></a>注入案例：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import MySQLdb</span><br><span class="line"></span><br><span class="line">db &#x3D; MySQLdb.connect(host&#x3D;&quot;localhost&quot;,</span><br><span class="line">user&#x3D;&quot;&quot;,</span><br><span class="line">passwd&#x3D;&quot;&quot;,</span><br><span class="line">db&#x3D;&quot;&quot;)</span><br><span class="line"></span><br><span class="line">cur &#x3D; db.cursor()</span><br><span class="line"></span><br><span class="line">platform &#x3D; input(&#39;Enter language: &#39;)</span><br><span class="line"></span><br><span class="line">cur.execute(&quot;SELECT * FROM platforms WHERE language &#x3D; &#39;%s&#39;;&quot; % platform)</span><br><span class="line">for row in cur.fetchall():</span><br><span class="line">print(row)</span><br><span class="line"></span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
@@ -871,22 +887,6 @@ refer:
       <tags>
         <tag>linux</tag>
         <tag>concourse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Promotions in Program C</title>
-    <url>/2019/01/08/Promotions-in-Program-C/</url>
-    <content><![CDATA[<h2 id="scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。"><a href="#scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。" class="headerlink" title="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。"></a>scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%f&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 0.000000</span><br><span class="line">the number is 0.000000</span><br></pre></td></tr></table></figure>
-<p><strong>scanf()函数因为指向的是num的指针,所以不适用float promotions to double</strong></p>
-<p><strong>scanf()若使用double类型，必须写成”%lf”, 而printf()即便指定的是”%f”,也会自行提升成double类型。</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%lf&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 1.000000</span><br><span class="line">the number is 1.000000</span><br></pre></td></tr></table></figure>
-<h2 id="integer-promotions"><a href="#integer-promotions" class="headerlink" title="integer-promotions"></a>integer-promotions</h2><p>refer:</p>
-<blockquote>
-<p><a href="https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c">https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c</a><br><a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf">http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf</a> [6.5.2.2 page-71]<br><a href="https://www.geeksforgeeks.org/integer-promotions-in-c/">https://www.geeksforgeeks.org/integer-promotions-in-c/</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>c</tag>
       </tags>
   </entry>
   <entry>
