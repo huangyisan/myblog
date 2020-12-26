@@ -8,15 +8,17 @@ tags: [linux,git]
 
 1. 本地修改master，远端(模拟其他协同开发人员)修改remote_change
 
-```
+```shell
 $ ls
 master  remote_change
 
 ```
 
+<!-- more -->
+
 2. 查看当前git log信息
 
-```
+```shell
 huangyisan@huangyisan-PC MINGW64 ~/Desktop/github/pingan/testgit (master)
 $  git log --graph --pretty=oneline --abbrev-commit
 * aed5259 (HEAD -> master, origin/master) local change 2

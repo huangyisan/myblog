@@ -6,7 +6,7 @@ tags: python3
 
 ## 注入案例：
 
-```
+```python
 import MySQLdb
 
 db = MySQLdb.connect(host="localhost",
@@ -23,7 +23,9 @@ for row in cur.fetchall():
 print(row)
 
 db.close()
+
 ```
+<!-- more -->
 
 上述代码，让用户输入想查询的language，如果用户按套路，比如输入Ruby，则可以正常查询。
 

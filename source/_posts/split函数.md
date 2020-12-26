@@ -15,6 +15,8 @@ tags: python3
 输出: 5
 ```
 
+<!-- more -->
+
 写出的其中一种答案是：
 ```
 class Solution(object):

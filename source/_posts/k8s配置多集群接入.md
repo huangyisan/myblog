@@ -14,7 +14,7 @@ categories: application
 
 配置文件一般名称为`config`，放置路径为`$HOME/.kube/`目录下。
 
-
+<!-- more -->
 
 * **cluster**，定义cluster名称，认证信息等。
 

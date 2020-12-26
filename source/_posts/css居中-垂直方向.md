@@ -20,7 +20,7 @@ tags: [css, html]
 
 1. 有时候看似居中了，其实是上下padding预留了相同的空间，所以中间的内容居中了。
 
-
+<!-- more -->
 
 <iframe height="265" style="width: 100%;" scrolling="no" title="Centering text (kinda) with Padding" src="https://codepen.io/huangyisan/embed/abOKwOq?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
   See the Pen <a href='https://codepen.io/huangyisan/pen/abOKwOq'>Centering text (kinda) with Padding</a> by huangyisan

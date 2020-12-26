@@ -12,13 +12,15 @@ tags: linux
 ## system-udevd进程
 
 在centos6中为udevd进程：
-```
+```shell
 [root@VM_31_91_centos6 ~]# ps -ef | grep udev
 root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d
 ```
 
+<!-- more -->
+
 在centos7中为system-udevd进程
-```
+```shell
 [root@VM_31_91_centos7 ~]# ps -ef | grep udev
 root       460     1  0 10月09 ?      00:00:00 /usr/lib/systemd/systemd-udevd
 ```

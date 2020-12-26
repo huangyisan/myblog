@@ -12,6 +12,10 @@ categories: application
 1. 没有合适的resource，需要自己通过脚本实现。
 2. 需要自己构建helm的镜像，用于chart的推送。
 
+
+<!-- more -->
+
+
 ### 思路
 1. 首先构建用于helm打包chart的基础镜像
 2. 编写打包脚本

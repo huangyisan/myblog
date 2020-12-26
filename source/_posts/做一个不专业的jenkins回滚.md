@@ -11,6 +11,8 @@ categories: application
 1. 对正在提供服务的war包在*同目录*下，重命名为xxx.warbak
 2. 并且对该war归档到指定目录
 
+<!-- more -->
+
 ### 回滚期间
 1. 将同目录下war的备份文件还原成xxx.war
 
@@ -32,7 +34,7 @@ categories: application
 ## 部分代码:
 1. 部署
 
-```
+```shell
 [ -d "/opt/${tomcat_dir}/war" ] && echo 'back dir is exist' || mkdir -p /opt/${tomcat_dir}/war;
 cp /opt/${tomcat_dir}/webapps/${tomcat_war}.war /opt/${tomcat_dir}/war/${tomcat_war}.war_`date +"%Y%m%d-%H%M"` || echo 'not exist war';
 ps -ef | grep ${tomcat_dir} | grep -vP "cronolog|grep" | awk '{print $2}' | xargs -I {} kill {};
@@ -43,7 +45,7 @@ rm -rf /opt/${tomcat_dir}/webapps/${tomcat_war};
 
 2. 回滚
 
-```
+```shell
 ps -ef | grep ${tomcat_dir} | grep -vP "cronolog|grep" | awk '{print $2}' | xargs -I {} kill {};
 sleep 3;
 rm -rf /opt/${tomcat_dir}/webapps/${tomcat_war};

@@ -12,6 +12,8 @@ tcp的建联存在两种状态
 1. incomplete connection queue  未建联的队列
 2. completed connection queue   已建联的队列
 
+<!-- more -->
+
 * 未建联的队列
   * 客户端发出syn请求，并且已经达到服务端，服务端返回syn+ack,等待对端响应ack时候的队列。
   * 这些套接口处于SYN_RCVD状态。

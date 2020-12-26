@@ -8,9 +8,11 @@ tags: linux
 
 安卓同事称代码调试访问test-material.aaa.tv/xxx/xxxx.png等图片资源的时候报错，报错信息类似如下：
 
-```
+```java
 javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
 ```
+
+<!-- more -->
 
 ## 问题分析
 
@@ -40,7 +42,7 @@ javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorExcepti
 
 然后来获取下test-material.aaa.tv的根证书情况，自然，在浏览器端获取到的可能是浏览器帮助代理请求获得的。得在服务器端用命令去查看，命令如下：
 
-```
+```shell
 openssl s_client -connect test-material.aaa.tv:443 -servername test-material.aaa.tv
 ```
 

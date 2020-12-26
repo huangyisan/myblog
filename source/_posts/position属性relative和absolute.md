@@ -7,11 +7,12 @@ tags: css
 我还记得那个调整了3个多小时才把确认按钮移动到table右边的夜晚。以至于前端给我的错觉就是，我写出我的思路，但它却不这么去展现。。mmp..
 至此拾起来，从把relative和absolute两个属性搞清楚开始。
 
+<!-- more -->
 
 ## 非嵌套在标签的情形
 
 初始代码:
-```
+```css
 <!DOCTYPE html>
 <html lang="en">
 <head>

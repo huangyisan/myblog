@@ -13,6 +13,8 @@ categories: application
 
 从节点开启主从复制，有3种方式
 
+<!-- more -->
+
 1. 配置文件
   * 在从服务器的配置文件中加入：slaveof \<masterip\> \<masterport\>
 

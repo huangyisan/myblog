@@ -11,6 +11,7 @@ tags: git
 **工作区**，就是你git仓库的目录，你进行修改文件的区域。
 **暂存区**，git从库里面有个.git的隐藏目录，里面"有一块"，可以理解为**暂存区**。
 
+<!-- more -->
 
 工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:
 1. 修改代码文件   
@@ -23,7 +24,9 @@ tags: git
 
 一般常见的是如下三种情况：
 1. 在工作区**新建**了文件或目录，但还未将这些文件或目录`git add`提交到暂存区。这些文件或目录被标记为**untracked files**。
-```
+
+
+```shell
 huangyisan:~/Desktop/github/test $ touch foo bar
 huangyisan:~/Desktop/github/test $ ls
 bar foo
@@ -38,8 +41,10 @@ Untracked files:
 nothing added to commit but untracked files present (use "git add" to track)
 ```
 
-2. 对修改后的文件进行了`git add`操作，将这些文件提交到了暂存区，但未执行`git commit -m 'xxx'`，未提交到本地分支。此时文件属于`Changes to be committed`状态
-```
+1. 对修改后的文件进行了`git add`操作，将这些文件提交到了暂存区，但未执行`git commit -m 'xxx'`，未提交到本地分支。此时文件属于`Changes to be committed`状态
+
+
+```shell
 huangyisan:~/Desktop/github/test $ git add foo
 huangyisan:~/Desktop/github/test $ git status
 On branch master
@@ -55,7 +60,7 @@ Untracked files:
 
 ```
 
-3. 对已经`git add`操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行`git add`，此时文件属于`Changes not staged for commit`状态
+1. 对已经`git add`操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行`git add`，此时文件属于`Changes not staged for commit`状态
 ```
 huangyisan:~/Desktop/github/test $ echo 'new line' >> foo
 huangyisan:~/Desktop/github/test $ git status

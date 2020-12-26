@@ -11,10 +11,12 @@ tags: django
 2. 一对多 (关键词 **ForeignKey**) *没有OneToManyField这种写法*
 3. 多对多 (关键词 **ManyToManyField**)
 
+<!-- more -->
+
 ## 代码和关系
 
 
-```
+```python
 from django.db import models
 
 # Create your models here.

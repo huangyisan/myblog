@@ -15,6 +15,8 @@ tags: [css, html]
 * 只需要将需要水平居中的行级元素包裹在**父级块级**元素内，对父级元素设置`text-align: center;`属性即可。
 * 对**inline, inline-block, inline-table, inline-flex**等属性都适用。
 
+<!-- more -->
+
 <p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="huangyisan" data-slug-hash="YzXaRWK" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Centering Inline Elements">
   <span>See the Pen <a href="https://codepen.io/huangyisan/pen/YzXaRWK">
   Centering Inline Elements</a> by huangyisan (<a href="https://codepen.io/huangyisan">@huangyisan</a>)

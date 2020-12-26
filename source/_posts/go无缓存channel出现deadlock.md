@@ -21,7 +21,11 @@ func main() {
     fmt.Println(a)
 
 }
+
 ```
+
+<!-- more -->
+
 1. 创建一个无缓存channel chanStr
 2. 往chanStr放入int类型1
 3. 从chanStr读取内容至变量a

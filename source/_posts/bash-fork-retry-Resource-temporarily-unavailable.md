@@ -9,6 +9,8 @@ tags: linux
 现场没有保留，大抵经过如下：
 朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错`bash fork: retry: Resource temporarily unavailable`
 
+<!-- more -->
+
 排查经过：
 1. 起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。
 2. 感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。

@@ -22,6 +22,8 @@ the number is 0.000000
 ```
 **scanf()函数因为指向的是num的指针,所以不适用float promotions to double**
 
+<!-- more -->
+
 **scanf()若使用double类型，必须写成"%lf", 而printf()即便指定的是"%f",也会自行提升成double类型。**
 
 ```

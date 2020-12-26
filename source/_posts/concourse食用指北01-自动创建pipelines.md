@@ -12,6 +12,8 @@ categories: application
 ## 需求
 1. 只需要提交代码，能让concourse自动创建pipelines。
 
+<!-- more -->
+
 ### 知识点
 1. concourse有别于jenkins，其UI主要是用来查看pipelines/jobs的状态，在页面不允许创建，修改或者删除pipelines。
 2. 创建pipelines通过cli的方式可以使用`set-pipeline`命令来实现，具体语句为`fly -t main set-pipeline -p ${pipeline_name} -c ${config_file}`。

@@ -6,6 +6,7 @@ tags: mysql
 
 Emmmm....数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。
 
+<!-- more -->
 
 MariaDB version 10.1.36
 

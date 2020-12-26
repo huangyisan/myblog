@@ -11,6 +11,8 @@ categories: application
 ### 知识点
 1. 镜像构建可以使用[docker-image-resource](https://github.com/concourse/docker-image-resource)
 
+<!-- more -->
+
 ### 思路
 1. 拉取dockerfile代码仓库
 2. 构建镜像

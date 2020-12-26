@@ -11,7 +11,9 @@ categories: application
 
 使用`info memory`进行统计
 
-```
+<!-- more -->
+
+```shell
 127.0.0.1:6379> info memory
 # Memory
 used_memory:853392

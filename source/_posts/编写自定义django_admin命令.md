@@ -7,6 +7,8 @@ categories: django
 
 *我想在django中放一个脚本，然后循环执行他，该脚本会操作数据库，我懒得自己pymysql等方式写，就想用orm的方式，直接脚本中import models，但是呢，python xxxx执行后各种报错，说找不到环境变量，网上搜了下解决方案，也是差不多，但我就是没有调试出来。于是打算用django自带的方式执行命令。*
 
+<!-- more -->
+
 ## 目录结构
 
 1. 在app中创建/management/commands目录

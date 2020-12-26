@@ -14,7 +14,7 @@ tags: go
 
 ![有符号型](https://image.kirakirazone.com/image/有符号整型.png)
 
-
+<!-- more -->
 
 **2. 无符号整型**
 

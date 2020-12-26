@@ -17,6 +17,8 @@ pipeline的yaml配置文件中，配置参数需要遵循上下文。倘若只�
 **/tasks/*.yml | **/*task.yml : activates support for editing tasks.
 ```
 
+<!-- more -->
+
 ### 镜像的制作
 
 因为concourse运行的每一个task都是出于容器中，所以如果想快速的集成或者部署，那么可以控制一下容器的大小，毕竟如果一个容器的空间很大好几个G，那么拉取镜像就占用了不少时间。所以我个人建议，不采用大一桶的容器，容器尽量精简，只对task需要的功能进行添加。

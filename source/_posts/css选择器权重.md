@@ -9,7 +9,7 @@ tags: css
 * id选择器
 `#id`
 
-```
+```css
 <div id="mySelector">this is id selector</div>
 
 #mySelector{
@@ -17,10 +17,12 @@ tags: css
 }
 ```
 
+<!-- more -->
+
 * class选择器
 `.class`
 
-```
+```css
 <div class="myClass">this is class selector</div>
 
 .myClass{
@@ -31,7 +33,7 @@ tags: css
 * \*选择器
 `\*`
 
-```
+```css
 * {
     font-style: italic;
 }
@@ -41,7 +43,7 @@ tags: css
 * 元素选择器
 `element`
 
-```
+```css
 <p>this is p</p>
 
 p{
@@ -52,7 +54,7 @@ p{
 * 伪类
 `:hover`
 
-```
+```css
 <a href="https://www.baidu.com">www.baidu.com</a>
 
 a:hover{
@@ -64,7 +66,7 @@ a:hover{
 `element element`
 `element>element`
 
-```
+```css
 <div>
     <p>this is p in div</p>
 </div>
@@ -81,7 +83,7 @@ div>p{
 * 属性选择器
 `[attribute=value]`
 
-```
+```css
 <div class="myclass">this is div</div>
 [class=myclass]{
     color: #ff4400;
@@ -91,7 +93,7 @@ div>p{
 * 组选择器
 `element,element1,element2`
 
-```
+```css
 <div>this is div</div>
 <span>this is span</span>
 <p>this is p</p>

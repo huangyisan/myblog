@@ -6,7 +6,10 @@ categories: system
 ---
 
 这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在/etc/profile里面是添加了JAVA_HOME。
-```
+
+<!-- more -->
+
+``` shell
 [root@ccc bin]# sudo ./catalina.sh start
 Neither the JAVA_HOME nor the JRE_HOME environment variable is defined
 At least one of these environment variable is needed to run this program
@@ -34,7 +37,7 @@ Non-Interactive Shell 非交互的模式，比如用crontab的方式执行一个
 那么问题就来了，这两种模式的环境变量从哪里去获取呢？
 1. Interactive Shell登录情况
 
-```
+```shell
 execute /etc/profile
 IF ~/.bash_profile exists THEN
     execute ~/.bash_profile
@@ -52,14 +55,14 @@ END IF
 **一目了然，入口为/etc/profile文件**。
 其中在.bash_profile里面还判断是否存在~/.bashrc，如果存在则加载~/.bashrc。
 
-```
+```shell
 if [ -f ~/.bashrc ]; then
         . ~/.bashrc
 ```
 
 还没完，在执行~/.bashrc的时候里面继续判断是否存在/etc/bashrc，如果存在则执行/etc/bashrc。
 
-```
+```shell
 if [ -f /etc/bashrc ]; then
         . /etc/bashrc
 fi
@@ -67,7 +70,7 @@ fi
 
 顺带一说，当用户退出Interactive Shell的时候，执行~/.bash_logout内容。所以可以在退出的时候定义一些行为。
 
-```
+```shell
 IF ~/.bash_logout exists THEN
     execute ~/.bash_logout
 END IF
@@ -85,7 +88,7 @@ END IF
 
 2. Non-Interactive Shell的情况
 
-```
+```shell
 IF ~/.bashrc exists THEN
     execute ~/.bashrc
 END IF
@@ -105,7 +108,7 @@ END IF
 ### sudo做了啥？
 命令输入visudo，有那么一节内容：
 
-```
+```shell
 # Preserving HOME has security implications since many programs
 # use it when searching for configuration files. Note that HOME
 # is already set when the the env_reset option is enabled, so
@@ -127,13 +130,13 @@ Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY
 比较差劲的解决方法：
 man一下sudo，有个-E的参数，能保留之前的环境变量，但是不推荐这样做，因为有安全隐患：
 
-```
+```shell
      -E          The -E (preserve environment) option indicates to the security policy that the user wishes to preserve their existing
                  environment variables.  The security policy may return an error if the -E option is specified and the user does not have
                  permission to preserve the environment.
 ```
 
-```
+```shell
 [root@ccc bin]# sudo -E ./catalina.sh start
 Using CATALINA_BASE:   /opt/mixcdn-tomcat
 Using CATALINA_HOME:   /opt/mixcdn-tomcat
@@ -151,7 +154,7 @@ Tomcat started.
 
 其实官方给出了写法，在catalina.sh里面:
 
-```
+```shell
 # Control Script for the CATALINA Server
 #
 # Environment Variable Prerequisites
@@ -180,11 +183,12 @@ fi
 ....
 ...
 .
-```
+
+```shell
 
 就是在tomcat/bin目录下面，写入一个setenv.sh文件里面写入需要的环境变量，当运行catalina.sh启动脚本的时候，其会进行执行该setenv.sh文件，当前我的版本是1.8，非特殊情况其已经不需要写入CLASSPATH。(据说jdk1.5之后就不需要写入CLASSPATH了。)
 
-```
+```shell
 [root@ccc bin]# cat setenv.sh
 export JAVA_HOME=/tool/jdk1.8.0_144
 export PATH=$PATH:$JAVA_HOME/bin

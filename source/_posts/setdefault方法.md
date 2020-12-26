@@ -10,6 +10,8 @@ myvalue = dict_a.setdefault(a,b)
 
 从dict_a中获取a的值，如果没有，则新增一个value为b，key为a的键值对。
 
+<!-- more -->
+
 ## 案例
 
 请求获取一个数值，如果字典中存在这个值，则从字典内获取，如果不存在，则从api函数调用。

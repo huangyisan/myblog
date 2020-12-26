@@ -5,13 +5,15 @@ tags: python3
 ---
 
 ## sort()函数
-```
+```python
 Help on method_descriptor:
 
 sort(...)
     L.sort(key=None, reverse=False) -> None -- stable sort *IN PLACE*
 (END)
 ```
+
+<!-- more -->
 
 *python3中已经取消了sort()函数中cmp参数*
 

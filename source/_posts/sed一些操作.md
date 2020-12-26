@@ -6,7 +6,7 @@ tags: linux
 
 ## 原始文件redis.conf内容：
 
-```
+```shell
 input {
   redis {
     host => "127.0.0.1:6379"
@@ -25,6 +25,7 @@ output {
 
 }
 ```
+<!-- more -->
 
 ## 获取sed匹配内容的下一行
 

@@ -17,6 +17,8 @@ categories: application
 6. 三个阶段执行顺序为check阶段，in阶段，out阶段。
 7. 编写的dockerfile需要将check in out作为可执行文件放入/opt/resource下面。
 
+<!-- more -->
+
 ### check阶段
 1. check阶段为资源执行的第一个阶段，主要用于检查资源的最新版本。
 2. 传入两个字段，一个为source，一个为version， 例如`{“source”: {“url”: “git-url”,  “user”: “abc”, “password”: “xyz”}, “version”: "777"}`

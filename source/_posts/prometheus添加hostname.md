@@ -9,6 +9,8 @@ tags: prometheus
 2. 只看ip，无法知道该机器的用户。
 3. grafana展现的时候，能根据hostname进行选择，展现机器数据。
 
+<!-- more -->
+
 ## 方法
 1. node_exporter中启用textfile采集的方式。
 2. 在textfile目录下，写入hostname。
@@ -20,7 +22,7 @@ tags: prometheus
 
 ## 解决方法
 1. 针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用`ExecStartPre`方法，启动之前执行命令。
-```
+```shell
 ExecStartPre=/opt/scripts/gethostname.sh
 
 # cat /opt/scripts/gethostname.sh

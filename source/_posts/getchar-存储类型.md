@@ -9,7 +9,10 @@ tags: c
 getchar()函数从文本流读入下一个输入字符，并且作为结果返回。
 
 一个读取字符，并且打印的程序，当读取end of file(EOF)的时候结束。
-```
+
+<!-- more -->
+
+```c
 #include <stdio.h>
 
 int main (void)
