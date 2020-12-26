@@ -6,7 +6,8 @@ categories: golang
 ---
 
 ## 问题代码
-```golang
+
+```go
 package main
 
 import "fmt"
@@ -26,9 +27,9 @@ func main() {
 3. 从chanStr读取内容至变量a
 4. 打印变量a
 
-看着没有什么问题，逻辑也很正确，**但结果发生了报错**
+看着没有什么问题，逻辑也很正确，但结果发生了报错
 
-```golang
+```go
 fatal error: all goroutines are asleep - deadlock!
 
 goroutine 1 [chan send]:

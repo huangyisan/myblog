@@ -9,6 +9,7 @@ categories: application
 
 之前一直用travis-ci做hexo的发布，但是从两个月之前开始，不知道为什么提交了代码后，travis-ci虽然触发了，但一直卡pending状态，一直不进行构建。导致需要在本机构建hexo，然后推送到master分支，前几篇关于concourse的就是手动构建hexo目录结构进行发布的。
 
+<!-- more -->
 实在不能忍了，前几天阿里云买了台2c4g的机器，准备自己弄个jenkins，做构建发布。
 
 因为之前公司也简单接触过jenkins，不过那会都是页面点点点，这次准备写pipeline进行构建。
@@ -50,7 +51,7 @@ categories: application
 2. 内容如下
 
 
-```java
+```python
 pipeline {
     agent {
         label 'master'
@@ -171,8 +172,7 @@ pipeline {
         }
     }
 }
-```
-
+```python
 
 ### 提交代码后自动构建
 

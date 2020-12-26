@@ -65,6 +65,7 @@ footer:
 
   # If not defined, `author` from Hexo `_config.yml` will be used.
   copyright:
+    
 
   # Powered by Hexo & NexT
   powered: true
@@ -88,7 +89,7 @@ footer:
 creative_commons:
   license: by-nc-sa
   sidebar: false
-  post: false
+  post: true
   language:
 
 
@@ -100,8 +101,7 @@ creative_commons:
 scheme: Gemini
 #scheme: Mist
 #scheme: Pisces
-#scheme: Muse
-
+#scheme: Gemini
 
 # Dark Mode
 darkmode: false
@@ -117,11 +117,11 @@ darkmode: false
 # When running the site in a subdirectory (e.g. yoursite.com/blog), remove the leading slash from link value (/archives -> archives).
 # External url should start with http:// or https://
 menu:
-  home: / || home
+  home: / || fa fa-home
   #about: /about/ || user
-  tags: /tags/ || tags
-  categories: /categories/ || th
-  archives: /archives/ || archive
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
   #commonweal: /404/ || fa fa-heartbeat
@@ -165,7 +165,6 @@ sidebar:
   onmobile: false
 
 
-
   # Manual define the sidebar width. If commented, will be default for:
   # Muse | Mist: 320
   # Pisces | Gemini: 240
@@ -176,14 +175,9 @@ sidebar:
   #  - always  expand for all pages automatically.
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  totally remove sidebar including sidebar toggle.
-  display: post
 
   # Sidebar padding in pixels.
   padding: 18
-  # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
-  offset: 12
-  # Enable sidebar on narrow view (only for Muse | Mist).
-  onmobile: false
 
 # Sidebar Avatar
 avatar:
@@ -202,8 +196,10 @@ site_state: true
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  GitHub: https://github.com/huangyisan || github
-  E-Mail: mailto:anonymousyisan@gmail.com || envelope
+  # GitHub: https://github.com/huangyisan || fab fa-github
+  E-Mail: mailto:anonymousyisan@gmail.com || fa fa-envelope
+  #GitHub: https://github.com/yourname || fab fa-github
+  #E-Mail: mailto:yourname@gmail.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   #Google: https://plus.google.com/yourname || fab fa-google
   #Twitter: https://twitter.com/yourname || fab fa-twitter
@@ -255,13 +251,22 @@ chat:
 # Post Settings
 # See: https://theme-next.org/docs/theme-settings/posts
 # ---------------------------------------------------------------
+
 # Automatically scroll page to section which is under <!-- more --> mark.
 scroll_to_more: true
 
 # Automatically saving scroll position on each post/page in cookies.
 save_scroll: true
+
 # Automatically excerpt description in homepage as preamble text.
 excerpt_description: true
+
+
+# Automatically Excerpt. Not recommend.
+# Please use <!-- more --> in the post to control excerpt accurately.
+auto_excerpt:
+  enable: true
+  length: 150
 
 # Read more button
 # If true, the read more button will be displayed in excerpt section.
@@ -278,7 +283,6 @@ post_meta:
 
 # Post wordcount display settings
 # Dependencies: https://github.com/theme-next/hexo-symbols-count-time
-
 symbols_count_time:
   separated_meta: true
   item_text_post: true
@@ -291,13 +295,15 @@ tag_icon: false
 # Front-matter variable (unsupport animation).
 reward_settings:
   # If true, reward will be displayed in every article by default.
-  enable: false
+  enable: true
   animation: false
   comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
 
 reward:
   wechatpay: /images/wechatpay.jpg
   alipay: /images/alipay.png
+  #wechatpay: /images/wechatpay.png
+  #alipay: /images/alipay.png
   #paypal: /images/paypal.png
   #bitcoin: /images/bitcoin.png
 
@@ -337,6 +343,8 @@ post_copyright:
   enable: true
   license: CC BY-NC-SA 3.0
   license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
+
+
 # ---------------------------------------------------------------
 # Custom Page Settings
 # See: https://theme-next.org/docs/theme-settings/custom-pages
@@ -387,14 +395,14 @@ codeblock:
   # Code Highlight theme
   # Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
   # See: https://github.com/chriskempson/tomorrow-theme
-  highlight_theme: normal
+  highlight_theme: night bright
   # Add copy button on codeblock
   copy_button:
-    enable: false
+    enable: true
     # Show text copy result.
-    show_result: false
+    show_result: true
     # Available values: default | flat | mac
-    style:
+    style: mac
 
 back2top:
   enable: true
@@ -422,8 +430,8 @@ bookmark:
 
 # `Follow me on GitHub` banner in the top-right corner.
 github_banner:
-  enable: false
-  permalink: https://github.com/yourname
+  enable: true
+  permalink: https://github.com/huangyisan
   title: Follow me on GitHub
 
 
@@ -441,7 +449,7 @@ github_banner:
 # ---------------------------------------------------------------
 
 font:
-  enable: false
+  enable: true
 
   # Uri of fonts host, e.g. https://fonts.googleapis.com (Default).
   host:
@@ -455,29 +463,30 @@ font:
   global:
     external: true
     family: Lato
-    size:
+    size: 0.9
 
   # Font settings for site title (.site-title).
   title:
     external: true
     family:
-    size:
+    size: 1.5
 
   # Font settings for headlines (<h1> to <h6>).
   headings:
     external: true
     family:
-    size:
+    size: 1.7
 
   # Font settings for posts (.post-body).
   posts:
     external: true
     family:
-
+    size: 0.9
   # Font settings for <code> and code blocks.
   codes:
     external: true
     family:
+	size: 0.9
 
 
 # ---------------------------------------------------------------
@@ -823,7 +832,6 @@ note:
   #  - disabled  disable all CSS styles import of note tag.
   style: simple
   icons: false
-  border_radius: 3
   # Offset lighter of background in % for modern and flat styles (modern: -12 | 12; flat: -18 | 6).
   # Offset also applied to label tag variables. This option can work with disabled note tag.
   light_bg_offset: 0
@@ -834,6 +842,7 @@ tabs:
     tabs: false
     labels: true
   border_radius: 0
+
 # PDF tag
 # NexT will try to load pdf files natively, if failed, pdf.js will be used.
 # So, you have to install the dependency of pdf.js if you want to use pdf tag and make it available to all browsers.
@@ -1029,4 +1038,3 @@ vendors:
 css: css
 js: js
 images: images
-
