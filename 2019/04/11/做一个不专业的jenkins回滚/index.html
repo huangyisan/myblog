@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
+  <meta name="description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录">
 <meta property="og:type" content="article">
 <meta property="og:title" content="做一个不专业的jenkins回滚">
 <meta property="og:url" content="https://kirakirazone.com/2019/04/11/%E5%81%9A%E4%B8%80%E4%B8%AA%E4%B8%8D%E4%B8%93%E4%B8%9A%E7%9A%84jenkins%E5%9B%9E%E6%BB%9A/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录  回滚期间 将同目录下war的备份文件还原成xxx.war  用到的组件如下: Customized Build Message Plugin（build后可以看到备注等自动传入的信息） Build With Parameters  (build的时候选填参数) Git Par">
+<meta property="og:description" content="war包回滚思路发布期间 对正在提供服务的war包在同目录下，重命名为xxx.warbak 并且对该war归档到指定目录">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g1yiam30k7j218g7wikiu.jpg">
 <meta property="article:published_time" content="2019-04-11T02:58:56.000Z">
-<meta property="article:modified_time" content="2020-12-19T13:58:04.241Z">
+<meta property="article:modified_time" content="2020-12-26T15:09:16.525Z">
 <meta property="article:author" content="Huangyisan">
 <meta property="article:tag" content="jenkins">
 <meta property="article:tag" content="cicd">
@@ -224,7 +224,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,6 +265,8 @@
 <li>对正在提供服务的war包在<em>同目录</em>下，重命名为xxx.warbak</li>
 <li>并且对该war归档到指定目录</li>
 </ol>
+<a id="more"></a>
+
 <h3 id="回滚期间"><a href="#回滚期间" class="headerlink" title="回滚期间"></a>回滚期间</h3><ol>
 <li>将同目录下war的备份文件还原成xxx.war</li>
 </ol>
@@ -283,11 +285,11 @@
 <h2 id="部分代码"><a href="#部分代码" class="headerlink" title="部分代码:"></a>部分代码:</h2><ol>
 <li>部署</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ -d &quot;&#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;war&quot; ] &amp;&amp; echo &#39;back dir is exist&#39; || mkdir -p &#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;war;</span><br><span class="line">cp &#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;webapps&#x2F;$&#123;tomcat_war&#125;.war &#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;war&#x2F;$&#123;tomcat_war&#125;.war_&#96;date +&quot;%Y%m%d-%H%M&quot;&#96; || echo &#39;not exist war&#39;;</span><br><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &#39;&#123;print $2&#125;&#39; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf &#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;webapps&#x2F;$&#123;tomcat_war&#125;;</span><br><span class="line">&#x2F;bin&#x2F;mv &#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;webapps&#x2F;$&#123;tomcat_war&#125;.&#123;war,warbak&#125; || echo &#39;not exist war&#39;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ -d &quot;/opt/$&#123;tomcat_dir&#125;/war&quot; ] &amp;&amp; echo &#x27;back dir is exist&#x27; || mkdir -p /opt/$&#123;tomcat_dir&#125;/war;</span><br><span class="line">cp /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.war /opt/$&#123;tomcat_dir&#125;/war/$&#123;tomcat_war&#125;.war_`date +&quot;%Y%m%d-%H%M&quot;` || echo &#x27;not exist war&#x27;;</span><br><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &#x27;&#123;print $2&#125;&#x27; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;war,warbak&#125; || echo &#x27;not exist war&#x27;;</span><br></pre></td></tr></table></figure>
 <ol start="2">
 <li>回滚</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &#39;&#123;print $2&#125;&#39; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf &#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;webapps&#x2F;$&#123;tomcat_war&#125;;</span><br><span class="line">&#x2F;bin&#x2F;mv &#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;webapps&#x2F;$&#123;tomcat_war&#125;.&#123;warbak,war&#125; || echo &#39;not exist war&#39;;</span><br><span class="line">&#x2F;opt&#x2F;$&#123;tomcat_dir&#125;&#x2F;bin&#x2F;catalina.sh start;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep $&#123;tomcat_dir&#125; | grep -vP &quot;cronolog|grep&quot; | awk &#x27;&#123;print $2&#125;&#x27; | xargs -I &#123;&#125; kill &#123;&#125;;</span><br><span class="line">sleep 3;</span><br><span class="line">rm -rf /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;;</span><br><span class="line">/bin/mv /opt/$&#123;tomcat_dir&#125;/webapps/$&#123;tomcat_war&#125;.&#123;warbak,war&#125; || echo &#x27;not exist war&#x27;;</span><br><span class="line"><span class="meta">/opt/$</span><span class="bash">&#123;tomcat_dir&#125;/bin/catalina.sh start;</span></span><br></pre></td></tr></table></figure>
 <h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ol>
 <li>由于采用的是maven项目，所以不论发布还是回滚都是会进行war包的build，其实在回滚的时候是不需要进行war包的build的。</li>
 </ol>

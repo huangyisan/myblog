@@ -28,7 +28,7 @@
 <meta property="og:description" content="go语言中的defer 当执行defer时，会将defer后面的语句压入到单独的栈(defer栈)。 当函数执行完毕后（遇到return，panic或者函数顺序执行完），在从defer栈中，按照先入后出的方式，执行。 如果函数的定义为匿名返回值,则defer无法修改。 如果函数的定义为具名返回值,则defer会进行修改。 在函数中，需要创建资源，文件句柄，数据库连接等，在执行完毕后，关闭这些资源。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-06-27T03:23:33.000Z">
-<meta property="article:modified_time" content="2020-12-19T13:58:04.241Z">
+<meta property="article:modified_time" content="2020-12-26T15:09:16.525Z">
 <meta property="article:author" content="Huangyisan">
 <meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -256,6 +256,8 @@
 <li>如果函数的定义为具名返回值,则defer会进行修改。</li>
 <li>在函数中，需要创建资源，文件句柄，数据库连接等，在执行完毕后，关闭这些资源。go提供了defer(延时机制)。</li>
 </ol>
+<a id="more"></a>
+
 <h3 id="顺序执行遇到defer情况"><a href="#顺序执行遇到defer情况" class="headerlink" title="顺序执行遇到defer情况"></a>顺序执行遇到defer情况</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	sum(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sum</span><span class="params">(n1 <span class="keyword">int</span>, n2 <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">&quot;第一个数为&quot;</span>, n1) <span class="comment">// 最后第一执行</span></span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">&quot;第二个数为&quot;</span>, n2) <span class="comment">// 最后第二执行</span></span><br><span class="line">	res := n1+n2</span><br><span class="line">	fmt.Println(<span class="string">&quot;结果为&quot;</span>,res)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>打印先输出fmt.Println里面的内容，接着输出最后一个defer内容，最后输出第一个defer的内容。</strong></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">结果为 <span class="number">3</span></span><br><span class="line">第二个数为 <span class="number">2</span></span><br><span class="line">第一个数为 <span class="number">1</span></span><br></pre></td></tr></table></figure>

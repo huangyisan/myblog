@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -247,24 +247,15 @@
 
       
           <h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><strong>凡是基本类型，都是赋值。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; 1</span><br><span class="line"></span><br><span class="line">b &#x3D; None</span><br><span class="line"></span><br><span class="line">c &#x3D; True</span><br></pre></td></tr></table></figure>
-<h2 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型"></a>复合类型</h2><p><strong>若是复合类型，都是地址指向。</strong></p>
-<p><strong>函数和类的赋值也是地址指向</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; [1,2,3]</span><br><span class="line"></span><br><span class="line">b &#x3D; &#123;&#39;a&#39;:1, &#39;b&#39;:1&#125;</span><br><span class="line"></span><br><span class="line">c &#x3D; 函数，类</span><br></pre></td></tr></table></figure>
-<h2 id="验证方法"><a href="#验证方法" class="headerlink" title="验证方法"></a>验证方法</h2><p><strong>直接用id()看地址引用，如果原始对象改变后，其id()和赋值对象的id()不再一致，则为赋值，反之则是引用。</strong> </p>
-<ul>
-<li><p>验证基本类型：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; 3</span><br><span class="line">&gt;&gt;&gt; b &#x3D; a</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9413248</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9413248</span><br><span class="line">&gt;&gt;&gt; a &#x3D; 4</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">9413280</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">9413248</span><br></pre></td></tr></table></figure>
-<p>给a第二次更变赋值为4后，b的id()和a的id()不同，所以是赋值</p>
-</li>
-<li><p>验证复合类型：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; [1,2,3]</span><br><span class="line">&gt;&gt;&gt; b &#x3D; a</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">[1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140435242878376</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140435242878376</span><br><span class="line">&gt;&gt;&gt; a.append(1)</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">140435242878376</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">140435242878376</span><br></pre></td></tr></table></figure>
-<p>给a第二次更变赋值为4后，b的id()和a的id()相同，所以是地址引用。下面的类的例子也能看出是地址引用。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class A(object):</span><br><span class="line">    def test(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">a &#x3D; A()</span><br><span class="line">b &#x3D; a</span><br><span class="line">print(id(a))</span><br><span class="line">print(id(b))</span><br><span class="line">a.value &#x3D; 1</span><br><span class="line">print(id(a))</span><br><span class="line">print(b.value)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">140233133844240</span><br><span class="line">140233133844240</span><br><span class="line">140233133844240</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">b = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">c = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/17/%E6%98%AF%E5%9C%B0%E5%9D%80%E5%BC%95%E7%94%A8%E8%BF%98%E6%98%AF%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -314,7 +305,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -352,33 +343,14 @@
 
       
           <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>当时是想测试单台服务器，流量到某带宽值，cpu，内存，磁盘io的表现。<br>现在单说iperf和nc的简单使用。</p>
-<h1 id="iperf"><a href="#iperf" class="headerlink" title="iperf"></a>iperf</h1><h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><ol>
-<li>server端启用<code>iperf -s</code></li>
-<li>client端连接server端，默认端口是<code>5001</code>,<code>iperf -c $&#123;server_ip&#125; $&#123;port&#125;</code></li>
-</ol>
-<p>server端：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700025 ~]# iperf -s</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Server listening on TCP port 5001</span><br><span class="line">TCP window size: 85.3 KByte (default)</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">[  4] local 10.8.199.17 port 5001 connected with 10.8.199.18 port 38008</span><br><span class="line">[ ID] Interval       Transfer     Bandwidth</span><br><span class="line">[  4]  0.0-10.0 sec  1.13 GBytes   971 Mbits&#x2F;sec</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>client端：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700026 ~]# iperf  -c 10.8.199.17 -p 5001</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Client connecting to 10.8.199.17, TCP port 5001</span><br><span class="line">TCP window size: 85.0 KByte (default)</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">[  3] local 10.8.199.18 port 38008 connected with 10.8.199.17 port 5001</span><br><span class="line">[ ID] Interval       Transfer     Bandwidth</span><br><span class="line">[  3]  0.0-10.0 sec  1.13 GBytes   973 Mbits&#x2F;sec</span><br></pre></td></tr></table></figure>
-<p><strong>出来的结果直接是带宽，比如上面的是趋近于1000M带宽。</strong></p>
-<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><p>没有研究太多参数，更多参数可以<code>-h</code>查看。</p>
-<ul>
-<li>-b 指定带宽<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700026 ~]# iperf  -c 10.8.199.17 -p 5001 -b 500M</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Client connecting to 10.8.199.17, TCP port 5001</span><br><span class="line">TCP window size: 85.0 KByte (default)</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">[  3] local 10.8.199.18 port 38010 connected with 10.8.199.17 port 5001</span><br><span class="line">[ ID] Interval       Transfer     Bandwidth</span><br><span class="line">[  3]  0.0-10.0 sec   625 MBytes   524 Mbits&#x2F;sec</span><br></pre></td></tr></table></figure>
-<h1 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h1></li>
-</ul>
-<h2 id="简单使用-1"><a href="#简单使用-1" class="headerlink" title="简单使用"></a>简单使用</h2><ol>
-<li>server端启用<code>nc -vvlnp $&#123;server_port&#125; &gt;/dev/null</code>，或者<code>-4</code>指定只使用ipv4的方式。</li>
-<li>client端连接<code>dd if=/dev/zero bs=1M count=1K | nc  $&#123;server_ip&#125; $&#123;server_port&#125;</code>，命令测试的是1G文件的下载速度。</li>
-</ol>
-<p>server端：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700025 ~]# nc -vv4lnp 5001 &gt;&#x2F;dev&#x2F;null</span><br><span class="line">Ncat: Version 7.50 ( https:&#x2F;&#x2F;nmap.org&#x2F;ncat )</span><br><span class="line">Ncat: Listening on 0.0.0.0:5001</span><br><span class="line">Ncat: Connection from 10.8.199.18.</span><br><span class="line">Ncat: Connection from 10.8.199.18:38410.</span><br><span class="line">NCAT DEBUG: Closing fd 4.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>client端：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@SCA-LX5700026 ~]# dd if&#x3D;&#x2F;dev&#x2F;zero bs&#x3D;1M count&#x3D;1K | nc  10.8.199.17 5001</span><br><span class="line">1024+0 records in</span><br><span class="line">1024+0 records out</span><br><span class="line">1073741824 bytes (1.1 GB) copied, 8.7875 s, 122 MB&#x2F;s</span><br></pre></td></tr></table></figure>
-<p>refer:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/7976/how-do-you-test-the-network-speed-between-two-boxes">https://askubuntu.com/questions/7976/how-do-you-test-the-network-speed-between-two-boxes</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/15/%E5%B8%A6%E5%AE%BD%E6%B5%8B%E8%AF%95/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -428,7 +400,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -457,79 +429,14 @@
 
       
           <p>Emmmm….数据库默认配置，建库没指定字符集，然后你懂得，所有库，表，部分字段字符集都是latin1。</p>
-<p>MariaDB version 10.1.36</p>
-<p><strong>数据库分字符集(character)和字符序(collation)</strong></p>
-<ul>
-<li>character定义了字符以及字符的编码。</li>
-<li>collation定义了字符的比较规则。</li>
-</ul>
-<p><strong>有四个地方涉及到字符集和字符序</strong></p>
-<ul>
-<li>服务器端(server level)</li>
-<li>数据库(database level)</li>
-<li>表(table level)</li>
-<li>char varchar text类型的字段(column level)</li>
-</ul>
-<p><strong>如果都未进行指定，采用何种character和collation，则默认情况为character=latin1, collation=latin1_swedish_ci</strong></p>
-<h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2><ol>
-<li><p>查看当前支持的字符集<code>SHOW charsets</code>，Default collation字段告知了，该字符集所用的默认字符序。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW charset;</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| Charset  | Description                 | Default collation   | Maxlen |</span><br><span class="line">+----------+-----------------------------+---------------------+--------+</span><br><span class="line">| big5     | Big5 Traditional Chinese    | big5_chinese_ci     |      2 |</span><br><span class="line">| dec8     | DEC West European           | dec8_swedish_ci     |      1 |</span><br><span class="line">| cp850    | DOS West European           | cp850_general_ci    |      1 |</span><br><span class="line">| hp8      | HP West European            | hp8_english_ci      |      1 |</span><br><span class="line">| koi8r    | KOI8-R Relcom Russian       | koi8r_general_ci    |      1 |</span><br><span class="line">...</span><br><span class="line">..</span><br><span class="line">.</span><br></pre></td></tr></table></figure></li>
-<li><p>查看server level当前的字符集<code>SHOW VARIABLES LIKE &quot;character_set_server&quot;</code>，查看server level当前的字符序<code>SHOW VARIABLES LIKE &quot;collation_server&quot;</code></p>
-</li>
-<li><p>修改server level字符集的方法:</p>
-</li>
-</ol>
-<ul>
-<li>修改配置文件</li>
-<li>编译的时候</li>
-<li>set 全局变量命令。但这种情况重启会失效。</li>
-</ul>
-<ol start="2">
-<li>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符集，则默认的字符序为该字符集所对应的默认字符序。</li>
-</ol>
-<h2 id="字符序"><a href="#字符序" class="headerlink" title="字符序"></a>字符序</h2><ol>
-<li>查看当前支持的字符序<code>SHOW collation</code>, Default字段存在Yes的，表示该字符集默认的default值。比如latin1默认的字符序为latin1_swedish_ci</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW collation;</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| Collation                | Charset  | Id  | Default | Compiled | Sortlen |</span><br><span class="line">+--------------------------+----------+-----+---------+----------+---------+</span><br><span class="line">| big5_chinese_ci          | big5     |   1 | Yes     | Yes      |       1 |</span><br><span class="line">| big5_bin                 | big5     |  84 |         | Yes      |       1 |</span><br><span class="line">| dec8_swedish_ci          | dec8     |   3 | Yes     | Yes      |       1 |</span><br><span class="line">| dec8_bin                 | dec8     |  69 |         | Yes      |       1 |</span><br><span class="line">| cp850_general_ci         | cp850    |   4 | Yes     | Yes      |       1 |</span><br><span class="line">| cp850_bin                | cp850    |  80 |         | Yes      |       1 |</span><br><span class="line">| hp8_english_ci           | hp8      |   6 | Yes     | Yes      |       1 |</span><br><span class="line">| hp8_bin                  | hp8      |  72 |         | Yes      |       1 |</span><br><span class="line">| koi8r_general_ci         | koi8r    |   7 | Yes     | Yes      |       1 |</span><br><span class="line">| koi8r_bin                | koi8r    |  74 |         | Yes      |       1 |</span><br><span class="line">| latin1_german1_ci        | latin1   |   5 |         | Yes      |       1 |</span><br><span class="line">| latin1_swedish_ci        | latin1   |   8 | Yes     | Yes      |       1 |</span><br><span class="line">| latin1_danish_ci         | latin1   |  15 |         | Yes      |       1 |</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li><p>如果创建库，或者表，或者字段，或者配置文件my,cnf中只指定了字符序，则默认的字符集为该字符序所对应的字符集。</p>
-</li>
-<li><p>字符序表示的含义</p>
-</li>
-</ol>
-<ul>
-<li>一般来说分为三段，也存在一段或者两段的情况，常见的三段如<code>utf8mb4_general_ci</code>,两段的如<code>utf8mb4_bin</code>(<strong>这类情况，其实只存在第一段和第三段，第二段不存在</strong>)</li>
-<li>第一段代表字符集。</li>
-<li>第二段代表语言(chinese,swedish),也有general这种通用的，或者unicode类型。</li>
-<li>第三段代表是否敏感，是否为bin。</li>
-</ul>
-<ol start="4">
-<li>对于第三段的解释<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_ai	Accent insensitive</span><br><span class="line">_as	Accent sensitive</span><br><span class="line">_ci	Case insensitive</span><br><span class="line">_cs	case-sensitive</span><br><span class="line">_bin	Binary</span><br></pre></td></tr></table></figure></li>
-</ol>
-<ul>
-<li>Accent是否为sensitive表现为，如果为sensitive，则比较a和á是不同的，如果为insensitive则a和á比较为相同。</li>
-<li>Case insensitive为大小写不敏感，case-sensitive为大小写敏感。</li>
-</ul>
-<h2 id="字符集和字符序的继承顺序"><a href="#字符集和字符序的继承顺序" class="headerlink" title="字符集和字符序的继承顺序"></a>字符集和字符序的继承顺序</h2><ol>
-<li>数据库服务，建库，建表，建字段，倘若其中有指定character和collation，则<code>字段</code>继承<code>表</code>，<code>表</code>继承<code>库</code>，<code>库</code>继承<code>数据库服务</code>。比如建库指定了字符集为utf8，那么该库下面的表如果不指定字符集，则表的字符集也为utf8，char、varchar、text的字段字符集也是utf8。</li>
-<li><strong>有个例外，如果修改了表， 那么该表下面的字段的字符集和字符序也会变成表的字符集和字符序。</strong></li>
-</ol>
-<h2 id="修改查看字符集命令："><a href="#修改查看字符集命令：" class="headerlink" title="修改查看字符集命令："></a>修改查看字符集命令：</h2><ul>
-<li><p>修改运行环境：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET character_set_server &#x3D; utf8mb4</span><br><span class="line">set character_set_connection &#x3D; utf8mb4</span><br><span class="line">set character_set_database &#x3D; utf8mb4</span><br><span class="line">set character_set_results &#x3D; utf8mb4</span><br></pre></td></tr></table></figure></li>
-<li><p>修改库:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ALTER DATABASE dbname CHARACTER SET utf8mb4 COLLATE  utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句 </span><br><span class="line">show create database dbname;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改表:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. dir varchar(255) -&gt; varchar(191)  mysql5.6的版本需要修改。不保证所有版本都需要修改。</span><br><span class="line">ALTER TABLE dir_stats MODIFY dir VARCHAR(191);</span><br><span class="line">2. 修改字段类型utf8mb4</span><br><span class="line">alter table tablename convert to character set utf8mb4 collate utf8mb4_unicode_ci;</span><br><span class="line"></span><br><span class="line">验证语句</span><br><span class="line">SHOW FULL COLUMNS FROM dbname.tablename;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>refer:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html">https://www.cnblogs.com/chyingp/p/mysql-character-set-collation.html</a><br><a target="_blank" rel="noopener" href="https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations">https://mariadb.com/kb/zh-cn/setting-character-sets-and-collations</a><br><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/charset-database.html">https://dev.mysql.com/doc/refman/8.0/en/charset-database.html</a><br><a target="_blank" rel="noopener" href="http://zarez.net/?p=719">http://zarez.net/?p=719</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/10/mysql%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AD%97%E7%AC%A6%E5%BA%8F/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -579,7 +486,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -607,15 +514,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。"><a href="#scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。" class="headerlink" title="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。"></a>scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%f&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 0.000000</span><br><span class="line">the number is 0.000000</span><br></pre></td></tr></table></figure>
+          <h2 id="scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。"><a href="#scanf-函数不会自行提升成double类型，printf-函数会自行提升成double类型。" class="headerlink" title="scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。"></a>scanf()函数不会自行提升成double类型，printf()函数会自行提升成double类型。</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">double</span> num;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;input a double type number: &quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%f&quot;</span>, &amp;num);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;the number is %f\n&quot;</span>, num);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;the number is %lf\n&quot;</span>, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">input a <span class="keyword">double</span> type number: <span class="number">1</span></span><br><span class="line">the number is <span class="number">0.000000</span></span><br><span class="line">the number is <span class="number">0.000000</span></span><br></pre></td></tr></table></figure>
 <p><strong>scanf()函数因为指向的是num的指针,所以不适用float promotions to double</strong></p>
-<p><strong>scanf()若使用double类型，必须写成”%lf”, 而printf()即便指定的是”%f”,也会自行提升成double类型。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void main(void) &#123;</span><br><span class="line">    double num;</span><br><span class="line">    printf(&quot;input a double type number: &quot;);</span><br><span class="line">    scanf(&quot;%lf&quot;, &amp;num);</span><br><span class="line">    printf(&quot;the number is %f\n&quot;, num);</span><br><span class="line">    printf(&quot;the number is %lf\n&quot;, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input a double type number: 1</span><br><span class="line">the number is 1.000000</span><br><span class="line">the number is 1.000000</span><br></pre></td></tr></table></figure>
-<h2 id="integer-promotions"><a href="#integer-promotions" class="headerlink" title="integer-promotions"></a>integer-promotions</h2><p>refer:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c">https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c</a><br><a target="_blank" rel="noopener" href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf">http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf</a> [6.5.2.2 page-71]<br><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/integer-promotions-in-c/">https://www.geeksforgeeks.org/integer-promotions-in-c/</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/08/Promotions-in-Program-C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -665,7 +573,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -706,46 +614,14 @@
 <li>_Complex (c99加入的复数类型)</li>
 <li>_Imaginary  (c99加入的虚数类型)</li>
 </ul>
-<h3 id="有符号整形"><a href="#有符号整形" class="headerlink" title="有符号整形"></a>有符号整形</h3><p><strong>有符号类型可用于表示正整数和负整数。</strong></p>
-<ul>
-<li><p>int 系统给定的基本整数类型，c语言规定int类型不小于<code>16位</code>。</p>
-</li>
-<li><p>short或short int 最大的shrot类型整数小于或等于最大的int类型整数。c语言规定short类型至少占<code>16位</code>。</p>
-</li>
-<li><p>long或long int 该类型可表示的整数大于或等于最大的int类型整数。c语言规定long类型至少占位<code>32位</code>。</p>
-</li>
-<li><p>long long或long long int 该类型可以表示的整数大于或等于最大的long类型整数。long long 类型至少占<code>64位</code>。</p>
-</li>
-</ul>
-<p><strong>一般而言，long类型的占用内存比short类型大，int类型的宽度要和和long类型相同，要么和short类型相同。</strong></p>
-<h3 id="无符号整形"><a href="#无符号整形" class="headerlink" title="无符号整形"></a>无符号整形</h3><p><strong>无符号整形只能用于表示零和正整数，因此<code>无符号整形可以表示的正整数比有符号整形的大</code>。在整形类型前面加上关键字<code>unsigned</code>表明该类型是无符号整形。单独的unsigned相当于unsigned int。</strong></p>
-<h3 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h3><p><strong>char类型实际上存储的是整数，而非字符。ASCII编码范围是<code>0~127</code>，所以只需要<code>7位</code>二进制数表示即可(这里不包含中文日文等特殊字符集)。char类型表示一个字符要占用<code>1个字节</code>内存，出于历史原因，一个字节通常是<code>8位</code>，但是如果要表示基本字符集，也可以是16位或更大。</strong></p>
-<ul>
-<li>char 字符类型的关键字，有些编译器使用有符号的char，而有些则使用无符号的char。在需要时，可以在char前面加上关键字signed或unsigned来指明，具体使用哪一种类型。</li>
-</ul>
-<h3 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h3><p><strong>布尔值表示<code>true</code>和<code>false</code>。c语言用1表示<code>true</code>，0表示<code>false</code></strong></p>
-<ul>
-<li>_Bool 布尔类型的关键字，c99加入。其类型为无符号int类型，所占用的个空间只要能存储0或者1即可。</li>
-</ul>
-<h3 id="实浮点类型-实数浮点类型"><a href="#实浮点类型-实数浮点类型" class="headerlink" title="实浮点类型(实数浮点类型)"></a>实浮点类型(实数浮点类型)</h3><p><strong>实浮点类型可以表示正浮点数和负浮点数。</strong></p>
-<ul>
-<li><p>float 系统基本浮点类型，可精确表示至少6位有效数字。</p>
-</li>
-<li><p>double 存储浮点数的范围更大，能表示比float类型更多的有效数字(至少15位)和更大的指数。</p>
-</li>
-<li><p>long long 存储浮点束的范围比double更大，能表示比double更多的有效数字和更大的指数。</p>
-</li>
-</ul>
-<h3 id="复数和虚数浮点数"><a href="#复数和虚数浮点数" class="headerlink" title="复数和虚数浮点数"></a>复数和虚数浮点数</h3><p><strong>虚数类型是可选的类型。复数的实部和虚部类型都基于<code>实浮点类型</code>来构成。</strong></p>
-<ul>
-<li>float _Complex</li>
-<li>double _Complex</li>
-<li>long double _Complex</li>
-<li>float _Imaginary</li>
-<li>double _Imaginary</li>
-<li>long double _Imaginary</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/06/c%E8%AF%AD%E8%A8%80%E5%9F%BA%E6%9C%AC%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -795,7 +671,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -824,55 +700,15 @@
 
       
           <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>安卓同事称代码调试访问test-material.aaa.tv/xxx/xxxx.png等图片资源的时候报错，报错信息类似如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.</span><br></pre></td></tr></table></figure>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>查看了安卓的开放文档，出现该报错主要由一下三种情况发生：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/articles/security-ssl#UnknownCa">颁发服务器证书的 CA 未知</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/articles/security-ssl#SelfSigned">服务器证书不是由 CA 签署的，而是自签署</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/articles/security-ssl#MissingCa">服务器配置缺少中间 CA</a>。</li>
-</ol>
-<p>首先排除第一点和第二点，证书是购买的赛门铁克。</p>
-<p>然后去<a target="_blank" rel="noopener" href="https://www.ssllabs.com/ssltest/">ssllabs</a>网站测试<code>test-material.aaa.tv</code>域名支持的https建联加密方式<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywswiz7etj21ia0iiabj.jpg"></p>
-<p>起先怀疑是安卓可能使用了SSL3的加密方式进行https简练握手，后来确认安卓使用版本之后排除了该情况。</p>
-<p>接着使用浏览器访问资源查看发现存在中间CA证书，但用域名检测网站的时候提示不含中间CA证书。于是乎又抓了一个安卓端可以显示的图片的域名来测试，在测试网站上也是属于不包含中间CA证书的情况。</p>
-<p>两者的区别是，无法建联的域名是阿里云上的，能建联显示图片的域名是腾讯云上的。</p>
-<p>当时很纳闷，后来查阅资料得知不同软件或者设备会有不同的行为，有些即便不存在中间CA也会帮忙代理查找。</p>
-<p>安卓(其他苹果设备应该也是如此)自身会信任一些根证书，可能安卓去“解析”test-material.aaa.tv这个域名的时候得到的根证书，并不在信任证书里面，从而导致https建联失败。</p>
-<p>于是发现安卓的确是存在信任一些列证书的情况：<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt2cigk2j20f00qoam5.jpg"></p>
-<p>然后来获取下test-material.aaa.tv的根证书情况，自然，在浏览器端获取到的可能是浏览器帮助代理请求获得的。得在服务器端用命令去查看，命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl s_client -connect test-material.aaa.tv:443 -servername test-material.aaa.tv</span><br></pre></td></tr></table></figure>
-<p><strong>-connect 检测的域名，后面跟随ssl端口号</strong><br><strong>-servername 指定SNI(Server Name Indication)，因为可能存在多个域名对应一张证书的情况，比如买的证书是一级域名和二级域名都可以使用这种情况，那么需要指定具体的域名。</strong></p>
-<p>SNI (Server Name Indication)是用来改善服务器与客户端 SSL (Secure Socket Layer)和 TLS (Transport Layer Security) 的一个扩展。主要解决一台服务器只能使用一个证书(一个域名)的缺点，随着服务器对虚拟主机的支持，一个服务器上可以为多个域名提供服务，因此SNI必须得到支持才能满足需求。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt3e8uucj21yw0dk7h4.jpg"><br><em>上图已经修复问题，修复之前只有条目0，不包含条目1。</em></p>
-<ul>
-<li>红框信息：</li>
-</ul>
-<ol>
-<li>起始证书是C=CN/L=xxxxx(后面一大串)，然后C=CN/L=xxxxx(后面一大串)这个证书又是由GeoTrust Inc./CN=GeoTrust SSL CA - G3颁发。</li>
-</ol>
-<ul>
-<li>修复问题之前只有条目0,没有条目1，然后在安卓信任证书列表里面查不到关于信任GeoTrust Inc./CN=GeoTrust SSL CA - G3这个证书的条目。所以建联无法通过了。</li>
-</ul>
-<ol start="2">
-<li>GeoTrust SSL CA - G3又是由Geo Trust Inc./CN=Geo Trust Global CA颁发。</li>
-</ol>
-<p><strong>修复问题之后可以在安卓端信任列表里面查到存在Geo Trust Global CA证书条目，所以建联成功了。</strong></p>
-<h2 id="问题解决方法："><a href="#问题解决方法：" class="headerlink" title="问题解决方法："></a>问题解决方法：</h2><p>中间证书CA没配置导致，上阿里云后台，查看该域名对应的证书，发现的确只有本机CA证书，没有配置中间证书CA，重新配置上后，问题解决，安卓端建联正常。</p>
-<p>refer:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/articles/security-ssl.html#MissingCa">https://developer.android.google.cn/training/articles/security-ssl.html#MissingCa</a><br><a target="_blank" rel="noopener" href="http://blog.csdn.net/makenothing/article/details/53292335">http://blog.csdn.net/makenothing/article/details/53292335</a></p>
-</blockquote>
-<p>证书检测地址:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.ssllabs.com/ssltest/analyze.html">https://www.ssllabs.com/ssltest/analyze.html</a></p>
-</blockquote>
-<h2 id="安卓文档对于缺失中间证书的描述"><a href="#安卓文档对于缺失中间证书的描述" class="headerlink" title="安卓文档对于缺失中间证书的描述:"></a>安卓文档对于缺失中间证书的描述:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">有趣的是，在大多数桌面浏览器中访问此服务器不会引发完全未知的 CA 或自签署服务器证书所引发的类似错误。这是因为大多数桌面浏览器都会将可信的中间 CA 缓存一段时间。当浏览器从某个网站访问和了解中间 CA 后，下次它就不需要将中间 CA 添加在证书链中。</span><br><span class="line"></span><br><span class="line">有些网站会专门为提供资源的辅助网络服务器这样做。例如，他们可能让具有完整证书链的服务器提供主 HTML 页面，让不包含 CA 的服务器提供图像、CSS 或 JavaScript 等资源，以节省带宽。遗憾的是，这些服务器有时候可能会提供您正在尝试从 Android 应用调用的网络服务，这一点让人难以接受。</span><br><span class="line"></span><br><span class="line">可以通过两种方法解决此问题：</span><br><span class="line"></span><br><span class="line">配置服务器以便在服务器链中添加中间 CA。大多数 CA 都可以提供有关如何为所有常用网络服务器执行此操作的文档。如果您需要网站至少通过 Android 4.2 使用默认 Android 浏览器，那么这是唯一的方法。</span><br><span class="line">或者，像对待其他任何未知 CA 一样对待中间 CA，并创建一个 TrustManager 以直接信任它，如前面的两部分中所述。</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h2 id="查看证书到期时间："><a href="#查看证书到期时间：" class="headerlink" title="查看证书到期时间："></a>查看证书到期时间：</h2><p>openssl s_client -connect <a target="_blank" rel="noopener" href="http://www.icoinbay.com:443/">www.icoinbay.com:443</a> -servername <a target="_blank" rel="noopener" href="http://www.icoinbay.com/">www.icoinbay.com</a> 2&gt;/dev/null |openssl x509 -noout -dates </p>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor <span class="keyword">for</span> certification path not found.</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/06/%E6%9C%AA%E9%85%8D%E7%BD%AE%E4%B8%AD%E9%97%B4%E8%AF%81%E4%B9%A6CA%E5%BC%95%E8%B5%B7%E7%9A%84%E5%AE%89%E5%8D%93%E7%AB%AF%E6%97%A0%E6%B3%95%E9%80%9A%E8%BF%87https%E5%BB%BA%E8%81%94%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87%E6%A1%88%E4%BE%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -922,7 +758,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -951,58 +787,14 @@
 
       
           <h2 id="修改ulimit无法解决fork不出子进程的问题"><a href="#修改ulimit无法解决fork不出子进程的问题" class="headerlink" title="修改ulimit无法解决fork不出子进程的问题"></a>修改ulimit无法解决fork不出子进程的问题</h2><p>现场没有保留，大抵经过如下：<br>朋友的一台系统为Ubuntu的机器，上面启动了一个进程，该进程会fork出子进程，但是当root用户所有的进程数到一万多后就无法继续fork了，输入命令开始报错<code>bash fork: retry: Resource temporarily unavailable</code></p>
-<p>排查经过：</p>
-<ol>
-<li>起先我以为是ulimit的配置没修改，或者不够大，但使用ulimit -u看了下，65535，足够大了。</li>
-<li>感觉虽然ulimit调整了，但是执行中的进程limit并没有到达65535，于是乎，去/proc/pid/limit查看了，发现max process也是65535。</li>
-<li>那么不成是内存，cpu之类的(其实想想也不太可能，内存小也不会报fork错误)，看了发现完全够用。</li>
-</ol>
-<p>这下懵圈了</p>
-<p><code>bash fork: retry: Resource temporarily unavailable</code> 这个报错绝逼是某个参数的配置配小了。</p>
-<p>由于是Ubuntu的系统，所以和平常用的centos还是有区别的。选择谷歌了，查来查去，一堆人都说是修改ulimit参数。</p>
-<p>最后是找到了这篇文章：</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable">https://askubuntu.com/questions/845380/bash-fork-retry-resource-temporarily-unavailable</a></p>
-</blockquote>
-<p>里面让修改的地方是一个名为pid.max的文件，和我机器路径稍微有点出入，我的路径是在<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code> 这个数值只有10813，所以<code>ps -eLf | wc -l</code>到一万七八就上不去了。</p>
-<ul>
-<li>这个文件的数量改动后立马生效，不需要重启</li>
-<li>重启机器后，这个值又会还原成10813，看来Ubuntu系统默认pid.max的值为10813(当时我没注意Ubuntu具体是哪个版本。。。。)，这个值如何产生的目前还不太清楚。</li>
-</ul>
-<h2 id="centos7"><a href="#centos7" class="headerlink" title="centos7"></a>centos7</h2><p>在centos7上</p>
-<ul>
-<li>获取当前进程数：<code>cat /sys/fs/cgroup/pids/pids.current</code>   类似使用<code>ps -ef | wc -l</code></li>
-<li>获取当前<strong>线程数和进程数</strong>总和：<code>wc -l /sys/fs/cgroup/pids/tasks</code>  类似使用<code>ps -eLf | wc -l</code></li>
-</ul>
-<p>centos7上也是可以实现pid.max：<br>只需要在/sys/fs/cgroup/pids/下创建以为目录，则该目录中就会自动创建pid.max：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote test]# pwd</span><br><span class="line">&#x2F;sys&#x2F;fs&#x2F;cgroup&#x2F;pids&#x2F;test</span><br><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br></pre></td></tr></table></figure>
-<p>对当前shell交互进程限制</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote test]# ls</span><br><span class="line">cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  pids.current  pids.max  tasks</span><br><span class="line">[root@leanote test]# cat cgroup.procs </span><br><span class="line">[root@leanote test]# echo $$</span><br><span class="line">14514</span><br><span class="line">[root@leanote test]# echo 14514 &gt; cgroup.procs </span><br><span class="line">[root@leanote test]# echo 1 &gt; pids.max </span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: Resource temporarily unavailable</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line">-bash: fork: retry: No child processes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>给pid.max输入1后，直接就出<code>-bash: fork: retry: No child processes</code>报错了。</li>
-<li>pid.max只会对cgroup.procs中存在的进程进行pid.max限制。</li>
-<li>当进程消失后,cgroup.procs中的进程号也会自动消失。</li>
-</ul>
-<p>在上一级不存在pid.max是因为对整个系统没必要做限制。<br>Ubuntu系统上<code>/sys/fs/cgroup/pids/user.slice/user-0.slice/pid.max</code>这个其实是对用户编号为0的用户进行了pid.max的限制。</p>
-<p>refer:</p>
-<p>知乎上看到有个小伙伴也遇到这个问题了</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29192624">https://zhuanlan.zhihu.com/p/29192624</a></p>
-</blockquote>
-<p>fork的文档</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man2/fork.2.html">http://man7.org/linux/man-pages/man2/fork.2.html</a></p>
-</blockquote>
-<p>cgroup介绍</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007241437">https://segmentfault.com/a/1190000007241437</a><br><a target="_blank" rel="noopener" href="https://mccxj.github.io/blog/20171230_os-thread-limit.html">https://mccxj.github.io/blog/20171230_os-thread-limit.html</a></p>
-</blockquote>
-<p>cgroup 进程数限制</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007468509">https://segmentfault.com/a/1190000007468509</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1052,7 +844,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -1080,36 +872,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key&#x3D;None, reverse&#x3D;False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
-<p><em>python3中已经取消了sort()函数中cmp参数</em></p>
-<p>python中sort()函数用来排序，其中有个key的参数，十分神奇。</p>
-<p>我对key参数的理解是：<br><strong>这个key是构造了一个全新的对象，对这些全新的对象进行比较排序，然后再根据结果，对原先的对象进行排序。</strong></p>
-<h2 id="字典value排序"><a href="#字典value排序" class="headerlink" title="字典value排序:"></a>字典value排序:</h2><p>比如很常用的，对一个字典进行value排序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">d &#x3D; &#123;1: &#39;c&#39;, 2:&#39;d&#39;, 3: &#39;b&#39;, 4: &#39;a&#39;&#125;</span><br><span class="line"></span><br><span class="line">def sort_value(x):</span><br><span class="line">    return x[1]</span><br><span class="line"></span><br><span class="line">print(sorted(d.items(), key&#x3D;sort_value))</span><br></pre></td></tr></table></figure>
-<p><code>d.items</code>得到dict_items([(1, ‘c’), (2, ‘d’), (3, ‘b’), (4, ‘a’)])，其挨个传入到key对应的sort_value函数中，返回索引为1的值，也就是value的值，然后对这个新对象进行排序，最终以新对象排序的结果来输出d.items()的排序。</p>
-<p>将sort_value函数写成lambda则：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sorted(d.items(), key&#x3D;lambda x :x[1]))</span><br></pre></td></tr></table></figure>
-<h2 id="字符串内容重新排序"><a href="#字符串内容重新排序" class="headerlink" title="字符串内容重新排序:"></a>字符串内容重新排序:</h2><p>对字符串”hUangYisan6749”重新排序，要求:</p>
-<ol>
-<li>数字在最前面，偶数在奇数前面。</li>
-<li>字符串在数字后面，大写字母在小写字母后面。</li>
-</ol>
-<p>思路：</p>
-<ol>
-<li>字符串挨个拆出来。</li>
-<li>构造一个元组，能够符合上述需求，然后排序的。<strong>元组的排序是从首个元素逐一排序的，碰到首元素一样，则比第二个元素</strong></li>
-</ol>
-<p>先确定一个通用的元组，总共是四种类型，奇数偶数，大写小写。<br>例：偶数，奇数，大写，小写(1,0,0,0)，比如这样就表示该字符为偶数。</p>
-<p><strong>由于默认sorted排序是从小到大，所以根据需求，得写成小写，大写，奇数，偶数的方式(或者加上reverse=True)</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def custom_order(x):</span><br><span class="line">    if x.islower():</span><br><span class="line">        return 1,0,0,0,x</span><br><span class="line">    if x.isupper():</span><br><span class="line">        return 0,1,0,0,x</span><br><span class="line">    if x.isdigit() and int(x) % 2 &#x3D;&#x3D; 0:</span><br><span class="line">        return 0,0,1,0,x</span><br><span class="line">    else:</span><br><span class="line">        return 0,0,0,1,x</span><br></pre></td></tr></table></figure>
-<p>当对比相同的时候，会索引+1比较，所以return不能漏掉x，因为当前面四位全部相等的时候，要比较x。</p>
-<p>那么代码可以写成：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mystring &#x3D; &quot;hUangYisan6749&quot;</span><br><span class="line">def custom_order(x):</span><br><span class="line">    if x.islower():</span><br><span class="line">        return 1,0,0,0,x</span><br><span class="line">    if x.isupper():</span><br><span class="line">        return 0,1,0,0,x</span><br><span class="line">    if x.isdigit() and int(x) % 2 &#x3D;&#x3D; 0:</span><br><span class="line">        return 0,0,1,0,x</span><br><span class="line">    else:</span><br><span class="line">        return 0,0,0,1,x</span><br><span class="line"></span><br><span class="line">print(&quot;&quot;.join(sorted(mystring,key&#x3D;custom_order)))</span><br><span class="line"></span><br><span class="line">7946UYaaghinns</span><br></pre></td></tr></table></figure>
-<p>refer:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="http://python.jobbole.com/85025/">http://python.jobbole.com/85025/</a></p>
-</blockquote>
-
+          <h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1159,7 +930,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -1189,27 +960,15 @@
       
           <h2 id="一道领扣的题"><a href="#一道领扣的题" class="headerlink" title="一道领扣的题"></a>一道领扣的题</h2><p>给定一个仅包含大小写字母和空格 ‘ ‘ 的字符串，返回其最后一个单词的长度。<br>如果不存在最后一个单词，请返回 0 。<br>说明：一个单词是指由字母组成，但不包含任何空格的字符串。</p>
 <p>示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;Hello World&quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure>
-<p>写出的其中一种答案是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def lengthOfLastWord(self, s):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type s: str</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        slist &#x3D; s.split()</span><br><span class="line">        print(slist)</span><br><span class="line">        if slist &#x3D;&#x3D; []:</span><br><span class="line">            return 0</span><br><span class="line">        return len(slist[-1])</span><br></pre></td></tr></table></figure>
-<h2 id="split-“-“-和-split"><a href="#split-“-“-和-split" class="headerlink" title="split(“ “) 和 split()"></a>split(“ “) 和 split()</h2><p>起先我认为split(“ “)和split()的作用是一样的，都是以空格进行分割。<br>以至于一开始做上面领扣的题一直都有问题。</p>
-<p>然后手工验证了下两者的情况：</p>
-<ul>
-<li>split(“ “)的情况<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split(&quot; &quot;)</span><br><span class="line">[&#39;&#39;, &#39;a&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;]</span><br></pre></td></tr></table></figure></li>
-<li>split()的情况<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; &quot; a   &quot;.split()</span><br><span class="line">[&#39;a&#39;]</span><br></pre></td></tr></table></figure></li>
-<li>查了下split()的用法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">S.split([sep [,maxsplit]]) -&gt; list of strings</span><br><span class="line"></span><br><span class="line">Return a list of the words in the string S, using sep as the delimiter string. If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</span><br></pre></td></tr></table></figure></li>
-<li>*也就是说，如果sep不填写，那么split()执行两个行为：**</li>
-</ul>
-<ol>
-<li>以任何whitespace字符串作为分隔符。</li>
-<li>除所有的empty string。</li>
-</ol>
-<p>empty string就是<code>not xxx</code>返回结果为False的字符串,包括””。</p>
-<p>refer:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/length-of-last-word/">https://leetcode-cn.com/problems/length-of-last-word/</a><br>help(str.split)</p>
-</blockquote>
-
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">输入: &quot;Hello World&quot;</span></span><br><span class="line"><span class="section">输出: 5</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/29/split%E5%87%BD%E6%95%B0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1259,7 +1018,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -1290,47 +1049,15 @@
           <p>客户瞎搞，两张网卡，说是看着名称不爽，自行修改了网卡名，为bond0和bond1，bond1能启动，而bond0无法启动。<br>我这边接手擦屁股。</p>
 <p>先说udev服务，然后再看问题产生的原因。</p>
 <h2 id="system-udevd进程"><a href="#system-udevd进程" class="headerlink" title="system-udevd进程"></a>system-udevd进程</h2><p>在centos6中为udevd进程：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 &#x2F;sbin&#x2F;udevd -d</span><br></pre></td></tr></table></figure>
-<p>在centos7中为system-udevd进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos7 ~]# ps -ef | grep udev</span><br><span class="line">root       460     1  0 10月09 ?      00:00:00 &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;systemd-udevd</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>udev的作用是：<br><code>man udev</code><br>receives device uevents directly from the kernel whenever a device is added or removed from the system, or it changes its state.<br>当有设备从系统插入或者拔出，或者改变了状态的时候，内核会直接收到设备uevents。</p>
-</li>
-<li><p>udev rules文件存在位置：</p>
-</li>
-</ul>
-<ol>
-<li>system rules directory: /usr/lib/udev/rules.d</li>
-<li>volatile runtime directory: /run/udev/rules.d</li>
-<li>local administration directory: /etc/udev/rules.d</li>
-</ol>
-<ul>
-<li>udev读取文件规则：</li>
-</ul>
-<ol>
-<li>读取这些目录下以.rules为后缀的文件。</li>
-<li>文件先后顺序和其所在目录无关，和文件的名称顺序有关。</li>
-<li>若不同目录存在相同的文件，则根据目录名称来排优先级顺序。/etc&gt;/run&gt;/usr</li>
-</ol>
-<ul>
-<li>udev进行网卡重命名<blockquote>
-<p><a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a></p>
-</blockquote>
-</li>
-</ul>
-<p><strong>优先查询的是<code>/usr/lib/udev/rules.d/60-net.rules</code>配置文件。</strong>如果发现包含 HWADDR 条目的 ifcfg 文件与某个接口的 MAC 地址匹配，它会将该接口重命名为 ifcfg 文件中由 DEVICE 指令给出的名称。</p>
-<h2 id="问题产生的原因"><a href="#问题产生的原因" class="headerlink" title="问题产生的原因"></a>问题产生的原因</h2><p>当时发现<code>/usr/lib/udev/rules.d/60-net.rules</code>文件内已经存在了bond1的配置，而bond0的配置写到了<code>/etc/udev/rules.d/70-persistent-net.rules</code>里面，由于60的优先级高于70，所以bond0网卡一直起不来。</p>
-<p>其实centos7已经不用<code>70-persistent-net.rules</code>这个文件了，在centos6中，删除了<code>70-persistent-net.rules</code>文件，他会通过<code>/lib/udev/write_net_rules</code>文件来生成，但centos7已经不存在该文件了，centos7是使用<code>/lib/udev/rename_device</code>文件来生成<code>/usr/lib/udev/rules.d/60-net.rules</code>。</p>
-<h2 id="合理修改centos7网卡名称流程"><a href="#合理修改centos7网卡名称流程" class="headerlink" title="合理修改centos7网卡名称流程"></a>合理修改centos7网卡名称流程</h2><p>首先修改当前网卡名称</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;sbin&#x2F;ip link set eth1 down</span><br><span class="line">&#x2F;sbin&#x2F;ip link set eth1 name eth123</span><br><span class="line">&#x2F;sbin&#x2F;ip link set eth123 up</span><br></pre></td></tr></table></figure>
-<p>然后在<code>/usr/lib/udev/rules.d/60-net.rules</code>中加入配置策略<br>ACTION==”add”, SUBSYSTEM==”net”, DRIVERS==”?*”, ATTR{address}==”00:50:56:8e:3f:a7”, NAME=”eth123”</p>
-<p>最后修改ifcfg-xxx里面的NAME和DEVICE字段值为eth123。</p>
-<p>重启网卡即可。</p>
-<p>refer:</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.freedesktop.org/software/systemd/man/udev.html#">https://www.freedesktop.org/software/systemd/man/udev.html#</a><br><a target="_blank" rel="noopener" href="https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg">https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_device_renaming_procedure?tdsourcetag=s_pctim_aiomsg</a><br><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting">https://unix.stackexchange.com/questions/205010/centos-7-rename-network-interface-without-rebooting</a></p>
-</blockquote>
-
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_31_91_centos6 ~]# ps -ef | grep udev</span><br><span class="line">root       470     1  0 01:17 ?        00:00:00 /sbin/udevd -d</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

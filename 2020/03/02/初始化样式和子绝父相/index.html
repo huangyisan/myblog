@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="遇到的一些问题 最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。   当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。   排查结果 内容块无法准确拉伸位置到bottom: 88rpx，是因为父组件的高度有问题，这个父组件为最外层的组件.content，我当时给的高度是height: 100">
+  <meta name="description" content="遇到的一些问题 最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。   当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初始化样式和子绝父相">
 <meta property="og:url" content="https://kirakirazone.com/2020/03/02/%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%B7%E5%BC%8F%E5%92%8C%E5%AD%90%E7%BB%9D%E7%88%B6%E7%9B%B8/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="遇到的一些问题 最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。   当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。   排查结果 内容块无法准确拉伸位置到bottom: 88rpx，是因为父组件的高度有问题，这个父组件为最外层的组件.content，我当时给的高度是height: 100">
+<meta property="og:description" content="遇到的一些问题 最近把前端重新温习了下，然后在写小程序，首页样式就难住了，中间区块，怎么都无法铺满空白区域。   当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3gy1gcfq81qns2j20b90jbt93.jpg">
 <meta property="article:published_time" content="2020-03-02T09:22:13.000Z">
-<meta property="article:modified_time" content="2020-12-19T13:58:04.241Z">
+<meta property="article:modified_time" content="2020-12-26T15:09:16.525Z">
 <meta property="article:author" content="Huangyisan">
 <meta property="article:tag" content="css，小程序">
 <meta name="twitter:card" content="summary">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,6 +267,8 @@
 <li><p>当时想到用子绝父相来解决，但即便使用了，还是有问题。中间区块设定bottom: 88rpx无法和底端bar对齐。</p>
 </li>
 </ol>
+<a id="more"></a>
+
 <h2 id="排查结果"><a href="#排查结果" class="headerlink" title="排查结果"></a>排查结果</h2><ol>
 <li>内容块无法准确拉伸位置到bottom: 88rpx，是因为父组件的高度有问题，这个父组件为最外层的组件.content，我当时给的高度是height: 100%。</li>
 <li>然后因为.content是page根组件的子组件，所以height:100% 是继承page的高度，但page并没有设定高度，所以出现了问题。</li>

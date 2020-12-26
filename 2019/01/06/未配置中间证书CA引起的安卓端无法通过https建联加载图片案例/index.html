@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt2cigk2j20f00qoam5.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt3e8uucj21yw0dk7h4.jpg">
 <meta property="article:published_time" content="2019-01-06T05:15:04.000Z">
-<meta property="article:modified_time" content="2020-12-19T13:58:04.245Z">
+<meta property="article:modified_time" content="2020-12-26T15:09:16.529Z">
 <meta property="article:author" content="Huangyisan">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -254,7 +254,9 @@
 
       
         <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>安卓同事称代码调试访问test-material.aaa.tv/xxx/xxxx.png等图片资源的时候报错，报错信息类似如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor <span class="keyword">for</span> certification path not found.</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
 <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>查看了安卓的开放文档，出现该报错主要由一下三种情况发生：</p>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/articles/security-ssl#UnknownCa">颁发服务器证书的 CA 未知</a>。</li>
@@ -270,7 +272,7 @@
 <p>安卓(其他苹果设备应该也是如此)自身会信任一些根证书，可能安卓去“解析”test-material.aaa.tv这个域名的时候得到的根证书，并不在信任证书里面，从而导致https建联失败。</p>
 <p>于是发现安卓的确是存在信任一些列证书的情况：<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt2cigk2j20f00qoam5.jpg"></p>
 <p>然后来获取下test-material.aaa.tv的根证书情况，自然，在浏览器端获取到的可能是浏览器帮助代理请求获得的。得在服务器端用命令去查看，命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl s_client -connect test-material.aaa.tv:443 -servername test-material.aaa.tv</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl s_client -connect test-material.aaa.tv:443 -servername test-material.aaa.tv</span><br></pre></td></tr></table></figure>
 <p><strong>-connect 检测的域名，后面跟随ssl端口号</strong><br><strong>-servername 指定SNI(Server Name Indication)，因为可能存在多个域名对应一张证书的情况，比如买的证书是一级域名和二级域名都可以使用这种情况，那么需要指定具体的域名。</strong></p>
 <p>SNI (Server Name Indication)是用来改善服务器与客户端 SSL (Secure Socket Layer)和 TLS (Transport Layer Security) 的一个扩展。主要解决一台服务器只能使用一个证书(一个域名)的缺点，随着服务器对虚拟主机的支持，一个服务器上可以为多个域名提供服务，因此SNI必须得到支持才能满足需求。</p>
 <p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1fywt3e8uucj21yw0dk7h4.jpg"><br><em>上图已经修复问题，修复之前只有条目0，不包含条目1。</em></p>
@@ -296,7 +298,7 @@
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.ssllabs.com/ssltest/analyze.html">https://www.ssllabs.com/ssltest/analyze.html</a></p>
 </blockquote>
-<h2 id="安卓文档对于缺失中间证书的描述"><a href="#安卓文档对于缺失中间证书的描述" class="headerlink" title="安卓文档对于缺失中间证书的描述:"></a>安卓文档对于缺失中间证书的描述:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">有趣的是，在大多数桌面浏览器中访问此服务器不会引发完全未知的 CA 或自签署服务器证书所引发的类似错误。这是因为大多数桌面浏览器都会将可信的中间 CA 缓存一段时间。当浏览器从某个网站访问和了解中间 CA 后，下次它就不需要将中间 CA 添加在证书链中。</span><br><span class="line"></span><br><span class="line">有些网站会专门为提供资源的辅助网络服务器这样做。例如，他们可能让具有完整证书链的服务器提供主 HTML 页面，让不包含 CA 的服务器提供图像、CSS 或 JavaScript 等资源，以节省带宽。遗憾的是，这些服务器有时候可能会提供您正在尝试从 Android 应用调用的网络服务，这一点让人难以接受。</span><br><span class="line"></span><br><span class="line">可以通过两种方法解决此问题：</span><br><span class="line"></span><br><span class="line">配置服务器以便在服务器链中添加中间 CA。大多数 CA 都可以提供有关如何为所有常用网络服务器执行此操作的文档。如果您需要网站至少通过 Android 4.2 使用默认 Android 浏览器，那么这是唯一的方法。</span><br><span class="line">或者，像对待其他任何未知 CA 一样对待中间 CA，并创建一个 TrustManager 以直接信任它，如前面的两部分中所述。</span><br></pre></td></tr></table></figure>
+<h2 id="安卓文档对于缺失中间证书的描述"><a href="#安卓文档对于缺失中间证书的描述" class="headerlink" title="安卓文档对于缺失中间证书的描述:"></a>安卓文档对于缺失中间证书的描述:</h2><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">有趣的是，在大多数桌面浏览器中访问此服务器不会引发完全未知的 <span class="keyword">CA</span> 或自签署服务器证书所引发的类似错误。这是因为大多数桌面浏览器都会将可信的中间 <span class="keyword">CA</span> 缓存一段时间。当浏览器从某个网站访问和了解中间 <span class="keyword">CA</span> 后，下次它就不需要将中间 <span class="keyword">CA</span> 添加在证书链中。</span><br><span class="line"></span><br><span class="line">有些网站会专门为提供资源的辅助网络服务器这样做。例如，他们可能让具有完整证书链的服务器提供主 HTML 页面，让不包含 <span class="keyword">CA</span> 的服务器提供图像、CSS 或 JavaScript 等资源，以节省带宽。遗憾的是，这些服务器有时候可能会提供您正在尝试从 Android 应用调用的网络服务，这一点让人难以接受。</span><br><span class="line"></span><br><span class="line">可以通过两种方法解决此问题：</span><br><span class="line"></span><br><span class="line">配置服务器以便在服务器链中添加中间 <span class="keyword">CA</span>。大多数 <span class="keyword">CA</span> 都可以提供有关如何为所有常用网络服务器执行此操作的文档。如果您需要网站至少通过 Android 4.2 使用默认 Android 浏览器，那么这是唯一的方法。</span><br><span class="line">或者，像对待其他任何未知 <span class="keyword">CA</span> 一样对待中间 <span class="keyword">CA</span>，并创建一个 TrustManager 以直接信任它，如前面的两部分中所述。</span><br></pre></td></tr></table></figure>
 
 
 

@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。  方法 node_exporter中启用textfile采集的方式。 在textfile目录下">
+  <meta name="description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="prometheus曲线救国添加hostname">
 <meta property="og:url" content="https://kirakirazone.com/2019/03/07/prometheus%E6%B7%BB%E5%8A%A0hostname/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。  方法 node_exporter中启用textfile采集的方式。 在textfile目录下">
+<meta property="og:description" content="问题场景 prometheus scrape_configs采用的是file_sd_configs，通过这种方式获取到的node_exporter的metric，元数据不存在hostname信息。 只看ip，无法知道该机器的用户。 grafana展现的时候，能根据hostname进行选择，展现机器数据。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg">
 <meta property="article:published_time" content="2019-03-07T09:45:38.000Z">
-<meta property="article:modified_time" content="2020-12-19T13:58:04.241Z">
+<meta property="article:modified_time" content="2020-12-26T15:09:16.525Z">
 <meta property="article:author" content="Huangyisan">
 <meta property="article:tag" content="prometheus">
 <meta name="twitter:card" content="summary">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -258,6 +258,8 @@
 <li>只看ip，无法知道该机器的用户。</li>
 <li>grafana展现的时候，能根据hostname进行选择，展现机器数据。</li>
 </ol>
+<a id="more"></a>
+
 <h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
 <li>node_exporter中启用textfile采集的方式。</li>
 <li>在textfile目录下，写入hostname。</li>
@@ -268,19 +270,19 @@
 <li>表达式hostname只和写入的metric有关，如何关联到不存在hostname的metric中。</li>
 </ol>
 <h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
-<li>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ExecStartPre&#x3D;&#x2F;opt&#x2F;scripts&#x2F;gethostname.sh</span><br><span class="line"></span><br><span class="line"># cat &#x2F;opt&#x2F;scripts&#x2F;gethostname.sh</span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role&#x3D;\&quot;&#96;&#x2F;usr&#x2F;bin&#x2F;hostname&#96;\&quot;&#125; 0&quot; &gt; &#x2F;app&#x2F;local&#x2F;node_exporter&#x2F;collect&#x2F;hostname.prom</span><br><span class="line">echo 1 &gt; &#x2F;dev&#x2F;null</span><br></pre></td></tr></table></figure></li>
-<li>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># HELP machine_role Metric read from &#x2F;app&#x2F;local&#x2F;node_exporter&#x2F;collect&#x2F;hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role&#x3D;&quot;postfix01&quot;&#125; 0</span><br></pre></td></tr></table></figure>
+<li>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ExecStartPre=/opt/scripts/gethostname.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> cat /opt/scripts/gethostname.sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role=\&quot;`/usr/bin/hostname`\&quot;&#125; 0&quot; &gt; /app/local/node_exporter/collect/hostname.prom</span><br><span class="line">echo 1 &gt; /dev/null</span><br></pre></td></tr></table></figure></li>
+<li>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># HELP machine_role Metric <span class="keyword">read</span> <span class="keyword">from</span> <span class="regexp">/app/</span>local<span class="regexp">/node_exporter/</span><span class="keyword">collect</span>/hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role=<span class="string">&quot;postfix01&quot;</span>&#125; <span class="number">0</span></span><br></pre></td></tr></table></figure>
 其label是role，value是postfix01，也就是hostname</li>
 </ol>
 <p>prometheus中执行执行<code>machine_role</code>,可以得到element为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,role&#x3D;&quot;ShangHai-SJ-L3-LC-Flume-01&quot;,service&#x3D;&quot;L3&quot;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">machine_role</span>&#123;instance=<span class="string">&quot;10.1.11.1:9100&quot;</span>,<span class="built_in">ip</span>=<span class="string">&quot;10.1.11.1&quot;</span>,job=<span class="string">&quot;L3&quot;</span>,role=<span class="string">&quot;ShangHai-SJ-L3-LC-Flume-01&quot;</span>,service=<span class="string">&quot;L3&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
 <p>这边有role和instance这个两个label，其中role为hostname的label，而instance则作为连接点的label。</p>
 <p>在grafana中的变量配置中就可以根据machine_role，先获取role，作为$hostname的值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_values(machine_role&#123;service&#x3D;&quot;$job&quot;&#125;,role)</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label<span class="constructor">_values(<span class="params">machine_role</span>&#123;<span class="params">service</span>=<span class="string">&quot;$job&quot;</span>&#125;,<span class="params">role</span>)</span></span><br></pre></td></tr></table></figure>
 <p>然后再根据$hostname，来获取instance,作为$node的值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_values(machine_role&#123;role&#x3D;&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label<span class="constructor">_values(<span class="params">machine_role</span>&#123;<span class="params">role</span>=<span class="string">&quot;$hostname&quot;</span>&#125;,<span class="params">instance</span>)</span></span><br></pre></td></tr></table></figure>
 <p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance&#x3D;~&quot;$node&quot;, mode&#x3D;&#39;system&#39;&#125;) by (cpu))</span><br></pre></td></tr></table></figure>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">count</span>(<span class="keyword">count</span>(node_cpu_seconds_total&#123;instance=~<span class="string">&quot;$node&quot;</span>, mode=<span class="string">&#x27;system&#x27;</span>&#125;) <span class="keyword">by</span> (cpu))</span><br></pre></td></tr></table></figure>
 <h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
 <li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg"></p>
 </li>
@@ -295,21 +297,21 @@
 </ul>
 <h2 id="待解决问题第二点解决方法"><a href="#待解决问题第二点解决方法" class="headerlink" title="待解决问题第二点解决方法"></a>待解决问题第二点解决方法</h2><p><strong>promSQL可以使用on ignore group_left group_right配合来把hostname拼凑进去。</strong></p>
 <p>machine_role查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,role&#x3D;&quot;zabbix&quot;,service&#x3D;&quot;L3&quot;&#125;  0</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">machine_role</span>&#123;instance=<span class="string">&quot;10.1.11.1:9100&quot;</span>,ip=<span class="string">&quot;10.1.11.1&quot;</span>,job=<span class="string">&quot;L3&quot;</span>,role=<span class="string">&quot;zabbix&quot;</span>,service=<span class="string">&quot;L3&quot;</span>&#125;  <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p>up查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">up&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,service&#x3D;&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">up</span>&#123;instance=<span class="string">&quot;10.1.11.1:9100&quot;</span>,<span class="built_in">ip</span>=<span class="string">&quot;10.1.11.1&quot;</span>,job=<span class="string">&quot;L3&quot;</span>,service=<span class="string">&quot;L3&quot;</span>&#125;  <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>machine_role里面的role标签包含了主机名，但up没有，此时通过将两个方法结合在一起。<br>使用on方法，<em>可以理解为mysql的两表查询join</em> 两者的有共同的instance,job,service,ip标签</p>
 <p>不一定要全部都选择，但选择的多则相互匹配更加精确，<code>on(instance,job,service,ip)</code></p>
 <p>使用group_left或者group_right标记”多”的标签,这边多出来的标签是role，所以为<code>group_left(role)</code></p>
 <p>表达式架构为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;vector expr&gt; &lt;bin-op&gt; on(&lt;label list&gt;) group_left(&lt;label list&gt;) &lt;vector expr&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">&lt;vector expr&gt;</span> <span class="variable">&lt;bin-op&gt;</span> <span class="keyword">on</span>(<span class="variable">&lt;label list&gt;</span>) group_left(<span class="variable">&lt;label list&gt;</span>) <span class="variable">&lt;vector expr&gt;</span></span><br></pre></td></tr></table></figure>
 <p><bin-op>指加减乘除余幂</p>
 <p>所以将up和machine_role拼凑和可以写为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role</span><br><span class="line">&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,role&#x3D;&quot;zabbix&quot;,service&#x3D;&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">up + <span class="keyword">on</span><span class="params">(instance, job,ip,service)</span> group_left(role) machine_role</span><br><span class="line">&#123;instance=<span class="string">&quot;10.1.11.1:9100&quot;</span>,ip=<span class="string">&quot;10.1.11.1&quot;</span>,job=<span class="string">&quot;L3&quot;</span>,role=<span class="string">&quot;zabbix&quot;</span>,service=<span class="string">&quot;L3&quot;</span>&#125;  <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>如果用group_right，则把up和machine_role反一下即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role + on(instance, job,ip,service) group_right(role) up </span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role + <span class="keyword">on</span><span class="params">(instance, job,ip,service)</span> group_right(role) up </span><br></pre></td></tr></table></figure>
 <p>此时得到的结果包含了role，如果作为告警，由于up为1表示正常，machine_role设置的是0，两者相加，若为0，则表示机器down。<br>告警表达式可以写成:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role &#x3D;&#x3D; 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">up + <span class="keyword">on</span><span class="params">(instance, job,ip,service)</span> group_left(role) machine_role == <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p>此时如果告警，则会包含role这个标签，就可以传递给alertmanager，获取到role了。</p>
 <p>refer</p>
 <blockquote>

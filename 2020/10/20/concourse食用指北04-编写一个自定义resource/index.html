@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://image.kirakirazone.com/image/wechat_message.png">
 <meta property="article:published_time" content="2020-10-20T03:27:32.000Z">
-<meta property="article:modified_time" content="2020-12-19T13:58:04.241Z">
+<meta property="article:modified_time" content="2020-12-26T15:09:16.525Z">
 <meta property="article:author" content="Huangyisan">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="concourse">
@@ -224,7 +224,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,6 +273,8 @@
 <li>三个阶段执行顺序为check阶段，in阶段，out阶段。</li>
 <li>编写的dockerfile需要将check in out作为可执行文件放入/opt/resource下面。</li>
 </ol>
+<a id="more"></a>
+
 <h3 id="check阶段"><a href="#check阶段" class="headerlink" title="check阶段"></a>check阶段</h3><ol>
 <li>check阶段为资源执行的第一个阶段，主要用于检查资源的最新版本。</li>
 <li>传入两个字段，一个为source，一个为version， 例如<code>&#123;“source”: &#123;“url”: “git-url”,  “user”: “abc”, “password”: “xyz”&#125;, “version”: &quot;777&quot;&#125;</code></li>

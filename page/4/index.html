@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -249,126 +249,15 @@
           <h2 id="同一分支-不同文件-无冲突情况"><a href="#同一分支-不同文件-无冲突情况" class="headerlink" title="同一分支 不同文件 无冲突情况"></a>同一分支 不同文件 无冲突情况</h2><ol>
 <li>本地修改master，远端(模拟其他协同开发人员)修改remote_change</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">master  remote_change</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>查看当前git log信息</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">huangyisan@huangyisan-PC MINGW64 ~&#x2F;Desktop&#x2F;github&#x2F;pingan&#x2F;testgit (master)</span><br><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">* aed5259 (HEAD -&gt; master, origin&#x2F;master) local change 2</span><br><span class="line">* d327114 local change 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>当前分支指向master，且和远程对齐。</p>
-<ol start="3">
-<li><p>非本地进行提交<br>比如使用web页面gitlab提交，模拟协同操作仓库，修改remote_change内容</p>
-</li>
-<li><p>然后本地进行提交<br>修改master文件内容两次，并且commit，进行push</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &#39;local change 3&#39;</span><br><span class="line">[master d327114] local change 3</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br><span class="line"></span><br><span class="line"> $ git commit -m &#39;local change 4&#39;</span><br><span class="line">[master aed5259] local change 4</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>进行push，此时因为非本地端已经被提交，当前仓库不是最新代码，push被rejected，查看git log内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">* 8dd9d20 (HEAD -&gt; master) local change 4</span><br><span class="line">* f6b8c95 local change 3</span><br><span class="line">* aed5259 (origin&#x2F;master) local change 2</span><br><span class="line">* d327114 local change 1</span><br><span class="line">* d0e5f73 change local 17</span><br></pre></td></tr></table></figure>
-<p>当前位置比远程仓库快2个位置。由于远程已经有提交内容，本地仓库不是最新代码，需要git pull.</p>
-<ol start="5">
-<li>仓库重新pull，并查看git log</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">*   5b4b59f (HEAD -&gt; master) Merge branch &#39;master&#39; of http:&#x2F;&#x2F;gitlab.ptest.cdn.pingan.com.cn:19090&#x2F;huangyisan&#x2F;testgit</span><br><span class="line">|\</span><br><span class="line">| * 3fb5469 (origin&#x2F;master) 更新 remote_change 1</span><br><span class="line">* | 8dd9d20 local change 4</span><br><span class="line">* | f6b8c95 local change 3</span><br><span class="line">|&#x2F;</span><br><span class="line">* aed5259 local change 2</span><br><span class="line">* d327114 local change 1</span><br></pre></td></tr></table></figure>
-<p>此时出现了’分叉’，本地指向的是和远程merge的内容，但远程是指向3fb5469位置，还没更新本地的两个commit提交内容。</p>
-<ol start="6">
-<li>使用rebase，查看git log</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: local change 3</span><br><span class="line">Applying: local change 4</span><br></pre></td></tr></table></figure>
-<p>查看git log</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">* c10a76b (HEAD -&gt; master) local change 4</span><br><span class="line">* 4101717 local change 3</span><br><span class="line">* 3fb5469 (origin&#x2F;master) 更新 remote_change 1</span><br><span class="line">* aed5259 local change 2</span><br><span class="line">* d327114 local change 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><strong>此时git log变成了一条直线。查看git log内容更加清晰明了。</strong><br>本地指向c10a76b 远端仓库指向3fb5469，还需要对本地进行git push</p>
-<ol start="7">
-<li>git push提交更变内容<br>由于只是rebase，并没有git push，所以还需要把本地的量词修改提交到远端仓库</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br><span class="line">Enumerating objects: 8, done.</span><br><span class="line">Counting objects: 100% (8&#x2F;8), done.</span><br><span class="line">Delta compression using up to 4 threads</span><br><span class="line">Compressing objects: 100% (4&#x2F;4), done.</span><br><span class="line">Writing objects: 100% (6&#x2F;6), 569 bytes | 569.00 KiB&#x2F;s, done.</span><br><span class="line">Total 6 (delta 0), reused 0 (delta 0)</span><br><span class="line">To http:&#x2F;&#x2F;xxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">   3fb5469..c10a76b  master -&gt; master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="同一分支-相同文件-有冲突情况"><a href="#同一分支-相同文件-有冲突情况" class="headerlink" title="同一分支 相同文件 有冲突情况"></a>同一分支 相同文件 有冲突情况</h2><ol>
-<li>查看git log信息</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">* d01191c (HEAD -&gt; master, origin&#x2F;master) local change 1</span><br><span class="line">* 6b113ef remove</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>本地和远端都修改master文件，让其产生冲突</li>
-</ol>
-<p>本地:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat master</span><br><span class="line">local change 2</span><br></pre></td></tr></table></figure>
-<p>远端:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local change 1</span><br><span class="line">remote change 2</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>远端提交，然后本地也push</li>
-</ol>
-<p>本地不是指向最新的commit，本地需要先pull</p>
-<ol start="4">
-<li>本地pull操作，出现了冲突</li>
-</ol>
-<p>git status内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch and &#39;origin&#x2F;master&#39; have diverged,</span><br><span class="line">and have 1 and 1 different commits each, respectively.</span><br><span class="line">  (use &quot;git pull&quot; to merge the remote branch into yours)</span><br><span class="line"></span><br><span class="line">You have unmerged paths.</span><br><span class="line">  (fix conflicts and run &quot;git commit&quot;)</span><br><span class="line">  (use &quot;git merge --abort&quot; to abort the merge)</span><br><span class="line"></span><br><span class="line">Unmerged paths:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to mark resolution)</span><br><span class="line"></span><br><span class="line">        both modified:   master</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and&#x2F;or &quot;git commit -a&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>冲突内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cat master</span><br><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">local change 2</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">local change 1</span><br><span class="line">remote change 2</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; 2497b92a10abea64a2cfc7072039bbf497cc11e0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>add commit冲突内容</li>
-</ol>
-<p><strong>此时如果修改冲突内容然后rebase，则修改的内容又会还原，所以先add commit</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &#39;conficlit&#39;</span><br><span class="line">[master a252b15] conficlit</span><br></pre></td></tr></table></figure>
-<p>查看git log，发现出现分叉了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">*   a252b15 (HEAD -&gt; master) conficlit</span><br><span class="line">|\</span><br><span class="line">| * 2497b92 (origin&#x2F;master) 更新 master</span><br><span class="line">* | 92bf8fc local change 2</span><br><span class="line">|&#x2F;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ol start="6">
-<li>此时进行git rebase操作<br>查看git log 之前的分叉没了</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">* 2497b92 (HEAD, origin&#x2F;master) 更新 master</span><br><span class="line">* d01191c local change 1</span><br><span class="line">* 6b113ef remove</span><br><span class="line">*   f6e9fe8 update</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ol start="7">
-<li>然后修复冲突，并且进行add</li>
-</ol>
-<p>修复冲突后 add，<strong>但不commit</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add master</span><br></pre></td></tr></table></figure>
-<ol start="8">
-<li>进行git rebase –continue操作</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase --continue</span><br><span class="line">Applying: local change 2</span><br></pre></td></tr></table></figure>
-<p>查看git log, 此时本地HEAD比远端快，所以需要push</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">* 455b381 (HEAD -&gt; master) local change 2</span><br><span class="line">* 2497b92 (origin&#x2F;master) 更新 master</span><br><span class="line">* d01191c local change 1</span><br></pre></td></tr></table></figure>
-<ol start="9">
-<li>最后进行git push</li>
-</ol>
-<p>查看git log 测试及本地HEAD和远端对齐commit号了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$  git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">* 455b381 (HEAD -&gt; master, origin&#x2F;master) local change 2</span><br><span class="line">* 2497b92 更新 master</span><br><span class="line">* d01191c local change 1</span><br><span class="line">* 6b113ef remove</span><br><span class="line">*   f6e9fe8 update</span><br></pre></td></tr></table></figure>
-<h2 id="不同分支-无冲突情况"><a href="#不同分支-无冲突情况" class="headerlink" title="不同分支 无冲突情况"></a>不同分支 无冲突情况</h2><ol>
-<li>dog cat两个基于master checkout出来的分支，当前git log出现分叉</li>
-</ol>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3ly1g1hsqriytzj20gn068wes.jpg"></p>
-<ol start="2">
-<li>在cat分支上进行git rebase dog</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase dog</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: cat</span><br><span class="line">Applying: cat</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>查看git log ，cat和dog的分叉合并了<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3ly1g1hsp6ghkfj20fz08hgm5.jpg"></li>
-</ol>
-<h2 id="不同分支-有冲突情况"><a href="#不同分支-有冲突情况" class="headerlink" title="不同分支 有冲突情况"></a>不同分支 有冲突情况</h2><ol>
-<li>dog cat两个基于master checkout出来的分支，当前git log出现分叉</li>
-</ol>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3ly1g1ht0t2p82j20hv08wjrx.jpg"></p>
-<ol start="2">
-<li>在cat分支上进行git rebase dog 出现了冲突</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase dog</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: cat</span><br><span class="line">Applying: cat</span><br><span class="line">Applying: remove cat dog</span><br><span class="line">Using index info to reconstruct a base tree...</span><br><span class="line">A       dog</span><br><span class="line">Falling back to patching base and 3-way merge...</span><br><span class="line">Removing cat</span><br><span class="line">Applying: cat</span><br><span class="line">Using index info to reconstruct a base tree...</span><br><span class="line">Falling back to patching base and 3-way merge...</span><br><span class="line">Auto-merging annimal</span><br><span class="line">CONFLICT (add&#x2F;add): Merge conflict in annimal</span><br><span class="line">error: Failed to merge in the changes.</span><br><span class="line">hint: Use &#39;git am --show-current-patch&#39; to see the failed patch</span><br><span class="line">Patch failed at 0004 cat</span><br><span class="line"></span><br><span class="line">Resolve all conflicts manually, mark them as resolved with</span><br><span class="line">&quot;git add&#x2F;rm &lt;conflicted_files&gt;&quot;, then run &quot;git rebase --continue&quot;.</span><br><span class="line">You can instead skip this commit: run &quot;git rebase --skip&quot;.</span><br><span class="line">To abort and get back to the state before &quot;git rebase&quot;, run &quot;git rebase --abort&quot;.</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>解决冲突后，git add ，然后<code>git rebase --continue</code> 无需git commit</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git add annimal</span><br><span class="line"></span><br><span class="line">$ git rebase --continue</span><br><span class="line">Applying: cat</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>查看git log已经解决分叉情况</li>
-</ol>
-<p><img src="http://ww1.sinaimg.cn/large/9f0d15f3ly1g1ht138yvwj20g807pq3b.jpg"></p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
-<li><strong>只对</strong><code>尚未推送</code><strong>或分享给别人的本地修改执行变基操作清理历史</strong></li>
-<li><strong>从不对已推送至别处的提交执行变基操作</strong></li>
-<li>如果存在冲突，则解决完冲突后，进行git add，之后不需要git commit，直接使用<code>git rebase --continue</code></li>
-<li>rebase目的就是让协同开发同事看log更加清晰明了。</li>
-</ol>
-<p>refer</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0015266568413773c73cdc8b4ab4f9aa9be10ef3078be3f000#0">https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0015266568413773c73cdc8b4ab4f9aa9be10ef3078be3f000#0</a><br><a target="_blank" rel="noopener" href="http://gitbook.liuhui998.com/4_2.html">http://gitbook.liuhui998.com/4_2.html</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HeF7dwVyzow&amp;feature=player_embedded">https://www.youtube.com/watch?v=HeF7dwVyzow&amp;feature=player_embedded</a></p>
-</blockquote>
-
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">master  remote_change</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/26/git-rebase%E6%93%8D%E4%BD%9C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -418,7 +307,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -451,24 +340,14 @@
 <li>布隆过滤器相对于hashmap而言，牺牲了准确性，但大大降低了空间利用率。</li>
 <li>布隆过滤器对值的判断存在两种情况，<strong>可能存在</strong>和<strong>绝对不存在</strong>。</li>
 </ol>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>布隆过滤器两个要素，长度为n的bit array和m个独立的hash function。对需要写入的数值value进行所有的hash function运算，得到的值和n进行取模运算，得到m个位置，把bit array的这些位置置为1，就完成了一次写入。</p>
-<h2 id="举个简单的例子"><a href="#举个简单的例子" class="headerlink" title="举个简单的例子"></a>举个简单的例子</h2><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g18503hemmj20ow0mk3z4.jpg"></p>
-<ol>
-<li>需要存入的值为’huangyisan’，bit arrary长度为10。</li>
-<li>存在三个hash方法，分别对huangyisan运算。</li>
-<li>然后对函数执行得到的结果，和长度10取模。</li>
-<li>取模得到的值，在bit arrary中对应位置至于1。</li>
-<li>那么只要bit arrary的3 5 9 位为1，则代表huangyisan这个字符串存在。</li>
-</ol>
-<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><p>布隆过滤器的两个状态，一个为绝对不存在(negative)，还有一个为可能存在(positive)。所以这个可能存在的状态，会使得得到的结果不一定准确。<br>出现这个情况，主要是存入数据比较多，导致bit位重叠，所以单单根据bit位为1判断某个字符串是否存在，只能判断为可能存在。<br>所以在对准确性有一定容忍度的环境，是可以使用布隆选择器的。</p>
-<h2 id="问题最大可能进行避免"><a href="#问题最大可能进行避免" class="headerlink" title="问题最大可能进行避免"></a>问题最大可能进行避免</h2><p>问题肯定能存在，但可以降低产生的概率，此时就要在使用之前对bit arrary长度，hash function数量等因素进行设定。<br>一个可以进行评估设定的站点: <a target="_blank" rel="noopener" href="https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2">https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2</a></p>
-<h2 id="python实现布隆过滤器"><a href="#python实现布隆过滤器" class="headerlink" title="python实现布隆过滤器"></a>python实现布隆过滤器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">class BloomFilter(object):</span><br><span class="line">    def __init__(self,size):</span><br><span class="line">        self.size &#x3D; size</span><br><span class="line">        self.arrarylist &#x3D; [0]*size</span><br><span class="line">        self.hash_func &#x3D; [hashlib.md5, hashlib.sha1, hashlib.sha224]</span><br><span class="line"></span><br><span class="line">    def add_data(self,data):</span><br><span class="line">        for func in self.hash_func:</span><br><span class="line">            index &#x3D; int(func(data.encode()).hexdigest(),16) % self.size</span><br><span class="line">            self.arrarylist[index] &#x3D; 1</span><br><span class="line"></span><br><span class="line">    def is_data_exist(self,data):</span><br><span class="line">        result &#x3D; 1 #起始位为1，如果为0，则肯定最终结果为0了。</span><br><span class="line">        for func in self.hash_func:</span><br><span class="line">            index &#x3D; int(func(data.encode()).hexdigest(),16) % self.size</span><br><span class="line">            #三个index对应value，&amp;操作为1，则返回true</span><br><span class="line">            result &amp;&#x3D; self.arrarylist[index]</span><br><span class="line">        return True if result &#x3D;&#x3D; 1 else False</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    # 调整bf_size大小，可以改变False positive的值</span><br><span class="line">    bf_size &#x3D; 1000</span><br><span class="line"></span><br><span class="line">    bloom_filter &#x3D; BloomFilter(bf_size)</span><br><span class="line"></span><br><span class="line">    arrarylist &#x3D; []</span><br><span class="line"></span><br><span class="line">    # 添加数值0-99</span><br><span class="line">    for i in range(100):</span><br><span class="line">        bloom_filter.add_data(str(i))</span><br><span class="line">    </span><br><span class="line">    # 对100-999进行is_data_exist方法运算，若返回true，则count+1，计算False positive的值。</span><br><span class="line">    count &#x3D; 0</span><br><span class="line">    for i in range(100,1000):</span><br><span class="line">        if bloom_filter.is_data_exist(str(i)):</span><br><span class="line">            count+&#x3D;1</span><br><span class="line"></span><br><span class="line">    print(&#39;False positive is &#123;0:.2f&#125;%&#39;.format(count&#x2F;len(range(100,1000))*100))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>refer</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d">https://medium.com/@Kadai/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%A4%A7%E4%BE%BF%E7%95%B6-bloom-filter-58b0320a346d</a><br><a target="_blank" rel="noopener" href="https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2">https://hur.st/bloomfilter/?n=4000&amp;p=1.0E-7&amp;m=&amp;k=2</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/43263751">https://zhuanlan.zhihu.com/p/43263751</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/19/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -518,7 +397,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -549,26 +428,15 @@
           <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
 <li>直接迭代对象删除列表中所有的数字4。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">w &#x3D; [1,2,3,4,4,5,6]</span><br><span class="line">for i in w:</span><br><span class="line">    if i &#x3D;&#x3D; 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 4, 5, 6]</span><br></pre></td></tr></table></figure>
-<p>输出结果中，并没有删除所有的数字4。</p>
-<ul>
-<li>使用len()方式删除列表中所有的数字4。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">w &#x3D; [1,2,3,4,4,5,6]</span><br><span class="line">for i in range(len(w)):</span><br><span class="line">    if w[i] &#x3D;&#x3D; 4:</span><br><span class="line">        w.remove(w[i])</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">IndexError: list index out of range</span><br></pre></td></tr></table></figure>
-<p>出现<code>IndexError</code>错误。</p>
-<h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><ul>
-<li><p>第一种是因为数组长度变小，迭代时候，指向出现了偏差，使用调试模式就能发现，当删除第一个”4”后，指针指向了第二个4，然后从第二个4开始迭代，此时跳过了第二个4的存在。</p>
-</li>
-<li><p>第二种是因为数组长度变小了，但len()记录的长度没变，所以导致了后面迭代的时候out of index。</p>
-</li>
-</ul>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p><strong>如果能保证迭代的时候的对象不会因为原对象的改变而改变，就可以解决，也就是说对原对象进行copy，而不是引用。</strong></p>
-<p>列举两种处理方法：</p>
-<ol>
-<li>使用[:]的方式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">w &#x3D; [1,2,3,4,4,5,6]</span><br><span class="line">for i in w[:]:</span><br><span class="line">    if i &#x3D;&#x3D; 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure></li>
-<li>使用deepcopy的方式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import copy</span><br><span class="line"></span><br><span class="line">w &#x3D; [1,2,3,4,4,5,6]</span><br><span class="line"></span><br><span class="line">for i in copy.deepcopy(w):</span><br><span class="line">    if i &#x3D;&#x3D; 4:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[1, 2, 3, 5, 6]</span><br></pre></td></tr></table></figure></li>
-</ol>
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">w = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> w:</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">4</span>:</span><br><span class="line">        w.remove(i)</span><br><span class="line">print(w)</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/08/python%E5%A2%9E%E5%88%A0%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -618,7 +486,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -651,64 +519,14 @@
 <li>只看ip，无法知道该机器的用户。</li>
 <li>grafana展现的时候，能根据hostname进行选择，展现机器数据。</li>
 </ol>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
-<li>node_exporter中启用textfile采集的方式。</li>
-<li>在textfile目录下，写入hostname。</li>
-<li>通过表达式获取hostname。</li>
-</ol>
-<h2 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h2><ol>
-<li>如何做到hostname的更变。</li>
-<li>表达式hostname只和写入的metric有关，如何关联到不存在hostname的metric中。</li>
-</ol>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
-<li>针对hostname的更变，让node_exporter启动的时候就进行自动读取当前hostname，并且写入。如果是配合supervisord或者systemd，则很好实现，比如用systemd守护的方式的时候，可以启用<code>ExecStartPre</code>方法，启动之前执行命令。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ExecStartPre&#x3D;&#x2F;opt&#x2F;scripts&#x2F;gethostname.sh</span><br><span class="line"></span><br><span class="line"># cat &#x2F;opt&#x2F;scripts&#x2F;gethostname.sh</span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">echo -e &quot;# HELP hardware_status check hardware status.\n# TYPE machine_role gauge\nmachine_role&#123;role&#x3D;\&quot;&#96;&#x2F;usr&#x2F;bin&#x2F;hostname&#96;\&quot;&#125; 0&quot; &gt; &#x2F;app&#x2F;local&#x2F;node_exporter&#x2F;collect&#x2F;hostname.prom</span><br><span class="line">echo 1 &gt; &#x2F;dev&#x2F;null</span><br></pre></td></tr></table></figure></li>
-<li>让不存在metric的hostname关联，则需要一个共同的<strong>连接点</strong>，类似sql中的两表查询。<br>先看hostname的metric<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># HELP machine_role Metric read from &#x2F;app&#x2F;local&#x2F;node_exporter&#x2F;collect&#x2F;hostname.prom</span><br><span class="line"># TYPE machine_role gauge</span><br><span class="line">machine_role&#123;role&#x3D;&quot;postfix01&quot;&#125; 0</span><br></pre></td></tr></table></figure>
-其label是role，value是postfix01，也就是hostname</li>
-</ol>
-<p>prometheus中执行执行<code>machine_role</code>,可以得到element为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,role&#x3D;&quot;ShangHai-SJ-L3-LC-Flume-01&quot;,service&#x3D;&quot;L3&quot;&#125;</span><br></pre></td></tr></table></figure>
-<p>这边有role和instance这个两个label，其中role为hostname的label，而instance则作为连接点的label。</p>
-<p>在grafana中的变量配置中就可以根据machine_role，先获取role，作为$hostname的值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_values(machine_role&#123;service&#x3D;&quot;$job&quot;&#125;,role)</span><br></pre></td></tr></table></figure>
-<p>然后再根据$hostname，来获取instance,作为$node的值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_values(machine_role&#123;role&#x3D;&quot;$hostname&quot;&#125;,instance)</span><br></pre></td></tr></table></figure>
-<p>此时对grafana的表达式就可以使用$node值了，比如如下表达式，虽然node_cpu_seconds_total方法里面是不存在hostname的，但因为曲线救国的方式，通过$hostname取得$node，然后传入node_cpu_seconds_total方法中，则可以出现数据了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count(count(node_cpu_seconds_total&#123;instance&#x3D;~&quot;$node&quot;, mode&#x3D;&#39;system&#39;&#125;) by (cpu))</span><br></pre></td></tr></table></figure>
-<h2 id="效果截图"><a href="#效果截图" class="headerlink" title="效果截图"></a>效果截图</h2><ul>
-<li><p>先获取hostname。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udfxseayj20k20hzq3x.jpg"></p>
-</li>
-<li><p>再根据hostname获取node。隐藏了label，这个无所谓是否隐藏，我只是想知道具体ip是什么。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udggcklej20j50eymxx.jpg"></p>
-</li>
-<li><p>下拉通过hostname就可以选择机器了。<br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0udhov6xnj20t00jn401.jpg"></p>
-</li>
-</ul>
-<h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><ul>
-<li>如果是通过dns方式发现，则是可以把hostname变成元label的。</li>
-<li>通过consul发现，则可以在consul客户端上报hostname，也可以把hostname变成元label。</li>
-</ul>
-<h2 id="待解决问题第二点解决方法"><a href="#待解决问题第二点解决方法" class="headerlink" title="待解决问题第二点解决方法"></a>待解决问题第二点解决方法</h2><p><strong>promSQL可以使用on ignore group_left group_right配合来把hostname拼凑进去。</strong></p>
-<p>machine_role查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,role&#x3D;&quot;zabbix&quot;,service&#x3D;&quot;L3&quot;&#125;  0</span><br></pre></td></tr></table></figure>
-<p>up查询得到的结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">up&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,service&#x3D;&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>machine_role里面的role标签包含了主机名，但up没有，此时通过将两个方法结合在一起。<br>使用on方法，<em>可以理解为mysql的两表查询join</em> 两者的有共同的instance,job,service,ip标签</p>
-<p>不一定要全部都选择，但选择的多则相互匹配更加精确，<code>on(instance,job,service,ip)</code></p>
-<p>使用group_left或者group_right标记”多”的标签,这边多出来的标签是role，所以为<code>group_left(role)</code></p>
-<p>表达式架构为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;vector expr&gt; &lt;bin-op&gt; on(&lt;label list&gt;) group_left(&lt;label list&gt;) &lt;vector expr&gt;</span><br></pre></td></tr></table></figure>
-<p><bin-op>指加减乘除余幂</p>
-<p>所以将up和machine_role拼凑和可以写为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role</span><br><span class="line">&#123;instance&#x3D;&quot;10.1.11.1:9100&quot;,ip&#x3D;&quot;10.1.11.1&quot;,job&#x3D;&quot;L3&quot;,role&#x3D;&quot;zabbix&quot;,service&#x3D;&quot;L3&quot;&#125;  1</span><br></pre></td></tr></table></figure>
-<p>如果用group_right，则把up和machine_role反一下即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">machine_role + on(instance, job,ip,service) group_right(role) up </span><br></pre></td></tr></table></figure>
-<p>此时得到的结果包含了role，如果作为告警，由于up为1表示正常，machine_role设置的是0，两者相加，若为0，则表示机器down。<br>告警表达式可以写成:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">up + on(instance, job,ip,service) group_left(role) machine_role &#x3D;&#x3D; 0</span><br></pre></td></tr></table></figure>
-<p>此时如果告警，则会包含role这个标签，就可以传递给alertmanager，获取到role了。</p>
-<p>refer</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.robustperception.io/how-to-have-labels-for-machine-roles">https://www.robustperception.io/how-to-have-labels-for-machine-roles</a><br><a target="_blank" rel="noopener" href="https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2">https://yunlzheng.gitbook.io/prometheus-book/parti-prometheus-ji-chu/promql/prometheus-promql-operators-v2</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/07/prometheus%E6%B7%BB%E5%8A%A0hostname/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -758,7 +576,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -787,81 +605,14 @@
 
       
           <p>我还记得那个调整了3个多小时才把确认按钮移动到table右边的夜晚。以至于前端给我的错觉就是，我写出我的思路，但它却不这么去展现。。mmp..<br>至此拾起来，从把relative和absolute两个属性搞清楚开始。</p>
-<h2 id="非嵌套在标签的情形"><a href="#非嵌套在标签的情形" class="headerlink" title="非嵌套在标签的情形"></a>非嵌套在标签的情形</h2><p>初始代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;&#x2F;title&gt;</span><br><span class="line">    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;position.css&quot;&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div class&#x3D;&quot;first&quot;&gt;class first&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div class&#x3D;&quot;second&quot;&gt;class second&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*&#123;</span><br><span class="line">    margin: 0;</span><br><span class="line">    padding: 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.first&#123;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #5060ff;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.second&#123;</span><br><span class="line">    width: 200px;</span><br><span class="line">    height: 200px;</span><br><span class="line">    background-color: #ff7276;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>两个div挨在一起。<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0tcqq5yyej20la0j0aam.jpg"></p>
-<ul>
-<li>relative</li>
-</ul>
-<p><strong>添加position:relative等属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.first&#123;</span><br><span class="line">    position: relative;</span><br><span class="line">    top: 50px;</span><br><span class="line">    left: 50px;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #5060ff;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>蓝色背景的div根据top和left参数，位置上发生了改变。而红色div位置没有改变。<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0tctv6lmzj20g00iy3yr.jpg"></p>
-<ul>
-<li>absolute</li>
-</ul>
-<p><strong>添加position:absolute等属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.first&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: 50px;</span><br><span class="line">    left: 50px;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #5060ff;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>蓝色背景div根据top和left参数，位置上发生了改变，并且红色的div位置也发生了改变，和页面的顶部左边靠紧。<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0td19sj58j20fm0dkaaf.jpg"></p>
-<h2 id="嵌套在标签的情形"><a href="#嵌套在标签的情形" class="headerlink" title="嵌套在标签的情形"></a>嵌套在标签的情形</h2><p>初始代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;&#x2F;title&gt;</span><br><span class="line">    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;position.css&quot;&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div class&#x3D;&quot;first&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;second&quot;&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;third&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*&#123;</span><br><span class="line">    margin: 0;</span><br><span class="line">    padding: 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.first&#123;</span><br><span class="line">    width: 200px;</span><br><span class="line">    height: 200px;</span><br><span class="line">    background-color: #5060ff;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.second&#123;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #ff7276;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.third&#123;</span><br><span class="line">    width: 50px;</span><br><span class="line">    height: 50px;</span><br><span class="line">    background-color: #ffe43e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>三个方块重叠在一起<br><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0td9z1ae5j20do0dcwel.jpg"></p>
-<ul>
-<li>relative</li>
-</ul>
-<p><strong>给third添加relative等属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.third&#123;</span><br><span class="line">    position: relative;</span><br><span class="line">    top: 20px;</span><br><span class="line">    left: 20px;</span><br><span class="line">    width: 50px;</span><br><span class="line">    height: 50px;</span><br><span class="line">    background-color: #ffe43e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>黄色背景div基于原来位置根据top和left参数，位置上发生了改变。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0tdblwdp4j20dq0dy74a.jpg"></p>
-<p><strong>再给second添加属性，去掉之前third的属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.second&#123;</span><br><span class="line">    position: relative;</span><br><span class="line">    top: 30px;</span><br><span class="line">    left: 30px;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #ff7276;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.third&#123;</span><br><span class="line">&lt;!--     position: relative;</span><br><span class="line">    top: 70px;</span><br><span class="line">    left: 70px;</span><br><span class="line"> --&gt;    width: 50px;</span><br><span class="line">    height: 50px;</span><br><span class="line">    background-color: #ffe43e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>黄色背景div跟随红色背景div移动。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0tdpkuy6uj20ds0dkt8p.jpg"></p>
-<p><strong>恢复third的属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.second&#123;</span><br><span class="line">    position: relative;</span><br><span class="line">    top: 30px;</span><br><span class="line">    left: 30px;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #ff7276;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.third&#123;</span><br><span class="line">    position: relative;</span><br><span class="line">    top: 70px;</span><br><span class="line">    left: 70px;</span><br><span class="line">    width: 50px;</span><br><span class="line">    height: 50px;</span><br><span class="line">    background-color: #ffe43e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>黄色背景div在基于原来位置的基础上根据top和left参数，发生了改变。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0tdgy62lej20do0du0sq.jpg"></p>
-<ul>
-<li>absolute</li>
-</ul>
-<p><strong>给third添加absolute等属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.third&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: 70px;</span><br><span class="line">    left: 70px;</span><br><span class="line">    width: 50px;</span><br><span class="line">    height: 50px;</span><br><span class="line">    background-color: #ffe43e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>黄色背景div根据top和left参数，发生了变化。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0tdvj48azj20dq0deaa2.jpg"></p>
-<p><strong>再给second添加属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">    position: relative;</span><br><span class="line">    top: 30px;</span><br><span class="line">    left: 30px;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #ff7276;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.third&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: 70px;</span><br><span class="line">    left: 70px;</span><br><span class="line">    width: 50px;</span><br><span class="line">    height: 50px;</span><br><span class="line">    background-color: #ffe43e;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>黄色背景div依据红色背景div再根据top和left参数，发生了变化。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0tdwx0ux4j20d00dojrd.jpg"></p>
-<p><strong>去除second的属性，给first添加属性</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">.first&#123;</span><br><span class="line">    position: relative;</span><br><span class="line">    top: 70px;</span><br><span class="line">    left: 70px;</span><br><span class="line">    width: 200px;</span><br><span class="line">    height: 200px;</span><br><span class="line">    background-color: #5060ff;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.second&#123;</span><br><span class="line">    &#x2F;*position: relative;*&#x2F;</span><br><span class="line">    &#x2F;*top: 30px;*&#x2F;</span><br><span class="line">    &#x2F;*left: 30px;*&#x2F;</span><br><span class="line">    width: 100px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    background-color: #ff7276;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.third&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: 70px;</span><br><span class="line">    left: 70px;</span><br><span class="line">    width: 50px;</span><br><span class="line">    height: 50px;</span><br><span class="line">    background-color: #ffe43e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>黄色背景div依据蓝色背景div再根据top和left参数，发生了变化。</p>
-<p><img src="https://ws1.sinaimg.cn/large/9f0d15f3gy1g0te1vr00wj20hu0hyq30.jpg"></p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
-<li>absolute</li>
-</ul>
-<ol>
-<li>脱离原来的位置(<strong>因为脱离原来的位置，所以其他元素可能会对原有位置进行占用</strong>)进行移动定位。</li>
-<li>如果最近有父级，则根据父级定位，如果没有，则根据文档定位(因为body是最大的父级)</li>
-</ol>
-<ul>
-<li>relative</li>
-</ul>
-<ol>
-<li>保留原来的位置，进行移动定位。</li>
-<li>即便存在父级，也是相对(父级元素位置变动，相对位置也会变动)原来的位置进行移动定位。</li>
-</ol>
-<h2 id="absolute和relative配合"><a href="#absolute和relative配合" class="headerlink" title="absolute和relative配合"></a>absolute和relative配合</h2><ol>
-<li>一般父级用relative做架子参照物，子级用absolute进行定位。</li>
-</ol>
-<h2 id="static和fixed"><a href="#static和fixed" class="headerlink" title="static和fixed"></a>static和fixed</h2><ol>
-<li>static定位为默认情况，不会参照任何元素进行定位，按照浏览器预设的配置自动排版在页面上。</li>
-<li>fixed相对浏览器视窗定位，一直固定一个相同的位置，不会受到浏览器滚动条的影响。</li>
-</ol>
-<p>refer</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f946aca4d6b0">https://www.jianshu.com/p/f946aca4d6b0</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/06/position%E5%B1%9E%E6%80%A7relative%E5%92%8Cabsolute/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -911,7 +662,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -942,48 +693,15 @@
           <h2 id="CSS选择器类型"><a href="#CSS选择器类型" class="headerlink" title="CSS选择器类型"></a>CSS选择器类型</h2><ul>
 <li>id选择器<br><code>#id</code></li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id&#x3D;&quot;mySelector&quot;&gt;this is id selector&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">#mySelector&#123;</span><br><span class="line">    color: #ff4400;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>class选择器<br><code>.class</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;myClass&quot;&gt;this is class selector&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">.myClass&#123;</span><br><span class="line">    color:#F10882;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>*选择器<br><code>\*</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">    font-style: italic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>元素选择器<br><code>element</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;this is p&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">p&#123;</span><br><span class="line">    color:green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>伪类<br><code>:hover</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href&#x3D;&quot;https:&#x2F;&#x2F;www.baidu.com&quot;&gt;www.baidu.com&lt;&#x2F;a&gt;</span><br><span class="line"></span><br><span class="line">a:hover&#123;</span><br><span class="line">    background-color: #f40;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>父子选择器<br><code>element element</code><br><code>element&gt;element</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;p&gt;this is p in div&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">div p&#123;</span><br><span class="line">    color:#ff4400;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">div&gt;p&#123;</span><br><span class="line">    color:green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>属性选择器<br><code>[attribute=value]</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;myclass&quot;&gt;this is div&lt;&#x2F;div&gt;</span><br><span class="line">[class&#x3D;myclass]&#123;</span><br><span class="line">    color: #ff4400;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>组选择器<br><code>element,element1,element2</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;this is div&lt;&#x2F;div&gt;</span><br><span class="line">&lt;span&gt;this is span&lt;&#x2F;span&gt;</span><br><span class="line">&lt;p&gt;this is p&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">div,</span><br><span class="line">span,</span><br><span class="line">p&#123;</span><br><span class="line">    color:yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="CSS选择器优先级"><a href="#CSS选择器优先级" class="headerlink" title="CSS选择器优先级"></a>CSS选择器优先级</h2><p>优先级高的覆盖优先级低的样式。<br>!important &gt; 行间样式(直接元素内写style=xxx的方式) &gt; id &gt; class | 属性 &gt; 标签选择器 &gt; 通配符<br>其规则其实是由选择器权重实现的。</p>
-<h2 id="CSS选择器权重"><a href="#CSS选择器权重" class="headerlink" title="CSS选择器权重"></a>CSS选择器权重</h2><p>权重大的覆盖权重小的，不同的选择器有不同的权重。</p>
-<ul>
-<li>!important  Infinity</li>
-<li>行间样式   1000</li>
-<li>id        100</li>
-<li>class | 属性 | 伪类   10</li>
-<li>标签 | 伪元素  1</li>
-<li>通配符 0</li>
-</ul>
-<p><strong>进制据说是265。</strong></p>
-
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;mySelector&quot;&gt;this is id selector&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#mySelector</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ff4400</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/05/css%E9%80%89%E6%8B%A9%E5%99%A8%E6%9D%83%E9%87%8D/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1033,7 +751,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -1061,33 +779,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="原始文件redis-conf内容："><a href="#原始文件redis-conf内容：" class="headerlink" title="原始文件redis.conf内容："></a>原始文件redis.conf内容：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key &#x3D;&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type &#x3D;&gt; &quot;list&quot;</span><br><span class="line">    codec &#x3D;&gt; &quot;json&quot;</span><br><span class="line">    type &#x3D;&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags &#x3D;&gt; [&quot;logstashdemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="获取sed匹配内容的下一行"><a href="#获取sed匹配内容的下一行" class="headerlink" title="获取sed匹配内容的下一行"></a>获取sed匹配内容的下一行</h2><p>原始文件redis.conf内容:</p>
-<ul>
-<li><p>思路：<br>若要只抓取<code>tags =&gt; [&quot;logstashdemo&quot;]</code>内容，则需要匹配<code>type =&gt; &quot;logstash-redis-demo&quot;</code>这一行内容。</p>
-</li>
-<li><p>sed匹配内容下一行写法:<br><code>sed -n &#39;/matchString/&#123;n;p&#125;&#39; filename</code></p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sed -n &#39;&#x2F;logstash-redis-demo&#x2F;&#123;n;p&#125;&#39; redis.conf </span><br><span class="line">    tags &#x3D;&gt; [&quot;logstashdemo&quot;]</span><br></pre></td></tr></table></figure>
-<h2 id="替换sed匹配行内容的下一行的指定内容"><a href="#替换sed匹配行内容的下一行的指定内容" class="headerlink" title="替换sed匹配行内容的下一行的指定内容"></a>替换sed匹配行内容的下一行的指定内容</h2><ul>
-<li><p>思路：<br>先匹配到<code>tags =&gt; [&quot;logstashdemo&quot;]</code>内容，然后对该内容下一行内容<code>tags =&gt; [&quot;logstashdemo&quot;]</code>的<code>logstashdemo</code>改为<code>replacedemo</code></p>
-</li>
-<li><p>sed替换匹配行下一行内容写法:<br><code>sed -i &#39;/查询匹配的内容/&#123;n;s/下一行内要被替换的内容/替换内容/;&#125;&#39; filename</code></p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sed -i &#39;&#x2F;logstash-redis-demo&#x2F;&#123;n;s&#x2F;logstashdemo&#x2F;replacedemo&#x2F;;&#125;&#39; redis.conf </span><br><span class="line">[root@leanote ~]# cat redis.conf </span><br><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key &#x3D;&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type &#x3D;&gt; &quot;list&quot;</span><br><span class="line">    codec &#x3D;&gt; &quot;json&quot;</span><br><span class="line">    type &#x3D;&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags &#x3D;&gt; [&quot;replacedemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="sed内容存在变量情况"><a href="#sed内容存在变量情况" class="headerlink" title="sed内容存在变量情况"></a>sed内容存在变量情况</h2><ul>
-<li>方法一，将外部单引号用双引号替代<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# echo $beitihuan</span><br><span class="line">list</span><br><span class="line">[root@leanote ~]# echo $tihuan   </span><br><span class="line">str</span><br><span class="line">[root@leanote ~]# sed -e &quot;&#x2F;key&#x2F;&#123;n;s&#x2F;$&#123;beitihuan&#125;&#x2F;$&#123;tihuan&#125;&#x2F;;&#125;&quot; redis.conf </span><br><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key &#x3D;&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type &#x3D;&gt; &quot;str&quot;</span><br><span class="line">    codec &#x3D;&gt; &quot;json&quot;</span><br><span class="line">    type &#x3D;&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags &#x3D;&gt; [&quot;replacedemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>方法二，不修改外部单引号，将变量用单引号引起来<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote ~]# sed -e &#39;&#x2F;key&#x2F;&#123;n;s&#x2F;&#39;$&#123;beitihuan&#125;&#39;&#x2F;&#39;$&#123;tihuan&#125;&#39;&#x2F;;&#125;&#39; redis.conf </span><br><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key &#x3D;&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type &#x3D;&gt; &quot;str&quot;</span><br><span class="line">    codec &#x3D;&gt; &quot;json&quot;</span><br><span class="line">    type &#x3D;&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags &#x3D;&gt; [&quot;replacedemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host &#x3D;&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>注意点</li>
-<li>*如果变量存在特殊符号，比如<code>/</code>，那么此时这个符号会影响sed的分隔符，需要将sed分隔符替换成其他的。**</li>
-</ul>
-<h2 id="sed对软连文件进行操作"><a href="#sed对软连文件进行操作" class="headerlink" title="sed对软连文件进行操作"></a>sed对软连文件进行操作</h2><p><strong>sed对<code>软连文件</code>进行操作，倘若不指定<code>--follow-symlinks</code>，则软连文件和原始文件会被拆分,原始文件不会被修改，而软连的文件会被修改，且变成一个独立文件。</strong></p>
-<p>sed操作没有指定<code>--follow-symlinks</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 16 Feb 27 10:58 redis.conf -&gt; &#x2F;root&#x2F;redis.conf</span><br><span class="line">[root@leanote conf]# sed -i &#39;&#x2F;key&#x2F;&#123;n;s&#x2F;&#39;$&#123;beitihuan&#125;&#39;&#x2F;&#39;$&#123;tihuan&#125;&#39;&#x2F;;&#125;&#39; redis.conf </span><br><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 248 Feb 27 11:00 redis.conf</span><br></pre></td></tr></table></figure>
-<p>sed操作指定<code>--follow-symlinks</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@leanote conf]# sed -i --follow-symlinks &#39;&#x2F;key&#x2F;&#123;n;s&#x2F;&#39;$&#123;beitihuan&#125;&#39;&#x2F;&#39;$&#123;tihuan&#125;&#39;&#x2F;;&#125;&#39; redis.conf</span><br><span class="line">[root@leanote conf]# ll</span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 16 Feb 27 11:02 redis.conf -&gt; &#x2F;root&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+          <h2 id="原始文件redis-conf内容："><a href="#原始文件redis-conf内容：" class="headerlink" title="原始文件redis.conf内容："></a>原始文件redis.conf内容：</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  redis &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:6379&quot;</span><br><span class="line">    key =&gt; &quot;logstash:demo&quot;</span><br><span class="line">    data_type =&gt; &quot;list&quot;</span><br><span class="line">    codec =&gt; &quot;json&quot;</span><br><span class="line">    type =&gt; &quot;logstash-redis-demo&quot;</span><br><span class="line">    tags =&gt; [&quot;logstashdemo&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    host =&gt; &quot;127.0.0.1:9200&quot;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/02/27/sed%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1137,7 +837,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -1166,28 +866,14 @@
 
       
           <h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p><strong>nonlocal允许对嵌套的函数作用域中的名称进行赋值，并且把这样的名称的作用域查找限制在嵌套的函数内。</strong><br><strong>nonlocal限制查找在嵌套的函数域内，且可以在函数域内进行赋值修改。</strong></p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state &#x3D; start</span><br><span class="line">    def nested(label):</span><br><span class="line">        print(label,state)</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F&#x3D;tester(0)</span><br><span class="line">F(&#39;spam&#39;)</span><br><span class="line">F(&#39;ham&#39;)</span><br><span class="line"></span><br><span class="line">执行结果为</span><br><span class="line">spam 0</span><br><span class="line">ham 0</span><br></pre></td></tr></table></figure>
-<p>函数nested中print方法内的state变量引用了上一层tester函数中的state。</p>
-<p>如果仅仅是引用变量，则不会出现问题，若是不使用nonlocal情况下对<code>变量进行赋值操作</code>，则出现报错:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state &#x3D; start</span><br><span class="line">    def nested(label):</span><br><span class="line">        print(label,state)</span><br><span class="line">        state +&#x3D; 1   # 对state变量进行了赋值操作，在nested函数中并没有单独定义state变量。</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F&#x3D;tester(0)</span><br><span class="line">F(&#39;spam&#39;)</span><br><span class="line">F(&#39;ham&#39;) </span><br><span class="line"></span><br><span class="line">报错如下：</span><br><span class="line">huangyisan:~&#x2F;Desktop&#x2F;Python_project&#x2F;Mage_edu $ python3 nonlocalfunc.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;nonlocalfunc.py&quot;, line 18, in &lt;module&gt;</span><br><span class="line">    F(&#39;spam&#39;)</span><br><span class="line">  File &quot;nonlocalfunc.py&quot;, line 13, in nested</span><br><span class="line">    print(label,state)</span><br><span class="line">UnboundLocalError: local variable &#39;state&#39; referenced before assignment</span><br></pre></td></tr></table></figure>
-<p><strong>state因为在nested中没有被定义，所以无法被赋值，但可以引用上一层tester函数。</strong></p>
-<p>如果要定义，则需要用nonlocal函数对其进行声明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    state &#x3D; start</span><br><span class="line">    def nested(label):</span><br><span class="line">        nonlocal state</span><br><span class="line">        print(label,state)</span><br><span class="line">        state +&#x3D; 1</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F&#x3D;tester(0)</span><br><span class="line">F(&#39;spam&#39;)</span><br><span class="line">F(&#39;ham&#39;)</span><br><span class="line"></span><br><span class="line">执行结果：</span><br><span class="line">spam 0</span><br><span class="line">ham 1</span><br></pre></td></tr></table></figure>
-<h2 id="边界情况"><a href="#边界情况" class="headerlink" title="边界情况"></a>边界情况</h2><ol>
-<li>nonlocal对象必须已经在一个嵌套的def作用域中被赋值过，否则会报错。(global则不需要预先对变量进行赋值。)</li>
-</ol>
-<p>报错代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def tester(start):</span><br><span class="line">    def nested(label):</span><br><span class="line">        nonlocal state  # 在nested外层函数，也就是tester函数中并没有对state变量进行赋值。</span><br><span class="line">        state &#x3D; 1</span><br><span class="line">        print(label,state) </span><br><span class="line">        state +&#x3D; 1</span><br><span class="line">    return nested</span><br><span class="line"></span><br><span class="line">F&#x3D;tester(0)</span><br><span class="line">F(&#39;spam&#39;)</span><br><span class="line">F(&#39;ham&#39;) </span><br></pre></td></tr></table></figure>
-<p><strong>因为在state被nonlocal处理之前并没有对state进行赋值！</strong></p>
-<ol start="2">
-<li><p>nonlocal只会在嵌套def的作用域内查找，查找范围永远不会出def作用域范围，即便在最外层全局有了定义这个变量，也不会去查找。如果要去全局变量查询，则使用global。</p>
-</li>
-<li><p>nonlocal查询会<code>逐级往上</code>查询，查询到一个<code>立马返回</code>,也就是会<strong>就近查询</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">state &#x3D; 0</span><br><span class="line">def tester(start):</span><br><span class="line">    state &#x3D; 1</span><br><span class="line">    def cisco(middle):</span><br><span class="line">        state &#x3D; 2</span><br><span class="line">        def nested(label):</span><br><span class="line">            nonlocal state</span><br><span class="line">            print(label, state)</span><br><span class="line">        return nested</span><br><span class="line">    return cisco</span><br><span class="line"></span><br><span class="line">F&#x3D;tester(0)</span><br><span class="line">F(1)(&#39;spam&#39;)</span><br><span class="line"></span><br><span class="line">输出结果为</span><br><span class="line">spam 2</span><br></pre></td></tr></table></figure>
-<p>因为在cisco这个函数中已经存在了state=2的赋值，所以不会再查询cisco上一层tester中的state。<strong>就近返回了state=2。</strong></p>
-</li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/02/20/nonlocal%E7%9A%84%E7%94%A8%E6%B3%95/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1237,7 +923,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -1267,39 +953,14 @@
       
           <h2 id="链表定义"><a href="#链表定义" class="headerlink" title="链表定义"></a>链表定义</h2><p>链表（Linked list）是一种线性，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的指针(Pointer)</p>
 <p><strong>链表包含了内存块”节点”，以及记录下个或者上个节点地址的指针next。</strong></p>
-<h2 id="链表常见结构"><a href="#链表常见结构" class="headerlink" title="链表常见结构"></a>链表常见结构</h2><h3 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aenkj7b8j20bc015t8h.jpg"></p>
-<ul>
-<li>第一个节点称之为头节点，头结点不存放数据，最后一个称之为尾节点。</li>
-<li>每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。</li>
-<li>单链表只能单方向遍历，且最后尾节点的下一个地址指针指向为NULL。</li>
-</ul>
-<h3 id="循环链表"><a href="#循环链表" class="headerlink" title="循环链表"></a>循环链表</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepbxd64j209q01o742.jpg"></p>
-<ul>
-<li>首尾节点连接在一起，可以是单链表的首尾相连，也可以是双链表的首尾相连。</li>
-</ul>
-<h3 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h3><p><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g0aepjmdd9j20gy015t8i.jpg"></p>
-<ul>
-<li>双向链表有两个连接，一个指向前一个节点(若是头节点，则指向NULL)，另外一个指向下一个节点(若是尾节点，则指向NULL)。</li>
-</ul>
-<h2 id="链表的查找、插入、删除"><a href="#链表的查找、插入、删除" class="headerlink" title="链表的查找、插入、删除"></a>链表的查找、插入、删除</h2><h3 id="插入删除行为复杂度"><a href="#插入删除行为复杂度" class="headerlink" title="插入删除行为复杂度"></a>插入删除行为复杂度</h3><ol>
-<li>对于数组而言，因为需要保证内存空间的连续性，当插入或者删除的时候，需要对数据进行搬迁(比如插入第二个位置，则原本第二个位置的数据”搬迁”到第三个位置，原本第三个位置的数据”搬迁”到第四个位置，以此类推)，这样才能保证连续,所以其时间复杂度为O(n)。</li>
-<li>对链表而言，因为无需考虑数据的搬迁，只需要改变前后节点指针，所以其时间复杂度为O(1)。</li>
-</ol>
-<h3 id="查询行为复杂度"><a href="#查询行为复杂度" class="headerlink" title="查询行为复杂度"></a>查询行为复杂度</h3><ol>
-<li>数组查询分两种，一种是根据下标索引查询，一种是查询具体数据，如果是第一种，则可以通过首地址和下标通过寻址公式查询得到，时间复杂度为O(1)，但第二种查询具体数据，则是O(n)。</li>
-<li>链表的查询则因为需要依次遍历，所以其查询复杂度为O(n)。</li>
-</ol>
-<h2 id="链表和数组"><a href="#链表和数组" class="headerlink" title="链表和数组"></a>链表和数组</h2><ul>
-<li>数组需要一块<strong>连续的内存空间</strong>。如果连续空间不足以被申请，即便总内存足够，也会创建数组失败。</li>
-<li>链表不需要连续的内存空间，他通过指针将一组零散的内存块串联起来。</li>
-<li>链表因为需要额外对指针进行存储，所以内存空间使用比数组要大。</li>
-<li>cpu从内存读取数据，会先把读取到的数据加载到cpu的缓存中。从内存读取数据并不只是读取特定的访问地址，而是一个的数据块并存入cpu缓存中，然后下次查询的时候会先从cpu缓存中查询，如果找不到就从内存中查询，对于数组，读取某个下标对应的值后，其因为是连续的内存，所以会被一并存入cpu缓存中，而链表不会。</li>
-</ul>
-<p>refer</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8">https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/springfor/p/3985333.html">https://www.cnblogs.com/springfor/p/3985333.html</a><br><a target="_blank" rel="noopener" href="https://time.geekbang.org/">https://time.geekbang.org/</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/02/18/%E9%93%BE%E8%A1%A8%E5%9F%BA%E7%A1%80/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1349,7 +1010,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-19 21:58:04" itemprop="dateModified" datetime="2020-12-19T21:58:04+08:00">2020-12-19</time>
+                <time title="Modified: 2020-12-26 23:09:16" itemprop="dateModified" datetime="2020-12-26T23:09:16+08:00">2020-12-26</time>
               </span>
 
           
@@ -1422,39 +1083,14 @@
 <ul>
 <li>每个节点只包含一个子节点。</li>
 </ul>
-<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"/>
-* 指先访问根，然后访问子树的遍历方式。
-* 顺序 `F, B, A, D, C, E, G, I, H.`
-
-<p>堆栈代码实现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        # 所有的点都是子节点，也是父节点的叶子。</span><br><span class="line">        self.root &#x3D; root</span><br><span class="line">        self.left &#x3D; None</span><br><span class="line">        self.right &#x3D; None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack &#x3D; []</span><br><span class="line">        node &#x3D; root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                # 打印出根节点</span><br><span class="line">                print(node.root)</span><br><span class="line">                # 然后将根节点放入stack中</span><br><span class="line">                stack.append(node)</span><br><span class="line">                # 重新定义node为左节点</span><br><span class="line">                node &#x3D; node.left</span><br><span class="line">            # 一个个从栈中弹出，其实是压入栈中的根节点</span><br><span class="line">            node &#x3D; stack.pop()</span><br><span class="line">            # 打印跟的右侧子节点</span><br><span class="line">            node &#x3D; node.right</span><br><span class="line"></span><br><span class="line">#以下遍历方式通用。           </span><br><span class="line">root &#x3D; BinTree(&#39;F&#39;)</span><br><span class="line">root.left &#x3D; BinTree(&#39;B&#39;)</span><br><span class="line">root.right &#x3D; BinTree(&#39;G&#39;)</span><br><span class="line">root.left.left &#x3D; BinTree(&#39;A&#39;)</span><br><span class="line">root.left.right &#x3D; BinTree(&#39;D&#39;)</span><br><span class="line">root.left.right.left &#x3D; BinTree(&#39;C&#39;)</span><br><span class="line">root.left.right.right &#x3D; BinTree(&#39;E&#39;)</span><br><span class="line">root.right.right &#x3D; BinTree(&#39;I&#39;)</span><br><span class="line">root.right.right.left &#x3D; BinTree(&#39;H&#39;)</span><br><span class="line"># 选择执行对应的遍历方法。</span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure>
-<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
-<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"/>
-* 指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。
-* 顺序 `A, B, C, D, E, F, G, H, I.`
-
-<p>堆栈代码实现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root &#x3D; root</span><br><span class="line">        self.left &#x3D; None</span><br><span class="line">        self.right &#x3D; None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack &#x3D; []</span><br><span class="line">    node &#x3D; root</span><br><span class="line">    while node or stack:</span><br><span class="line">        while node:</span><br><span class="line">            # 根压入栈</span><br><span class="line">            stack.append(node)</span><br><span class="line">            # 赋予左节点</span><br><span class="line">            node &#x3D; node.left</span><br><span class="line">        # 挨个弹出，从最底层的左节点弹出</span><br><span class="line">        node &#x3D; stack.pop()</span><br><span class="line">        # 打印左节点</span><br><span class="line">        print(node.root)</span><br><span class="line">        # 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span><br><span class="line">        node &#x3D; node.right</span><br></pre></td></tr></table></figure>
-<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
-<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"/>
-* 指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。
-* 顺序 `A, C, E, D, B, H, I, G, F.`
-
-<p>堆栈代码实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root &#x3D; root</span><br><span class="line">        self.left &#x3D; None</span><br><span class="line">        self.right &#x3D; None</span><br><span class="line">        </span><br><span class="line">    def backorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        mystack1 &#x3D; []</span><br><span class="line">        # mystack2中存放的是后序遍历的节点数据。</span><br><span class="line">        mystack2 &#x3D; []</span><br><span class="line">        node &#x3D; root</span><br><span class="line">        # mystack1压入顶层根</span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        while mystack1:</span><br><span class="line">            node &#x3D; mystack1.pop()</span><br><span class="line">            # 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span><br><span class="line">            if node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            # 将该数的根放入stack2中，</span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        while mystack2:</span><br><span class="line">            # 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span><br><span class="line">            print(mystack2.pop().root)</span><br><span class="line">            </span><br></pre></td></tr></table></figure>
-<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
-<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"/>
-* 广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。
-* 顺序 `F, B, G, A, D, I, C, E, H.`
-
-<p>队列代码实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root &#x3D; root</span><br><span class="line">        self.left &#x3D; None</span><br><span class="line">        self.right &#x3D; None</span><br><span class="line">        </span><br><span class="line">    def levelorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line">        myqueue &#x3D; []</span><br><span class="line">        node &#x3D; root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        while myqueue:</span><br><span class="line">            # pop弹出第一个元素，这个是队列。</span><br><span class="line">            node &#x3D; myqueue.pop(0)</span><br><span class="line">            print(node.root)</span><br><span class="line">            # 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span><br><span class="line">            if node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            if node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure>
-<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
-<p>refer</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a target="_blank" rel="noopener" href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
