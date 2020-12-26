@@ -65,7 +65,6 @@ footer:
 
   # If not defined, `author` from Hexo `_config.yml` will be used.
   copyright:
-    
 
   # Powered by Hexo & NexT
   powered: true
@@ -89,7 +88,7 @@ footer:
 creative_commons:
   license: by-nc-sa
   sidebar: false
-  post: true
+  post: false
   language:
 
 
@@ -98,7 +97,7 @@ creative_commons:
 # ---------------------------------------------------------------
 
 # Schemes
-scheme: Gemini
+scheme: Muse
 #scheme: Mist
 #scheme: Pisces
 #scheme: Gemini
@@ -118,9 +117,9 @@ darkmode: false
 # External url should start with http:// or https://
 menu:
   home: / || fa fa-home
-  #about: /about/ || user
-  tags: /tags/ || fa fa-tags
-  categories: /categories/ || fa fa-th
+  #about: /about/ || fa fa-user
+  #tags: /tags/ || fa fa-tags
+  #categories: /categories/ || fa fa-th
   archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
@@ -138,32 +137,9 @@ menu_settings:
 # ---------------------------------------------------------------
 
 sidebar:
-  # Sidebar Position, available value: left | right (only for Pisces | Gemini).
-  #position: left
-  position: right
-
-  # Sidebar Display, available value (only for Muse | Mist):
-  #  - post    expand on posts automatically. Default.
-  #  - always  expand for all pages automatically
-  #  - hide    expand only when click on the sidebar toggle icon.
-  #  - remove  Totally remove sidebar including sidebar toggle.
-  display: post
-  #display: always
-  #display: hide
-  #display: remove
-
-  # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
-  offset: 20
-
-  # Back to top in sidebar (only for Pisces | Gemini).
-  b2t: true
-
-  # Scroll percent label in b2t button.
-  scrollpercent: false
-
-  # Enable sidebar on narrow view (only for Muse | Mist).
-  onmobile: false
-
+  # Sidebar Position.
+  position: left
+  #position: right
 
   # Manual define the sidebar width. If commented, will be default for:
   # Muse | Mist: 320
@@ -175,9 +151,14 @@ sidebar:
   #  - always  expand for all pages automatically.
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  totally remove sidebar including sidebar toggle.
+  display: post
 
   # Sidebar padding in pixels.
   padding: 18
+  # Sidebar offset from top menubar in pixels (only for Pisces | Gemini).
+  offset: 12
+  # Enable sidebar on narrow view (only for Muse | Mist).
+  onmobile: false
 
 # Sidebar Avatar
 avatar:
@@ -196,8 +177,6 @@ site_state: true
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  # GitHub: https://github.com/huangyisan || fab fa-github
-  E-Mail: mailto:anonymousyisan@gmail.com || fa fa-envelope
   #GitHub: https://github.com/yourname || fab fa-github
   #E-Mail: mailto:yourname@gmail.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
@@ -211,7 +190,7 @@ social:
 
 social_icons:
   enable: true
-  icons_only: true
+  icons_only: false
   transition: false
 
 # Blog rolls
@@ -222,7 +201,7 @@ links_settings:
   layout: block
 
 links:
-  readthedocs: https://mynotebook.readthedocs.io/en/latest/
+  #Title: http://yoursite.com
 
 # Table of Contents in the Sidebar
 # Front-matter variable (unsupport wrap expand_all).
@@ -252,21 +231,8 @@ chat:
 # See: https://theme-next.org/docs/theme-settings/posts
 # ---------------------------------------------------------------
 
-# Automatically scroll page to section which is under <!-- more --> mark.
-scroll_to_more: true
-
-# Automatically saving scroll position on each post/page in cookies.
-save_scroll: true
-
 # Automatically excerpt description in homepage as preamble text.
 excerpt_description: true
-
-
-# Automatically Excerpt. Not recommend.
-# Please use <!-- more --> in the post to control excerpt accurately.
-auto_excerpt:
-  enable: true
-  length: 150
 
 # Read more button
 # If true, the read more button will be displayed in excerpt section.
@@ -295,13 +261,11 @@ tag_icon: false
 # Front-matter variable (unsupport animation).
 reward_settings:
   # If true, reward will be displayed in every article by default.
-  enable: true
+  enable: false
   animation: false
-  comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+  #comment: Donate comment here.
 
 reward:
-  wechatpay: /images/wechatpay.jpg
-  alipay: /images/alipay.png
   #wechatpay: /images/wechatpay.png
   #alipay: /images/alipay.png
   #paypal: /images/paypal.png
@@ -338,11 +302,6 @@ post_edit:
 # Show previous post and next post in post footer if exists
 # Available values: left | right | false
 post_navigation: left
-
-post_copyright:
-  enable: true
-  license: CC BY-NC-SA 3.0
-  license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
 
 
 # ---------------------------------------------------------------
@@ -395,14 +354,14 @@ codeblock:
   # Code Highlight theme
   # Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
   # See: https://github.com/chriskempson/tomorrow-theme
-  highlight_theme: night bright
+  highlight_theme: normal
   # Add copy button on codeblock
   copy_button:
-    enable: true
+    enable: false
     # Show text copy result.
-    show_result: true
+    show_result: false
     # Available values: default | flat | mac
-    style: mac
+    style:
 
 back2top:
   enable: true
@@ -430,8 +389,8 @@ bookmark:
 
 # `Follow me on GitHub` banner in the top-right corner.
 github_banner:
-  enable: true
-  permalink: https://github.com/huangyisan
+  enable: false
+  permalink: https://github.com/yourname
   title: Follow me on GitHub
 
 
@@ -449,7 +408,7 @@ github_banner:
 # ---------------------------------------------------------------
 
 font:
-  enable: true
+  enable: false
 
   # Uri of fonts host, e.g. https://fonts.googleapis.com (Default).
   host:
@@ -463,30 +422,29 @@ font:
   global:
     external: true
     family: Lato
-    size: 0.9
+    size:
 
   # Font settings for site title (.site-title).
   title:
     external: true
     family:
-    size: 1.5
+    size:
 
   # Font settings for headlines (<h1> to <h6>).
   headings:
     external: true
     family:
-    size: 1.7
+    size:
 
   # Font settings for posts (.post-body).
   posts:
     external: true
     family:
-    size: 0.9
+
   # Font settings for <code> and code blocks.
   codes:
     external: true
     family:
-	size: 0.9
 
 
 # ---------------------------------------------------------------
@@ -623,8 +581,8 @@ comments:
 
 # Disqus
 disqus:
-  enable: true
-  shortname: kirakirazone
+  enable: false
+  shortname:
   count: true
   #post_meta_order: 0
 
@@ -781,7 +739,7 @@ algolia_search:
 # Local Search
 # Dependencies: https://github.com/theme-next/hexo-generator-searchdb
 local_search:
-  enable: true
+  enable: false
   # If auto, trigger search by changing input.
   # If manual, trigger search by pressing enter key or search button.
   trigger: auto
@@ -841,7 +799,6 @@ tabs:
   transition:
     tabs: false
     labels: true
-  border_radius: 0
 
 # PDF tag
 # NexT will try to load pdf files natively, if failed, pdf.js will be used.
@@ -925,26 +882,26 @@ vendors:
   _internal: lib
 
   # Internal version: 3.1.0
-  # anime: //cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js
-  anime:
+  anime: //cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js
+  # anime:
 
   # Internal version: 5.13.0
-  # fontawesome: //cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css
+  fontawesome: //cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css
   # fontawesome: //cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css
-  fontawesome:
+  # fontawesome:
 
   # MathJax
-  # mathjax: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-  mathjax:
+  mathjax: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  # mathjax:
 
   # KaTeX
-  # katex: //cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css
+  katex: //cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css
   # katex: //cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css
-  # copy_tex_js: //cdn.jsdelivr.net/npm/katex@0/dist/contrib/copy-tex.min.js
-  # copy_tex_css: //cdn.jsdelivr.net/npm/katex@0/dist/contrib/copy-tex.min.css
-  katex:
-  copy_tex_js:
-  copy_tex_css:
+  copy_tex_js: //cdn.jsdelivr.net/npm/katex@0/dist/contrib/copy-tex.min.js
+  copy_tex_css: //cdn.jsdelivr.net/npm/katex@0/dist/contrib/copy-tex.min.css
+  # katex:
+  # copy_tex_js:
+  # copy_tex_css:
 
   # Internal version: 0.2.8
   # pjax: //cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js

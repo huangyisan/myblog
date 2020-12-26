@@ -42,12 +42,6 @@
   {%- endif %}
 </div>
 
-<div class="BbeiAn-info">
-    {{ __('浙ICP备') }} -
-    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784"  rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
-</div>
-
-
 {%- if theme.footer.powered %}
   <div class="powered-by">
     {%- set next_site = 'https://theme-next.org' %}
