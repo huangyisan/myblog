@@ -1,8 +1,9 @@
+---
 title: Loki日志服务01
 date: 2021-03-06 13:06:49
 tags: [Loki, linux, grafana]
 categories: application
-
+---
 
 ## Loki
 
@@ -12,7 +13,7 @@ ELK在日志方面给我的感觉是大而全，查询匹配是杠杠的，Kiban
 
 最近公众号一直推送关于这个名为Loki的日志服务，感到心痒痒。看了官网，受到了prometheus启发，对日志进行打标签的方式而非全文索引的方式(还未尝试，可能描述不当)，而且也可以跟kubernetes集成。
 
-准备开两个档，这次这个打算用简单粗暴的方式来体验Loki，挖个坑，下次体验和kubernetes结合，体验下Loki。
+准备开两个档，这次这个打算用简单粗暴的方式来体验下Loki，挖个坑，下次体验和kubernetes结合。
 
 Like Prometheus, but for logs!
 
