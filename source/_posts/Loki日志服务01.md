@@ -1,7 +1,7 @@
 title: Loki日志服务01
 date: 2021-03-06 13:06:49
 tags: [Loki, linux, grafana]
-categories: 多线程
+categories: application
 
 
 ## Loki
