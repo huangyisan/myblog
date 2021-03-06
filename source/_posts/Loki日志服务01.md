@@ -1,9 +1,7 @@
----
-title: 新手村之Loki日志服务01
+title: Loki日志服务01
 date: 2021-03-06 13:06:49
-tags: [Loki, linux]
+tags: [Loki, linux, grafana]
 categories: 多线程
----
 
 
 ## Loki
@@ -51,6 +49,12 @@ root@test:/usr/local/loki$./loki-linux-amd64 -config.file=loki-local-config.yaml
 
 1. 所以首先对nginx默认的日志进行改造，让他以json的方式进行输出到目录，然后用Promtail对其进行读取。
 2. 读取使用LogQL的json方式去读取，这个LogQL内容填写在grafana中。
+
+
+### grafana的安装和配置
+忽略，可以参考https://grafana.com/grafana/download
+配置完数据源即可。
+
 
 ### nginx的部分配置改造
 
@@ -131,7 +135,7 @@ scrape_configs:
 #### 不带参数的方式
 1. 使用`|json`来提取日志的json内容，前提是json内容为有效json格式。
 2. 嵌套的字段会用"_"将内外层的key进行拼接。
-3. **忽略数组**
+3. **忽略数组。**
 
 看一下[官网](https://grafana.com/docs/loki/latest/logql/)中不带参数方式的样例
 ```json
@@ -173,4 +177,87 @@ scrape_configs:
 
 #### 带参数的方式
 
+1. 带参数的方式，json只会根据参数来解开需要的部分(当单条json数据比较大的时候应该能省很多资源)。
+2. 使用| json label="expression", another="expression"的方式来编写该方法。可以存在多个参数
 
+看一下[官网](https://grafana.com/docs/loki/latest/logql/)中带参数方式的样例
+
+使用| json first_server="servers[0]", ua="request.headers[\"User-Agent\"]进行提取
+
+```json
+{
+    "protocol": "HTTP/2.0",
+    "servers": ["129.0.1.1","10.2.1.3"],
+    "request": {
+        "time": "6.032",
+        "method": "GET",
+        "host": "foo.grafana.net",
+        "size": "55",
+        "headers": {
+          "Accept": "*/*",
+          "User-Agent": "curl/7.68.0"
+        }
+    },
+    "response": {
+        "status": 401,
+        "size": "228",
+        "latency_seconds": "6.031"
+    }
+}
+```
+
+输出结果为：
+```shell
+"first_server" => "129.0.1.1"
+"ua" => "curl/7.68.0"
+```
+
+first_server和ua都为原先参数中指定的key
+
+如果要提取整个对象，可以使用| json server_list="servers", headers="request.headers
+这样就能得到如下输出：
+```shell
+"server_list" => `["129.0.1.1","10.2.1.3"]`
+"headers" => `{"Accept": "*/*", "User-Agent": "curl/7.68.0"}`
+```
+
+### 尝试写一条LogQL表达式
+
+一条完整的LogQL表达式由**两部分**构成：
+* a log stream selector，可以理解为，通过设定的label去匹配要抓取哪些日志。
+* a log pipeline，可以理解为表达式。比如json的提取。
+
+比如如下表达式
+```shell
+{container="query-frontend",namespace="tempo-dev"} |= "metrics.go" | logfmt | duration > 10s and throughput_mb < 500
+```
+{container="query-frontend",namespace="tempo-dev"} 部分为log stream selector，后面部分为log pipeline。
+
+
+### 编写一个简单的nginx日志需求
+1. Loki-nginx日志中状态码为200的条数。
+2. 根据当前选定时间范围，自动调整。
+
+思考：
+1. 如何指定Loki-nginx，可以使用log stream selector的表达式来选定。
+2. nginx日志已经转变为了json，所以可以用|json来提取。
+3. 如何获取status字段的信息? 可以使用status。
+4. 如何根据当前选定的时间范围？ 使用内置变量[$\_\_interval]。
+5. 条数该得用什么方法获得？LogQL有内置函数`count_over_time`配合`sum`，这边需要注意的是`count_over_time`是根据指定时间范围返回日志条目的具体内容，所以还需要配合`sum`获得时间段内的总数。
+
+编写：
+
+1. 首先选定Loki-nginx的日志，{job="Loki-nginx"}。
+2. 使用count_over_time函数配合[$\_\_interval]来获取总共的条数。count_over_time({job="Loki-nginx"}[$\_\_interval])
+3. 过滤status字段，让其等于200，表达式count_over_time({job="Loki-nginx"} | json | status = 200 [$\_\_interval])，此时会报错，因为status为字符串，可以添加\_\_error\_\_=""让其忽略转换出现的异常。得到count_over_time({job="Loki-nginx"} | json | status = 200 \_\_error\_\_="" [$\_\_interval])
+4. 此时在grafana上显示为多条数据，配合sum得到单独一个数值。
+5. 最终的表达式为： `sum(count_over_time({job="Loki-nginx"} | json | status = 200 __error__="" [$__interval]))`
+
+Grafana图:
+![](https://image.kirakirazone.com/imageLogQL_status200.png)
+
+
+
+refer:
+> https://grafana.com/docs/loki/latest/clients/promtail/configuration/#configuring-promtail
+> https://grafana.com/docs/loki/latest/logql/
