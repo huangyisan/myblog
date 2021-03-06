@@ -1,5 +1,5 @@
 ---
-title: 新手村之Loki日志服务(一)
+title: 新手村之Loki日志服务01
 date: 2021-03-06 13:06:49
 tags: [Loki, linux]
 categories: 多线程
