@@ -201,7 +201,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/06/Loki%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A101/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2021/03/06/Loki%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A101/" class="post-title-link" itemprop="url">Loki日志服务01</a>
         </h2>
 
         <div class="post-meta">
@@ -210,8 +210,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-03-06 17:26:17" itemprop="dateCreated datePublished" datetime="2021-03-06T17:26:17+08:00">2021-03-06</time>
+              <time title="Created: 2021-03-06 13:06:49 / Modified: 18:41:39" itemprop="dateCreated datePublished" datetime="2021-03-06T13:06:49+08:00">2021-03-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/application/" itemprop="url" rel="index"><span itemprop="name">application</span></a>
+                </span>
             </span>
 
           
@@ -239,11 +249,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>title: Loki日志服务01<br>date: 2021-03-06 13:06:49<br>tags: [Loki, linux, grafana]<br>categories: 多线程</p>
-<h2 id="Loki"><a href="#Loki" class="headerlink" title="Loki"></a>Loki</h2><p>之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日志的提取，也就是dissect插件，可以根据分隔符进行分割。</p>
+          <h2 id="Loki"><a href="#Loki" class="headerlink" title="Loki"></a>Loki</h2><p>之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日志的提取，也就是dissect插件，可以根据分隔符进行分割。</p>
 <p>ELK在日志方面给我的感觉是大而全，查询匹配是杠杠的，Kibana图表非常丰富。但如果面对大量的数据，需要查询，在不堆机器的情况下，还是会比较疲软，查询比较慢，之前公司每当突发流量的时候，由于日志写入比较大，队列都在kafka，es消费慢，导致无法实时出数据。</p>
 <p>最近公众号一直推送关于这个名为Loki的日志服务，感到心痒痒。看了官网，受到了prometheus启发，对日志进行打标签的方式而非全文索引的方式(还未尝试，可能描述不当)，而且也可以跟kubernetes集成。</p>
-<p>准备开两个档，这次这个打算用简单粗暴的方式来体验Loki，挖个坑，下次体验和kubernetes结合，体验下Loki。</p>
+<p>准备开两个档，这次这个打算用简单粗暴的方式来体验下Loki，挖个坑，下次体验和kubernetes结合。</p>
 <p>Like Prometheus, but for logs!</p>
           <!--noindex-->
             <div class="post-button">
@@ -1229,7 +1238,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

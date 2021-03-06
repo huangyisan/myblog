@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="title: Loki日志服务01date: 2021-03-06 13:06:49tags: [Loki, linux, grafana]categories: 多线程 Loki之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日">
+  <meta name="description" content="Loki之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日志的提取，也就是dissect插件，可以根据分隔符进行分割。 ELK在日志方面给我的感觉是大而全，查询匹配是杠杠的，Kibana图表非常丰富。但如果面对大量的数据，需要查询">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kirakirazone">
+<meta property="og:title" content="Loki日志服务01">
 <meta property="og:url" content="https://kirakirazone.com/2021/03/06/Loki%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A101/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="title: Loki日志服务01date: 2021-03-06 13:06:49tags: [Loki, linux, grafana]categories: 多线程 Loki之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日">
+<meta property="og:description" content="Loki之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日志的提取，也就是dissect插件，可以根据分隔符进行分割。 ELK在日志方面给我的感觉是大而全，查询匹配是杠杠的，Kibana图表非常丰富。但如果面对大量的数据，需要查询">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://image.kirakirazone.com/imageLogQL_status200.png">
-<meta property="article:published_time" content="2021-03-06T09:26:17.531Z">
-<meta property="article:modified_time" content="2021-03-06T09:26:17.531Z">
+<meta property="article:published_time" content="2021-03-06T05:06:49.000Z">
+<meta property="article:modified_time" content="2021-03-06T10:41:39.166Z">
 <meta property="article:author" content="Huangyisan">
+<meta property="article:tag" content="Loki">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="grafana">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://image.kirakirazone.com/imageLogQL_status200.png">
 
@@ -47,7 +50,7 @@
   };
 </script>
 
-  <title> | Kirakirazone</title>
+  <title>Loki日志服务01 | Kirakirazone</title>
   
 
 
@@ -205,7 +208,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          Loki日志服务01
         </h1>
 
         <div class="post-meta">
@@ -214,8 +217,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-03-06 17:26:17" itemprop="dateCreated datePublished" datetime="2021-03-06T17:26:17+08:00">2021-03-06</time>
+              <time title="Created: 2021-03-06 13:06:49 / Modified: 18:41:39" itemprop="dateCreated datePublished" datetime="2021-03-06T13:06:49+08:00">2021-03-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/application/" itemprop="url" rel="index"><span itemprop="name">application</span></a>
+                </span>
             </span>
 
           
@@ -243,35 +256,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>title: Loki日志服务01<br>date: 2021-03-06 13:06:49<br>tags: [Loki, linux, grafana]<br>categories: 多线程</p>
-<h2 id="Loki"><a href="#Loki" class="headerlink" title="Loki"></a>Loki</h2><p>之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日志的提取，也就是dissect插件，可以根据分隔符进行分割。</p>
+        <h2 id="Loki"><a href="#Loki" class="headerlink" title="Loki"></a>Loki</h2><p>之前日志服务用的较多的一般是ELK，EFK，graylog等，但这些日志由java编写，运行需要jdk，而且配置上面，还是有点复杂，比如需要对日志需要写grok将复杂的日志进行匹配，好在后面出了可以根据分隔符的方式进行日志的提取，也就是dissect插件，可以根据分隔符进行分割。</p>
 <p>ELK在日志方面给我的感觉是大而全，查询匹配是杠杠的，Kibana图表非常丰富。但如果面对大量的数据，需要查询，在不堆机器的情况下，还是会比较疲软，查询比较慢，之前公司每当突发流量的时候，由于日志写入比较大，队列都在kafka，es消费慢，导致无法实时出数据。</p>
 <p>最近公众号一直推送关于这个名为Loki的日志服务，感到心痒痒。看了官网，受到了prometheus启发，对日志进行打标签的方式而非全文索引的方式(还未尝试，可能描述不当)，而且也可以跟kubernetes集成。</p>
-<p>准备开两个档，这次这个打算用简单粗暴的方式来体验Loki，挖个坑，下次体验和kubernetes结合，体验下Loki。</p>
+<p>准备开两个档，这次这个打算用简单粗暴的方式来体验下Loki，挖个坑，下次体验和kubernetes结合。</p>
 <p>Like Prometheus, but for logs!</p>
 <a id="more"></a>
 
 
 
 <h2 id="安装Loki-使用Local方式"><a href="#安装Loki-使用Local方式" class="headerlink" title="安装Loki(使用Local方式)"></a>安装Loki(使用Local方式)</h2><h3 id="安装和运行"><a href="#安装和运行" class="headerlink" title="安装和运行"></a>安装和运行</h3><ol>
-<li><p><a target="_blank" rel="noopener" href="https://github.com/grafana/loki/releases/">https://github.com/grafana/loki/releases/</a></p>
-</li>
-<li><p>找到要安装的版本，我采用的是v2.1.0</p>
-</li>
-<li><p>下载Loki和Promtail, (Loki为日志的引擎，通过Promtail来发送日志到Loki)</p>
-</li>
-<li><p>在本机找一个目录存放这两个2进制文件</p>
-</li>
-<li><p>下载两者的配置文件(第一个配置文件不适配v2.1.0或者最新的版本，使用<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/grafana/loki/af6e8cb6c9a02be44a978c4933fb17778cb401b7/cmd/loki/loki-local-config.yaml%E6%9B%BF%E4%BB%A3%E3%80%82">https://raw.githubusercontent.com/grafana/loki/af6e8cb6c9a02be44a978c4933fb17778cb401b7/cmd/loki/loki-local-config.yaml替代。</a> issue-3055)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/grafana/loki/master/cmd/loki/loki-local-config.yaml</span><br><span class="line">wget https://raw.githubusercontent.com/grafana/loki/master/cmd/promtail/promtail-local-config.yaml</span><br></pre></td></tr></table></figure></li>
-<li><p>使用如下命令启动Loki</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./loki-linux-amd64 -config.file=loki-local-config.yaml</span><br></pre></td></tr></table></figure>
+<li><a target="_blank" rel="noopener" href="https://github.com/grafana/loki/releases/">https://github.com/grafana/loki/releases/</a></li>
+<li>找到要安装的版本，我采用的是v2.1.0</li>
+<li>下载Loki和Promtail, (Loki为日志的引擎，通过Promtail来发送日志到Loki)</li>
+<li>在本机找一个目录存放这两个2进制文件</li>
+<li>下载两者的配置文件(第一个配置文件不适配v2.1.0或者最新的版本，使用<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/grafana/loki/af6e8cb6c9a02be44a978c4933fb17778cb401b7/cmd/loki/loki-local-config.yaml%E6%9B%BF%E4%BB%A3%E3%80%82">https://raw.githubusercontent.com/grafana/loki/af6e8cb6c9a02be44a978c4933fb17778cb401b7/cmd/loki/loki-local-config.yaml替代。</a> issue-3055)<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/grafana/loki/master/cmd/loki/loki-local-config.yaml</span><br><span class="line">wget https://raw.githubusercontent.com/grafana/loki/master/cmd/promtail/promtail-local-config.yaml</span><br></pre></td></tr></table></figure></li>
+<li>使用如下命令启动Loki<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./loki-linux-amd64 -config.file=loki-local-config.yaml</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@test:~$cd /usr/local/loki/</span><br><span class="line">root@test:/usr/local/loki$ls</span><br><span class="line">loki-linux-amd64  loki-local-config.yaml  promtail-linux-amd64  promtail-local-config.yaml</span><br><span class="line">root@test:/usr/local/loki$./loki-linux-amd64 -config.file=loki-local-config.yaml</span><br></pre></td></tr></table></figure>
-<h2 id="尝试搜集nginx日志"><a href="#尝试搜集nginx日志" class="headerlink" title="尝试搜集nginx日志"></a>尝试搜集nginx日志</h2></li>
-<li><p>所以首先对nginx默认的日志进行改造，让他以json的方式进行输出到目录，然后用Promtail对其进行读取。</p>
+
+
 </li>
-<li><p>读取使用LogQL的json方式去读取，这个LogQL内容填写在grafana中。</p>
-</li>
+</ol>
+<h2 id="尝试搜集nginx日志"><a href="#尝试搜集nginx日志" class="headerlink" title="尝试搜集nginx日志"></a>尝试搜集nginx日志</h2><ol>
+<li>所以首先对nginx默认的日志进行改造，让他以json的方式进行输出到目录，然后用Promtail对其进行读取。</li>
+<li>读取使用LogQL的json方式去读取，这个LogQL内容填写在grafana中。</li>
 </ol>
 <h3 id="grafana的安装和配置"><a href="#grafana的安装和配置" class="headerlink" title="grafana的安装和配置"></a>grafana的安装和配置</h3><p>忽略，可以参考<a target="_blank" rel="noopener" href="https://grafana.com/grafana/download">https://grafana.com/grafana/download</a><br>配置完数据源即可。</p>
 <h3 id="nginx的部分配置改造"><a href="#nginx的部分配置改造" class="headerlink" title="nginx的部分配置改造"></a>nginx的部分配置改造</h3><p>虚拟server配置</p>
@@ -325,16 +333,16 @@
 <p>思考：</p>
 <ol>
 <li>如何指定Loki-nginx，可以使用log stream selector的表达式来选定。</li>
-<li>nginx日志已经转变为了json，所以可以用|json来提取。</li>
-<li>如何获取status字段的信息? 可以使用status。</li>
-<li>如何根据当前选定的时间范围？ 使用内置变量[$__interval]。</li>
+<li>nginx日志已经转变为了json，所以可以用<code>|json</code>来提取。</li>
+<li>如何获取status字段的信息? |json后面直接跟随|status即可，即<code>|json|status</code>。</li>
+<li>如何根据当前选定的时间范围？ 使用内置变量<code>[$\_\_interval]</code>。</li>
 <li>条数该得用什么方法获得？LogQL有内置函数<code>count_over_time</code>配合<code>sum</code>，这边需要注意的是<code>count_over_time</code>是根据指定时间范围返回日志条目的具体内容，所以还需要配合<code>sum</code>获得时间段内的总数。</li>
 </ol>
 <p>编写：</p>
 <ol>
-<li>首先选定Loki-nginx的日志，{job=”Loki-nginx”}。</li>
-<li>使用count_over_time函数配合[$__interval]来获取总共的条数。count_over_time({job=”Loki-nginx”}[$__interval])</li>
-<li>过滤status字段，让其等于200，表达式count_over_time({job=”Loki-nginx”} | json | status = 200 [$__interval])，此时会报错，因为status为字符串，可以添加__error__=””让其忽略转换出现的异常。得到count_over_time({job=”Loki-nginx”} | json | status = 200 __error__=”” [$__interval])</li>
+<li>首先选定Loki-nginx的日志，<code>&#123;job=&quot;Loki-nginx&quot;&#125;</code>。</li>
+<li>使用count_over_time函数配合<code>[$\_\_interval]</code>来获取总共的条数。<code>count_over_time(&#123;job=&quot;Loki-nginx&quot;&#125;[$\_\_interval])</code></li>
+<li>过滤status字段，让其等于200，表达式<code>count_over_time(&#123;job=&quot;Loki-nginx&quot;&#125; | json | status = 200 [$\_\_interval])</code>，此时会报错，因为status为字符串，可以添加__error__=””让其忽略转换出现的异常。得到<code>count_over_time(&#123;job=&quot;Loki-nginx&quot;&#125; | json | status = 200 \_\_error\_\_=&quot;&quot; [$\_\_interval])</code></li>
 <li>此时在grafana上显示为多条数据，配合sum得到单独一个数值。</li>
 <li>最终的表达式为： <code>sum(count_over_time(&#123;job=&quot;Loki-nginx&quot;&#125; | json | status = 200 __error__=&quot;&quot; [$__interval]))</code></li>
 </ol>
@@ -378,7 +386,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="https://kirakirazone.com/2021/03/06/Loki%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A101/" title="">https://kirakirazone.com/2021/03/06/Loki日志服务01/</a>
+    <a href="https://kirakirazone.com/2021/03/06/Loki%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A101/" title="Loki日志服务01">https://kirakirazone.com/2021/03/06/Loki日志服务01/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -388,6 +396,11 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Loki/" rel="tag"># Loki</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/grafana/" rel="tag"># grafana</a>
+          </div>
 
         
 
@@ -491,7 +504,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -616,7 +629,7 @@
   var disqus_config = function() {
     this.page.url = "https://kirakirazone.com/2021/03/06/Loki%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A101/";
     this.page.identifier = "2021/03/06/Loki日志服务01/";
-    this.page.title = "";
+    this.page.title = "Loki日志服务01";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
