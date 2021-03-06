@@ -46,6 +46,8 @@ loki-linux-amd64  loki-local-config.yaml  promtail-linux-amd64  promtail-local-c
 root@test:/usr/local/loki$./loki-linux-amd64 -config.file=loki-local-config.yaml
 ```
 
+
+
 ## 尝试搜集nginx日志
 
 1. 所以首先对nginx默认的日志进行改造，让他以json的方式进行输出到目录，然后用Promtail对其进行读取。
@@ -241,16 +243,16 @@ first_server和ua都为原先参数中指定的key
 
 思考：
 1. 如何指定Loki-nginx，可以使用log stream selector的表达式来选定。
-2. nginx日志已经转变为了json，所以可以用|json来提取。
-3. 如何获取status字段的信息? 可以使用status。
-4. 如何根据当前选定的时间范围？ 使用内置变量[$\_\_interval]。
+2. nginx日志已经转变为了json，所以可以用`|json`来提取。
+3. 如何获取status字段的信息? |json后面直接跟随|status即可，即`|json|status`。
+4. 如何根据当前选定的时间范围？ 使用内置变量`[$\_\_interval]`。
 5. 条数该得用什么方法获得？LogQL有内置函数`count_over_time`配合`sum`，这边需要注意的是`count_over_time`是根据指定时间范围返回日志条目的具体内容，所以还需要配合`sum`获得时间段内的总数。
 
 编写：
 
-1. 首先选定Loki-nginx的日志，{job="Loki-nginx"}。
-2. 使用count_over_time函数配合[$\_\_interval]来获取总共的条数。count_over_time({job="Loki-nginx"}[$\_\_interval])
-3. 过滤status字段，让其等于200，表达式count_over_time({job="Loki-nginx"} | json | status = 200 [$\_\_interval])，此时会报错，因为status为字符串，可以添加\_\_error\_\_=""让其忽略转换出现的异常。得到count_over_time({job="Loki-nginx"} | json | status = 200 \_\_error\_\_="" [$\_\_interval])
+1. 首先选定Loki-nginx的日志，`{job="Loki-nginx"}`。
+2. 使用count_over_time函数配合`[$\_\_interval]`来获取总共的条数。`count_over_time({job="Loki-nginx"}[$\_\_interval])`
+3. 过滤status字段，让其等于200，表达式`count_over_time({job="Loki-nginx"} | json | status = 200 [$\_\_interval])`，此时会报错，因为status为字符串，可以添加\_\_error\_\_=""让其忽略转换出现的异常。得到`count_over_time({job="Loki-nginx"} | json | status = 200 \_\_error\_\_="" [$\_\_interval])`
 4. 此时在grafana上显示为多条数据，配合sum得到单独一个数值。
 5. 最终的表达式为： `sum(count_over_time({job="Loki-nginx"} | json | status = 200 __error__="" [$__interval]))`
 
