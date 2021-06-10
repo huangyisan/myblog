@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="wrk github项目地址： https:&#x2F;&#x2F;github.com&#x2F;wg&#x2F;wrk 可以配合lua脚本使用  wrk参数123456789101112Usage: wrk &lt;options&gt; &lt;url&gt;                              Options:                                                -">
+  <meta name="description" content="wrk github项目地址： https:&#x2F;&#x2F;github.com&#x2F;wg&#x2F;wrk 可以配合lua脚本使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="wrk的使用">
 <meta property="og:url" content="https://kirakirazone.com/2021/06/10/wrk%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="wrk github项目地址： https:&#x2F;&#x2F;github.com&#x2F;wg&#x2F;wrk 可以配合lua脚本使用  wrk参数123456789101112Usage: wrk &lt;options&gt; &lt;url&gt;                              Options:                                                -">
+<meta property="og:description" content="wrk github项目地址： https:&#x2F;&#x2F;github.com&#x2F;wg&#x2F;wrk 可以配合lua脚本使用">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-06-10T06:21:23.000Z">
-<meta property="article:modified_time" content="2021-06-10T06:23:14.852Z">
+<meta property="article:modified_time" content="2021-06-10T06:27:36.639Z">
 <meta property="article:author" content="Huangyisan">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="lua">
@@ -216,7 +216,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-06-10 14:21:23 / Modified: 14:23:14" itemprop="dateCreated datePublished" datetime="2021-06-10T14:21:23+08:00">2021-06-10</time>
+              <time title="Created: 2021-06-10 14:21:23 / Modified: 14:27:36" itemprop="dateCreated datePublished" datetime="2021-06-10T14:21:23+08:00">2021-06-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,6 +257,8 @@
 <li>github项目地址： <a target="_blank" rel="noopener" href="https://github.com/wg/wrk">https://github.com/wg/wrk</a></li>
 <li>可以配合lua脚本使用</li>
 </ol>
+<a id="more"></a>
+
 <h3 id="wrk参数"><a href="#wrk参数" class="headerlink" title="wrk参数"></a>wrk参数</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Usage: wrk &lt;options&gt; &lt;url&gt;                            </span><br><span class="line">  Options:                                            </span><br><span class="line">    -c, --connections &lt;N&gt;  Connections to keep open   </span><br><span class="line">    -d, --duration    &lt;T&gt;  Duration of test           </span><br><span class="line">    -t, --threads     &lt;N&gt;  Number of threads to use   </span><br><span class="line">                                                      </span><br><span class="line">    -s, --script      &lt;S&gt;  Load Lua script file       </span><br><span class="line">    -H, --header      &lt;H&gt;  Add header to request      </span><br><span class="line">        --latency          Print latency statistics   </span><br><span class="line">        --timeout     &lt;T&gt;  Socket/request timeout     </span><br><span class="line">    -v, --version          Print version details      </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>-c 表示并发连接数</p>

@@ -2769,6 +2769,8 @@ refer:
 <li>github项目地址： <a href="https://github.com/wg/wrk">https://github.com/wg/wrk</a></li>
 <li>可以配合lua脚本使用</li>
 </ol>
+<a id="more"></a>
+
 <h3 id="wrk参数"><a href="#wrk参数" class="headerlink" title="wrk参数"></a>wrk参数</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Usage: wrk &lt;options&gt; &lt;url&gt;                            </span><br><span class="line">  Options:                                            </span><br><span class="line">    -c, --connections &lt;N&gt;  Connections to keep open   </span><br><span class="line">    -d, --duration    &lt;T&gt;  Duration of test           </span><br><span class="line">    -t, --threads     &lt;N&gt;  Number of threads to use   </span><br><span class="line">                                                      </span><br><span class="line">    -s, --script      &lt;S&gt;  Load Lua script file       </span><br><span class="line">    -H, --header      &lt;H&gt;  Add header to request      </span><br><span class="line">        --latency          Print latency statistics   </span><br><span class="line">        --timeout     &lt;T&gt;  Socket/request timeout     </span><br><span class="line">    -v, --version          Print version details      </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>-c 表示并发连接数</p>

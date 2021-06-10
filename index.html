@@ -212,7 +212,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-06-10 14:21:23 / Modified: 14:23:14" itemprop="dateCreated datePublished" datetime="2021-06-10T14:21:23+08:00">2021-06-10</time>
+              <time title="Created: 2021-06-10 14:21:23 / Modified: 14:27:36" itemprop="dateCreated datePublished" datetime="2021-06-10T14:21:23+08:00">2021-06-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,111 +253,14 @@
 <li>github项目地址： <a target="_blank" rel="noopener" href="https://github.com/wg/wrk">https://github.com/wg/wrk</a></li>
 <li>可以配合lua脚本使用</li>
 </ol>
-<h3 id="wrk参数"><a href="#wrk参数" class="headerlink" title="wrk参数"></a>wrk参数</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Usage: wrk &lt;options&gt; &lt;url&gt;                            </span><br><span class="line">  Options:                                            </span><br><span class="line">    -c, --connections &lt;N&gt;  Connections to keep open   </span><br><span class="line">    -d, --duration    &lt;T&gt;  Duration of test           </span><br><span class="line">    -t, --threads     &lt;N&gt;  Number of threads to use   </span><br><span class="line">                                                      </span><br><span class="line">    -s, --script      &lt;S&gt;  Load Lua script file       </span><br><span class="line">    -H, --header      &lt;H&gt;  Add header to request      </span><br><span class="line">        --latency          Print latency statistics   </span><br><span class="line">        --timeout     &lt;T&gt;  Socket/request timeout     </span><br><span class="line">    -v, --version          Print version details      </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>-c 表示并发连接数</p>
-</li>
-<li><p>-d 持续时间，如果不填写，默认为10s</p>
-</li>
-<li><p>-t 线程数</p>
-</li>
-<li><p>-s 指定lua脚本</p>
-</li>
-<li><p>-H 指定请求头</p>
-</li>
-<li><p>–latency 最终输出阶段打印出latency信息</p>
-</li>
-<li><p>–timeout 设置超时时间</p>
-</li>
-<li><p>-v 查看工具版本</p>
-</li>
-</ul>
-<h3 id="wrk压测样例"><a href="#wrk压测样例" class="headerlink" title="wrk压测样例"></a>wrk压测样例</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">huangyisan@k3s-master:~/learn-lua/wrk$ wrk -t1 -c3 -d1s --timeout 1s --latency https://www.baidu.com</span><br><span class="line">1 Running 1s test @ https://www.baidu.com</span><br><span class="line">2  1 threads and 3 connections</span><br><span class="line">3  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">4    Latency    97.57ms   33.94ms 183.80ms   76.00%</span><br><span class="line">5    Req/Sec    27.75      8.01    40.00     75.00%</span><br><span class="line">6  Latency Distribution</span><br><span class="line">7     50%   81.64ms</span><br><span class="line">8     75%  106.93ms</span><br><span class="line">9     90%  153.27ms</span><br><span class="line">10     99%  183.80ms</span><br><span class="line">11  25 requests in 1.01s, 414.54KB read</span><br><span class="line">12 Requests/sec:     24.85</span><br><span class="line">13 Transfer/sec:    412.03KB</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>输出解释：</p>
-<ul>
-<li>第一行： 表示请求<a target="_blank" rel="noopener" href="https://www.baidu.com/">https://www.baidu.com</a> 持续1s</li>
-<li>第二行： 表示1个线程3个并发连接数</li>
-<li>第三行：<ul>
-<li>Thread Stats：表示类型字段</li>
-<li>Avg：单个线程的平均值</li>
-<li>Stdev：单个线程标准偏差</li>
-<li>Max：单个线程最大值</li>
-<li>+/- Stdev：标准偏差以百分数形式表示</li>
-</ul>
-</li>
-<li>第四行：表示请求延迟，越小越好</li>
-<li>第五行：表示每秒请求数，越大越好</li>
-<li>第六行：唯有在命令行加上–latency 参数才有</li>
-<li>第七行至第十行：表示了延迟数据分布，50%的请求在81.64ms中完成，这里面包含了<strong>Coordinated Omission</strong>修正，所以延迟会比服务端打点来的大，因为其包含了用户请求发送的等待时间，具体可以参考:<a target="_blank" rel="noopener" href="https://github.com/giltene/wrk2">https://github.com/giltene/wrk2</a> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/43602062">https://zhuanlan.zhihu.com/p/43602062</a></li>
-<li>第十一行：表示了在固定的1s内完成了25个请求，数据读取414.54KB</li>
-<li>第十二行：表示所有请求的均值每秒数据，<strong>这是一个重要的指标</strong>。req/sec和request/sec的差别<a target="_blank" rel="noopener" href="https://github.com/wg/wrk/issues/259">https://github.com/wg/wrk/issues/259</a></li>
-<li>第十三行：每秒传输的数据量</li>
-</ul>
-<h3 id="wrk跟lua脚本配合使用"><a href="#wrk跟lua脚本配合使用" class="headerlink" title="wrk跟lua脚本配合使用"></a>wrk跟lua脚本配合使用</h3><ol>
-<li>引入lua脚本，可以使压测的行为更加复杂，比如给每个线程创建不同的body，进行压测。</li>
-<li>通过-s可以指定传入的脚本名称。</li>
-</ol>
-<h4 id="wrk运行阶段"><a href="#wrk运行阶段" class="headerlink" title="wrk运行阶段"></a>wrk运行阶段</h4><p>wrk的运行可以分为三个阶段，在这三个阶段可以通过lua编写对应的方法，来达到”嵌入”行为的目的。</p>
-<ol>
-<li><p><strong>Step阶段</strong>，该阶段解析了被压测的地址，并且初始化好了所有的线程，处于等待开始阶段，所以这个阶段编写的脚本的执行开销，其实是不会算入结论输出里面的。在lua脚本定义<strong>setup</strong>函数，传入<strong>thread</strong>参数。</p>
-<p> thread也有自己的一些属性和方法</p>
-<ul>
-<li>thread.addr，获取当前thread访问的地址，以ip:port的形式</li>
-<li>thread:set(key, value)，在线程里面设定key,value</li>
-<li>thread:get(key)，指定key获取thread环境里的对应的value</li>
-<li>thread:stop()，暂停thread</li>
-</ul>
-</li>
-</ol>
-<pre><code><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setup</span><span class="params">(thread)</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></code></pre>
-<ol start="2">
-<li><p><strong>Running阶段</strong>，该阶段又可以细分为四个阶段。</p>
-<ul>
-<li><p><strong>init阶段</strong>，该阶段可以接受wrk命令传入的额外参数，只需要将额外参数跟随在最末尾，空格分隔即可。在lua脚本定义<strong>init</strong>函数，传入args参数，<strong>当有额外参数传入的时候，args为一个table</strong>，可以使用pairs迭代获取其value。</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span><span class="params">(args)</span></span></span><br><span class="line">    <span class="keyword">for</span> i,v <span class="keyword">in</span> <span class="built_in">pairs</span>(args)</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">      <span class="built_in">print</span>(i,v)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>指定脚本后传入参数打印能看到如下输出,index为0的是压测地址，1为bb，2为cc</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">huangyisan@k3s-master:~/learn-lua/wrk$ wrk -t1 -c1 -d1s --timeout 1s -s init.lua  --latency https://www.baidu.com bb cc</span><br><span class="line">0	https://www.baidu.com</span><br><span class="line">1	bb</span><br><span class="line">2	cc</span><br><span class="line">Running 1s test @ https://www.baidu.com</span><br><span class="line">  1 threads and 1 connections</span><br><span class="line">  .....</span><br><span class="line">  ....</span><br><span class="line">  ...</span><br><span class="line">  ..</span><br><span class="line">  .</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>delay阶段</strong>,该阶段表示两次请求延迟间隔，函数返回一个毫秒为单位的数字。在lua脚本定义<strong>delay</strong>函数，返回数字，该数字单位为<strong>毫秒</strong>。</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">delay</span><span class="params">()</span></span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">200</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>脚本表示延迟间隔为200ms,当指定延迟脚本和不指定延迟脚本得到的结果很明显，指定了延迟脚本的结果<strong>Requests/sec</strong>明显下降了。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">huangyisan@k3s-master:~/learn-lua/wrk$ wrk -t1 -c2 -d2s  https://www.baidu.com </span><br><span class="line">Running 2s test @ https://www.baidu.com</span><br><span class="line">  1 threads and 2 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    85.89ms   25.21ms 185.38ms   77.78%</span><br><span class="line">    Req/Sec    23.17      7.68    40.00     83.33%</span><br><span class="line">  44 requests in 2.01s, 673.82KB read</span><br><span class="line">Requests/sec:     21.91</span><br><span class="line">Transfer/sec:    335.56KB</span><br><span class="line"></span><br><span class="line">huangyisan@k3s-master:~/learn-lua/wrk$ wrk -t1 -c2 -d2s -s delay.lua https://www.baidu.com </span><br><span class="line">Running 2s test @ https://www.baidu.com</span><br><span class="line">  1 threads and 2 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    53.43ms    8.35ms  81.61ms   92.86%</span><br><span class="line">    Req/Sec     7.00      2.33    10.00     62.50%</span><br><span class="line">  14 requests in 2.01s, 214.40KB read</span><br><span class="line">Requests/sec:      6.96</span><br><span class="line">Transfer/sec:    106.53KB</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>request阶段</strong>，该阶段可以对请求进行构造，比如修改请求头，修改body等，最后需要返回<strong>wrk.format()**，建议将一些可以不在该阶段的修改代码放到init()方法里面，让request腾出更多的时间去完成压测请求。一个完整的wrk.format()函数传入的参数</strong>依次<strong>对应为</strong>method, path, headers, body<strong>。在lua脚本里面定义</strong>request**函数函数即可。如果在function里面并不是修改全局wrk的属性，则需要传入，否则可以不传入，比如下面wrk.method被修改了，则不需要传入，而path为函数内本地属性，需要传入。</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span><span class="params">()</span></span></span><br><span class="line">  <span class="built_in">path</span> = <span class="string">&quot;/?x&quot;</span></span><br><span class="line">  wrk.method = <span class="string">&quot;POST&quot;</span></span><br><span class="line"><span class="keyword">return</span> wrk.<span class="built_in">format</span>(<span class="literal">nil</span>,<span class="built_in">path</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></li>
-<li><p><strong>response阶段</strong>，该阶段可以处理请求返回的status,headers,body。在lua脚本中定义<strong>response</strong>函数，传入的参数分别为<strong>status,headers,body</strong>。</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">response</span><span class="params">(status,headers,body)</span></span></span><br><span class="line">  <span class="keyword">for</span> _,v <span class="keyword">in</span> <span class="built_in">pairs</span>(headers)</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">      <span class="built_in">print</span>(v)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="built_in">status</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p><strong>Done阶段</strong>，该阶段以table的形式接受结果，以及表示每个请求延迟和每线程请求率的两个统计对象，此时可以根据自己的算法需求来编写最后的输出结果。在lua脚本中定义<strong>done</strong>函数，传入参数分别为<strong>summary, latency, requests</strong>。</p>
-<p>其对象有如下这些:</p>
-</li>
-</ol>
-<ul>
-<li><p>latency.min 最小值</p>
-</li>
-<li><p>latency.max 最大值</p>
-</li>
-<li><p>latency.mean 平均值</p>
-</li>
-<li><p>latency.stdev 标准偏差</p>
-</li>
-<li><p>latency:percentile(num) 指定数字百分比的数值</p>
-</li>
-<li><p>latency(i) : raw value and count</p>
-<p>summary:</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">summary</span> = &#123;    </span><br><span class="line">    duration = N,  <span class="comment">-- run duration in microseconds    </span></span><br><span class="line">    requests = N,  <span class="comment">-- total completed requests    </span></span><br><span class="line">    bytes    = N,  <span class="comment">-- total bytes received    </span></span><br><span class="line">    errors   = &#123;      </span><br><span class="line">       <span class="keyword">connect</span> = N, <span class="comment">-- total socket connection errors      </span></span><br><span class="line">       <span class="keyword">read</span>    = N, <span class="comment">-- total socket read errors      </span></span><br><span class="line">       <span class="keyword">write</span>   = N, <span class="comment">-- total socket write errors      </span></span><br><span class="line">       status  = N, <span class="comment">-- total HTTP status codes &gt; 399      </span></span><br><span class="line">       timeout = N  <span class="comment">-- total request timeouts    </span></span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>自定义输出lua脚本</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">done</span><span class="params">(summary, latency, requests)</span></span></span><br><span class="line">   <span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">&quot;------------------------------\n&quot;</span>)</span><br><span class="line">   <span class="keyword">for</span> _, p <span class="keyword">in</span> <span class="built_in">pairs</span>(&#123; <span class="number">50</span>, <span class="number">90</span>, <span class="number">99</span>, <span class="number">99.999</span> &#125;) <span class="keyword">do</span></span><br><span class="line">      n = latency:percentile(p)</span><br><span class="line">      <span class="built_in">io</span>.<span class="built_in">write</span>(<span class="built_in">string</span>.<span class="built_in">format</span>(<span class="string">&quot;%g%%,%dms\n&quot;</span>, p, n/<span class="number">1000</span>))</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line">   <span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">&quot;--------error requets count--------\n&quot;</span>)</span><br><span class="line">   <span class="built_in">print</span>(summary[<span class="string">&quot;errors&quot;</span>][<span class="string">&quot;status&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">huangyisan@k3s-master:~/learn-lua/wrk$ wrk -t1 -c2 -d2s -s done.lua --latency https://www.baidu.com </span><br><span class="line">Running 2s test @ https://www.baidu.com</span><br><span class="line">  1 threads and 2 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    86.47ms   17.21ms 130.38ms   79.07%</span><br><span class="line">    Req/Sec    22.26      8.53    40.00     78.95%</span><br><span class="line">  Latency Distribution</span><br><span class="line">     50%   86.63ms</span><br><span class="line">     75%   96.13ms</span><br><span class="line">     90%  101.42ms</span><br><span class="line">     99%  130.38ms</span><br><span class="line">  43 requests in 2.01s, 658.52KB read</span><br><span class="line">Requests/sec:     21.39</span><br><span class="line">Transfer/sec:    327.57KB</span><br><span class="line">------------------------------</span><br><span class="line"><span class="meta">50%</span><span class="bash">,86ms</span></span><br><span class="line"><span class="meta">90%</span><span class="bash">,101ms</span></span><br><span class="line"><span class="meta">99%</span><span class="bash">,130ms</span></span><br><span class="line">99.999%,130ms</span><br><span class="line">--------error requets count--------</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">  </span><br></pre></td></tr></table></figure>
-<p>自定义了输出，打印了50,90,90,99.999百分比的标准偏差，同时打印了请求错误的数量。</p>
-</li>
-</ul>
-<p>refer</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://medium.com/@felipedutratine/intelligent-benchmark-with-wrk-163986c1587f">https://medium.com/@felipedutratine/intelligent-benchmark-with-wrk-163986c1587f</a><br><a target="_blank" rel="noopener" href="https://programmer.ink/think/quick-start-for-the-http-pressure-tool-wrk.html">https://programmer.ink/think/quick-start-for-the-http-pressure-tool-wrk.html</a></p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/10/wrk%E7%9A%84%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
