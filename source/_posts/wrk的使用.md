@@ -84,10 +84,33 @@ huangyisan@k3s-master:~/learn-lua/wrk$ wrk -t1 -c3 -d1s --timeout 1s --latency h
 1. 引入lua脚本，可以使压测的行为更加复杂，比如给每个线程创建不同的body，进行压测。
 2. 通过-s可以指定传入的脚本名称。
 
+### lua脚本中可以获取到wrk的变量
+1. scheme 
+2. host
+3. port
+4. method
+5. path
+6. headers
+7. body
+8. thread
+
+```lua
+function setup(thread)
+    print(thread.method)
+    print(wrk.scheme)
+    print(wrk.method)
+    print(wrk.host)
+    print("path", wrk.path)
+    print("headers", #wrk.headers)
+    print("body", wrk.body)
+end
+
+```
+
 #### wrk运行阶段
 wrk的运行可以分为三个阶段，在这三个阶段可以通过lua编写对应的方法，来达到"嵌入"行为的目的。
 
-1. **Step阶段**，该阶段解析了被压测的地址，并且初始化好了所有的线程，处于等待开始阶段，所以这个阶段编写的脚本的执行开销，其实是不会算入结论输出里面的。在lua脚本定义**setup**函数，传入**thread**参数。
+1. **Step阶段**，该阶段解析了被压测的地址，并且初始化好了所有的线程，处于等待开始阶段，所以这个阶段编写的脚本的执行开销，其实是不会算入结论输出里面的。在lua脚本定义**setup**函数，传入`thread`参数。
 
     thread也有自己的一些属性和方法
     * thread.addr，获取当前thread访问的地址，以ip:port的形式
@@ -159,7 +182,8 @@ wrk的运行可以分为三个阶段，在这三个阶段可以通过lua编写�
 
       ```
     
-    * **request阶段**，该阶段可以对请求进行构造，比如修改请求头，修改body等，最后需要返回**wrk.format()**，建议将一些可以不在该阶段的修改代码放到init()方法里面，让request腾出更多的时间去完成压测请求。一个完整的wrk.format()函数传入的参数**依次**对应为**method, path, headers, body**。在lua脚本里面定义**request**函数函数即可。如果在function里面并不是修改全局wrk的属性，则需要传入，否则可以不传入，比如下面wrk.method被修改了，则不需要传入，而path为函数内本地属性，需要传入。
+    * **request阶段**，该阶段可以对请求进行构造，比如修改请求头，修改body等，最后需要返回**wrk.format()**，建议将一些可以不在该阶段的修改代码放到init()方法里面，让request腾出更多的时间去完成压测请求。一个完整的wrk.format()函数传入的参数**依次**对应为`method, path, headers, body`。在lua脚本里面定义**request**函数函数即可。如果在function里面并不是修改全局wrk的属性，则需要传入，否则可以不传入，比如下面wrk.method被修改了，则不需要传入，而path为函数内本地属性，需要传入。
+      
       ```lua
         function request()
           path = "/?x"
@@ -167,7 +191,8 @@ wrk的运行可以分为三个阶段，在这三个阶段可以通过lua编写�
         return wrk.format(nil,path)
         end
       ```
-    * **response阶段**，该阶段可以处理请求返回的status,headers,body。在lua脚本中定义**response**函数，传入的参数分别为**status,headers,body**。
+    * **response阶段**，该阶段可以处理请求返回的status,headers,body。在lua脚本中定义**response**函数，传入的参数分别为`status,headers,body`。
+      
       ```lua
         function response(status,headers,body)
           for _,v in pairs(headers)
@@ -177,7 +202,7 @@ wrk的运行可以分为三个阶段，在这三个阶段可以通过lua编写�
           print(status)
         end
       ```
-3. **Done阶段**，该阶段以table的形式接受结果，以及表示每个请求延迟和每线程请求率的两个统计对象，此时可以根据自己的算法需求来编写最后的输出结果。在lua脚本中定义**done**函数，传入参数分别为**summary, latency, requests**。
+3. **Done阶段**，该阶段以table的形式接受结果，以及表示每个请求延迟和每线程请求率的两个统计对象，此时可以根据自己的算法需求来编写最后的输出结果。在lua脚本中定义**done**函数，传入参数分别为`summary, latency, requests`。
 
   其对象有如下这些:
   * latency.min 最小值
@@ -243,8 +268,17 @@ wrk的运行可以分为三个阶段，在这三个阶段可以通过lua编写�
 
   
   ```
-  自定义了输出，打印了50,90,90,99.999百分比的标准偏差，同时打印了请求错误的数量。
+  自定义了输出，打印了**50,  90,  90,  99.999**百分比的标准偏差，同时打印了请求错误的数量。
 
+### wkr另外两个函数
+
+`function wrk.lookup(host, service) `
+返回主机地址和服务列表。
+
+`function wrk.connect(addr) `
+连接指定addr地址，如果能连接，则返回`true`，反之则`false`。
+
+这两个函数并不在生命周期中，但可以在生命周期阶段被调用，例如:https://github.com/wg/wrk/blob/master/scripts/addr.lua
 
 
 refer
