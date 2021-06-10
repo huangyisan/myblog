@@ -9,6 +9,8 @@ categories: application
 1. github项目地址： https://github.com/wg/wrk
 2. 可以配合lua脚本使用
 
+<!-- more -->
+
 ### wrk参数
 
 ```shell
