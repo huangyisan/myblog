@@ -67,8 +67,11 @@ pipeline {
             }
             steps {
                 dir('hexo-branch') {
-                    withCredentials([string(credentialsId: 'e5d2d117-b5ab-4dc5-9e07-a5e96bfb6e31', variable: 'TOKEN')]) {
-                        sh 'cd public && git push --force --quiet "https://${TOKEN}@${GH_REF}" master:master'
+                    // withCredentials([string(credentialsId: 'e5d2d117-b5ab-4dc5-9e07-a5e96bfb6e31', variable: 'TOKEN')]) {
+                    //     sh 'cd public && git push --force --quiet "https://${TOKEN}@${GH_REF}" master:master'
+                    // }
+                    withCredentials([string(credentialsId: 'c5a66b90-ed73-4bd6-b247-abd92b2e1572', variable: 'TOKEN')]) {
+                        sh 'cd public && git push --force --quiet "git@${GH_REF}" master:master'
                     }
                 }
             }
