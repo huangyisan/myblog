@@ -13,7 +13,7 @@ pipeline {
                     steps {
                         dir('hexo-branch') {
                             # git branch: 'hexo', credentialsId: '0cc091e1-b69f-4e1d-b8c6-b7a9df25e438', url: 'https://github.com/huangyisan/myblog.git'
-                            git branch: 'hexo', credentialsId: '0cc091e1-b69f-4e1d-b8c6-b7a9df25e438', url: 'ssh://git@github.com:huangyisan/myblog.git'
+                            git branch: 'hexo', credentialsId: 'c5a66b90-ed73-4bd6-b247-abd92b2e1572', url: 'ssh://git@github.com:huangyisan/myblog.git'
                         }
                     }
                     
@@ -22,7 +22,7 @@ pipeline {
                     steps{
                         dir('master-branch') {
                             # git branch: 'master', credentialsId: '0cc091e1-b69f-4e1d-b8c6-b7a9df25e438', url: 'https://github.com/huangyisan/myblog.git'
-                            git branch: 'master', credentialsId: '0cc091e1-b69f-4e1d-b8c6-b7a9df25e438', url: 'ssh://git@github.com:huangyisan/myblog.git'
+                            git branch: 'master', credentialsId: 'c5a66b90-ed73-4bd6-b247-abd92b2e1572', url: 'ssh://git@github.com:huangyisan/myblog.git'
                         }
                     }
                 }
