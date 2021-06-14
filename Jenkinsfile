@@ -64,6 +64,7 @@ pipeline {
         stage ('Push public to Master branch') {
             environment {
                 GH_REF="github.com/huangyisan/myblog.git"
+		SSH_REF="github.com:huangyisan/myblog.git"
             }
             steps {
                 dir('hexo-branch') {
@@ -71,7 +72,7 @@ pipeline {
                     //     sh 'cd public && git push --force --quiet "https://${TOKEN}@${GH_REF}" master:master'
                     // }
                     withCredentials([string(credentialsId: 'c5a66b90-ed73-4bd6-b247-abd92b2e1572', variable: 'TOKEN')]) {
-                        sh 'cd public && git push --force --quiet "git@${GH_REF}" master:master'
+                        sh 'cd public && git push --force --quiet "git@${SSH_REF}" master:master'
                     }
                 }
             }
