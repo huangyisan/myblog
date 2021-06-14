@@ -43,7 +43,7 @@ categories: application
 3. 准备一个邮箱，并设置其能够使用脚本的方式发邮件，比如qq的是开启IMAP独立token。(一开始我用的阿里邮箱，实在没找到在哪里，听说用163的也可以。)由于ECS是阿里云的，所以25端口无法使用，qq的话得走587 smtp端口。
 4. 根据邮箱信息配置好Extended E-mail Notification里面的内容，`SMTP server`,`SMTP Port`主要是这两部分。
 5. jenkins设置里面的Jenkins Location，配置好发送邮箱的地址。
-6. 在github上需要构建的repo仓库中配置好webhook，用于提交后出发回调给jenkins，jenkins webhook地址一般为"jenkins服务器地址/github-webhook"。
+6. 在github上需要构建的repo仓库中配置好webhook，用于提交后出发回调给jenkins，jenkins webhook地址一般为"jenkins服务器地址/github-webhook"。**jenkinsfile的方式自动触发构建是通过github的回调实现，而不是在jenkins页面上配置触发构建**。
 7. 根据blueocean的引导，选择要构建的github项目。
 
 ### 编写Jenkinsfile
@@ -201,5 +201,7 @@ refer:
 > https://stackoverflow.com/questions/43912510/send-notification-e-mail-to-upstream-committer-in-jenkins-pipeline
 > https://www.jenkins.io/doc/book/pipeline/syntax/
 
+
+```
 
 ```
