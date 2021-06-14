@@ -26,7 +26,7 @@ categories: application
 * `image` 当gitlab-runner为docker执行器的时候，可以使用image变更某个job使用何种容器进行执行构建。
 * `include` 引入其他pipeline的时候使用
 * `interruptible` 定义了当新的pipeline被提交触发构建，老的正在运行的pipeline是否可以被打断的参数，为了构建一致性。
-* `only` 指定某个branch或者tag有提交的时候，才构建。**only不可以使用变量指定**
+* `only` 指定某个branch或者tag有提交的时候，才构建。**only不可以使用变量指定**。
 * `retry` 某个job失败后的重试次数，最大为2。
 * `resource_group` 有该标记的所有pipeline的job，只有执行完一个，下一个才会被执行。
 * `script` 定义执行的命令，shell命令的方式。
@@ -84,6 +84,12 @@ go:build:
         - master
     # 当有多个pipeline运行的时候，当该阶段还未执行完毕的时候，其他定义了resource_group: go_build的pipeline都会处于 wait 状态。
     resource_group: go_build
+    # 如果执行失败，或者stuck，或者超时，则进行重试，最多2次。
+    retry:
+        max: 2
+        when:
+        - runner_system_failure
+        - stuck_or_timeout_failure
 
 
 go:test:
