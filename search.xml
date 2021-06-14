@@ -1772,6 +1772,108 @@ refer:
       </tags>
   </entry>
   <entry>
+    <title>gitlab cicd的使用01 -- 环境部署和demo运行</title>
+    <url>/2021/06/14/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A801-%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E5%92%8Cdemo%E8%BF%90%E8%A1%8C/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>17年那会当时选型gitlab cicd或者jenkins做持续集成，因为不需要重复造轮子，就用了gitlab cicd，这几天重温文档，看到了gitlab-ci更新了相当多的feature，所以趁着端午期间重新回顾下，并且记录下一些feature的使用。</p>
+<a id="more"></a>
+
+<h2 id="gitlab-runner"><a href="#gitlab-runner" class="headerlink" title="gitlab-runner"></a>gitlab-runner</h2><ol>
+<li>gitlab的cicd是通过gitlab-runner进行实现的。</li>
+<li>gitlab-runner一般是建议部署在和gitlab处于不同的服务器上。</li>
+<li>gitlab-runner可以通过docker或者本地二进制文件的方式进行部署。详细部署过程不赘述，可以查看文末的refer，我的环境是使用二进制方式部署的。</li>
+</ol>
+<h3 id="让gitlab-runner连接gitlab"><a href="#让gitlab-runner连接gitlab" class="headerlink" title="让gitlab-runner连接gitlab"></a>让gitlab-runner连接gitlab</h3><p>既然安装了gitlab-runner，那怎么才能让gitlab-runner连接到gitlab，从而执行gitlab派发的任务呢，就需要对gitlab-runner进行配置。</p>
+<p>配置的关键主要有两个参数，<code>Register url</code>和<code>registration token</code>，这两个参数可以在gitlab的Admin Area页面下的Runners页面找到。</p>
+<p>在gitlab-runner机器上执行<code>gitlab-runner register</code>命令，就会出现交互式输入，填写<code>Register url</code>, <code>Registration token</code>,<code>tag</code>,<code>executor</code>等信息后，就可以在刚才Admin Area的Runners页面看到已经注册了的gitlab-runner了。(后面我又添加了一个<strong>tag为shared</strong>的runner，执行器为docker)</p>
+<p><img src="https://image.kirakirazone.com/image/gitlab-runner-register.jpg" alt="gitlab-runner注册页面"></p>
+<p>有关<code>executor</code>的信息，当前支持这些，<code>docker-ssh+machine, kubernetes, custom, docker, parallels, ssh, virtualbox, docker+machine, docker-ssh, shell</code>，我使用过的有docker和shell，前者为将pipeline置于docker中进行运行，后者则在本机环境进行运行pipeline定义的内容。</p>
+<h3 id="gitlab-runner的几种状态"><a href="#gitlab-runner的几种状态" class="headerlink" title="gitlab-runner的几种状态"></a>gitlab-runner的几种状态</h3><ol>
+<li><strong>shared</strong> 该状态下的gitlab-runner可以让任何项目的pipeline运行使用。</li>
+<li><strong>group</strong> </li>
+<li><strong>specific</strong> 只能让某个指定的项目使用该runner，<strong>如果你将一个shared runner变更为specific，该过程不可逆</strong></li>
+<li><strong>locked</strong> 任何项目都不可以使用该runner</li>
+<li><strong>paused</strong> 无法使用的runner</li>
+</ol>
+<h3 id="尝试运行一个小的demo"><a href="#尝试运行一个小的demo" class="headerlink" title="尝试运行一个小的demo"></a>尝试运行一个小的demo</h3><ol>
+<li>要运行pipeline，则需要在仓库里面创建.gitlab-ci.yml文件，并且定义其pipeline内容。</li>
+<li>将代码提交到仓库，自动触发pipeline运行构建。</li>
+<li>pipeline内容<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">helloworld:</span></span><br><span class="line"><span class="attr">tags:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line"><span class="attr">stage:</span></span><br><span class="line">  <span class="string">build</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line">  <span class="string">echo</span> <span class="string">&quot;hello world&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>进入项目<strong>CI/CD</strong> -&gt; <strong>Pipeline</strong>就能看到刚刚执行的pipeline了。点击进去还能看到详细步骤。</li>
+</ol>
+<p><img src="https://image.kirakirazone.com/image/pipeline-excute-01.png"></p>
+<p><img src="https://image.kirakirazone.com/image/pipeline-excute-02.png"></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://docs.gitlab.com/runner/install/linux-manually.html">https://docs.gitlab.com/runner/install/linux-manually.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>gitlab</tag>
+        <tag>cicd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gitlab cicd的使用02 -- pipeline介绍和编写</title>
+    <url>/2021/06/14/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A802-pipeline%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%BC%96%E5%86%99/</url>
+    <content><![CDATA[<h2 id="gitlab-ci-yml文件"><a href="#gitlab-ci-yml文件" class="headerlink" title=".gitlab-ci.yml文件"></a>.gitlab-ci.yml文件</h2><p>.gitlab-ci.yml文件是gitlab cicd灵魂所在。</p>
+<p>该文件通过yaml方式进行编写，有其特有的关键字，遵循一定的章法结构。</p>
+<p>里面定义一个个的job，来实现pipeline具体的编排内容。</p>
+<a id="more"></a>
+
+<h2 id="gitlab-ci-yml-job-关键字"><a href="#gitlab-ci-yml-job-关键字" class="headerlink" title=".gitlab-ci.yml job 关键字"></a>.gitlab-ci.yml job 关键字</h2><p>官方给出的关键字很多，可以查看: <a href="https://docs.gitlab.com/ee/ci/yaml/README.html">https://docs.gitlab.com/ee/ci/yaml/README.html</a></p>
+<p>但并不是每个都常用，常用的主要有以下这几个，根据官方顺序：</p>
+<ul>
+<li><code>artifacts</code>定义 job成功后制品的产出。</li>
+<li><code>cache</code> 可对指定的路径进行缓存操作，使得在其他job里面继续使用这些缓存，比如nodejs，npm install构建生成的node_modules目录，php composer构建生成的vendor目录等。</li>
+<li><code>image</code> 当gitlab-runner为docker执行器的时候，可以使用image变更某个job使用何种容器进行执行构建。</li>
+<li><code>include</code> 引入其他pipeline的时候使用</li>
+<li><code>interruptible</code> 定义了当新的pipeline被提交触发构建，老的正在运行的pipeline是否可以被打断的参数，为了构建一致性。</li>
+<li><code>only</code> 指定某个branch或者tag有提交的时候，才构建。<strong>only不可以使用变量指定</strong></li>
+<li><code>retry</code> 某个job失败后的重试次数，最大为2。</li>
+<li><code>resource_group</code> 有该标记的所有pipeline的job，只有执行完一个，下一个才会被执行。</li>
+<li><code>script</code> 定义执行的命令，shell命令的方式。</li>
+<li><code>stages</code> 重新定义pipeline的stage，默认stage为五个 <code>.pre</code>,<code>build</code>,<code>test</code>,<code>deploy</code>,<code>.post</code>。</li>
+<li><code>tags</code> 指定哪个tag的gitlab-runner来运行pipeline。</li>
+<li><code>timeout</code>  定义job任务的超时。</li>
+<li><code>trigger</code> 在父子pipeline的时候使用，定义触发哪一个pipeline执行。</li>
+<li><code>variables</code> 定义pipeline里面的变量。</li>
+<li><code>when</code> 定义何时执行job。</li>
+</ul>
+<h2 id="gitlab-ci-yml-变量"><a href="#gitlab-ci-yml-变量" class="headerlink" title=".gitlab-ci.yml 变量"></a>.gitlab-ci.yml 变量</h2><ol>
+<li>可以使用variable关键在在pipeline里面自定义变量。</li>
+<li>同时，gitlab-ci内置了许多变量: <a href="https://docs.gitlab.com/ee/ci/variables/predefined_variables.html">https://docs.gitlab.com/ee/ci/variables/predefined_variables.html</a></li>
+</ol>
+<h2 id="gitlab-ci-yml-编写"><a href="#gitlab-ci-yml-编写" class="headerlink" title=".gitlab-ci.yml 编写"></a>.gitlab-ci.yml 编写</h2><ol>
+<li>.gitlab-ci.yml文件采用yaml的格式，关键字有其特有的上下文等。</li>
+<li>编写可以使用页面上<strong>CI/CD</strong> -&gt; <strong>Editor</strong>进行编写，这里会对pipeline语法的合法性进行校验。</li>
+</ol>
+<h2 id="gitlab-ci-yml-一个简单的go编写需求样例"><a href="#gitlab-ci-yml-一个简单的go编写需求样例" class="headerlink" title=".gitlab-ci.yml 一个简单的go编写需求样例"></a>.gitlab-ci.yml 一个简单的go编写需求样例</h2><ol>
+<li>仓库存放的为go代码。</li>
+<li>要求对指定分支进行构建，其他分支不进行构建。</li>
+<li>构建得到的二进制文件可以下载。</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 自定义变量</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line">    <span class="attr">BIN_PATH:</span> <span class="string">bin/</span></span><br><span class="line">    <span class="attr">BIN_NAME:</span> <span class="string">hello_world</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局定义使用哪个镜像，如果在stage里面没有单独定义image，则使用全局定义的镜像</span></span><br><span class="line"><span class="attr">image:</span> <span class="string">golang:latest</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义stage，总共三个 build  test export</span></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">export</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局定义cache， $&#123;CI_COMMIT_REF_SLUG&#125;为内置变量，作为key， 需要缓存的路径为$BIN_PATH</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">$&#123;CI_COMMIT_REF_SLUG&#125;</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">$BIN_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="attr">go:build:</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">build</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">go</span> <span class="string">build</span> <span class="string">-o</span> <span class="string">$&#123;BIN_PATH&#125;$&#123;BIN_NAME&#125;</span> <span class="string">./main.go</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">sleep</span> <span class="number">120</span></span><br><span class="line">    <span class="comment"># only里面定义哪个分支进行运行job，不可以使用变量</span></span><br><span class="line">    <span class="attr">only:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">    <span class="comment"># 当有多个pipeline运行的时候，当该阶段还未执行完毕的时候，其他定义了resource_group: go_build的pipeline都会处于 wait 状态。</span></span><br><span class="line">    <span class="attr">resource_group:</span> <span class="string">go_build</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">go:test:</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">test</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line">    <span class="comment"># 在job里面单独定义了image，则表示这个job使用alpine:latest来作为环境</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">alpine:latest</span></span><br><span class="line">    <span class="comment"># 定义了执行脚本前的动作</span></span><br><span class="line">    <span class="attr">before_script:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">chmod</span> <span class="string">+x</span> <span class="string">$&#123;BIN_PATH&#125;$&#123;BIN_NAME&#125;</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">./$&#123;BIN_PATH&#125;$&#123;BIN_NAME&#125;</span> <span class="string">|</span> <span class="string">grep</span> <span class="string">-i</span> <span class="string">&quot;hello world&quot;</span></span><br><span class="line">    <span class="attr">only:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">    <span class="comment"># 定义该job超时时间为20s</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="string">20s</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">go:export:</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">export</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">        <span class="string">ls</span> <span class="string">$&#123;BIN_PATH&#125;$&#123;BIN_NAME&#125;</span></span><br><span class="line">    <span class="comment"># 定义了制品的产出</span></span><br><span class="line">    <span class="attr">artifacts:</span></span><br><span class="line">        <span class="comment"># 制品名称</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">$&#123;BIN_PATH&#125;</span></span><br><span class="line">        <span class="comment"># 将哪个路径进行制品归档</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">bin</span></span><br><span class="line">        <span class="comment"># 制品保留一周</span></span><br><span class="line">        <span class="attr">expire_in:</span> <span class="number">1</span> <span class="string">week</span></span><br><span class="line">    <span class="attr">only:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>最后的制品产出可以通过pipeline页面下载。</p>
+<p><img src="https://image.kirakirazone.com/image/artifacts-download.png"></p>
+<p>refer:</p>
+<blockquote>
+<p><a href="https://docs.gitlab.com/ee/ci/yaml/README.html">https://docs.gitlab.com/ee/ci/yaml/README.html</a><br><a href="https://docs.gitlab.com/ee/ci/variables/predefined_variables.html">https://docs.gitlab.com/ee/ci/variables/predefined_variables.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>application</category>
+      </categories>
+      <tags>
+        <tag>gitlab</tag>
+        <tag>cicd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>go无缓存channel出现deadlock</title>
     <url>/2020/12/17/go%E6%97%A0%E7%BC%93%E5%AD%98channel%E5%87%BA%E7%8E%B0deadlock/</url>
     <content><![CDATA[<h2 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    chanStr := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">    chanStr &lt;<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    a := &lt;- chanStr</span><br><span class="line">    fmt.Println(a)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
