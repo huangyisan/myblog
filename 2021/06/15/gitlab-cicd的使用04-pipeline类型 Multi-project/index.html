@@ -20,20 +20,23 @@
     var CONFIG = {"hostname":"kirakirazone.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="sort()函数12345Help on method_descriptor:sort(...)    L.sort(key&#x3D;None, reverse&#x3D;False) -&gt; None -- stable sort *IN PLACE*(END)">
+  <meta name="description" content="Pipeline Multi-project Multi-project类型可以让你当前的pipeline触发另外一个项目的pipeline运行，使用关键字trigger">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sort函数中key的理解">
-<meta property="og:url" content="https://kirakirazone.com/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:title" content="gitlab cicd的使用04 -- pipeline类型 Multi-project">
+<meta property="og:url" content="https://kirakirazone.com/2021/06/15/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A804-pipeline%E7%B1%BB%E5%9E%8B%20Multi-project/index.html">
 <meta property="og:site_name" content="Kirakirazone">
-<meta property="og:description" content="sort()函数12345Help on method_descriptor:sort(...)    L.sort(key&#x3D;None, reverse&#x3D;False) -&gt; None -- stable sort *IN PLACE*(END)">
+<meta property="og:description" content="Pipeline Multi-project Multi-project类型可以让你当前的pipeline触发另外一个项目的pipeline运行，使用关键字trigger">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2018-12-29T06:41:38.000Z">
-<meta property="article:modified_time" content="2021-06-14T08:07:22.852Z">
+<meta property="og:image" content="https://image.kirakirazone.com/image/mulit-pipeline.png">
+<meta property="article:published_time" content="2021-06-15T15:15:34.000Z">
+<meta property="article:modified_time" content="2021-06-15T15:19:42.915Z">
 <meta property="article:author" content="Huangyisan">
-<meta property="article:tag" content="python3">
+<meta property="article:tag" content="gitlab">
+<meta property="article:tag" content="cicd">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.kirakirazone.com/image/mulit-pipeline.png">
 
-<link rel="canonical" href="https://kirakirazone.com/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/">
+<link rel="canonical" href="https://kirakirazone.com/2021/06/15/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A804-pipeline%E7%B1%BB%E5%9E%8B%20Multi-project/">
 
 
 <script id="page-configurations">
@@ -46,7 +49,7 @@
   };
 </script>
 
-  <title>sort函数中key的理解 | Kirakirazone</title>
+  <title>gitlab cicd的使用04 -- pipeline类型 Multi-project | Kirakirazone</title>
   
 
 
@@ -191,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="https://kirakirazone.com/2021/06/15/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A804-pipeline%E7%B1%BB%E5%9E%8B%20Multi-project/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -204,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          sort函数中key的理解
+          gitlab cicd的使用04 -- pipeline类型 Multi-project
         </h1>
 
         <div class="post-meta">
@@ -213,16 +216,19 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2018-12-29 14:41:38" itemprop="dateCreated datePublished" datetime="2018-12-29T14:41:38+08:00">2018-12-29</time>
+              <time title="Created: 2021-06-15 23:15:34 / Modified: 23:19:42" itemprop="dateCreated datePublished" datetime="2021-06-15T23:15:34+08:00">2021-06-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-06-14 16:07:22" itemprop="dateModified" datetime="2021-06-14T16:07:22+08:00">2021-06-14</time>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/application/" itemprop="url" rel="index"><span itemprop="name">application</span></a>
+                </span>
+            </span>
 
           
   
@@ -233,8 +239,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/29/sort函数中key的理解/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2021/06/15/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A804-pipeline%E7%B1%BB%E5%9E%8B%20Multi-project/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/06/15/gitlab-cicd的使用04-pipeline类型 Multi-project/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -249,36 +255,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="sort-函数"><a href="#sort-函数" class="headerlink" title="sort()函数"></a>sort()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Help on method_descriptor:</span><br><span class="line"></span><br><span class="line">sort(...)</span><br><span class="line">    L.sort(key=None, reverse=False) -&gt; None -- stable sort *IN PLACE*</span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
+        <h2 id="Pipeline-Multi-project"><a href="#Pipeline-Multi-project" class="headerlink" title="Pipeline Multi-project"></a>Pipeline Multi-project</h2><ol>
+<li>Multi-project类型可以让你当前的pipeline触发另外一个项目的pipeline运行，使用关键字<code>trigger</code></li>
+</ol>
 <a id="more"></a>
 
-<p><em>python3中已经取消了sort()函数中cmp参数</em></p>
-<p>python中sort()函数用来排序，其中有个key的参数，十分神奇。</p>
-<p>我对key参数的理解是：<br><strong>这个key是构造了一个全新的对象，对这些全新的对象进行比较排序，然后再根据结果，对原先的对象进行排序。</strong></p>
-<h2 id="字典value排序"><a href="#字典value排序" class="headerlink" title="字典value排序:"></a>字典value排序:</h2><p>比如很常用的，对一个字典进行value排序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;<span class="number">1</span>: <span class="string">&#x27;c&#x27;</span>, <span class="number">2</span>:<span class="string">&#x27;d&#x27;</span>, <span class="number">3</span>: <span class="string">&#x27;b&#x27;</span>, <span class="number">4</span>: <span class="string">&#x27;a&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sort_value</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">print(<span class="built_in">sorted</span>(d.items(), key=sort_value))</span><br></pre></td></tr></table></figure>
-<p><code>d.items</code>得到dict_items([(1, ‘c’), (2, ‘d’), (3, ‘b’), (4, ‘a’)])，其挨个传入到key对应的sort_value函数中，返回索引为1的值，也就是value的值，然后对这个新对象进行排序，最终以新对象排序的结果来输出d.items()的排序。</p>
-<p>将sort_value函数写成lambda则：</p>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="name">sorted</span>(<span class="name">d</span>.items(), key=lambda x <span class="symbol">:x</span>[<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
-<h2 id="字符串内容重新排序"><a href="#字符串内容重新排序" class="headerlink" title="字符串内容重新排序:"></a>字符串内容重新排序:</h2><p>对字符串”hUangYisan6749”重新排序，要求:</p>
-<ol>
-<li>数字在最前面，偶数在奇数前面。</li>
-<li>字符串在数字后面，大写字母在小写字母后面。</li>
+<h3 id="Multi-project类型解决的问题"><a href="#Multi-project类型解决的问题" class="headerlink" title="Multi-project类型解决的问题"></a>Multi-project类型解决的问题</h3><p>当两个或者多个project存在相互关系，但又因为.gitlab-ci.yml文件是分开放置，所以用Multi-project的方式可以做project pipeline的调用。</p>
+<p>pipeline之间还可以进行变量的传递。</p>
+<h3 id="Multi-project类型需求场景"><a href="#Multi-project类型需求场景" class="headerlink" title="Multi-project类型需求场景"></a>Multi-project类型需求场景</h3><ol>
+<li>假设存在project today和yesterday。</li>
+<li>运行today的pipeline后触发yesterday的pipeline。</li>
 </ol>
-<p>思路：</p>
-<ol>
-<li>字符串挨个拆出来。</li>
-<li>构造一个元组，能够符合上述需求，然后排序的。<strong>元组的排序是从首个元素逐一排序的，碰到首元素一样，则比第二个元素</strong></li>
+<h3 id="Multi-project类型pipeline编写"><a href="#Multi-project类型pipeline编写" class="headerlink" title="Multi-project类型pipeline编写"></a>Multi-project类型pipeline编写</h3><ol>
+<li><p>today project</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">deploy</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">yesterday_trigger</span></span><br><span class="line"></span><br><span class="line"><span class="attr">today_build:</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">build</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;this is today project build&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">today_deploy:</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">deploy</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;this is today project deploy&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">trigger_yesterday:</span></span><br><span class="line">    <span class="comment"># 使用variable指定环境变量，可以将该变量downstream到被trigger的pipeline</span></span><br><span class="line">    <span class="attr">variables:</span></span><br><span class="line">        <span class="attr">ENVIRONMENT:</span> <span class="string">today</span></span><br><span class="line">    <span class="comment"># 这个步骤并不需要指定tag，因为其只是为了触发yesterday项目</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">yesterday_trigger</span></span><br><span class="line">    <span class="attr">trigger:</span></span><br><span class="line">        <span class="comment"># yesterday项目为http://192.168.65.135/root/yesterday.git, 所以为root/yesterday</span></span><br><span class="line">        <span class="attr">project:</span> <span class="string">root/yesterday</span></span><br><span class="line">        <span class="comment"># 触发构建的分支为master</span></span><br><span class="line">        <span class="attr">branch:</span> <span class="string">master</span></span><br><span class="line">        <span class="comment"># 这个表示，如果下游失败了，则表示该trigger_yesterday job也失败，如果成功了，则表示trigger_yesterday也成功。如果取消了该条配置，则下游失败与否和当前job无关。</span></span><br><span class="line">        <span class="attr">strategy:</span> <span class="string">depend</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
 </ol>
-<p>先确定一个通用的元组，总共是四种类型，奇数偶数，大写小写。<br>例：偶数，奇数，大写，小写(1,0,0,0)，比如这样就表示该字符为偶数。</p>
-<p><strong>由于默认sorted排序是从小到大，所以根据需求，得写成小写，大写，奇数，偶数的方式(或者加上reverse=True)</strong></p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">def</span> custom_order(x):</span><br><span class="line">    <span class="attribute">if</span> x.islower():</span><br><span class="line">        <span class="attribute">return</span> <span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,x</span><br><span class="line">    <span class="attribute">if</span> x.isupper():</span><br><span class="line">        <span class="attribute">return</span> <span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,x</span><br><span class="line">    <span class="attribute">if</span> x.isdigit() and int(x) % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="attribute">return</span> <span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,x</span><br><span class="line">    <span class="attribute">else</span>:</span><br><span class="line">        <span class="attribute">return</span> <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,x</span><br></pre></td></tr></table></figure>
-<p>当对比相同的时候，会索引+1比较，所以return不能漏掉x，因为当前面四位全部相等的时候，要比较x。</p>
-<p>那么代码可以写成：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">mystring</span> = <span class="string">&quot;hUangYisan6749&quot;</span></span><br><span class="line"><span class="attribute">def</span> custom_order(x):</span><br><span class="line">    <span class="attribute">if</span> x.islower():</span><br><span class="line">        <span class="attribute">return</span> <span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,x</span><br><span class="line">    <span class="attribute">if</span> x.isupper():</span><br><span class="line">        <span class="attribute">return</span> <span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,x</span><br><span class="line">    <span class="attribute">if</span> x.isdigit() and int(x) % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="attribute">return</span> <span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,x</span><br><span class="line">    <span class="attribute">else</span>:</span><br><span class="line">        <span class="attribute">return</span> <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,x</span><br><span class="line"></span><br><span class="line"><span class="attribute">print</span>(<span class="string">&quot;&quot;</span>.join(sorted(mystring,key=custom_order)))</span><br><span class="line"></span><br><span class="line"><span class="attribute">7946UYaaghinns</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>yesterday project</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">yesterday_build:</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">build</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;this is yesterday project build&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">yesterday_deploy:</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">shared</span></span><br><span class="line">    <span class="attr">stage:</span></span><br><span class="line">        <span class="string">deploy</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;this is yesterday project deploy&quot;</span></span><br><span class="line">        <span class="comment"># $ENVIRONMENT从today传递过来，所以会打印出来</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">echo</span> <span class="string">&quot;$ENVIRONMENT&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>today project的pipeline就会出现<strong>Downstream</strong>的图，示意触发了yesterday项目。</p>
+<p><img src="https://image.kirakirazone.com/image/mulit-pipeline.png"></p>
+</li>
+</ol>
 <p>refer:</p>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="http://python.jobbole.com/85025/">http://python.jobbole.com/85025/</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/ci/multi_project_pipelines.html">https://docs.gitlab.com/ee/ci/multi_project_pipelines.html</a></p>
 </blockquote>
 
     </div>
@@ -315,7 +324,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="https://kirakirazone.com/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/" title="sort函数中key的理解">https://kirakirazone.com/2018/12/29/sort函数中key的理解/</a>
+    <a href="https://kirakirazone.com/2021/06/15/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A804-pipeline%E7%B1%BB%E5%9E%8B%20Multi-project/" title="gitlab cicd的使用04 -- pipeline类型 Multi-project">https://kirakirazone.com/2021/06/15/gitlab-cicd的使用04-pipeline类型 Multi-project/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -326,7 +335,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/python3/" rel="tag"># python3</a>
+              <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+              <a href="/tags/cicd/" rel="tag"># cicd</a>
           </div>
 
         
@@ -335,13 +345,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/12/29/split%E5%87%BD%E6%95%B0/" rel="prev" title="split函数">
-      <i class="fa fa-chevron-left"></i> split函数
+    <a href="/2021/06/14/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A803-pipeline%E7%B1%BB%E5%9E%8B-DAG%E7%B1%BB%E5%9E%8B/" rel="prev" title="gitlab cicd的使用03 -- pipeline类型 DAG类型">
+      <i class="fa fa-chevron-left"></i> gitlab cicd的使用03 -- pipeline类型 DAG类型
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/01/02/bash-fork-retry-Resource-temporarily-unavailable/" rel="next" title="bash fork: retry: Resource temporarily unavailable">
-      bash fork: retry: Resource temporarily unavailable <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -407,7 +414,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sort-%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">sort()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E5%85%B8value%E6%8E%92%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">字典value排序:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%86%85%E5%AE%B9%E9%87%8D%E6%96%B0%E6%8E%92%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">字符串内容重新排序:</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pipeline-Multi-project"><span class="nav-number">1.</span> <span class="nav-text">Pipeline Multi-project</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-project%E7%B1%BB%E5%9E%8B%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">Multi-project类型解决的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-project%E7%B1%BB%E5%9E%8B%E9%9C%80%E6%B1%82%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.</span> <span class="nav-text">Multi-project类型需求场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-project%E7%B1%BB%E5%9E%8Bpipeline%E7%BC%96%E5%86%99"><span class="nav-number">1.3.</span> <span class="nav-text">Multi-project类型pipeline编写</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -557,9 +564,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://kirakirazone.com/2018/12/29/sort%E5%87%BD%E6%95%B0%E4%B8%ADkey%E7%9A%84%E7%90%86%E8%A7%A3/";
-    this.page.identifier = "2018/12/29/sort函数中key的理解/";
-    this.page.title = "sort函数中key的理解";
+    this.page.url = "https://kirakirazone.com/2021/06/15/gitlab-cicd%E7%9A%84%E4%BD%BF%E7%94%A804-pipeline%E7%B1%BB%E5%9E%8B%20Multi-project/";
+    this.page.identifier = "2021/06/15/gitlab-cicd的使用04-pipeline类型 Multi-project/";
+    this.page.title = "gitlab cicd的使用04 -- pipeline类型 Multi-project";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
