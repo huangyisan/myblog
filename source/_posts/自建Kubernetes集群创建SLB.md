@@ -21,6 +21,10 @@ categories: application
 
 
 
+<!-- more -->
+
+
+
 ## 前置准备
 
 * 在阿里云环境自建的ecs服务器的kubernetes集群。
