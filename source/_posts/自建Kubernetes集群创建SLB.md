@@ -122,7 +122,7 @@
 
 8. 进行创建LoadBalancer的测试，可以使用官方说明的最后几步，因为我这边用了nginx ingress, 所以直接修改了nginx ingress svc的type为LoadBalancer，保存后就自动创建SLB，可以通过查看cloud-controller-manager-xxxx的log看到具体信息。**这里我一开始出现了Your account does not have enough balance的报错导致创建失败，那会查看余额是33块多点，后来我充值了100元，就成功创建了。**在命令行可以通过`kubect get svc -n ingress-nginx`看到，svc的外网地址。
 
-
+9. 如果修改了svc的Type，从Loadbalancer改成其他的，会自动删除slb。
 
 ref:
 
