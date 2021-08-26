@@ -1,3 +1,10 @@
+---
+title: 自建Kubernetes集群创建SLB
+date: 2021-08-26 15:15:34
+tags: [kubernetes]
+categories: application
+---
+
 ## 需求
 
 ​    当前环境没有使用阿里云ack托管kubernetes服务，而是采用了购买ECS，自建集群的方式。ingress svc需要使用LoadBalancer的Type类型来创建阿里云slb服务。
