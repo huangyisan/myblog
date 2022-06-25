@@ -103,7 +103,7 @@ pipeline之间还可以进行变量的传递。
 
 3. today project的pipeline就会出现**Downstream**的图，示意触发了yesterday项目。
 
-   ![](https://image.kirakirazone.com/image/mulit-pipeline.png)
+   ![](https://assets.iostat.io/image/mulit-pipeline.png)
 
 refer:
 
