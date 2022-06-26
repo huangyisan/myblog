@@ -104,7 +104,7 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/huangyisan/myblog.git
+  repo: git@github.com:huangyisan/myblog.git
   branch: master
 
 # search:
