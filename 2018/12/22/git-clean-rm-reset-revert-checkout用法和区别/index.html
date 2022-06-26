@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"iostat.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="git的工作区和暂存区先说下这两个概念：工作区，就是你git仓库的目录，你进行修改文件的区域。暂存区，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为暂存区。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git clean&#x2F;rm&#x2F;reset&#x2F;revert&#x2F;checkout用法和区别">
+<meta property="og:url" content="https://iostat.io/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="Iostat.io">
+<meta property="og:description" content="git的工作区和暂存区先说下这两个概念：工作区，就是你git仓库的目录，你进行修改文件的区域。暂存区，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为暂存区。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg">
+<meta property="article:published_time" content="2018-12-22T06:17:09.000Z">
+<meta property="article:modified_time" content="2022-06-26T13:07:57.987Z">
+<meta property="article:author" content="Huangyisan">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg">
+
+<link rel="canonical" href="https://iostat.io/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>git clean/rm/reset/revert/checkout用法和区别 | Iostat.io</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Iostat.io</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/huangyisan" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://iostat.io/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="PSN: hys15783167">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Iostat.io">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          git clean/rm/reset/revert/checkout用法和区别
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-12-22 14:17:09" itemprop="dateCreated datePublished" datetime="2018-12-22T14:17:09+08:00">2018-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-26 21:07:57" itemprop="dateModified" datetime="2022-06-26T21:07:57+08:00">2022-06-26</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/22/git-clean-rm-reset-revert-checkout用法和区别/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="git的工作区和暂存区"><a href="#git的工作区和暂存区" class="headerlink" title="git的工作区和暂存区"></a>git的工作区和暂存区</h2><p>先说下这两个概念：<br><strong>工作区</strong>，就是你git仓库的目录，你进行修改文件的区域。<br><strong>暂存区</strong>，git从库里面有个.git的隐藏目录，里面”有一块”，可以理解为<strong>暂存区</strong>。</p>
+<a id="more"></a>
+
+<p>工作区和缓存区如何联系起来？通过提交代码行为的步骤流程来解读:</p>
+<ol>
+<li>修改代码文件   </li>
+<li><code>git add 修改后的代码文件</code>   <strong>此刻的行为将该代码文件从工作区添加到了暂存区</strong></li>
+<li><code>git commit -m &#39;commit 内容&#39;</code>  <strong>此刻的行为把暂存区的内容提交到了本地分支上</strong></li>
+</ol>
+<p>最后的<code>git push</code>操作只是一个将本地分支推送到远端的行为，所以先不考虑进去，只考前面三点。</p>
+<p>查看工作区和暂存区常用的命令为<code>git status</code></p>
+<p>一般常见的是如下三种情况：</p>
+<ol>
+<li>在工作区<strong>新建</strong>了文件或目录，但还未将这些文件或目录<code>git add</code>提交到暂存区。这些文件或目录被标记为<strong>untracked files</strong>。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ touch foo bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line">	foo</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use &quot;git add&quot; to track)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>对修改后的文件进行了<code>git add</code>操作，将这些文件提交到了暂存区，但未执行<code>git commit -m &#39;xxx&#39;</code>，未提交到本地分支。此时文件属于<code>Changes to be committed</code>状态</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git add foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   foo</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol>
+<li>对已经<code>git add</code>操作，但未提交到本地分支的文件，继续进行了修改，修改完后未进行<code>git add</code>，此时文件属于<code>Changes not staged for commit</code>状态<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">echo</span> <span class="string">&#x27;new line&#x27;</span> &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes <span class="keyword">to</span> <span class="keyword">be</span> committed:</span><br><span class="line">  (use <span class="string">&quot;git reset HEAD &lt;file&gt;...&quot;</span> <span class="keyword">to</span> unstage)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">new</span> <span class="keyword">file</span>:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged <span class="keyword">for</span> commi<span class="variable">t:</span></span><br><span class="line">  (use <span class="string">&quot;git add &lt;file&gt;...&quot;</span> <span class="keyword">to</span> <span class="keyword">update</span> what will <span class="keyword">be</span> committed)</span><br><span class="line">  (use <span class="string">&quot;git checkout -- &lt;file&gt;...&quot;</span> <span class="keyword">to</span> discard <span class="keyword">changes</span> in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Untracked <span class="keyword">file</span><span class="variable">s:</span></span><br><span class="line">  (use <span class="string">&quot;git add &lt;file&gt;...&quot;</span> <span class="keyword">to</span> include in what will <span class="keyword">be</span> committed)</span><br><span class="line"></span><br><span class="line">	bar</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>已经commit到本地分支的文件，且该文件在工作区没被修改之前，其不会在git status中出现。</li>
+</ol>
+<h2 id="git-checkout-–-file"><a href="#git-checkout-–-file" class="headerlink" title="git checkout – file"></a>git checkout – file</h2><p>两种情况</p>
+<ol>
+<li><p>若被checkout的文件在暂存区，但工作区修改了，也就是上面的<strong>第三种</strong>情况，此时执行该命令，被checkout的文件变成和暂存区一样的状态和内容。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">echo</span> <span class="string">&#x27;first line&#x27;</span> &gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git <span class="built_in">add</span> foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes <span class="keyword">to</span> <span class="keyword">be</span> committed:</span><br><span class="line">  (use <span class="string">&quot;git reset HEAD &lt;file&gt;...&quot;</span> <span class="keyword">to</span> unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">cat</span> foo</span><br><span class="line"><span class="keyword">first</span> <span class="built_in">line</span></span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">echo</span> <span class="string">&#x27;new line&#x27;</span> &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">cat</span> foo</span><br><span class="line"><span class="keyword">first</span> <span class="built_in">line</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">line</span></span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes <span class="keyword">to</span> <span class="keyword">be</span> committed:</span><br><span class="line">  (use <span class="string">&quot;git reset HEAD &lt;file&gt;...&quot;</span> <span class="keyword">to</span> unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">Changes not staged <span class="keyword">for</span> commi<span class="variable">t:</span></span><br><span class="line">  (use <span class="string">&quot;git add &lt;file&gt;...&quot;</span> <span class="keyword">to</span> <span class="keyword">update</span> what will <span class="keyword">be</span> committed)</span><br><span class="line">  (use <span class="string">&quot;git checkout -- &lt;file&gt;...&quot;</span> <span class="keyword">to</span> discard <span class="keyword">changes</span> in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">cat</span> foo</span><br><span class="line"><span class="keyword">first</span> <span class="built_in">line</span></span><br></pre></td></tr></table></figure>
+<p>将foo文件写入’first line’内容后，用<code>git add foo</code>，提交到了暂存区，未commit情况下，再写入新内容’new line’,若想还原到暂存区状态，则使用命令<code>git checkout -- foo</code></p>
+</li>
+<li><p>被修改文件不在暂存区，此时使用<code>git checkout -- file</code>命令，则该文件和当前版本仓库中原先的文件一致。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/<span class="keyword">test</span> $ git status</span><br><span class="line"><span class="keyword">On</span> branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">huangyisan:~/Desktop/github/<span class="keyword">test</span> $ <span class="keyword">cat</span> foo</span><br><span class="line">first <span class="keyword">line</span></span><br><span class="line">huangyisan:~/Desktop/github/<span class="keyword">test</span> $ echo &#x27;new <span class="keyword">line</span>&#x27; &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/<span class="keyword">test</span> $ <span class="keyword">cat</span> foo</span><br><span class="line">first <span class="keyword">line</span></span><br><span class="line">new <span class="keyword">line</span></span><br><span class="line">huangyisan:~/Desktop/github/<span class="keyword">test</span> $ git checkout -- foo</span><br><span class="line">huangyisan:~/Desktop/github/<span class="keyword">test</span> $ <span class="keyword">cat</span> foo</span><br><span class="line">first <span class="keyword">line</span></span><br></pre></td></tr></table></figure>
+<p>干净的工作区，修改了foo文件，然后进行checkout操作之后，foo文件还原成了仓库中该文件原先的状态和内容。</p>
+</li>
+</ol>
+<h2 id="git-clean"><a href="#git-clean" class="headerlink" title="git clean"></a>git clean</h2><p>git clean 的对象为<strong>untracked files</strong>，也就是在工作区<strong>新建</strong>，但还未执行<code>git add</code>命令提交到暂存区的文件或目录。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ ls</span><br><span class="line">bar foo</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ touch new1 new2</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ <span class="class">mkdir </span>&#123;tmp1,tmp2&#125;</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ ls</span><br><span class="line">bar  foo  new1 new2 tmp1 tmp2</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ git clean -n</span><br><span class="line">Would remove new1</span><br><span class="line">Would remove new2</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ git clean -f new1</span><br><span class="line">Removing new1</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ git clean -df tmp1</span><br><span class="line">Removing tmp1/</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ ls</span><br><span class="line">bar  foo  new2 tmp2</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ git clean -f</span><br><span class="line">Removing new2</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ ls</span><br><span class="line">bar  foo  tmp2</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ git clean -df</span><br><span class="line">Removing tmp2/</span><br><span class="line"><span class="symbol">huangyisan:</span>~/Desktop<span class="meta-keyword">/github/</span>test $ ls</span><br><span class="line">bar foo</span><br></pre></td></tr></table></figure>
+<p><code>git clean -n</code>，干跑模式，可以列出哪些文件会被清除，但不会列出哪些目录会被清除。<br><code>git clean -f</code>，若指定文件，则该文件被清除，若不指定文件，则所有未被提交到暂存区的文件都被清除。<br><code>git clean -df</code>，若指定目录，则该目录被清除，若不指定目录，则所有未被提交到暂存区的目录都被清除。</p>
+<h2 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h2><p><code>git rm</code>等价于<code>rm xxx &amp;&amp; git add .</code>。<br>如果一个文件是被rm删除，则可以使用<code>git checkout -- file</code>将文件还原回来，而如果是用<code>git rm</code>删除，则该文件不可以被<code>git checkout -- file</code>。当然，如果是rm文件，然后git add操作，也是不能被<code>git checkout -- file</code>还原回来的。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ rm foo</span><br><span class="line">remove foo? y</span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ ls</span><br><span class="line">bar</span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ git checkout foo</span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ ls</span><br><span class="line">bar foo</span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ git rm foo</span><br><span class="line">rm <span class="string">&#x27;foo&#x27;</span></span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ git checkout foo</span><br><span class="line">error: pathspec <span class="string">&#x27;foo&#x27;</span> did not match <span class="keyword">any</span> <span class="keyword">file</span>(s) known to git.</span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ ls</span><br><span class="line">bar</span><br></pre></td></tr></table></figure>
+<p>foo文件起先被rm删除，并未提交到暂存区，所以是可以被checkout还原，后来执行了git rm，所以当使用checkout还原的时候就报错了。</p>
+<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>三种模式</p>
+<ol>
+<li>–mixed 默认方式，将暂存区内容清空，回退到工作区，并且保留工作区的修改内容。</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">cat</span> foo</span><br><span class="line"><span class="keyword">first</span> <span class="built_in">line</span></span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">echo</span> <span class="string">&#x27;new line&#x27;</span> &gt;&gt; foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git <span class="built_in">add</span> foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes <span class="keyword">to</span> <span class="keyword">be</span> committed:</span><br><span class="line">  (use <span class="string">&quot;git reset HEAD &lt;file&gt;...&quot;</span> <span class="keyword">to</span> unstage)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">cat</span> foo</span><br><span class="line"><span class="keyword">first</span> <span class="built_in">line</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">line</span></span><br><span class="line">huangyisan:~/Desktop/github/test $ git reset HEAD</span><br><span class="line">Unstaged <span class="keyword">changes</span> after rese<span class="variable">t:</span></span><br><span class="line">M	foo</span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">cat</span> foo</span><br><span class="line"><span class="keyword">first</span> <span class="built_in">line</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">line</span></span><br><span class="line">huangyisan:~/Desktop/github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged <span class="keyword">for</span> commi<span class="variable">t:</span></span><br><span class="line">  (use <span class="string">&quot;git add &lt;file&gt;...&quot;</span> <span class="keyword">to</span> <span class="keyword">update</span> what will <span class="keyword">be</span> committed)</span><br><span class="line">  (use <span class="string">&quot;git checkout -- &lt;file&gt;...&quot;</span> <span class="keyword">to</span> discard <span class="keyword">changes</span> in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   foo</span><br><span class="line"></span><br><span class="line"><span class="keyword">no</span> <span class="keyword">changes</span> added <span class="keyword">to</span> commit (use <span class="string">&quot;git add&quot;</span> <span class="built_in">and</span>/<span class="built_in">or</span> <span class="string">&quot;git commit -a&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>暂存区被清空，工作区的更变被保留下来，foo文件存在new line这行内容。</p>
+<ol start="2">
+<li>–soft  暂存区内容，工作区内容都被保留，HEAD指向指定的commit号，该commit号原先的文件若有变动，则直接被add到暂存区。</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ ls</span><br><span class="line">foo</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ cat foo</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ echo <span class="string">&#x27;new line&#x27;</span> &gt; foo</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ git add foo</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be <span class="attr">committed:</span></span><br><span class="line">  (use <span class="string">&quot;git reset HEAD &lt;file&gt;...&quot;</span> to unstage)</span><br><span class="line"></span><br><span class="line">	<span class="symbol">modified:</span>   foo</span><br><span class="line"></span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ git log --oneline</span><br><span class="line">e5ca64a (HEAD -&gt; master) <span class="number">1</span></span><br><span class="line"><span class="number">0</span>ba0aa5 <span class="number">1</span></span><br><span class="line">ebaa828 <span class="number">1</span></span><br><span class="line">a2f32c5 <span class="number">1</span></span><br><span class="line"><span class="number">8</span>f89d40 update</span><br><span class="line">be60bed <span class="number">1</span></span><br><span class="line">bb51c34 .</span><br><span class="line">df8f824 update</span><br><span class="line"><span class="number">4</span>dbd952 update</span><br><span class="line"><span class="number">9e683</span>fb <span class="number">1</span></span><br><span class="line"><span class="number">79</span>dfad8 <span class="number">1</span></span><br><span class="line"><span class="number">3e58</span>cef add <span class="number">1</span></span><br><span class="line"><span class="number">94e5</span>bf4 remove</span><br><span class="line"><span class="number">02</span>aadbb ok</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ git reset --soft <span class="number">8</span>f89d40</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ ls</span><br><span class="line">foo</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ cat foo</span><br><span class="line"><span class="keyword">new</span> line</span><br><span class="line"><span class="attr">huangyisan:</span><span class="regexp">~/Desktop/</span>github/test $ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be <span class="attr">committed:</span></span><br><span class="line">  (use <span class="string">&quot;git reset HEAD &lt;file&gt;...&quot;</span> to unstage)</span><br><span class="line"></span><br><span class="line">	<span class="symbol">deleted:</span>    bar</span><br><span class="line">	<span class="keyword">new</span> <span class="attr">file:</span>   foo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>将foo的改动add到暂存区后，使用<code>git reset --soft 8f89d40</code>，8f89d40这个commit号原先是存在bar这个文件，且foo文件不存在，因为reset之前的内容和之后的比较出现了差异，则这些差异被add到了新的暂存区中。</p>
+<ol start="3">
+<li>–hard  HEAD重置到指定commit号，且清空暂存区，工作区的内容和该commit号版本仓库的内容一致。</li>
+</ol>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ git reset --hard HEAD</span><br><span class="line">HEAD is now at <span class="number">14</span>d3892 <span class="number">1</span></span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ ls</span><br><span class="line">foo</span><br><span class="line">huangyisan:~<span class="regexp">/Desktop/gi</span>thub/test $ cat foo</span><br><span class="line">first line</span><br></pre></td></tr></table></figure>
+<p>暂存区被清空，工作区内容成了当前commit号版本仓库的内容，也就是没修改之前的内容，foo文件不存在new line行。<br><strong>但若工作区存在Untracked files，则这些Untracked files会携带进入到指定的commit号版本仓库的工作区中，所以要恢复到和某个commit号完全一致，还需要git clean -f清空Untracked files。</strong></p>
+<p><strong>git reset会将HEAD指向的分支指向reset对应的commit，而git checkout是HEAD直接指向对应的commit。</strong><br><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1fyiqk5xn2gj20dw0a6aa3.jpg"></p>
+<h2 id="git-revert"><a href="#git-revert" class="headerlink" title="git revert"></a>git revert</h2><p>仅将某个commit号提交分支的内容撤销，且将此次撤销作为一个新的提交。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">huangyisan:~/Desktop/github/test $ git <span class="built_in">log</span> --oneline</span><br><span class="line"><span class="number">145</span>af31 (HEAD -&gt; master) <span class="built_in">add</span> <span class="keyword">new</span></span><br><span class="line">edf54e3 <span class="built_in">add</span> foo</span><br><span class="line">c11842d <span class="built_in">add</span> bar</span><br><span class="line"><span class="number">5</span>f4b280 <span class="built_in">remove</span> <span class="keyword">all</span></span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">ls</span></span><br><span class="line">bar  foo  <span class="keyword">new</span>  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git revert c11842d</span><br><span class="line">[master <span class="number">19</span>e736c] Revert <span class="string">&quot;add bar&quot;</span></span><br><span class="line"> <span class="number">1</span> <span class="keyword">file</span> changed, <span class="number">0</span> insertions(+), <span class="number">0</span> deletions(-)</span><br><span class="line"> <span class="keyword">delete</span> <span class="keyword">mode</span> <span class="number">100644</span> bar</span><br><span class="line">huangyisan:~/Desktop/github/test $ <span class="keyword">ls</span></span><br><span class="line">foo  <span class="keyword">new</span>  new1</span><br><span class="line">huangyisan:~/Desktop/github/test $ git <span class="built_in">log</span> --oneline</span><br><span class="line"><span class="number">19</span>e736c (HEAD -&gt; master) Revert <span class="string">&quot;add bar&quot;</span></span><br><span class="line"><span class="number">145</span>af31 <span class="built_in">add</span> <span class="keyword">new</span></span><br><span class="line">edf54e3 <span class="built_in">add</span> foo</span><br><span class="line">c11842d <span class="built_in">add</span> bar</span><br><span class="line"><span class="number">5</span>f4b280 <span class="built_in">remove</span> <span class="keyword">all</span></span><br></pre></td></tr></table></figure>
+<p>c11842d是将bar文件提交到了分支，当执行<code>git revert c11842d</code>,则撤销了提交bar文件到分支，所以执行完后，bar文件不见了，但foo文件依旧存在，所以revert只影响了被撤销的commit的变更内容，而且看git log，多了一个新的commit提交号19e736c。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://iostat.io/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/" title="git clean&#x2F;rm&#x2F;reset&#x2F;revert&#x2F;checkout用法和区别">https://iostat.io/2018/12/22/git-clean-rm-reset-revert-checkout用法和区别/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/20/getchar-%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B/" rel="prev" title="getchar()存储类型">
+      <i class="fa fa-chevron-left"></i> getchar()存储类型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/" rel="next" title="从无法加载JAVA_HOME说起">
+      从无法加载JAVA_HOME说起 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8C%BA%E5%92%8C%E6%9A%82%E5%AD%98%E5%8C%BA"><span class="nav-number">1.</span> <span class="nav-text">git的工作区和暂存区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-checkout-%E2%80%93-file"><span class="nav-number">2.</span> <span class="nav-text">git checkout – file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-clean"><span class="nav-number">3.</span> <span class="nav-text">git clean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-rm"><span class="nav-number">4.</span> <span class="nav-text">git rm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-reset"><span class="nav-number">5.</span> <span class="nav-text">git reset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-revert"><span class="nav-number">6.</span> <span class="nav-text">git revert</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Huangyisan</p>
+  <div class="site-description" itemprop="description">PSN: hys15783167</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:anonymousyisan@gmail.com" title="E-Mail → mailto:anonymousyisan@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mynotebook.readthedocs.io/en/latest/" title="https:&#x2F;&#x2F;mynotebook.readthedocs.io&#x2F;en&#x2F;latest&#x2F;" rel="noopener" target="_blank">readthedocs</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+</div>
+
+<div class="BbeiAn-info">
+    浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784"  rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kirakirazone.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://iostat.io/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/";
+    this.page.identifier = "2018/12/22/git-clean-rm-reset-revert-checkout用法和区别/";
+    this.page.title = "git clean/rm/reset/revert/checkout用法和区别";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kirakirazone.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"iostat.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在&#x2F;etc&#x2F;profile里面是添加了JAVA_HOME。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从无法加载JAVA_HOME说起">
+<meta property="og:url" content="https://iostat.io/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/index.html">
+<meta property="og:site_name" content="Iostat.io">
+<meta property="og:description" content="这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在&#x2F;etc&#x2F;profile里面是添加了JAVA_HOME。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-12-25T11:45:38.000Z">
+<meta property="article:modified_time" content="2022-06-26T13:07:58.035Z">
+<meta property="article:author" content="Huangyisan">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://iostat.io/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>从无法加载JAVA_HOME说起 | Iostat.io</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Iostat.io</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/huangyisan" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://iostat.io/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="PSN: hys15783167">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Iostat.io">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从无法加载JAVA_HOME说起
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-12-25 19:45:38" itemprop="dateCreated datePublished" datetime="2018-12-25T19:45:38+08:00">2018-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-26 21:07:58" itemprop="dateModified" datetime="2022-06-26T21:07:58+08:00">2022-06-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/system/" itemprop="url" rel="index"><span itemprop="name">system</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/25/从无法加载JAVA-HOME说起/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这几天在做jenkins cicd的事儿，用sudo的方式启动tomcat，直接报出无法找到JAVA_HOME。当时挺纳闷的，因为我在/etc/profile里面是添加了JAVA_HOME。</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@ccc bin]# sudo ./catalina.sh start</span><br><span class="line">Neither the JAVA_HOME nor the JRE_HOME environment variable is defined</span><br><span class="line">At least one of these environment variable is needed to run this program</span><br><span class="line">[root@ccc bin]# tail -n 5 /etc/profile</span><br><span class="line"></span><br><span class="line">export JAVA_HOME=/tool/jdk1.8.0_144</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">export JAVA_HOME CLASSPATH PATH</span><br></pre></td></tr></table></figure>
+<p>如此如此，出现了两个疑问。</p>
+<ol>
+<li>为什么/etc/profile的内容无法被加载？</li>
+<li>在/etc/profile里面写入jdk环境变量是否合适？</li>
+</ol>
+<h2 id="为什么-etc-profile的内容无法被加载？"><a href="#为什么-etc-profile的内容无法被加载？" class="headerlink" title="为什么/etc/profile的内容无法被加载？"></a>为什么/etc/profile的内容无法被加载？</h2><p>先说下一个概念，linux的用户交互模式。在linux中用户交互模式可以分为两类：</p>
+<ol>
+<li>Interactive Shell</li>
+<li>Non-Interactive Shell</li>
+</ol>
+<p>Interactive Shell 顾名思义，就是登陆用户可以和shell进行交互的，比如你用xshell上一台服务器，出现的terminal就是属于Interactive Shell方式。<br>Non-Interactive Shell 非交互的模式，比如用crontab的方式执行一个shell脚本。</p>
+<p>那么问题就来了，这两种模式的环境变量从哪里去获取呢？</p>
+<ol>
+<li>Interactive Shell登录情况</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">execute /etc/profile</span><br><span class="line">IF ~/.bash_profile exists THEN</span><br><span class="line">    execute ~/.bash_profile</span><br><span class="line">ELSE</span><br><span class="line">    IF ~/.bash_login exist THEN</span><br><span class="line">        execute ~/.bash_login</span><br><span class="line">    ELSE</span><br><span class="line">        IF ~/.profile exist THEN</span><br><span class="line">            execute ~/.profile</span><br><span class="line">        END IF</span><br><span class="line">    END IF</span><br><span class="line">END IF</span><br></pre></td></tr></table></figure>
+<p><strong>一目了然，入口为/etc/profile文件</strong>。<br>其中在.bash_profile里面还判断是否存在<del>/.bashrc，如果存在则加载</del>/.bashrc。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if [ -f ~/.bashrc ]; then</span><br><span class="line">        . ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>还没完，在执行~/.bashrc的时候里面继续判断是否存在/etc/bashrc，如果存在则执行/etc/bashrc。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if [ -f /etc/bashrc ]; then</span><br><span class="line">        . /etc/bashrc</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>顺带一说，当用户退出Interactive Shell的时候，执行~/.bash_logout内容。所以可以在退出的时候定义一些行为。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IF ~/.bash_logout exists THEN</span><br><span class="line">    execute ~/.bash_logout</span><br><span class="line">END IF</span><br></pre></td></tr></table></figure>
+<h3 id="总结下Interactive-Shell的顺序："><a href="#总结下Interactive-Shell的顺序：" class="headerlink" title="总结下Interactive Shell的顺序："></a>总结下Interactive Shell的顺序：</h3><ol>
+<li>/etc/profile</li>
+<li>~/.bash_profile</li>
+<li>~/.bashrc</li>
+<li>/etc/bashrc</li>
+<li>~/.bash_login</li>
+<li>~/.profile</li>
+<li>~/.bash_logout (当且仅当退出Interactive Shell的时候执行)</li>
+</ol>
+<ol start="2">
+<li>Non-Interactive Shell的情况</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IF ~/.bashrc exists THEN</span><br><span class="line">    execute ~/.bashrc</span><br><span class="line">END IF</span><br></pre></td></tr></table></figure>
+<p>直接去执行的~/.bashrc，该文件也会判断是否存在/etc/bashrc，存在则执行/etc/bashrc。</p>
+<h3 id="总结下Non-Interactive-Shell的顺序："><a href="#总结下Non-Interactive-Shell的顺序：" class="headerlink" title="总结下Non-Interactive Shell的顺序："></a>总结下Non-Interactive Shell的顺序：</h3><ol>
+<li>~/.bashrc</li>
+<li>/etc/bashrc</li>
+</ol>
+<p><strong>看似原因好像是因为<code>sudo ./catalina.sh start</code>进入了Non-Interactive Shell，从而没加载/etc/profile，其实并不是这样的。</strong><br><strong>sudo在这边搞出了幺蛾子？</strong></p>
+<h3 id="sudo做了啥？"><a href="#sudo做了啥？" class="headerlink" title="sudo做了啥？"></a>sudo做了啥？</h3><p>命令输入visudo，有那么一节内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Preserving HOME has security implications since many programs</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> use it when searching <span class="keyword">for</span> configuration files. Note that HOME</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> is already <span class="built_in">set</span> when the the env_reset option is enabled, so</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> this option is only effective <span class="keyword">for</span> configurations <span class="built_in">where</span> either</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> env_reset is disabled or HOME is present <span class="keyword">in</span> the env_keep list.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">Defaults    always_set_home</span></span><br><span class="line"></span><br><span class="line">Defaults    env_reset</span><br><span class="line">Defaults    env_keep =  &quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR LS_COLORS&quot;</span><br><span class="line">Defaults    env_keep += &quot;MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE&quot;</span><br><span class="line">Defaults    env_keep += &quot;LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES&quot;</span><br><span class="line">Defaults    env_keep += &quot;LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE&quot;</span><br><span class="line">Defaults    env_keep += &quot;LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>其行为会将env reset，但是会保留部分环境变量。这一行为导致了<code>sudo ./catalina.sh start</code>无法寻找到jdk变量。</strong></p>
+<p>比较差劲的解决方法：<br>man一下sudo，有个-E的参数，能保留之前的环境变量，但是不推荐这样做，因为有安全隐患：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-E          The -E (preserve environment) option indicates to the security policy that the user wishes to preserve their existing</span><br><span class="line">            environment variables.  The security policy may return an error if the -E option is specified and the user does not have</span><br><span class="line">            permission to preserve the environment.</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@ccc bin]# sudo -E ./catalina.sh start</span><br><span class="line">Using CATALINA_BASE:   /opt/mixcdn-tomcat</span><br><span class="line">Using CATALINA_HOME:   /opt/mixcdn-tomcat</span><br><span class="line">Using CATALINA_TMPDIR: /opt/mixcdn-tomcat/temp</span><br><span class="line">Using JRE_HOME:        /tool/jdk1.8.0_144</span><br><span class="line">Using CLASSPATH:       /opt/mixcdn-tomcat/bin/bootstrap.jar:/opt/mixcdn-tomcat/bin/tomcat-juli.jar</span><br><span class="line">Tomcat started.</span><br></pre></td></tr></table></figure>
+<p>好的解决方法在下面：</p>
+<h2 id="在-etc-profile里面写入jdk环境变量是否合适？"><a href="#在-etc-profile里面写入jdk环境变量是否合适？" class="headerlink" title="在/etc/profile里面写入jdk环境变量是否合适？"></a>在/etc/profile里面写入jdk环境变量是否合适？</h2><p>针对部署tomcat的jdk环境，很多文档，包括我自己，之前也是从别人那边拿来的部署jdk文档，将jdk环境变量写入/etc/profile，等文件中，这个观念基本上贯穿了我整个运维生涯。</p>
+<p>其实官方给出了写法，在catalina.sh里面:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Control Script <span class="keyword">for</span> the CATALINA Server</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># Environment Variable Prerequisites</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment">#   Do not set the variables in this script. Instead put them into a script</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">   setenv.sh <span class="keyword">in</span> CATALINA_BASE/bin to keep your customizations separate.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment">#   CATALINA_HOME   May point at your Catalina &quot;build&quot; directory.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment">#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">                   of a Catalina installation.  If not present, resolves to</span></span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">...</span><br><span class="line">.</span><br><span class="line"><span class="meta">#</span><span class="bash"> Ensure that any user defined CLASSPATH variables are not used on startup,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> but allow them to be specified <span class="keyword">in</span> setenv.sh, <span class="keyword">in</span> rare <span class="keyword">case</span> when it is needed.</span></span><br><span class="line">CLASSPATH=</span><br><span class="line"></span><br><span class="line">if [ -r &quot;$CATALINA_BASE/bin/setenv.sh&quot; ]; then</span><br><span class="line">  . &quot;$CATALINA_BASE/bin/setenv.sh&quot;</span><br><span class="line">elif [ -r &quot;$CATALINA_HOME/bin/setenv.sh&quot; ]; then</span><br><span class="line">  . &quot;$CATALINA_HOME/bin/setenv.sh&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line">...</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line">```shell</span><br><span class="line"></span><br><span class="line">就是在tomcat/bin目录下面，写入一个setenv.sh文件里面写入需要的环境变量，当运行catalina.sh启动脚本的时候，其会进行执行该setenv.sh文件，当前我的版本是1.8，非特殊情况其已经不需要写入CLASSPATH。(据说jdk1.5之后就不需要写入CLASSPATH了。)</span><br><span class="line"></span><br><span class="line">```shell</span><br><span class="line">[root@ccc bin]# cat setenv.sh</span><br><span class="line">export JAVA_HOME=/tool/jdk1.8.0_144</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure>
+<p>多看官方文档，多看服务自带脚本还是非常有必要的。</p>
+<p>Refer:</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.thegeekstuff.com/2008/10/execution-sequence-for-bash_profile-bashrc-bash_login-profile-and-bash_logout/">https://www.thegeekstuff.com/2008/10/execution-sequence-for-bash_profile-bashrc-bash_login-profile-and-bash_logout/</a><br><a target="_blank" rel="noopener" href="https://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/">https://bencane.com/2013/09/16/understanding-a-little-more-about-etcprofile-and-etcbashrc/</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/8633461/how-to-keep-environment-variables-when-using-sudo">https://stackoverflow.com/questions/8633461/how-to-keep-environment-variables-when-using-sudo</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000011528636/a-1020000011538128">https://segmentfault.com/q/1010000011528636/a-1020000011538128</a></p>
+</blockquote>
+<p>下次写sudo su两个命令。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://iostat.io/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/" title="从无法加载JAVA_HOME说起">https://iostat.io/2018/12/25/从无法加载JAVA-HOME说起/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/22/git-clean-rm-reset-revert-checkout%E7%94%A8%E6%B3%95%E5%92%8C%E5%8C%BA%E5%88%AB/" rel="prev" title="git clean/rm/reset/revert/checkout用法和区别">
+      <i class="fa fa-chevron-left"></i> git clean/rm/reset/revert/checkout用法和区别
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/27/centos7%E7%BD%91%E5%8D%A1%E6%94%B9%E5%90%8D/" rel="next" title="centos7网卡改名">
+      centos7网卡改名 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-etc-profile%E7%9A%84%E5%86%85%E5%AE%B9%E6%97%A0%E6%B3%95%E8%A2%AB%E5%8A%A0%E8%BD%BD%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">为什么&#x2F;etc&#x2F;profile的内容无法被加载？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8BInteractive-Shell%E7%9A%84%E9%A1%BA%E5%BA%8F%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">总结下Interactive Shell的顺序：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8BNon-Interactive-Shell%E7%9A%84%E9%A1%BA%E5%BA%8F%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">总结下Non-Interactive Shell的顺序：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo%E5%81%9A%E4%BA%86%E5%95%A5%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">sudo做了啥？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-etc-profile%E9%87%8C%E9%9D%A2%E5%86%99%E5%85%A5jdk%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E5%90%88%E9%80%82%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">在&#x2F;etc&#x2F;profile里面写入jdk环境变量是否合适？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Huangyisan</p>
+  <div class="site-description" itemprop="description">PSN: hys15783167</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:anonymousyisan@gmail.com" title="E-Mail → mailto:anonymousyisan@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mynotebook.readthedocs.io/en/latest/" title="https:&#x2F;&#x2F;mynotebook.readthedocs.io&#x2F;en&#x2F;latest&#x2F;" rel="noopener" target="_blank">readthedocs</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+</div>
+
+<div class="BbeiAn-info">
+    浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784"  rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kirakirazone.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://iostat.io/2018/12/25/%E4%BB%8E%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BDJAVA-HOME%E8%AF%B4%E8%B5%B7/";
+    this.page.identifier = "2018/12/25/从无法加载JAVA-HOME说起/";
+    this.page.title = "从无法加载JAVA_HOME说起";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kirakirazone.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

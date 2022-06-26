@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"iostat.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我的小程序菜单栏点击延迟很大 小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。 微信开发工具的模拟界面点击没有任何的延迟感。 点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用正确的姿势动态修改小程序样式">
+<meta property="og:url" content="https://iostat.io/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Iostat.io">
+<meta property="og:description" content="我的小程序菜单栏点击延迟很大 小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。 微信开发工具的模拟界面点击没有任何的延迟感。 点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-13T11:22:13.000Z">
+<meta property="article:modified_time" content="2022-06-26T13:07:58.047Z">
+<meta property="article:author" content="Huangyisan">
+<meta property="article:tag" content="小程序">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://iostat.io/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用正确的姿势动态修改小程序样式 | Iostat.io</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Iostat.io</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/huangyisan" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://iostat.io/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="PSN: hys15783167">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Iostat.io">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用正确的姿势动态修改小程序样式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-03-13 19:22:13" itemprop="dateCreated datePublished" datetime="2020-03-13T19:22:13+08:00">2020-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-26 21:07:58" itemprop="dateModified" datetime="2022-06-26T21:07:58+08:00">2022-06-26</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/13/小程序wxs的使用/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="我的小程序菜单栏点击延迟很大"><a href="#我的小程序菜单栏点击延迟很大" class="headerlink" title="我的小程序菜单栏点击延迟很大"></a>我的小程序菜单栏点击延迟很大</h2><ol>
+<li>小程序是用uni-app写的，写完真机调试发现菜单栏点击的延迟相当厉害，几乎有一到两秒。</li>
+<li>微信开发工具的模拟界面点击没有任何的延迟感。</li>
+<li>点击菜单栏会使得当前被点击的内容添加额外的样式，字体color为红色，背景为灰色。</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="排查思路"><a href="#排查思路" class="headerlink" title="排查思路"></a>排查思路</h2><ol>
+<li><p>使用微信开发工具的”Audits”进行体验评分，体验分挺高的，但我自己的体验还是很差啊。</p>
+</li>
+<li><p>翻阅网上资料，修改样式也就差不多那么几种方式，我也是这样写的，感觉没毛病呀。</p>
+</li>
+<li><p>最小化配置，删减了所有其他相关组件，就留下了一个菜单，关联的样式也全部删掉，真机测试，还是有延迟。</p>
+</li>
+<li><p>怀疑是自己手机的问题，于是我用了下饿了么的小程序，大受打击，同时也让朋友真机测了下，也说有延迟感觉。</p>
+</li>
+<li><p>难道是uni-app框架的锅？行吧，我用小程序原生代码写了个菜单，点击发现的确比uniapp流畅点，但还是没有饿了么小程序那个菜单来的顺滑。</p>
+</li>
+<li><p>wdnmd，网上搜来搜去，说卡的基本上是组件过多，图片过多导致，跟我这个不太一样。</p>
+</li>
+<li><p>就这么过去了将近3天，一直没有头绪。让我更加在意的是饿了么为什么能那么流畅？</p>
+</li>
+</ol>
+<h2 id="uni-app原代码"><a href="#uni-app原代码" class="headerlink" title="uni-app原代码"></a>uni-app原代码</h2><h3 id="template部分代码"><a href="#template部分代码" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;block v-for&#x3D;&#39;(item,index) in foodsInfo&#39; :key&#x3D;&#39;item.category&#39;&gt;</span><br><span class="line">	&lt;view class&#x3D;&#39;side-left-item&#39; @click&#x3D;&quot;itemClick(index)&quot; :class&#x3D;&quot;&#123;active: index &#x3D;&#x3D;&#x3D; currentIndex&#125;&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;&#x2F;text&gt;</span><br><span class="line">	&lt;&#x2F;view&gt;</span><br><span class="line">&lt;&#x2F;block&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="JS部分代码"><a href="#JS部分代码" class="headerlink" title="JS部分代码"></a>JS部分代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		currentIndex: <span class="number">0</span>,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">	<span class="function"><span class="title">itemClick</span>(<span class="params">index</span>)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.currentIndex = index</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="小程序原生代码"><a href="#小程序原生代码" class="headerlink" title="小程序原生代码"></a>小程序原生代码</h2><h3 id="视图层部分代码"><a href="#视图层部分代码" class="headerlink" title="视图层部分代码"></a>视图层部分代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;block wx:for&#x3D;&quot;&#123;&#123;leftData&#125;&#125;&quot; wx:for-item&#x3D;&quot;lcai&quot; wx:key&#x3D;&quot;index&quot;&gt;</span><br><span class="line">&lt;view bindtap&#x3D;&quot;btnClick&quot; data-index&#x3D;&quot;&#123;&#123;index&#125;&#125;&quot; class&#x3D;&quot;inner &#123;&#123;currentIndex &#x3D;&#x3D; index? &#39;active&#39; : &#39;&#39;&#125;&#125;&quot;&gt;&#123;&#123;lcai.name&#125;&#125;&lt;&#x2F;view&gt;</span><br><span class="line">&lt;&#x2F;block&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="逻辑层部分代码"><a href="#逻辑层部分代码" class="headerlink" title="逻辑层部分代码"></a>逻辑层部分代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    currentIndex: <span class="number">0</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  btnClick: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> index = e.currentTarget.dataset.index;</span><br><span class="line">    <span class="built_in">console</span>.log(index)</span><br><span class="line">    <span class="built_in">this</span>.setData(&#123;</span><br><span class="line">      currentIndex: index</span><br><span class="line">    &#125;) </span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="原代码的实现方式"><a href="#原代码的实现方式" class="headerlink" title="原代码的实现方式"></a>原代码的实现方式</h3><ol>
+<li>跟网上说的基本上一致，绑定点击事件，通过判断当前元素的index和currentIndex是否相等，返回true或者false来动态添加active样式(color:red; background-color: gray;)。</li>
+<li>看着没有任何的问题，在pc端也是这么写的。</li>
+</ol>
+<h2 id="直到我看到了这篇文章"><a href="#直到我看到了这篇文章" class="headerlink" title="直到我看到了这篇文章"></a>直到我看到了这篇文章</h2><ul>
+<li><p>植树节晚上洗完澡一直在考虑这个问题，没有头绪，谷歌搜了下通用类的小程序优化思路。看到了如下这篇文章，才恍然大悟。</p>
+</li>
+<li><blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/82741561">https://zhuanlan.zhihu.com/p/82741561</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="为什么会慢？"><a href="#为什么会慢？" class="headerlink" title="为什么会慢？"></a>为什么会慢？</h3><ul>
+<li>小程序的视图层(wxml)和逻辑层(js)是独立分开的。这样视图层不能运行js代码，逻辑层的js代码也不能修改视图层的dom</li>
+<li>当数据更新以及事件系统只能靠线程间通讯，但跨线程通信的成本极高，一些频繁通讯的场景，触摸、滚动等。</li>
+<li>一个点击行为，需要经过视图层、Native、逻辑层三者之间2个完整来回的通信，通信的耗时开销较大，用户的交互就会出现延时卡顿的情况。</li>
+<li>for循环对数据格式修改，也会造成逻辑层和视图层频繁通讯。</li>
+</ul>
+<h3 id="wxs的出现"><a href="#wxs的出现" class="headerlink" title="wxs的出现"></a>wxs的出现</h3><ul>
+<li>wxs是一种被限制了的js，他可以运行在视图层。<strong>换句话说wxs和视图层的交互不需要经过Native层</strong>。</li>
+<li>他是不可以操作dom的，因为小程序的视图层和逻辑层的分开就是为了不想用js直接操作dom。</li>
+<li>wxs无法直接修改业务数据，只能对当前组件的class和style处理，或者数据进行格式化。</li>
+<li>如果要修改业务逻辑数据，则需要用callMethod方法。</li>
+</ul>
+<h3 id="wxs适合的场景"><a href="#wxs适合的场景" class="headerlink" title="wxs适合的场景"></a>wxs适合的场景</h3><ul>
+<li>用户交互频繁、仅需改动组件样式（比如布局位置），无需改动数据内容的场景，比如侧滑菜单、索引列表、滚动渐变等 - 数据格式处理，比如文本、日期格式化，或者国际化。</li>
+</ul>
+<h2 id="修改后的uni-app代码"><a href="#修改后的uni-app代码" class="headerlink" title="修改后的uni-app代码"></a>修改后的uni-app代码</h2><h3 id="template部分代码-1"><a href="#template部分代码-1" class="headerlink" title="template部分代码"></a>template部分代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;block v-for&#x3D;&#39;(item,index) in foodsInfo&#39; :key&#x3D;&#39;index&#39;&gt;</span><br><span class="line">  &lt;!-- 绑定多个class的方式，用数组，变量不需要加&#123;&#123;&#125;&#125;     点击事件绑定wxs中export的clickwxs--&gt;</span><br><span class="line">	&lt;view :data-index&#x3D;&quot;index&quot; :class&#x3D;&#39;[&quot;side-left-item&quot;, &quot;inner_&quot; + index]&#39; @click&#x3D;&quot;clickwxs.tapName&quot;&gt;</span><br><span class="line">		&lt;text&gt;&#123;&#123;item.category&#125;&#125;&lt;&#x2F;text&gt;</span><br><span class="line">	&lt;&#x2F;view&gt;</span><br><span class="line">&lt;&#x2F;block&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="WXS部分代码"><a href="#WXS部分代码" class="headerlink" title="WXS部分代码"></a>WXS部分代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//该代码和上面template代码为同一个文件下。</span></span><br><span class="line"><span class="comment">//命名为clickwxs</span></span><br><span class="line">&lt;script <span class="built_in">module</span>=<span class="string">&quot;clickwxs&quot;</span> lang=<span class="string">&quot;wxs&quot;</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ins</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(event))</span><br><span class="line">  <span class="keyword">var</span> owner = ins.selectAllComponents(<span class="string">&#x27;.side-left-item&#x27;</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 移除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">&#x27;active&#x27;</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;.inner&#x27;</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">var</span> instance = ins.selectComponent(<span class="string">&#x27;.inner_&#x27;</span> + event.currentTarget.dataset.index)</span><br><span class="line">	<span class="built_in">console</span>.log(instance)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">&#x27;active&#x27;</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="修改后的微信小程序原生代码"><a href="#修改后的微信小程序原生代码" class="headerlink" title="修改后的微信小程序原生代码"></a>修改后的微信小程序原生代码</h2><h3 id="视图层代码"><a href="#视图层代码" class="headerlink" title="视图层代码"></a>视图层代码</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入wxs--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">wxs</span> <span class="attr">module</span>=<span class="string">&quot;wxs&quot;</span> <span class="attr">src</span>=<span class="string">&quot;./index.wxs&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">wxs</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scroll-view</span> <span class="attr">scroll-y</span>=<span class="string">&quot;true&quot;</span> <span class="attr">class</span>=<span class="string">&quot;scroll&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">&quot;&#123;&#123;leftData&#125;&#125;&quot;</span> <span class="attr">wx:for-item</span>=<span class="string">&quot;lcai&quot;</span> <span class="attr">wx:key</span>=<span class="string">&quot;index&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">bindtap</span>=<span class="string">&quot;&#123;&#123;wxs.tapName&#125;&#125;&quot;</span> <span class="attr">data-index</span>=<span class="string">&quot;&#123;&#123;index&#125;&#125;&quot;</span> <span class="attr">class</span>=<span class="string">&quot;inner inner_&#123;&#123;index&#125;&#125;&quot;</span>&gt;</span>&#123;&#123;lcai.name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scroll-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="wxs代码"><a href="#wxs代码" class="headerlink" title="wxs代码"></a>wxs代码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tapName</span>(<span class="params">event, ownerInstance</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 获取所有class=&quot;inner&quot;的组件</span></span><br><span class="line">  <span class="keyword">var</span> owner = ownerInstance.selectAllComponents(<span class="string">&#x27;.inner&#x27;</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(owner)</span><br><span class="line">  <span class="comment">// 清除样式</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; owner.length; i++) &#123;</span><br><span class="line">    owner[i].removeClass(<span class="string">&#x27;active&#x27;</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;.inner_&#x27;</span> + i)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> instance = ownerInstance.selectComponent(<span class="string">&#x27;.inner_&#x27;</span> + event.currentTarget.dataset.index)</span><br><span class="line">  <span class="comment">// 添加active样式</span></span><br><span class="line">  instance.addClass(<span class="string">&#x27;active&#x27;</span>)</span><br><span class="line">  instance.getDataset()</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  tapName: tapName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><strong>修改完后，无论是uni-app框架的小程序，还是小程序原生的写法，点击延迟感不再有。</strong></p>
+<h2 id="两份代码github地址"><a href="#两份代码github地址" class="headerlink" title="两份代码github地址"></a>两份代码github地址</h2><ol>
+<li><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/huangyisan/fooods">https://github.com/huangyisan/fooods</a>  leftbuttom分支</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/huangyisan/ori-fooods">https://github.com/huangyisan/ori-fooods</a></p>
+</blockquote>
+</li>
+</ol>
+<p>refer</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/82741561">https://zhuanlan.zhihu.com/p/82741561</a></p>
+<p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html">https://developers.weixin.qq.com/miniprogram/dev/framework/view/interactive-animation.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/murenziwei/p/11233505.html">https://www.cnblogs.com/murenziwei/p/11233505.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://iostat.io/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/" title="用正确的姿势动态修改小程序样式">https://iostat.io/2020/03/13/小程序wxs的使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag"># 小程序</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/02/%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%B7%E5%BC%8F%E5%92%8C%E5%AD%90%E7%BB%9D%E7%88%B6%E7%9B%B8/" rel="prev" title="初始化样式和子绝父相">
+      <i class="fa fa-chevron-left"></i> 初始化样式和子绝父相
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/14/css%E5%B1%85%E4%B8%AD-%E6%B0%B4%E5%B9%B3%E6%96%B9%E5%90%91/" rel="next" title="css居中-水平方向">
+      css居中-水平方向 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F%E8%8F%9C%E5%8D%95%E6%A0%8F%E7%82%B9%E5%87%BB%E5%BB%B6%E8%BF%9F%E5%BE%88%E5%A4%A7"><span class="nav-number">1.</span> <span class="nav-text">我的小程序菜单栏点击延迟很大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">排查思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uni-app%E5%8E%9F%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">uni-app原代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#template%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">template部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JS%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">JS部分代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%8E%9F%E7%94%9F%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">小程序原生代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE%E5%B1%82%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81"><span class="nav-number">4.1.</span> <span class="nav-text">视图层部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%B1%82%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81"><span class="nav-number">4.2.</span> <span class="nav-text">逻辑层部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E4%BB%A3%E7%A0%81%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">4.3.</span> <span class="nav-text">原代码的实现方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E5%88%B0%E6%88%91%E7%9C%8B%E5%88%B0%E4%BA%86%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0"><span class="nav-number">5.</span> <span class="nav-text">直到我看到了这篇文章</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%85%A2%EF%BC%9F"><span class="nav-number">5.1.</span> <span class="nav-text">为什么会慢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wxs%E7%9A%84%E5%87%BA%E7%8E%B0"><span class="nav-number">5.2.</span> <span class="nav-text">wxs的出现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wxs%E9%80%82%E5%90%88%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="nav-number">5.3.</span> <span class="nav-text">wxs适合的场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%90%8E%E7%9A%84uni-app%E4%BB%A3%E7%A0%81"><span class="nav-number">6.</span> <span class="nav-text">修改后的uni-app代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#template%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81-1"><span class="nav-number">6.1.</span> <span class="nav-text">template部分代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WXS%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81"><span class="nav-number">6.2.</span> <span class="nav-text">WXS部分代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%90%8E%E7%9A%84%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%8E%9F%E7%94%9F%E4%BB%A3%E7%A0%81"><span class="nav-number">7.</span> <span class="nav-text">修改后的微信小程序原生代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE%E5%B1%82%E4%BB%A3%E7%A0%81"><span class="nav-number">7.1.</span> <span class="nav-text">视图层代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wxs%E4%BB%A3%E7%A0%81"><span class="nav-number">7.2.</span> <span class="nav-text">wxs代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">8.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E4%BB%BD%E4%BB%A3%E7%A0%81github%E5%9C%B0%E5%9D%80"><span class="nav-number">9.</span> <span class="nav-text">两份代码github地址</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Huangyisan</p>
+  <div class="site-description" itemprop="description">PSN: hys15783167</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:anonymousyisan@gmail.com" title="E-Mail → mailto:anonymousyisan@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mynotebook.readthedocs.io/en/latest/" title="https:&#x2F;&#x2F;mynotebook.readthedocs.io&#x2F;en&#x2F;latest&#x2F;" rel="noopener" target="_blank">readthedocs</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+</div>
+
+<div class="BbeiAn-info">
+    浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784"  rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kirakirazone.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://iostat.io/2020/03/13/%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxs%E7%9A%84%E4%BD%BF%E7%94%A8/";
+    this.page.identifier = "2020/03/13/小程序wxs的使用/";
+    this.page.title = "用正确的姿势动态修改小程序样式";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kirakirazone.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

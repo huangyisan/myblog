@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"iostat.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","offset":20,"b2t":true,"scrollpercent":false,"onmobile":false,"padding":18},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  rooted binary tree   存在根节点，并且每个节点都有2个子节点。   full binary tree   每个节点只有0个或者2个子节点。   complete binary tree   除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。   perfect bi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树种类和遍历">
+<meta property="og:url" content="https://iostat.io/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/index.html">
+<meta property="og:site_name" content="Iostat.io">
+<meta property="og:description" content="二叉树种类二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。  rooted binary tree   存在根节点，并且每个节点都有2个子节点。   full binary tree   每个节点只有0个或者2个子节点。   complete binary tree   除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。   perfect bi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg">
+<meta property="article:published_time" content="2019-02-12T08:25:38.000Z">
+<meta property="article:modified_time" content="2022-06-26T13:07:58.031Z">
+<meta property="article:author" content="Huangyisan">
+<meta property="article:tag" content="python3">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg">
+
+<link rel="canonical" href="https://iostat.io/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>二叉树种类和遍历 | Iostat.io</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Iostat.io</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/huangyisan" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://iostat.io/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Huangyisan">
+      <meta itemprop="description" content="PSN: hys15783167">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Iostat.io">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二叉树种类和遍历
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-12 16:25:38" itemprop="dateCreated datePublished" datetime="2019-02-12T16:25:38+08:00">2019-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-26 21:07:58" itemprop="dateModified" datetime="2022-06-26T21:07:58+08:00">2022-06-26</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/12/二叉树种类和遍历/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="二叉树种类"><a href="#二叉树种类" class="headerlink" title="二叉树种类"></a>二叉树种类</h2><p><strong>二叉树种类定义没有一个标准化，所以不同文档可能有不同解释。</strong></p>
+<ol>
+<li>rooted binary tree</li>
+</ol>
+<ul>
+<li>存在根节点，并且每个节点都有<strong>2个</strong>子节点。</li>
+</ul>
+<ol start="2">
+<li>full binary tree</li>
+</ol>
+<ul>
+<li>每个节点只有<strong>0个或者2个</strong>子节点。</li>
+</ul>
+<ol start="3">
+<li>complete binary tree</li>
+</ol>
+<ul>
+<li>除去最后一级，其他级都是full状态(0个或者2个子节点)，且最后一级的节点都在左侧子树上。</li>
+</ul>
+<ol start="4">
+<li>perfect binary tree</li>
+</ol>
+<ul>
+<li>内节点都有两个子节点，且所有子叶都处于同一级别。</li>
+</ul>
+<ol start="5">
+<li>infinite complete binary tree</li>
+</ol>
+<ul>
+<li>every node has two children (and so the set of levels is countably infinite). The set of all nodes is countably infinite, but the set of all infinite paths from the root is uncountable, having the cardinality of the continuum</li>
+<li>我的理解就是无穷尽的rooted binray tree</li>
+</ul>
+<ol start="6">
+<li>balanced binary tree</li>
+</ol>
+<ul>
+<li>左右子树高度差不超过1</li>
+<li>且左右子树各自均为平衡二叉树</li>
+</ul>
+<ol start="7">
+<li>degenerate tree</li>
+</ol>
+<ul>
+<li>每个节点只包含一个子节点。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><h3 id="前序遍历-深度优先"><a href="#前序遍历-深度优先" class="headerlink" title="前序遍历(深度优先)"></a>前序遍历(深度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="preorder" width="200"/>
+* 指先访问根，然后访问子树的遍历方式。
+* 顺序 `F, B, A, D, C, E, G, I, H.`
+
+<p>堆栈代码实现:</p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        <span class="comment"># 所有的点都是子节点，也是父节点的叶子。</span></span><br><span class="line">        self.root = root</span><br><span class="line">        self.<span class="literal">left</span> = None</span><br><span class="line">        self.<span class="literal">right</span> = None</span><br><span class="line"></span><br><span class="line">    def preorder(self, root):</span><br><span class="line">        if root is None:</span><br><span class="line">            return</span><br><span class="line"></span><br><span class="line">        stack = []</span><br><span class="line">        node = root</span><br><span class="line">        while node or stack:</span><br><span class="line">            while node:</span><br><span class="line">                <span class="comment"># 打印出根节点</span></span><br><span class="line">                <span class="literal">print</span>(node.root)</span><br><span class="line">                <span class="comment"># 然后将根节点放入stack中</span></span><br><span class="line">                stack.append(node)</span><br><span class="line">                <span class="comment"># 重新定义node为左节点</span></span><br><span class="line">                node = node.<span class="literal">left</span></span><br><span class="line">            <span class="comment"># 一个个从栈中弹出，其实是压入栈中的根节点</span></span><br><span class="line">            node = stack.pop()</span><br><span class="line">            <span class="comment"># 打印跟的右侧子节点</span></span><br><span class="line">            node = node.<span class="literal">right</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#以下遍历方式通用。           </span></span><br><span class="line">root = BinTree(<span class="string">&#x27;F&#x27;</span>)</span><br><span class="line">root.<span class="literal">left</span> = BinTree(<span class="string">&#x27;B&#x27;</span>)</span><br><span class="line">root.<span class="literal">right</span> = BinTree(<span class="string">&#x27;G&#x27;</span>)</span><br><span class="line">root.<span class="literal">left</span>.<span class="literal">left</span> = BinTree(<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">root.<span class="literal">left</span>.<span class="literal">right</span> = BinTree(<span class="string">&#x27;D&#x27;</span>)</span><br><span class="line">root.<span class="literal">left</span>.<span class="literal">right</span>.<span class="literal">left</span> = BinTree(<span class="string">&#x27;C&#x27;</span>)</span><br><span class="line">root.<span class="literal">left</span>.<span class="literal">right</span>.<span class="literal">right</span> = BinTree(<span class="string">&#x27;E&#x27;</span>)</span><br><span class="line">root.<span class="literal">right</span>.<span class="literal">right</span> = BinTree(<span class="string">&#x27;I&#x27;</span>)</span><br><span class="line">root.<span class="literal">right</span>.<span class="literal">right</span>.<span class="literal">left</span> = BinTree(<span class="string">&#x27;H&#x27;</span>)</span><br><span class="line"><span class="comment"># 选择执行对应的遍历方法。</span></span><br><span class="line">root.preorder(root)</span><br></pre></td></tr></table></figure>
+<p>解释：<br>从最顶层的根进入，然后打印出这个根，并且压入栈，然后获取这个根的左节点，依次循环，直到左节点无法获取到，然后出栈，这边出栈出来的为<strong>最后压入的根</strong>(也就是底层的左节点)，然后开始遍历其右边的子树，右边子树也是从左边开始，也是压入栈，依次循环。</p>
+<h3 id="中序遍历-深度优先"><a href="#中序遍历-深度优先" class="headerlink" title="中序遍历(深度优先)"></a>中序遍历(深度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="midorder" width="200"/>
+* 指先访问左（右）子树，然后访问根，最后访问右（左）子树的遍历方式。
+* 顺序 `A, B, C, D, E, F, G, H, I.`
+
+<p>堆栈代码实现:</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class BinTree(object):</span><br><span class="line">    def __init__(self,root):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = None</span><br><span class="line">        self.right = None</span><br><span class="line">        </span><br><span class="line">    def midorder(self,root):</span><br><span class="line">    if root is None:</span><br><span class="line">        return</span><br><span class="line">    stack = []</span><br><span class="line">    <span class="keyword">node</span> <span class="title">= root</span></span><br><span class="line">    while <span class="keyword">node</span> <span class="title">or</span> stack:</span><br><span class="line">        while <span class="keyword">node</span><span class="title">:</span></span><br><span class="line"><span class="title">            # 根压入栈</span></span><br><span class="line"><span class="title">            stack</span>.append(<span class="keyword">node</span><span class="title">)</span></span><br><span class="line"><span class="title">            # 赋予左节点</span></span><br><span class="line"><span class="title">            node</span> = node.left</span><br><span class="line">        <span class="comment"># 挨个弹出，从最底层的左节点弹出</span></span><br><span class="line">        <span class="keyword">node</span> <span class="title">= stack</span>.pop()</span><br><span class="line">        <span class="comment"># 打印左节点</span></span><br><span class="line">        print(node.root)</span><br><span class="line">        <span class="comment"># 节点赋予右节点，开始遍历右边部分，也是从最底层开始。</span></span><br><span class="line">        <span class="keyword">node</span> <span class="title">= node</span>.right</span><br></pre></td></tr></table></figure>
+<p>解释：因为是左右中的方式，所以root是最迟打印的，则先把左边的都依次压栈，然后压入最后一个，开始逐步弹出，弹出就打印一个，然后遍历弹出的右子树，也是一样的方法，依次循环，直到全部退出，打印出最顶层的root。</p>
+<h3 id="后序遍历-深度优先"><a href="#后序遍历-深度优先" class="headerlink" title="后序遍历(深度优先)"></a>后序遍历(深度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qhndt0qj20m80izgn3.jpg" alt="bakorder" width="200"/>
+* 指先访问子树，然后访问根的遍历方式。子树先左后右在根节点。
+* 顺序 `A, C, E, D, B, H, I, G, F.`
+
+<p>堆栈代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinTree</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,root</span>):</span></span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backorder</span>(<span class="params">self, root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        mystack1 = []</span><br><span class="line">        <span class="comment"># mystack2中存放的是后序遍历的节点数据。</span></span><br><span class="line">        mystack2 = []</span><br><span class="line">        node = root</span><br><span class="line">        <span class="comment"># mystack1压入顶层根</span></span><br><span class="line">        mystack1.append(node)</span><br><span class="line">        <span class="keyword">while</span> mystack1:</span><br><span class="line">            node = mystack1.pop()</span><br><span class="line">            <span class="comment"># 判断是否有左或者右节点，这边控制的是下一次循环压栈到stack2的顺序。</span></span><br><span class="line">            <span class="keyword">if</span> node.left:</span><br><span class="line">                mystack1.append(node.left)</span><br><span class="line">            <span class="keyword">if</span> node.right:</span><br><span class="line">                mystack1.append(node.right)</span><br><span class="line">            <span class="comment"># 将该数的根放入stack2中，</span></span><br><span class="line">            mystack2.append(node)</span><br><span class="line">        <span class="keyword">while</span> mystack2:</span><br><span class="line">            <span class="comment"># 此时mystack2中已经存满了节点，挨个pop()出来的顺序就是后序遍历的次序。</span></span><br><span class="line">            print(mystack2.pop().root)</span><br><span class="line">            </span><br></pre></td></tr></table></figure>
+<p>解释：因为顺序为从<strong>最左节点</strong>开始，且需要判断是否存在根的左右子节点，且不是连续，所以需要用到两个栈。mystack1放入的是当前遍历的节点，然后往mystack2中压入，这个行为之前还对节点进行左右判断，先往stack1中压入左边的节点，然后压入右边的节点，轮到下次循环的时候，后放入stack1中的(右子树)被先pop出来，然后被插入到stack2中，此时stack2中存放的顺序，根节点，然后右节点，接着左节点，依次循环，直到把stack2给压满。最后一个while执行的时候，按照左右根的顺序打印出来，就实现了。</p>
+<h3 id="层级遍历-广度优先"><a href="#层级遍历-广度优先" class="headerlink" title="层级遍历(广度优先)"></a>层级遍历(广度优先)</h3><img src="http://ww1.sinaimg.cn/large/9f0d15f3gy1g03qifft02j20m80hq0tw.jpg" alt="levelorder" width="200"/>
+* 广度优先遍历会先访问离根节点最近的节点。二叉树的广度优先遍历又称按层次遍历。算法借助队列实现。
+* 顺序 `F, B, G, A, D, I, C, E, H.`
+
+<p>队列代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinTree</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,root</span>):</span></span><br><span class="line">        self.root = root</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">levelorder</span>(<span class="params">self, root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        myqueue = []</span><br><span class="line">        node = root</span><br><span class="line">        myqueue.append(node)</span><br><span class="line">        <span class="keyword">while</span> myqueue:</span><br><span class="line">            <span class="comment"># pop弹出第一个元素，这个是队列。</span></span><br><span class="line">            node = myqueue.pop(<span class="number">0</span>)</span><br><span class="line">            print(node.root)</span><br><span class="line">            <span class="comment"># 左右插入的顺序也是弹出的顺序。所以能保证平级打印输出。</span></span><br><span class="line">            <span class="keyword">if</span> node.left:</span><br><span class="line">                myqueue.append(node.left)</span><br><span class="line">            <span class="keyword">if</span> node.right:</span><br><span class="line">                myqueue.append(node.right)</span><br></pre></td></tr></table></figure>
+<p>解释：通过队列方式实现，比较简单，抓到元素append进去，一左一右方式放入，弹出的时候弹出第一个元素，并且打印。</p>
+<p>refer</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/">https://www.geeksforgeeks.org/binary-tree-set-3-types-of-binary-tree/</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees">https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees</a><br><a target="_blank" rel="noopener" href="https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/">https://blog.yangx.site/2016/07/22/Python-binary-tree-traverse/</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86">https://zh.wikipedia.org/zh-hant/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Huangyisan WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangyisan Alipay">
+        <p>Alipay</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Huangyisan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://iostat.io/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/" title="二叉树种类和遍历">https://iostat.io/2019/02/12/二叉树种类和遍历/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python3/" rel="tag"># python3</a>
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/11/tcp_max_syn_backlog%E5%92%8Csomaxconn/" rel="prev" title="tcp_max_syn_backlog和net.core.somaxconn">
+      <i class="fa fa-chevron-left"></i> tcp_max_syn_backlog和net.core.somaxconn
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/02/18/%E9%93%BE%E8%A1%A8%E5%9F%BA%E7%A1%80/" rel="next" title="链表基础">
+      链表基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">二叉树种类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">遍历方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88"><span class="nav-number">2.1.</span> <span class="nav-text">前序遍历(深度优先)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88"><span class="nav-number">2.2.</span> <span class="nav-text">中序遍历(深度优先)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88"><span class="nav-number">2.3.</span> <span class="nav-text">后序遍历(深度优先)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E9%81%8D%E5%8E%86-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88"><span class="nav-number">2.4.</span> <span class="nav-text">层级遍历(广度优先)</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Huangyisan</p>
+  <div class="site-description" itemprop="description">PSN: hys15783167</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:anonymousyisan@gmail.com" title="E-Mail → mailto:anonymousyisan@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mynotebook.readthedocs.io/en/latest/" title="https:&#x2F;&#x2F;mynotebook.readthedocs.io&#x2F;en&#x2F;latest&#x2F;" rel="noopener" target="_blank">readthedocs</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huangyisan</span>
+</div>
+
+<div class="BbeiAn-info">
+    浙ICP备 -
+    <a target="_blank" href="http://www.beian.miit.gov.cn" style="color:#f0d784"  rel="nofollow">18012515号</a> <!--a标签中增加nofollow属性，避免爬虫出站。-->
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kirakirazone.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://iostat.io/2019/02/12/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB%E5%92%8C%E9%81%8D%E5%8E%86/";
+    this.page.identifier = "2019/02/12/二叉树种类和遍历/";
+    this.page.title = "二叉树种类和遍历";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kirakirazone.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
