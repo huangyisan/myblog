@@ -6,7 +6,7 @@ tags: [css, html]
 
 
 
-[查看如何垂直居中](https://kirakirazone.com/2020/03/18/css居中-垂直方向/)
+[查看如何垂直居中](https://iostat.io/2020/03/18/css居中-垂直方向/)
 
 
 

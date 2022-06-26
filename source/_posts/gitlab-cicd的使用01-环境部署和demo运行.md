@@ -26,7 +26,7 @@ categories: application
 
 在gitlab-runner机器上执行`gitlab-runner register`命令，就会出现交互式输入，填写`Register url`, `Registration token`,`tag`,`executor`等信息后，就可以在刚才Admin Area的Runners页面看到已经注册了的gitlab-runner了。(后面我又添加了一个**tag为shared**的runner，执行器为docker)
 
-![gitlab-runner注册页面](https://image.kirakirazone.com/image/gitlab-runner-register.jpg)
+![gitlab-runner注册页面](https://assets.iostat.io/image/gitlab-runner-register.jpg)
 
 有关`executor`的信息，当前支持这些，`docker-ssh+machine, kubernetes, custom, docker, parallels, ssh, virtualbox, docker+machine, docker-ssh, shell`，我使用过的有docker和shell，前者为将pipeline置于docker中进行运行，后者则在本机环境进行运行pipeline定义的内容。
 
@@ -53,11 +53,11 @@ categories: application
   ```
 4. 进入项目**CI/CD** -> **Pipeline**就能看到刚刚执行的pipeline了。点击进去还能看到详细步骤。
 
-![](https://image.kirakirazone.com/image/pipeline-excute-01.png)
+![](https://assets.iostat.io/image/pipeline-excute-01.png)
 
 
 
-![](https://image.kirakirazone.com/image/pipeline-excute-02.png)
+![](https://assets.iostat.io/image/pipeline-excute-02.png)
 
 
 

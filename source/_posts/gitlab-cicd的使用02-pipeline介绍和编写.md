@@ -135,7 +135,7 @@ go:export:
 
 最后的制品产出可以通过pipeline页面下载。
 
-![](https://image.kirakirazone.com/image/artifacts-download.png)
+![](https://assets.iostat.io/image/artifacts-download.png)
 
 
 

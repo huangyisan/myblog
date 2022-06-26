@@ -180,7 +180,7 @@ pipeline {
 1. 可以在blueocean的pipeline中点击查看各个构建步骤的详细信息。
 2. pipeline构建图如下
 
-![](https://image.kirakirazone.com/image/jenkins_blueocean_build.png)
+![](https://assets.iostat.io/image/jenkins_blueocean_build.png)
 
 
 ### 验证
@@ -188,7 +188,7 @@ pipeline {
 1. 打开博客页面，看其是否正常显示，且已经有了最新的更新
 2. 博客地址
 
-[kirakirazone](https://kirakirazone.com)
+[kirakirazone](https://iostat.io)
 
 本文Jenkinsfile地址: https://github.com/huangyisan/myblog/blob/hexo/Jenkinsfile
 

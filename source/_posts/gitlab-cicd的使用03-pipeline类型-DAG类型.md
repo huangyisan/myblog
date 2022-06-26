@@ -132,7 +132,7 @@ pc_deploy:
 上述任务需要开启gitlab-runner的多任务，`concurrent`大于1。
 
 pipeline运行后不再是之前的根据stages顺序执行，而是通过needs关键字指定的关系，进行执行。
-![](https://image.kirakirazone.com/image/dag-pipeline.png)
+![](https://assets.iostat.io/image/dag-pipeline.png)
 
 
 
