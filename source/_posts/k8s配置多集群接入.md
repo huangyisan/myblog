@@ -9,7 +9,6 @@ categories: application
 当需要接入多个kubernetes集群的情况，如果使用\-\-kubeconfig进行指定config file后执行kubectl命令会比较麻烦。可以使用`kubectl config use-context ${context_name}`命令进行切换context，从而实现一个config file文件能连接多个cluster的功能，当然一个时间段内是只能连接一个的。
 
 
-
 # 配置文件路径
 
 配置文件一般名称为`config`，放置路径为`$HOME/.kube/`目录下。
