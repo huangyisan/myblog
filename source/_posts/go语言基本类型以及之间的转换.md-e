@@ -12,13 +12,13 @@ tags: go
 
 **1. 有符号整型**
 
-![有符号型](https://image.iostat.io/image/有符号整型.png)
+![有符号型](https://assets.iostat.io/image/有符号整型.png)
 
 <!-- more -->
 
 **2. 无符号整型**
 
-![无符号型](https://image.iostat.io/image/无符号整型.png)
+![无符号型](https://assets.iostat.io/image/无符号整型.png)
 
 
 
@@ -40,19 +40,19 @@ tags: go
 
 **4. 浮点型**
 
-![浮点型](https://image.iostat.io/image/浮点型.png)
+![浮点型](https://assets.iostat.io/image/浮点型.png)
 
 ​	**float32**
 
 ​	单精度，存储占用4个字节，也即4*8=32位，其中1位用来符号，8位用来指数，剩下的23位表示尾数。
 
-![单精度](https://image.iostat.io/单精度)
+![单精度](https://assets.iostat.io/单精度)
 
 ​	**float64**
 
 ​	双精度，存储占用8个字节，也即8*8=64位，其中1位用来符号，11位用来指数，剩下的52位表示尾数。
 
-![双精度](https://image.iostat.io/双精度)
+![双精度](https://assets.iostat.io/双精度)
 
 
 ​       

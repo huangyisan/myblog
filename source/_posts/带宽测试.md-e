@@ -1,0 +1,91 @@
+---
+title: 带宽测试
+date: 2019-01-15 16:10:12
+tags: linux
+categories: application
+---
+
+## 场景
+
+当时是想测试单台服务器，流量到某带宽值，cpu，内存，磁盘io的表现。
+现在单说iperf和nc的简单使用。
+
+<!-- more -->
+
+# iperf
+
+## 简单使用
+
+1. server端启用`iperf -s`
+2. client端连接server端，默认端口是`5001`,`iperf -c ${server_ip} ${port}`
+
+server端：
+```
+[root@SCA-LX5700025 ~]# iperf -s
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  4] local 10.8.199.17 port 5001 connected with 10.8.199.18 port 38008
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0-10.0 sec  1.13 GBytes   971 Mbits/sec
+
+```
+
+client端：
+```
+[root@SCA-LX5700026 ~]# iperf  -c 10.8.199.17 -p 5001
+------------------------------------------------------------
+Client connecting to 10.8.199.17, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 10.8.199.18 port 38008 connected with 10.8.199.17 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  1.13 GBytes   973 Mbits/sec
+```
+
+**出来的结果直接是带宽，比如上面的是趋近于1000M带宽。**
+
+## 参数
+没有研究太多参数，更多参数可以`-h`查看。
+
+* -b 指定带宽
+```
+[root@SCA-LX5700026 ~]# iperf  -c 10.8.199.17 -p 5001 -b 500M
+------------------------------------------------------------
+Client connecting to 10.8.199.17, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 10.8.199.18 port 38010 connected with 10.8.199.17 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   625 MBytes   524 Mbits/sec
+```
+
+# nc
+
+## 简单使用
+1. server端启用`nc -vvlnp ${server_port} >/dev/null`，或者`-4`指定只使用ipv4的方式。
+2. client端连接`dd if=/dev/zero bs=1M count=1K | nc  ${server_ip} ${server_port}`，命令测试的是1G文件的下载速度。
+
+server端：
+```
+[root@SCA-LX5700025 ~]# nc -vv4lnp 5001 >/dev/null
+Ncat: Version 7.50 ( https://nmap.org/ncat )
+Ncat: Listening on 0.0.0.0:5001
+Ncat: Connection from 10.8.199.18.
+Ncat: Connection from 10.8.199.18:38410.
+NCAT DEBUG: Closing fd 4.
+
+```
+
+client端：
+```
+[root@SCA-LX5700026 ~]# dd if=/dev/zero bs=1M count=1K | nc  10.8.199.17 5001
+1024+0 records in
+1024+0 records out
+1073741824 bytes (1.1 GB) copied, 8.7875 s, 122 MB/s
+```
+
+refer:
+
+> https://askubuntu.com/questions/7976/how-do-you-test-the-network-speed-between-two-boxes

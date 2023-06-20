@@ -183,7 +183,7 @@ jobs:
 ```
 
 ### 微信端告警样例
-![wechat_message_example](https://image.iostat.io/image/wechat_message.png)
+![wechat_message_example](https://assets.iostat.io/image/wechat_message.png)
 
 ## 调试技巧
 1. 如果想在resource中进行调试，不要直接在标准输出中打印，因为concouse会捕获标准输出进行验证是否为合法VersionResult，所以处理办法就是将标准输出定向到标准错误输出中，python可以使用print("strings", file=sys.stderr),  shell可以exec 3>&1;exec 1>&2。

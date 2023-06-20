@@ -257,7 +257,7 @@ first_server和ua都为原先参数中指定的key
 5. 最终的表达式为： `sum(count_over_time({job="Loki-nginx"} | json | status = 200 __error__="" [$__interval]))`
 
 Grafana图:
-![](https://image.iostat.io/imageLogQL_status200.png)
+![](https://assets.iostat.io/imageLogQL_status200.png)
 
 
 

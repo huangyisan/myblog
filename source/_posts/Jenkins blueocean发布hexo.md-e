@@ -180,7 +180,7 @@ pipeline {
 1. 可以在blueocean的pipeline中点击查看各个构建步骤的详细信息。
 2. pipeline构建图如下
 
-![](https://image.iostat.io/image/jenkins_blueocean_build.png)
+![](https://assets.iostat.io/image/jenkins_blueocean_build.png)
 
 
 ### 验证

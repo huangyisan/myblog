@@ -1,6 +1,6 @@
 ---
-title: 单向链表实现
-date: 2020-06-14 09:57:23
+title: 双向链表实现
+date: 2020-06-15 20:52:44
 tags: [数据结构,go]
 ---
 
@@ -11,20 +11,21 @@ tags: [数据结构,go]
 [链表基础](https://iostat.io/2019/02/18/链表基础/)
 
 
-### 单向链表
 
-![单向链表.png](https://image.iostat.io/image/单向链表.png)
+### 双向链表
+
+![双向链表.png](https://assets.iostat.io/image/%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8.jpg)
 
 
 
-- 第一个节点称之为头节点，里面不存放数据，最后一个称之为尾节点，指向NULL。
-- 每个节点分为两个部分。第一个部分是保存活显示关于节点的信息，第二个部分是存储下一个节点的地址。
-- 单链表只能单方向遍历，且最后尾节点的下一个地址指针指向为NULL。
+* 双向链表可以向前或者向后查找。
+* 双向链表可以实现自我删除。
+* 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。
+* 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。
 
 <!-- more -->
 
-### go语言实现单向链表
-
+### go语言实现双向链表
 
 
 ```go
@@ -33,16 +34,10 @@ package main
 import "fmt"
 
 /*
-设计一个单向链表，要求插入的数据能够有序。
-NO.1 C
-No.2 PHP
-No.3 Java
-No.4 NodeJs
-
-链表会有一个head头，该节点不包含任何数据。
-遍历链表，从head开始，取next的，依次取，如果为nil说明到链表尾部。
-插入元素，从head开始，取出下一个节点的No进行比较，如果大于则在当前位置插入，让插入的新节点指向下一个节点，临时节点指向新节点。
-删除元素，从head开始，取出下一个节点的No进行比较，如果大于则在当前位置删除, 将临时节点的next指向下下个节点。
+1. 双向链表可以向前或者向后查找。
+2. 双向链表可以实现自我删除。
+3. 插入一个元素，让插入的新节点指向tmp.next节点，新节点的pre指向tmp临时节点, tmp.next也就是临时节点的下一个节点，也就是新节点的下一个节点).pre指向新节点，最后让tmp.next指向新节点。这里顺序不能乱。
+4. 删除一个元素，将tmp当前的节点next指向tmp下一个节点的下一个节点，此时tmp.next节点变成了待删除节点的下一个节点，接着让tmp的下个节点的pre指向tmp，完成删除。期间要考虑next为空节点的情况。
  */
 
 type LanNode struct {
@@ -50,6 +45,8 @@ type LanNode struct {
 	Name string
 	// next指向下一个节点
 	next *LanNode
+	// pre指向上一个节点
+	pre  *LanNode
 }
 
 func newNode(no int, name string) *LanNode{
@@ -59,6 +56,7 @@ func newNode(no int, name string) *LanNode{
 		// 默认让next指向下一个节点，所以只需要传入no和string即可。
 	}
 }
+
 
 func insertNode(head *LanNode, newNode *LanNode) {
 	// 给定一个临时节点，用来遍历
@@ -75,8 +73,13 @@ func insertNode(head *LanNode, newNode *LanNode) {
 		if tmp.next.No > newNode.No {
 			// 让插入的新节点指向next节点
 			newNode.next = tmp.next
+			// 新节点的pre指向当前临时的tmp节点()
+			newNode.pre = tmp
+			// 让tmp下一个节点的pre指向newNode
+			tmp.next.pre = newNode
 			// 让tmp的next节点指向新节点
 			tmp.next = newNode
+
 			fmt.Println("已经插入到合适位置")
 			return
 		}
@@ -103,6 +106,11 @@ func deleteNode(head *LanNode, no int) {
 		if tmp.next.No == no {
 			// 将tmp当前的节点next指向tmp下一个节点的下一个节点。
 			tmp.next = tmp.next.next
+			// 因为tmp.next.next可能是nil, 那么如果是的话,则nil没有pre, 为nil的时候直接暂停,不需要pre了.
+			if tmp.next != nil {
+				// 因为tmp.next已经指向了tmp.next.next, 所以这里的tmp.next已经跳过了被删除的节点. 让tmp的下个节点的pre指向tmp
+				tmp.next.pre = tmp
+			}
 			fmt.Println("删除成功")
 			return
 		}
