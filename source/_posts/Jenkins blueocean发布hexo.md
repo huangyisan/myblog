@@ -201,7 +201,3 @@ refer:
 > https://stackoverflow.com/questions/43912510/send-notification-e-mail-to-upstream-committer-in-jenkins-pipeline
 > https://www.jenkins.io/doc/book/pipeline/syntax/
 
-
-```
-
-```
