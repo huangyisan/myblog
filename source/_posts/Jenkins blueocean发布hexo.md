@@ -188,7 +188,7 @@ pipeline {
 1. 打开博客页面，看其是否正常显示，且已经有了最新的更新
 2. 博客地址
 
-[kirakirazone](https://iostat.io)
+[iostat.io](https://iostat.io)
 
 本文Jenkinsfile地址: https://github.com/huangyisan/myblog/blob/hexo/Jenkinsfile
 
